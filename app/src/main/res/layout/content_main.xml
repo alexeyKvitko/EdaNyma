@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/main_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.edanyma.activity.MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/appScreenId"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        >
+        <com.edanyma.owncomponent.MainCardItem
+            android:id="@+id/wokCardId"
+            android:layout_marginTop="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:titleText="ПИЦЦА"></com.edanyma.owncomponent.MainCardItem>
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>
