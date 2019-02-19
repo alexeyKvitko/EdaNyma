@@ -1,21 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/land_card_id"
-    android:layout_width="272dp"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="72dp"
-    android:layout_marginLeft="6dp"
-    android:layout_marginRight="6dp"
-    android:layout_marginTop="6dp"
-    card_view:cardCornerRadius="3dp"
-    card_view:cardElevation="3dp">
-
-    <FrameLayout
-        android:id="@+id/mainCardContainerId"
+    android:layout_width="288dp"
+    android:elevation="3dp"
+    android:id="@+id/mainCardId">
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent">
-    <TextView
-        style="@style/dishTitleText"
-        android:id="@+id/dishTitleTextId"/>
-    </FrameLayout>
-</android.support.v7.widget.CardView>
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="12dp"
+        card_view:cardCornerRadius="12dp"
+        card_view:cardElevation="5dp">
+        <TextView
+            style="@style/dishTitleText"
+            android:textColor="@color/colorAccent"
+            android:visibility="gone"
+            android:id="@+id/mainTitleTextId"/>
+        <TextView
+            style="@style/dishTitleText"
+            android:visibility="gone"
+            android:textColor="@color/tealColor"
+            android:id="@+id/dishTitleTextId"/>
+        <TextView
+            style="@style/dishCountText"
+            android:id="@+id/dishCountTextId"/>
+    </android.support.v7.widget.CardView>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:elevation="6dp"
+        app:srcCompat="@drawable/fab_card"/>
+    <ImageView
+        android:id="@+id/dishImgId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left"
+        android:elevation="6dp"/>
+</FrameLayout>

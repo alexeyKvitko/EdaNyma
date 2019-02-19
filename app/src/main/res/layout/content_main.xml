@@ -2,7 +2,8 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/main_background"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/main_background_dark"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.edanyma.activity.MainActivity">
@@ -11,14 +12,59 @@
         android:id="@+id/appScreenId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
+        android:gravity="center_horizontal|bottom"
+        android:paddingBottom="16dp"
         >
         <com.edanyma.owncomponent.MainCardItem
-            android:id="@+id/wokCardId"
-            android:layout_marginTop="100dp"
+            android:layout_above="@+id/pizzaCardId"
+            android:layout_marginTop="16dp"
+            android:id="@+id/restCardId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:titleText="ПИЦЦА"></com.edanyma.owncomponent.MainCardItem>
+            app:mainTitleText=""
+            app:titleText="ВСЕ ЗАВЕДЕНИЯ"
+            app:countText="24"
+            app:dishImg="@drawable/restaurant"></com.edanyma.owncomponent.MainCardItem>
+        <com.edanyma.owncomponent.MainCardItem
+            android:layout_above="@+id/sushiCardId"
+            android:id="@+id/pizzaCardId"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:mainTitleText=""
+            app:titleText="ПИЦЦА"
+            app:countText="21"
+            app:dishImg="@drawable/pizza"></com.edanyma.owncomponent.MainCardItem>
+        <com.edanyma.owncomponent.MainCardItem
+            android:layout_above="@+id/burgerCardId"
+            android:layout_marginTop="16dp"
+            android:id="@+id/sushiCardId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:titleText="СУШИ/СЭТЫ"
+            app:countText="77"
+            app:dishImg="@drawable/sushi"></com.edanyma.owncomponent.MainCardItem>
+        <com.edanyma.owncomponent.MainCardItem
+            android:layout_above="@+id/wokCardId"
+            android:layout_marginTop="16dp"
+            android:id="@+id/burgerCardId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:mainTitleText=""
+            app:titleText="БУРГЕРЫ"
+            app:countText="35"
+            app:dishImg="@drawable/burger"></com.edanyma.owncomponent.MainCardItem>
+
+        <com.edanyma.owncomponent.MainCardItem
+            android:id="@+id/wokCardId"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:mainTitleText=""
+            app:titleText="WOK"
+            app:countText="22"
+            app:dishImg="@drawable/wok"></com.edanyma.owncomponent.MainCardItem>
+
     </RelativeLayout>
 
 

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="MainCardAttrs">
+        <attr name="mainTitleText" format="string"/>
+        <attr name="dishImg" format="string"/>
         <attr name="titleText" format="string"/>
+        <attr name="countText" format="string"/>
     </declare-styleable>
 </resources>
