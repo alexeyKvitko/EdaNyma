@@ -32,10 +32,6 @@ public class MainCardItem extends LinearLayout {
         for (int idx = 0; idx < attrCount; idx++) {
             int attr = attributes.getIndex(idx);
             switch (attr) {
-                case R.styleable.MainCardAttrs_mainTitleText:
-                    String mainText = attributes.getString(attr);
-                    setTitleText( mainText,R.id.mainTitleTextId  );
-                    break;
                 case R.styleable.MainCardAttrs_titleText:
                     String titleText = attributes.getString(attr);
                     setTitleText( titleText,R.id.dishTitleTextId  );
@@ -64,9 +60,6 @@ public class MainCardItem extends LinearLayout {
 
     private void setTitleText( String titleText, Integer id ){
         TextView titleTextView = (TextView) this.findViewById( id );
-        if( titleText.length() > 0 ){
-            titleTextView.setVisibility( View.VISIBLE );
-        }
         titleTextView.setText( titleText );
         titleTextView.setTypeface( AppConstants.TAURUS_BOLD );
     }
