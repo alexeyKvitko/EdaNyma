@@ -1,24 +1,33 @@
 package com.edanyma.activity;
 
-import android.animation.ObjectAnimator;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
-import com.edanyma.owncomponent.MainCardItem;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int[] MAIN_CARDS = { R.id.topLayoutId, R.id.middleLayoutId, R.id.bottomLayoutId };
+    private TextView mDeliveryTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView( R.layout.activity_main);
+        initialize();
+    }
+
+
+    private void initialize(){
+        mDeliveryTV = this.findViewById( R.id.deliveryCityId );
+        mDeliveryTV.setTypeface( AppConstants.ROBOTO_CONDENCED );
+        mDeliveryTV.setText( "Симферополь" );
     }
 
     @Override

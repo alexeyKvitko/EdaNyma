@@ -48,11 +48,11 @@ public class MainCardItem extends LinearLayout {
                     break;
             }
         }
-        FrameLayout mainLayout= (FrameLayout ) this.findViewById( R.id.mainCardId );
-        mainLayout.setOnClickListener(new OnClickListener() {
+        final ImageView imageView = (ImageView ) this.findViewById( R.id.dishImgId ) ;
+        ((FrameLayout) this.findViewById( R.id.mainCardId )).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick( View view) {
-                mThis.startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.bounce) );
+                imageView.startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.bounce) );
             }
         });
         attributes.recycle();
@@ -61,14 +61,25 @@ public class MainCardItem extends LinearLayout {
     private void setTitleText( String titleText, Integer id ){
         TextView titleTextView = (TextView) this.findViewById( id );
         titleTextView.setText( titleText );
-        titleTextView.setTypeface( AppConstants.TAURUS_BOLD );
+        titleTextView.setTypeface( AppConstants.B52 );
     }
 
 
     private void setCountText( String countText ){
-        String countSuffix = " заведений";
+        int companyCount = Integer.valueOf( countText );
+        String countSuffix = " заведени";
+        String ending="й";
+        int mod = companyCount % 10;
+        if ( companyCount < 10 || companyCount > 15 ){
+            if( mod == 1 ){
+                ending = "е";
+            }
+            if( mod == 2 || mod == 3 || mod == 4){
+                ending = "я";
+            }
+        }
         TextView countTextView = (TextView) this.findViewById( R.id.dishCountTextId );
-        countTextView.setText( countText+countSuffix );
+        countTextView.setText( countText+countSuffix+ending );
         countTextView.setTypeface( AppConstants.ROBOTO_CONDENCED );
     }
 
