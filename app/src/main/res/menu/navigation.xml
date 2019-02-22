@@ -2,13 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_outline_black_18dp"
+        android:id="@+id/navigation_company"
+        android:icon="@drawable/ic_room_service_outline_black_18dp"
         android:title=""/>
 
     <item
-        android:id="@+id/navigation_dihes"
-        android:icon="@drawable/ic_coffee_outline_black_18dp"
+        android:id="@+id/navigation_dish"
+        android:icon="@drawable/ic_fastfood_black_18dp"
+        android:title=""/>
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_outline_black_18dp"
         android:title=""/>
 
     <item

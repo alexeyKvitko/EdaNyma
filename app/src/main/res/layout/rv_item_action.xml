@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rvItemActionId"
+        android:layout_width="296dp"
+        android:layout_height="180dp"
+        android:layout_margin="16dp"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardElevation="6dp">
+
+    <ImageView
+        android:layout_width="272dp"
+        android:layout_height="74dp"
+        app:srcCompat="@drawable/corner"
+        android:layout_marginTop="100dp"
+        android:elevation="8dp"/>
+
+    <ImageView
+        android:id="@+id/actionImageId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="7dp"/>
+
+    <TextView
+        style="@style/companyTitleText"
+        android:id="@+id/actionCompanyId"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="80dp"
+        android:elevation="8dp"
+        />
+    />
+</android.support.v7.widget.CardView>

@@ -13,7 +13,7 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:statusBarColor">@color/grayTextColor</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
@@ -32,9 +32,18 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="companyTitleText">
+        <item name="android:textSize">22dp</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+
+
     <style name="dishCountText">
-        <item name="android:textSize">11dp</item>
-        <item name="android:layout_marginTop">64dp</item>
+        <item name="android:textSize">10dp</item>
+        <item name="android:layout_marginTop">66dp</item>
         <item name="android:layout_marginLeft">18dp</item>
         <item name="android:textColor">@color/grayTextColor</item>
         <item name="android:layout_width">wrap_content</item>
