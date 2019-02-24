@@ -74,11 +74,11 @@ public class MainActivity extends AppCompatActivity {
 
     private LinkedList<CompanyAction> fillCompanyAction(){
         LinkedList<CompanyAction> actions = new LinkedList<>();
-        actions.add( new CompanyAction( "FIDELE", R.drawable.fidele_action ) );
-        actions.add( new CompanyAction( "ДОСТАВКА КУХНЯ", R.drawable.kuhnya_action ) );
-        actions.add( new CompanyAction( "PIZZA ROLLA", R.drawable.pizrol_action ) );
-        actions.add( new CompanyAction( "FOODIE", R.drawable.foodie_action ) );
-        actions.add( new CompanyAction( "ПАВЛИН МАВЛИН", R.drawable.pavlin_action ) );
+        actions.add( new CompanyAction( "FIDELE", "http://194.58.122.145:8080/static/images/fidele_action.png" ) );
+        actions.add( new CompanyAction( "ДОСТАВКА КУХНЯ", "http://194.58.122.145:8080/static/images/kuhnya_action.png")  );
+        actions.add( new CompanyAction( "PIZZA ROLLA", "http://194.58.122.145:8080/static/images/pizrol_action.png" ) );
+        actions.add( new CompanyAction( "FOODIE", "http://194.58.122.145:8080/static/images/foodie_action.png" ) );
+        actions.add( new CompanyAction( "ПАВЛИН МАВЛИН", "http://194.58.122.145:8080/static/images/pavlin_action.png" ) );
         return actions;
     }
 

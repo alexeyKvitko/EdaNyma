@@ -7,13 +7,13 @@ import org.pojomatic.annotations.AutoProperty;
 public class CompanyAction {
 
     private String companyName;
-    private int drawableId;
+    private String actionImg;
 
     public CompanyAction(){}
 
-    public CompanyAction( String companyName, int drawableId ) {
+    public CompanyAction(String companyName, String actionImg) {
         this.companyName = companyName;
-        this.drawableId = drawableId;
+        this.actionImg = actionImg;
     }
 
     public String getCompanyName() {
@@ -24,15 +24,15 @@ public class CompanyAction {
         this.companyName = companyName;
     }
 
-    public int getDrawableId() {
-        return drawableId;
+    public String getActionImg() {
+        return actionImg;
     }
 
-    public void setDrawableId( int drawableId ) {
-        this.drawableId = drawableId;
+    public void setActionImg(String actionImg) {
+        this.actionImg = actionImg;
     }
 
-    @Override public boolean equals( Object o) {
+    @Override public boolean equals(Object o) {
         return Pojomatic.equals(this, o);
     }
 

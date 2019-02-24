@@ -17,6 +17,7 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.model.CompanyAction;
+import com.edanyma.utils.PicassoClient;
 
 import java.util.ArrayList;
 
@@ -41,14 +42,10 @@ public class CompanyActionAdapter extends CommonBaseAdapter< CompanyAction > {
     public void onBindViewHolder(final BaseDataObjectHolder holder, final int position) {
         CompanyActionDataObjectHolder categoryCardHolder = ( CompanyActionDataObjectHolder ) holder;
         categoryCardHolder.actionCompany.setText( mItemList.get( position ).getCompanyName() );
-        categoryCardHolder.actionImage.setImageResource( mItemList.get( position ).getDrawableId() );
+        PicassoClient.downloadImage( EdaNymaApp.getAppContext(),
+                mItemList.get( position ).getActionImg(),categoryCardHolder.actionImage);
     }
 
-    @Override
-    public void onViewRecycled( @NonNull final BaseDataObjectHolder holder ) {
-        super.onViewRecycled( holder );
-        Log.i( CLASS_TAG, "Adapter Position: "+holder.getAdapterPosition() );
-    }
 
     public static class CompanyActionDataObjectHolder extends BaseDataObjectHolder {
 
