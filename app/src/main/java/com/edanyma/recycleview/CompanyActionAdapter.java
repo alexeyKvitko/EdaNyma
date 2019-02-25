@@ -1,31 +1,26 @@
 package com.edanyma.recycleview;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
-import com.edanyma.model.CompanyAction;
+import com.edanyma.model.CompanyActionModel;
 import com.edanyma.utils.PicassoClient;
 
 import java.util.ArrayList;
 
-public class CompanyActionAdapter extends CommonBaseAdapter< CompanyAction > {
+public class CompanyActionAdapter extends CommonBaseAdapter< CompanyActionModel > {
 
     private static final String CLASS_TAG = "CompanyActionAdapter";
 
-    public CompanyActionAdapter( ArrayList< CompanyAction > mItemList ) {
+    public CompanyActionAdapter( ArrayList< CompanyActionModel > mItemList ) {
         super( mItemList );
     }
 
@@ -43,7 +38,7 @@ public class CompanyActionAdapter extends CommonBaseAdapter< CompanyAction > {
         CompanyActionDataObjectHolder categoryCardHolder = ( CompanyActionDataObjectHolder ) holder;
         categoryCardHolder.actionCompany.setText( mItemList.get( position ).getCompanyName() );
         PicassoClient.downloadImage( EdaNymaApp.getAppContext(),
-                mItemList.get( position ).getActionImg(),categoryCardHolder.actionImage);
+                mItemList.get( position ).getActionImgUrl(),categoryCardHolder.actionImage);
     }
 
 

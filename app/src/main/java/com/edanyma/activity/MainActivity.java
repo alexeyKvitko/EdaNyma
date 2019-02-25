@@ -1,28 +1,35 @@
 package com.edanyma.activity;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.edanyma.AppConstants;
-import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
-import com.edanyma.model.CompanyAction;
+import com.edanyma.model.CompanyActionModel;
+import com.edanyma.receiver.SingleShotLocationProvider;
 import com.edanyma.recycleview.CompanyActionAdapter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int[] MAIN_CARDS = { R.id.topLayoutId, R.id.middleLayoutId, R.id.bottomLayoutId };
+    private final String TAG = "MainActivity";
+
+    static final int UNIQUE_PERMISSION_CODE = 100;
+
     private TextView mDeliveryTV;
     private BottomNavigationView mBottomNavigation;
 
@@ -31,12 +38,14 @@ public class MainActivity extends AppCompatActivity {
     protected RecyclerView.Adapter mActionAdapter;
     protected LinearLayoutManager mHorizonalLayoutManager;
 
+    private boolean mPermissionGranted;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView( R.layout.activity_main);
         if ( mActionAdapter == null ) {
-            mActionAdapter = new CompanyActionAdapter(  new ArrayList< CompanyAction >());
+            mActionAdapter = new CompanyActionAdapter(  new ArrayList< CompanyActionModel >());
         }
         initialize();
     }
@@ -46,10 +55,71 @@ public class MainActivity extends AppCompatActivity {
         mDeliveryTV = this.findViewById( R.id.deliveryCityId );
         mDeliveryTV.setTypeface( AppConstants.ROBOTO_CONDENCED );
         mDeliveryTV.setText( "Симферополь" );
+        if ( Build.VERSION.SDK_INT < 23 ) {
+            initMainLayout();
+        } else {
+            checkPermissions( UNIQUE_PERMISSION_CODE );
+        }
+    }
+
+    private void initMainLayout(){
         fillActionAdapter( fillCompanyAction() );
         initRecyclerView();
+        initLocationReceiver();
+        mPermissionGranted = true;
     }
-    
+
+    private void checkPermissions( int code ) {
+        mPermissionGranted = false;
+        String[] permissions_required = new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.CALL_PHONE,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION};
+        List permissions_not_granted_list = new ArrayList<>();
+        for ( String permission : permissions_required ) {
+            if ( ActivityCompat.checkSelfPermission( getApplicationContext(), permission ) != PackageManager.PERMISSION_GRANTED ) {
+                permissions_not_granted_list.add( permission );
+            }
+        }
+        if ( permissions_not_granted_list.size() > 0 ) {
+            String[] permissions = new String[permissions_not_granted_list.size()];
+            permissions_not_granted_list.toArray( permissions );
+            ActivityCompat.requestPermissions( this, permissions, code );
+        } else {
+            initMainLayout();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult( int requestCode, String permissions[], int[] grantResults ) {
+        if ( requestCode == UNIQUE_PERMISSION_CODE ) {
+            boolean ok = true;
+            for ( int i = 0; i < grantResults.length; ++i ) {
+                ok = ok && (grantResults[i] == PackageManager.PERMISSION_GRANTED);
+            }
+            if ( ok ) {
+                initMainLayout();
+            } else {
+                Toast.makeText( this, "Error: required permissions not granted!", Toast.LENGTH_SHORT ).show();
+                finish();
+            }
+        }
+    }
+
+    private void initLocationReceiver() {
+        final Context activity = this;
+        SingleShotLocationProvider.requestSingleUpdate(activity,
+                new SingleShotLocationProvider.LocationCallback() {
+                    @Override public void onNewLocationAvailable( SingleShotLocationProvider.GPSCoordinates location) {
+                        Toast.makeText( activity, "My location is lat:" +String.valueOf( location.latitude) +", long: "+ String.valueOf( location.longitude), Toast.LENGTH_SHORT ).show();
+                    }
+                });
+    }
+
+
     private void initRecyclerView(){
         if ( mActionLayoutManager == null ) {
             mActionLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
@@ -66,45 +136,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void fillActionAdapter( LinkedList<CompanyAction> actions ){
+    private void fillActionAdapter( LinkedList< CompanyActionModel > actions ){
         for (int i = 0; i < actions.size(); i++) {
             (( CompanyActionAdapter) mActionAdapter).addItem( actions.get(i), i);
         }
     }
 
-    private LinkedList<CompanyAction> fillCompanyAction(){
-        LinkedList<CompanyAction> actions = new LinkedList<>();
-        actions.add( new CompanyAction( "FIDELE", "http://194.58.122.145:8080/static/images/fidele_action.png" ) );
-        actions.add( new CompanyAction( "ДОСТАВКА КУХНЯ", "http://194.58.122.145:8080/static/images/kuhnya_action.png")  );
-        actions.add( new CompanyAction( "PIZZA ROLLA", "http://194.58.122.145:8080/static/images/pizrol_action.png" ) );
-        actions.add( new CompanyAction( "FOODIE", "http://194.58.122.145:8080/static/images/foodie_action.png" ) );
-        actions.add( new CompanyAction( "ПАВЛИН МАВЛИН", "http://194.58.122.145:8080/static/images/pavlin_action.png" ) );
+    private LinkedList< CompanyActionModel > fillCompanyAction(){
+        LinkedList< CompanyActionModel > actions = new LinkedList<>();
+        actions.add( new CompanyActionModel( "FIDELE", "http://194.58.122.145:8080/static/images/fidele_action.png" ) );
+        actions.add( new CompanyActionModel( "ДОСТАВКА КУХНЯ", "http://194.58.122.145:8080/static/images/kuhnya_action.png")  );
+        actions.add( new CompanyActionModel( "PIZZA ROLLA", "http://194.58.122.145:8080/static/images/pizrol_action.png" ) );
+        actions.add( new CompanyActionModel( "FOODIE", "http://194.58.122.145:8080/static/images/foodie_action.png" ) );
+        actions.add( new CompanyActionModel( "ПАВЛИН МАВЛИН", "http://194.58.122.145:8080/static/images/pavlin_action.png" ) );
         return actions;
     }
 
+
     @Override
-    protected void onResume() {
-        super.onResume();
-        mBottomNavigation = findViewById(R.id.bottomNavigationId);
-        mBottomNavigation.findViewById( R.id.navigation_home ).performClick();
-        LinearLayout mainCardItem = null;
-        Animation[] cardAnimation = new Animation[3];
-        for( int i = 0; i < 3; i++ ){
-            cardAnimation[i] = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.bounce);
-            cardAnimation[i].setStartOffset( i*100 );
-        }
-        int idx = 0;
-        for( int cardId : MAIN_CARDS ){
-            mainCardItem = ( LinearLayout ) this.findViewById( cardId );
-            mainCardItem.startAnimation( cardAnimation[idx] );
-            idx++;
+    public void onStart() {
+        super.onStart();
+        if ( !mPermissionGranted ) {
+            Toast.makeText( this, "Error: required permissions not granted!", Toast.LENGTH_SHORT ).show();
+            return;
         }
     }
 
     @Override
     public void onDestroy() {
-        mActionRecView.setAdapter(null);
-        mActionRecView = null;
+        if ( mActionRecView != null ){
+            mActionRecView.setAdapter(null);
+            mActionRecView = null;
+        }
         mActionLayoutManager = null;
         mActionAdapter =null;
         super.onDestroy();

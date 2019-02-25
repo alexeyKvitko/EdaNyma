@@ -11,22 +11,22 @@
         card_view:cardElevation="6dp">
 
     <ImageView
-        android:layout_width="272dp"
-        android:layout_height="74dp"
+        android:layout_width="298dp"
+        android:layout_height="73dp"
         app:srcCompat="@drawable/corner"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="108dp"
         android:elevation="8dp"/>
 
     <ImageView
         android:id="@+id/actionImageId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:elevation="7dp"/>
 
     <TextView
         style="@style/companyTitleText"
         android:id="@+id/actionCompanyId"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="127dp"
         android:layout_marginLeft="80dp"
         android:elevation="8dp"
         />

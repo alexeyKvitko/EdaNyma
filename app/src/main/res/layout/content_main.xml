@@ -9,15 +9,13 @@
     tools:context="com.edanyma.activity.MainActivity">
 
     <include layout="@layout/header" />
+
     <include layout="@layout/footer" />
-
-
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="518dp"
-        app:layout_constraintTop_toBottomOf="@+id/mainHeaderId"
-        tools:layout_editor_absoluteX="0dp">
+        app:layout_constraintTop_toBottomOf="@+id/mainHeaderId">
 
         <LinearLayout
             android:id="@+id/appScreenId"
@@ -26,13 +24,10 @@
             android:gravity="center_horizontal|top"
             android:orientation="vertical">
 
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/companyActionRVId"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:id="@+id/topLayoutId"
@@ -51,12 +46,12 @@
                     app:titleText="ВСЕ ЗАВЕДЕНИЯ"></com.edanyma.owncomponent.MainCardItem>
 
                 <com.edanyma.owncomponent.MainCardItem
-                    android:id="@+id/pizzaCardId"
+                    android:id="@+id/allDishCardId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:countText="24"
-                    app:dishImg="@drawable/pizza"
-                    app:titleText="ПИЦЦА"></com.edanyma.owncomponent.MainCardItem>
+                    app:dishImg="@drawable/all_dishes"
+                    app:titleText="ВСЕ БЛЮДА"></com.edanyma.owncomponent.MainCardItem>
             </LinearLayout>
 
             <LinearLayout
@@ -68,6 +63,14 @@
                 android:orientation="horizontal">
 
                 <com.edanyma.owncomponent.MainCardItem
+                    android:id="@+id/pizzaCardId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:countText="24"
+                    app:dishImg="@drawable/pizza"
+                    app:titleText="ПИЦЦА"></com.edanyma.owncomponent.MainCardItem>
+
+                <com.edanyma.owncomponent.MainCardItem
                     android:id="@+id/sushiCardId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -75,13 +78,6 @@
                     app:dishImg="@drawable/sushi"
                     app:titleText="СУШИ/СЭТЫ"></com.edanyma.owncomponent.MainCardItem>
 
-                <com.edanyma.owncomponent.MainCardItem
-                    android:id="@+id/burgerCardId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:countText="12"
-                    app:dishImg="@drawable/burger"
-                    app:titleText="БУРГЕРЫ"></com.edanyma.owncomponent.MainCardItem>
             </LinearLayout>
 
             <LinearLayout
@@ -93,12 +89,30 @@
                 android:orientation="horizontal">
 
                 <com.edanyma.owncomponent.MainCardItem
+                    android:id="@+id/burgerCardId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:countText="12"
+                    app:dishImg="@drawable/burger"
+                    app:titleText="БУРГЕРЫ"></com.edanyma.owncomponent.MainCardItem>
+
+                <com.edanyma.owncomponent.MainCardItem
                     android:id="@+id/grillCardId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:countText="18"
                     app:dishImg="@drawable/shashlik"
                     app:titleText="МАНГАЛ МЕНЮ"></com.edanyma.owncomponent.MainCardItem>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bottomFooterLayoutId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <com.edanyma.owncomponent.MainCardItem
                     android:id="@+id/wokCardId"
@@ -107,6 +121,15 @@
                     app:countText="17"
                     app:dishImg="@drawable/wok"
                     app:titleText="WOK МЕНЮ"></com.edanyma.owncomponent.MainCardItem>
+
+
+                <com.edanyma.owncomponent.MainCardItem
+                    android:id="@+id/favoriteCardId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:countText="18"
+                    app:dishImg="@drawable/favorite"
+                    app:titleText="ИЗБРАННОЕ"></com.edanyma.owncomponent.MainCardItem>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -119,5 +142,4 @@
         android:layout_marginTop="6dp"
         android:background="@color/grayTextColor"
         app:layout_constraintTop_toTopOf="@+id/bottomNavigationId" />
-
 </android.support.constraint.ConstraintLayout>
