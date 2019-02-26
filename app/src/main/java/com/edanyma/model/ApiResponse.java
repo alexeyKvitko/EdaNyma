@@ -6,7 +6,7 @@ import org.pojomatic.annotations.AutoProperty;
 import java.io.Serializable;
 
 @AutoProperty
-public class ApiResponse implements Serializable {
+public class ApiResponse<T> {
 
     private int status;
     private String message;
@@ -24,7 +24,7 @@ public class ApiResponse implements Serializable {
         return status;
     }
 
-    public void setStatus( int status ) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -32,7 +32,7 @@ public class ApiResponse implements Serializable {
         return message;
     }
 
-    public void setMessage( String message ) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -40,11 +40,11 @@ public class ApiResponse implements Serializable {
         return result;
     }
 
-    public void setResult( Object result ) {
+    public void setResult(Object result) {
         this.result = result;
     }
 
-    @Override public boolean equals( Object o) {
+    @Override public boolean equals(Object o) {
         return Pojomatic.equals(this, o);
     }
 
@@ -55,5 +55,4 @@ public class ApiResponse implements Serializable {
     @Override public String toString() {
         return Pojomatic.toString(this);
     }
-
 }

@@ -17,8 +17,8 @@
         android:layout_alignParentLeft="true"
         app:srcCompat="@drawable/ic_menu_black_24dp"/>
     <TextView
-        android:gravity="center"
         style="@style/deliveryCityStyle"
+        android:gravity="center"
         android:id="@+id/deliveryCityId"
         android:layout_centerInParent="true"
         android:layout_width="150dp"

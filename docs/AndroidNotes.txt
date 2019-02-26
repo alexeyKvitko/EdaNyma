@@ -1,2 +1,5 @@
 https://github.com/Ramotion
 https://www.behance.net/gallery/70933623/Delyo-UI-Kit-Food-Delivery-App
+
+Retrofit:
+https://www.vogella.com/tutorials/Retrofit/article.html

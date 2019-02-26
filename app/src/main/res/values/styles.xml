@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -15,6 +15,7 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
@@ -28,6 +29,20 @@
         <item name="android:textSize">18dp</item>
         <item name="android:layout_marginTop">46dp</item>
         <item name="android:layout_marginLeft">18dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="splashText">
+        <item name="android:textSize">36dp</item>
+        <item name="android:textColor">@color/splashTextColor</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="splashTextSmall">
+        <item name="android:textSize">13dp</item>
+        <item name="android:textColor">@color/tealColor</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>

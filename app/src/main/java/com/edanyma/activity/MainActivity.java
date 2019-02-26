@@ -11,11 +11,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.edanyma.AppConstants;
+import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
+import com.edanyma.manager.GloabalManager;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.receiver.SingleShotLocationProvider;
 import com.edanyma.recycleview.CompanyActionAdapter;
@@ -50,11 +55,10 @@ public class MainActivity extends AppCompatActivity {
         initialize();
     }
 
-
     private void initialize(){
         mDeliveryTV = this.findViewById( R.id.deliveryCityId );
         mDeliveryTV.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        mDeliveryTV.setText( "Симферополь" );
+        mDeliveryTV.setText( GloabalManager.getInstance().getDeliveryCity() );
         if ( Build.VERSION.SDK_INT < 23 ) {
             initMainLayout();
         } else {
@@ -65,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
     private void initMainLayout(){
         fillActionAdapter( fillCompanyAction() );
         initRecyclerView();
-        initLocationReceiver();
         mPermissionGranted = true;
     }
 
@@ -109,16 +112,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void initLocationReceiver() {
-        final Context activity = this;
-        SingleShotLocationProvider.requestSingleUpdate(activity,
-                new SingleShotLocationProvider.LocationCallback() {
-                    @Override public void onNewLocationAvailable( SingleShotLocationProvider.GPSCoordinates location) {
-                        Toast.makeText( activity, "My location is lat:" +String.valueOf( location.latitude) +", long: "+ String.valueOf( location.longitude), Toast.LENGTH_SHORT ).show();
-                    }
-                });
-    }
-
 
     private void initRecyclerView(){
         if ( mActionLayoutManager == null ) {
@@ -152,6 +145,12 @@ public class MainActivity extends AppCompatActivity {
         return actions;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mBottomNavigation = findViewById(R.id.bottomNavigationId);
+        mBottomNavigation.findViewById( R.id.navigation_home ).performClick();
+    }
 
     @Override
     public void onStart() {

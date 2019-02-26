@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#008323</color>
     <color name="colorAccent">#F53240</color>
     <color name="primaryTextColor">#212121</color>
+    <color name="splashTextColor">#444b55</color>
     <color name="secondaryTextColor">#959595</color>
     <color name="grayTextColor">#CECECE</color>
     <color name="tealColor">#3B6A75</color>

@@ -11,6 +11,7 @@ public class BootstrapAppModel {
     private List<CompanyModel> companies;
     private DeliveryMenuModel deliveryMenu;
     private List<DictionaryModel> cities;
+    private List<CompanyActionModel> companyActions;
     private FastMenuModel fastMenu;
     private String deliveryCity;
     private boolean isDefault;
@@ -61,6 +62,14 @@ public class BootstrapAppModel {
 
     public void setDefault( boolean aDefault ) {
         isDefault = aDefault;
+    }
+
+    public List< CompanyActionModel > getCompanyActions() {
+        return companyActions;
+    }
+
+    public void setCompanyActions( List< CompanyActionModel > companyActions ) {
+        this.companyActions = companyActions;
     }
 
     @Override public boolean equals( Object o) {

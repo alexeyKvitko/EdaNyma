@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/splash_1">
+
+    <TextView
+        android:id="@+id/splashTextOneId"
+        style="@style/splashText"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="40dp"
+        android:layout_alignParentTop="true"
+        android:text="Крымская "
+        />
+    <TextView
+        style="@style/splashText"
+        android:id="@+id/splashTextTwoId"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="378dp"
+        android:layout_alignParentTop="true"
+        android:text="Cлужба Заказа Еды"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="448dp"
+        android:layout_marginLeft="24dp"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/splashTextSmall"
+            android:id="@+id/splashTextSmallOneId"
+            android:drawableLeft="@drawable/ic_emog_good_24dp"
+            android:drawablePadding="8dp"
+            android:text="Легко! Удобно! Быстро!"/>
+
+        <TextView
+            style="@style/splashTextSmall"
+            android:id="@+id/splashTextSmallTwoId"
+            android:layout_marginTop="12dp"
+            android:drawableLeft="@drawable/ic_emog_easy_24dp"
+            android:drawablePadding="8dp"
+            android:text="Оформите Ваш заказ всего в несколько кликов!"/>
+
+        <TextView
+            style="@style/splashTextSmall"
+            android:id="@+id/splashTextSmallThreeId"
+            android:layout_marginTop="12dp"
+            android:drawableLeft="@drawable/ic_emog_yummy_24dp"
+            android:drawablePadding="8dp"
+            android:text="Проведите уютный вечер дома с лучшими блюдами!"/>
+
+    </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_alignParentBottom="true"
+    android:src="@drawable/fluid_loader"/>
+
+</RelativeLayout>
+
+
+<!--<pl.droidsonroids.gif.GifImageView-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_centerInParent="true"-->
+<!--android:src="@drawable/load_logo"/>-->
