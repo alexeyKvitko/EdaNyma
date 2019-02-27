@@ -3,3 +3,5 @@ https://www.behance.net/gallery/70933623/Delyo-UI-Kit-Food-Delivery-App
 
 Retrofit:
 https://www.vogella.com/tutorials/Retrofit/article.html
+https://startandroid.ru/ru/blog/506-retrofit.html 
+

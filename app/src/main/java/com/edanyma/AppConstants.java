@@ -14,8 +14,8 @@ public class AppConstants {
     public static final Typeface TAURUS = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/taurus.ttf");
     public static final Typeface TAURUS_BOLD = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/taurus_bold.ttf");
 
-    public static final String REST_BASE_URL = "http://194.58.122.145:8080/yummyeat";
-
     public static final String DEFAULT_USER = "guest";
-    public static final String DEFAULT_PASSWORD = "11111";
+    public static final String DEFAULT_PASSWORD = "1111";
+
+    public static final String AUTH_BEARER = "Bearer ";
 }

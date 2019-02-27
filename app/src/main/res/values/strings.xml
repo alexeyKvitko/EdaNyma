@@ -1,8 +1,22 @@
 <resources>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+   <string name="action_settings">Настройки</string>
+   <string name="action_login">Вход | Регистрация</string>
+
+
     <string name="app_name">ЕдаНяма</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="gps_enabled">GPS Enabled</string>
     <string name="gps_disabled">GPS Disabled</string>
+
+    <string name="nav_menu_profile">Профиль</string>
+    <string name="nav_menu_company">Все заведения</string>
+    <string name="nav_menu_dish">Все блюда</string>
+    <string name="nav_menu_basket">Корзина</string>
+    <string name="nav_menu_my_advert">Избранные заведения</string>
+
 </resources>

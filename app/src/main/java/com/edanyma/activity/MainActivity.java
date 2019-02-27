@@ -1,35 +1,42 @@
 package com.edanyma.activity;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.edanyma.AppConstants;
-import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
-import com.edanyma.manager.GloabalManager;
+import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.CompanyActionModel;
-import com.edanyma.receiver.SingleShotLocationProvider;
 import com.edanyma.recycleview.CompanyActionAdapter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private final String TAG = "MainActivity";
 
@@ -44,21 +51,23 @@ public class MainActivity extends AppCompatActivity {
     protected LinearLayoutManager mHorizonalLayoutManager;
 
     private boolean mPermissionGranted;
+    private DrawerLayout mDrawer;
+    private ImageButton mNavigationButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView( R.layout.activity_main);
+    protected void onCreate( Bundle savedInstanceState ) {
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_main );
         if ( mActionAdapter == null ) {
-            mActionAdapter = new CompanyActionAdapter(  new ArrayList< CompanyActionModel >());
+            mActionAdapter = new CompanyActionAdapter( new ArrayList< CompanyActionModel >() );
         }
         initialize();
     }
 
-    private void initialize(){
+    private void initialize() {
         mDeliveryTV = this.findViewById( R.id.deliveryCityId );
         mDeliveryTV.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        mDeliveryTV.setText( GloabalManager.getInstance().getDeliveryCity() );
+        mDeliveryTV.setText( GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() );
         if ( Build.VERSION.SDK_INT < 23 ) {
             initMainLayout();
         } else {
@@ -66,9 +75,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void initMainLayout(){
+    private void initMainLayout() {
+        mDrawer = findViewById( R.id.drawer_layout );
+        mNavigationButton = findViewById( R.id.navButtonId );
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawer, null, R.string.navigation_drawer_open, R.string.navigation_drawer_close );
+        mDrawer.addDrawerListener( toggle );
+        toggle.syncState();
+        NavigationView navigationView = findViewById( R.id.nav_view );
+        navigationView.setNavigationItemSelectedListener( this );
         fillActionAdapter( fillCompanyAction() );
         initRecyclerView();
+        final Animation rotate = AnimationUtils.loadAnimation( this, R.anim.icon_rotation );
+        mNavigationButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick( View view ) {
+                mNavigationButton.startAnimation( rotate );
+                new Handler().postDelayed( new Runnable() {
+                    @Override
+                    public void run() {
+                        mDrawer.openDrawer( GravityCompat.START );
+                    }
+                }, 100);
+
+            }
+        } );
         mPermissionGranted = true;
     }
 
@@ -80,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.CALL_PHONE,
                 Manifest.permission.READ_PHONE_STATE,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION};
+                Manifest.permission.ACCESS_FINE_LOCATION };
         List permissions_not_granted_list = new ArrayList<>();
         for ( String permission : permissions_required ) {
             if ( ActivityCompat.checkSelfPermission( getApplicationContext(), permission ) != PackageManager.PERMISSION_GRANTED ) {
@@ -88,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if ( permissions_not_granted_list.size() > 0 ) {
-            String[] permissions = new String[permissions_not_granted_list.size()];
+            String[] permissions = new String[ permissions_not_granted_list.size() ];
             permissions_not_granted_list.toArray( permissions );
             ActivityCompat.requestPermissions( this, permissions, code );
         } else {
@@ -101,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         if ( requestCode == UNIQUE_PERMISSION_CODE ) {
             boolean ok = true;
             for ( int i = 0; i < grantResults.length; ++i ) {
-                ok = ok && (grantResults[i] == PackageManager.PERMISSION_GRANTED);
+                ok = ok && ( grantResults[ i ] == PackageManager.PERMISSION_GRANTED );
             }
             if ( ok ) {
                 initMainLayout();
@@ -113,32 +144,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void initRecyclerView(){
+    private void initRecyclerView() {
         if ( mActionLayoutManager == null ) {
-            mActionLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL);
-            mHorizonalLayoutManager = new LinearLayoutManager( this,LinearLayoutManager.HORIZONTAL,false);
+            mActionLayoutManager = new StaggeredGridLayoutManager( 1, StaggeredGridLayoutManager.HORIZONTAL );
+            mHorizonalLayoutManager = new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false );
         }
         if ( mActionRecView == null ) {
-            mActionRecView =  findViewById( R.id.companyActionRVId );
+            mActionRecView = findViewById( R.id.companyActionRVId );
             mActionRecView.setAdapter( mActionAdapter );
-            mActionRecView.setHasFixedSize(false);
-            mActionRecView.setLayoutManager(mHorizonalLayoutManager);
+            mActionRecView.setHasFixedSize( false );
+            mActionRecView.setLayoutManager( mHorizonalLayoutManager );
         }
         mActionRecView.getAdapter().notifyDataSetChanged();
         mActionAdapter.notifyDataSetChanged();
     }
 
 
-    private void fillActionAdapter( LinkedList< CompanyActionModel > actions ){
-        for (int i = 0; i < actions.size(); i++) {
-            (( CompanyActionAdapter) mActionAdapter).addItem( actions.get(i), i);
+    private void fillActionAdapter( LinkedList< CompanyActionModel > actions ) {
+        for ( int i = 0; i < actions.size(); i++ ) {
+            ( ( CompanyActionAdapter ) mActionAdapter ).addItem( actions.get( i ), i );
         }
     }
 
-    private LinkedList< CompanyActionModel > fillCompanyAction(){
+    private LinkedList< CompanyActionModel > fillCompanyAction() {
         LinkedList< CompanyActionModel > actions = new LinkedList<>();
         actions.add( new CompanyActionModel( "FIDELE", "http://194.58.122.145:8080/static/images/fidele_action.png" ) );
-        actions.add( new CompanyActionModel( "ДОСТАВКА КУХНЯ", "http://194.58.122.145:8080/static/images/kuhnya_action.png")  );
+        actions.add( new CompanyActionModel( "ДОСТАВКА КУХНЯ", "http://194.58.122.145:8080/static/images/kuhnya_action.png" ) );
         actions.add( new CompanyActionModel( "PIZZA ROLLA", "http://194.58.122.145:8080/static/images/pizrol_action.png" ) );
         actions.add( new CompanyActionModel( "FOODIE", "http://194.58.122.145:8080/static/images/foodie_action.png" ) );
         actions.add( new CompanyActionModel( "ПАВЛИН МАВЛИН", "http://194.58.122.145:8080/static/images/pavlin_action.png" ) );
@@ -146,9 +177,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if ( mDrawer.isDrawerOpen( GravityCompat.START ) ) {
+            mDrawer.closeDrawer( GravityCompat.START );
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected( MenuItem item ) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        mDrawer.closeDrawer( GravityCompat.START );
+        return true;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        mBottomNavigation = findViewById(R.id.bottomNavigationId);
+        mBottomNavigation = findViewById( R.id.bottomNavigationId );
         mBottomNavigation.findViewById( R.id.navigation_home ).performClick();
     }
 
@@ -161,14 +209,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     public void onDestroy() {
-        if ( mActionRecView != null ){
-            mActionRecView.setAdapter(null);
+        if ( mActionRecView != null ) {
+            mActionRecView.setAdapter( null );
             mActionRecView = null;
         }
         mActionLayoutManager = null;
-        mActionAdapter =null;
+        mActionAdapter = null;
         super.onDestroy();
     }
 

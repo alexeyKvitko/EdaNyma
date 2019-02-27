@@ -6,7 +6,7 @@ import org.pojomatic.annotations.AutoProperty;
 import java.util.List;
 
 @AutoProperty
-public class BootstrapAppModel {
+public class BootstrapModel {
 
     private List<CompanyModel> companies;
     private DeliveryMenuModel deliveryMenu;
