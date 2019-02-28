@@ -56,24 +56,24 @@ public class SplashActivity extends Activity {
                         new FetchBootstrapData().execute();
                     }
                 } );
-        if ( !AppUtils.isNetworkAvailable() ){
+        if ( !AppUtils.isNetworkAvailable() ) {
             finishActivity( "Отсутствует интернет соединение" );
         }
     }
 
 
-    private void finishActivity(String toastMsg){
-        Toast.makeText( this, toastMsg , Toast.LENGTH_LONG ).show();
+    private void finishActivity( String toastMsg ) {
+        Toast.makeText( this, toastMsg, Toast.LENGTH_LONG ).show();
         new Handler().postDelayed( new Runnable() {
             @Override
             public void run() {
                 finish();
             }
-        }, SPLASH_TIME_OUT);
+        }, SPLASH_TIME_OUT );
     }
 
 
-    private class FetchBootstrapData extends AsyncTask<Void, Void, Void> {
+    private class FetchBootstrapData extends AsyncTask< Void, Void, Void > {
 
         @Override
         protected void onPreExecute() {
@@ -81,29 +81,29 @@ public class SplashActivity extends Activity {
         }
 
         @Override
-        protected Void doInBackground(Void... arg0) {
-//            if ( true ) return null;
+        protected Void doInBackground( Void... arg0 ) {
+            if ( true ) return null;
             LoginUser loginUser = new LoginUser();
             Call< ApiResponse< AuthToken > > responseCall = RestController.getInstance().getApi().register( loginUser );
             try {
-                Response<ApiResponse< AuthToken >> response = responseCall.execute();
-                if ( response.body() != null ){
+                Response< ApiResponse< AuthToken > > response = responseCall.execute();
+                if ( response.body() != null ) {
                     ApiResponse< AuthToken > authToken = response.body();
-                    GlobalManager.getInstance().setUserToken( ( String ) (( LinkedTreeMap ) authToken
-                                                                .getResult()).get("token") );
+                    GlobalManager.getInstance().setUserToken( ( String ) ( ( LinkedTreeMap ) authToken
+                            .getResult() ).get( "token" ) );
                     Call< BootstrapModel > bootstrapCall = RestController.getInstance()
-                                                .getApi().fetchBootstrapData( AppConstants.AUTH_BEARER
-                                                        + GlobalManager.getInstance().getUserToken(),
-                                                                  mLatitude, mLongitude);
-                    Response<BootstrapModel> responseBootstrap = bootstrapCall.execute();
-                    if( responseBootstrap.body() != null ){
+                            .getApi().fetchBootstrapData( AppConstants.AUTH_BEARER
+                                            + GlobalManager.getInstance().getUserToken(),
+                                    mLatitude, mLongitude );
+                    Response< BootstrapModel > responseBootstrap = bootstrapCall.execute();
+                    if ( responseBootstrap.body() != null ) {
                         GlobalManager.getInstance().setBootstrapModel( responseBootstrap.body() );
                     }
                 }
-                if( GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() == null ){
+                if ( GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() == null ) {
                     mBootstrapSuccess = false;
                 }
-            } catch ( Exception e) {
+            } catch ( Exception e ) {
                 Log.i( TAG, e.getMessage() );
                 e.printStackTrace();
                 mBootstrapSuccess = false;
@@ -112,18 +112,25 @@ public class SplashActivity extends Activity {
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            if( mBootstrapSuccess ){
+        protected void onPostExecute( Void result ) {
+            super.onPostExecute( result );
+            if ( mBootstrapSuccess ) {
                 Intent intent = new Intent( SplashActivity.this, MainActivity.class );
+                intent.addFlags( Intent.FLAG_ACTIVITY_NO_ANIMATION );
+                intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
                 startActivity( intent );
+                overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
                 finish();
             } else {
                 finishActivity( "Отсутствует соединение с сервером!" );
             }
 
         }
+    }
 
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
 }

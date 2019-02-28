@@ -18,4 +18,21 @@ public class AppConstants {
     public static final String DEFAULT_PASSWORD = "1111";
 
     public static final String AUTH_BEARER = "Bearer ";
+
+    public static final int FAKE_ID= -1;
+
+    public static final int COMPANY_BOTTOM_INDEX = 0;
+    public static final int DISH_BOTTOM_INDEX = 1;
+    public static final int HOME_BOTTOM_INDEX = 2;
+    public static final int BASKET_BOTTOM_INDEX = 3;
+    public static final int LOGIN_BOTTOM_INDEX = 4;
+
+    public static final int LOGIN_DRAWER_INDEX = -1;
+    public static final int HOME_DRAWER_INDEX = 0;
+    public static final int COMPANY_DRAWER_INDEX = 1;
+    public static final int DISH_DRAWER_INDEX = 2;
+    public static final int BASKET_DRAWER_INDEX = 3;
+
+
+
 }

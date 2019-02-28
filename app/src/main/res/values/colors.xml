@@ -7,5 +7,8 @@
     <color name="splashTextColor">#444b55</color>
     <color name="secondaryTextColor">#959595</color>
     <color name="grayTextColor">#CECECE</color>
+    <color name="transpGrayTextColor">#DDCECECE</color>
     <color name="tealColor">#3B6A75</color>
+    <color name="neonGreen">#535BFE</color>
+    <color name="neonGreen1">#02E002</color>
 </resources>

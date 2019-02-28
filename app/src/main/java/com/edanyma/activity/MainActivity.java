@@ -4,30 +4,15 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.edanyma.AppConstants;
 import com.edanyma.R;
-import com.edanyma.manager.GlobalManager;
+import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.recycleview.CompanyActionAdapter;
 
@@ -35,15 +20,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity{
 
     private final String TAG = "MainActivity";
 
     static final int UNIQUE_PERMISSION_CODE = 100;
-
-    private TextView mDeliveryTV;
-    private BottomNavigationView mBottomNavigation;
 
     protected RecyclerView.LayoutManager mActionLayoutManager;
     protected RecyclerView mActionRecView;
@@ -51,8 +32,7 @@ public class MainActivity extends AppCompatActivity
     protected LinearLayoutManager mHorizonalLayoutManager;
 
     private boolean mPermissionGranted;
-    private DrawerLayout mDrawer;
-    private ImageButton mNavigationButton;
+
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -65,9 +45,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initialize() {
-        mDeliveryTV = this.findViewById( R.id.deliveryCityId );
-        mDeliveryTV.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        mDeliveryTV.setText( GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() );
         if ( Build.VERSION.SDK_INT < 23 ) {
             initMainLayout();
         } else {
@@ -76,30 +53,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initMainLayout() {
-        mDrawer = findViewById( R.id.drawer_layout );
-        mNavigationButton = findViewById( R.id.navButtonId );
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawer, null, R.string.navigation_drawer_open, R.string.navigation_drawer_close );
-        mDrawer.addDrawerListener( toggle );
-        toggle.syncState();
-        NavigationView navigationView = findViewById( R.id.nav_view );
-        navigationView.setNavigationItemSelectedListener( this );
+        initBaseActivity( new ActivityState( AppConstants.HOME_BOTTOM_INDEX ) );
         fillActionAdapter( fillCompanyAction() );
         initRecyclerView();
-        final Animation rotate = AnimationUtils.loadAnimation( this, R.anim.icon_rotation );
-        mNavigationButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
-                mNavigationButton.startAnimation( rotate );
-                new Handler().postDelayed( new Runnable() {
-                    @Override
-                    public void run() {
-                        mDrawer.openDrawer( GravityCompat.START );
-                    }
-                }, 100);
-
-            }
-        } );
         mPermissionGranted = true;
     }
 
@@ -176,29 +132,6 @@ public class MainActivity extends AppCompatActivity
         return actions;
     }
 
-    @Override
-    public void onBackPressed() {
-        if ( mDrawer.isDrawerOpen( GravityCompat.START ) ) {
-            mDrawer.closeDrawer( GravityCompat.START );
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected( MenuItem item ) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        mDrawer.closeDrawer( GravityCompat.START );
-        return true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mBottomNavigation = findViewById( R.id.bottomNavigationId );
-        mBottomNavigation.findViewById( R.id.navigation_home ).performClick();
-    }
 
     @Override
     public void onStart() {
@@ -220,5 +153,6 @@ public class MainActivity extends AppCompatActivity
         mActionAdapter = null;
         super.onDestroy();
     }
+
 
 }

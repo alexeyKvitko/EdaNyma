@@ -21,7 +21,7 @@
 
     <style name="deliveryCityStyle">
         <item name="android:background">@drawable/border_r12</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/neonGreen</item>
         <item name="android:textSize">14dp</item>
     </style>
 
@@ -43,6 +43,20 @@
     <style name="splashTextSmall">
         <item name="android:textSize">13dp</item>
         <item name="android:textColor">@color/tealColor</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="grayTextSmall">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/grayTextColor</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="greenLabel">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/neonGreen</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>

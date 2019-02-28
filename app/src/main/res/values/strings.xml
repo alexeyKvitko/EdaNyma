@@ -2,8 +2,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-   <string name="action_settings">Настройки</string>
-   <string name="action_login">Вход | Регистрация</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_login">Вход | Регистрация</string>
 
 
     <string name="app_name">ЕдаНяма</string>
@@ -13,10 +13,21 @@
     <string name="gps_enabled">GPS Enabled</string>
     <string name="gps_disabled">GPS Disabled</string>
 
+    <string name="nav_menu_home">Главная</string>
     <string name="nav_menu_profile">Профиль</string>
     <string name="nav_menu_company">Все заведения</string>
     <string name="nav_menu_dish">Все блюда</string>
     <string name="nav_menu_basket">Корзина</string>
     <string name="nav_menu_my_advert">Избранные заведения</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_title">Вход</string>
+    <string name="fogot_password">Забыли пароль ?</string>
+    <string name="prompt_email">Ваш телефон или e-mail</string>
+    <string name="prompt_password">Ваш пароль</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="not_register">Еще не зарегистрированы?</string>
+    <string name="registration">Регистрация</string>
 
 </resources>

@@ -10,12 +10,12 @@
         card_view:cardCornerRadius="8dp"
         card_view:cardElevation="6dp">
 
-    <ImageView
-        android:layout_width="298dp"
-        android:layout_height="73dp"
-        app:srcCompat="@drawable/corner"
-        android:layout_marginTop="108dp"
-        android:elevation="8dp"/>
+    <!--<ImageView-->
+        <!--android:layout_width="298dp"-->
+        <!--android:layout_height="73dp"-->
+        <!--app:srcCompat="@drawable/corner"-->
+        <!--android:layout_marginTop="108dp"-->
+        <!--android:elevation="8dp"/>-->
 
     <ImageView
         android:id="@+id/actionImageId"
@@ -25,9 +25,11 @@
 
     <TextView
         style="@style/companyTitleText"
+        android:background="@drawable/border_3dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="4dp"
         android:id="@+id/actionCompanyId"
-        android:layout_marginTop="127dp"
-        android:layout_marginLeft="80dp"
+        android:layout_gravity="left|bottom"
         android:elevation="8dp"
         />
     />
