@@ -106,7 +106,7 @@ public abstract class BaseActivity extends AppCompatActivity
                 mCurrentState.getSelectedDrawerId() == selId ){
             return false;
         }
-        mDrawer.closeDrawer( GravityCompat.START );
+        closeDrawer();
         switch ( selId ) {
             case R.id.navigation_login:
                 startPersonActivity();
@@ -127,7 +127,7 @@ public abstract class BaseActivity extends AppCompatActivity
         if( mCurrentState.getSelectedDrawerId() == view.getId() ){
             return;
         }
-        mDrawer.closeDrawer( GravityCompat.START );
+        closeDrawer();
         switch ( view.getId() ){
             case R.id.drawerLoginId:{
                 startPersonActivity();
@@ -135,6 +135,17 @@ public abstract class BaseActivity extends AppCompatActivity
             }
             default:
                 break;
+        }
+    }
+
+    private void closeDrawer(){
+        if ( mDrawer.isDrawerOpen( GravityCompat.START  ) ){
+            new Handler().postDelayed( new Runnable() {
+                @Override
+                public void run() {
+                    mDrawer.closeDrawer( GravityCompat.START );
+                }
+            }, 600);
         }
     }
 
@@ -166,4 +177,6 @@ public abstract class BaseActivity extends AppCompatActivity
                             .setBackgroundColor( getResources().getColor(R.color.transpGrayTextColor) );
         }
     }
+
+
 }

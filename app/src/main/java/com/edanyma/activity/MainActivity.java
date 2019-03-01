@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.edanyma.AppConstants;
 import com.edanyma.R;
+import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.recycleview.CompanyActionAdapter;
@@ -54,7 +55,10 @@ public class MainActivity extends BaseActivity{
 
     private void initMainLayout() {
         initBaseActivity( new ActivityState( AppConstants.HOME_BOTTOM_INDEX ) );
-        fillActionAdapter( fillCompanyAction() );
+        List<CompanyActionModel> companyActionModels = GlobalManager.getInstance().getBootstrapModel()
+                                                            .getCompanyActions();
+        fillActionAdapter( companyActionModels );
+//        fillActionAdapter( fillCompanyAction() );
         initRecyclerView();
         mPermissionGranted = true;
     }
@@ -116,7 +120,7 @@ public class MainActivity extends BaseActivity{
     }
 
 
-    private void fillActionAdapter( LinkedList< CompanyActionModel > actions ) {
+    private void fillActionAdapter( List< CompanyActionModel > actions ) {
         for ( int i = 0; i < actions.size(); i++ ) {
             ( ( CompanyActionAdapter ) mActionAdapter ).addItem( actions.get( i ), i );
         }

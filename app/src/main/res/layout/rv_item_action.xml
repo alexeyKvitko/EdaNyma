@@ -8,14 +8,7 @@
         android:layout_height="180dp"
         android:layout_margin="16dp"
         card_view:cardCornerRadius="8dp"
-        card_view:cardElevation="6dp">
-
-    <!--<ImageView-->
-        <!--android:layout_width="298dp"-->
-        <!--android:layout_height="73dp"-->
-        <!--app:srcCompat="@drawable/corner"-->
-        <!--android:layout_marginTop="108dp"-->
-        <!--android:elevation="8dp"/>-->
+        card_view:cardElevation="12dp">
 
     <ImageView
         android:id="@+id/actionImageId"

@@ -82,7 +82,7 @@ public class SplashActivity extends Activity {
 
         @Override
         protected Void doInBackground( Void... arg0 ) {
-            if ( true ) return null;
+//            if ( true ) return null;
             LoginUser loginUser = new LoginUser();
             Call< ApiResponse< AuthToken > > responseCall = RestController.getInstance().getApi().register( loginUser );
             try {

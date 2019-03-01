@@ -4,7 +4,7 @@
     android:id="@+id/navHeaderId"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@color/colorPrimary"
+    android:background="@color/neonGreen"
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
