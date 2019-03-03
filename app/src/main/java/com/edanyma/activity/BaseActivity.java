@@ -2,7 +2,6 @@ package com.edanyma.activity;
 
 import android.content.Intent;
 import android.os.Handler;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +14,7 @@ import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
@@ -30,7 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity
         OnNavigationItemSelectedListener{
 
     protected TextView mDeliveryTV;
-    protected BottomNavigationView mBottomNavigation;
+    protected LinearLayout mBottomNavigation;
     protected DrawerLayout mDrawer;
     protected ImageButton mNavigationButton;
     protected ArrayList<View> mMenuItems = new ArrayList<>();
@@ -69,7 +69,10 @@ public abstract class BaseActivity extends AppCompatActivity
             }
         } );
         mBottomNavigation = findViewById( R.id.bottomNavigationId );
-        mBottomNavigation.setOnNavigationItemSelectedListener( this );
+        for( int i=0; i<5; i++){
+            mBottomNavigation.getChildAt(i).setOnClickListener( this );
+        }
+
         mNavigationView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -128,11 +131,20 @@ public abstract class BaseActivity extends AppCompatActivity
             return;
         }
         closeDrawer();
+        unselectBottomNavigation();
+        if( view instanceof ImageButton ){
+            ((ImageButton) view).setSelected( true );
+        }
         switch ( view.getId() ){
-            case R.id.drawerLoginId:{
+            case R.id.drawerLoginId:
                 startPersonActivity();
                 break;
-            }
+            case R.id.navigation_home:
+                startMainActivity();
+                break;
+            case R.id.navigation_login:
+                startPersonActivity();
+                break;
             default:
                 break;
         }
@@ -165,10 +177,17 @@ public abstract class BaseActivity extends AppCompatActivity
         overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
     }
 
+    private void unselectBottomNavigation(){
+        for(int i=0; i < mBottomNavigation.getChildCount(); i++){
+            mBottomNavigation.getChildAt( i ).setSelected( false );
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        mBottomNavigation.getMenu().getItem( mCurrentState.getBottomMenuIndex() ).setChecked( true );
+        unselectBottomNavigation();
+        findViewById( mCurrentState.getSelectedBottomId() ).setSelected( true );
         if( AppConstants.FAKE_ID != mCurrentState.getDrawerMenuIndex()){
             mNavigationView.getMenu().getItem( mCurrentState.getDrawerMenuIndex() ).setChecked( true );
         } else {

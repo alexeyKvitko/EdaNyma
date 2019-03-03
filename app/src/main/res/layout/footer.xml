@@ -1,17 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.design.widget.BottomNavigationView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottomNavigationId"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_height="48dp"
+    android:orientation="horizontal"
+    android:background="@drawable/footer_bkg"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    android:background="@android:color/transparent"
-    app:itemIconTint="@drawable/bottom_nav_colors"
-    app:itemTextColor="@drawable/bottom_nav_colors"
-    app:menu="@menu/navigation" >
-</android.support.design.widget.BottomNavigationView>
+    app:layout_constraintRight_toRightOf="parent">
+
+        <ImageButton
+            style="@style/bottomNavButon"
+            android:id="@+id/navigation_company"
+            android:background="@drawable/company_navigation"/>
+
+        <ImageButton
+            style="@style/bottomNavButon"
+            android:id="@+id/navigation_dish"
+            android:background="@drawable/dish_navigation"/>
+
+        <ImageButton
+            style="@style/bottomNavButon"
+            android:id="@+id/navigation_home"
+            android:background="@drawable/home_navigation"/>
+
+        <ImageButton
+            style="@style/bottomNavButon"
+            android:id="@+id/navigation_basket"
+            android:background="@drawable/basket_navigation"/>
+
+        <ImageButton
+            style="@style/bottomNavButon"
+            android:id="@+id/navigation_login"
+            android:background="@drawable/login_navigation"/>
+
+
+</LinearLayout>
+
+
+<!--<android.support.design.widget.BottomNavigationView-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:id="@+id/bottomNavigationId"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--app:layout_constraintRight_toRightOf="parent"-->
+    <!--android:background="@android:color/transparent"-->
+    <!--app:ImageButtonIconTint="@drawable/bottom_nav_colors"-->
+    <!--app:ImageButtonTextColor="@drawable/bottom_nav_colors"-->
+    <!--app:menu="@menu/navigation" >-->
+<!--</android.support.design.widget.BottomNavigationView>-->

@@ -7,15 +7,16 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.Toast;
 
 import com.edanyma.AppConstants;
 import com.edanyma.R;
-import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyActionModel;
+import com.edanyma.model.HomeMenuModel;
 import com.edanyma.recycleview.CompanyActionAdapter;
+import com.edanyma.recycleview.HomeMenuAdapter;
+import com.stone.vega.library.VegaLayoutManager;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -27,10 +28,11 @@ public class MainActivity extends BaseActivity{
 
     static final int UNIQUE_PERMISSION_CODE = 100;
 
-    protected RecyclerView.LayoutManager mActionLayoutManager;
     protected RecyclerView mActionRecView;
     protected RecyclerView.Adapter mActionAdapter;
-    protected LinearLayoutManager mHorizonalLayoutManager;
+
+    protected RecyclerView mHomeMenuRecView;
+    protected RecyclerView.Adapter mHomeMenuAdapter;
 
     private boolean mPermissionGranted;
 
@@ -39,9 +41,8 @@ public class MainActivity extends BaseActivity{
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
-        if ( mActionAdapter == null ) {
-            mActionAdapter = new CompanyActionAdapter( new ArrayList< CompanyActionModel >() );
-        }
+        fillActionAdapter( fillCompanyAction() );
+        fillHomeMenuAdapter( fillHomeMenuModel() );
         initialize();
     }
 
@@ -55,10 +56,10 @@ public class MainActivity extends BaseActivity{
 
     private void initMainLayout() {
         initBaseActivity( new ActivityState( AppConstants.HOME_BOTTOM_INDEX ) );
-        List<CompanyActionModel> companyActionModels = GlobalManager.getInstance().getBootstrapModel()
-                                                            .getCompanyActions();
-        fillActionAdapter( companyActionModels );
-//        fillActionAdapter( fillCompanyAction() );
+//        List<CompanyActionModel> companyActionModels = GlobalManager.getInstance().getBootstrapModel()
+//                                                            .getCompanyActions();
+//        fillActionAdapter( companyActionModels );
+
         initRecyclerView();
         mPermissionGranted = true;
     }
@@ -103,26 +104,41 @@ public class MainActivity extends BaseActivity{
         }
     }
 
-
     private void initRecyclerView() {
-        if ( mActionLayoutManager == null ) {
-            mActionLayoutManager = new StaggeredGridLayoutManager( 1, StaggeredGridLayoutManager.HORIZONTAL );
-            mHorizonalLayoutManager = new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false );
-        }
         if ( mActionRecView == null ) {
             mActionRecView = findViewById( R.id.companyActionRVId );
             mActionRecView.setAdapter( mActionAdapter );
             mActionRecView.setHasFixedSize( false );
-            mActionRecView.setLayoutManager( mHorizonalLayoutManager );
+            mActionRecView.setLayoutManager( new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false ) );
         }
         mActionRecView.getAdapter().notifyDataSetChanged();
         mActionAdapter.notifyDataSetChanged();
+
+        if ( mHomeMenuRecView == null ) {
+            mHomeMenuRecView = findViewById( R.id.homeMenuRVId );
+            mHomeMenuRecView.setLayoutManager( new VegaLayoutManager() );
+            mHomeMenuRecView.setAdapter( mHomeMenuAdapter );
+        }
+        mHomeMenuRecView.getAdapter().notifyDataSetChanged();
+        mHomeMenuAdapter.notifyDataSetChanged();
     }
 
 
     private void fillActionAdapter( List< CompanyActionModel > actions ) {
+        if ( mActionAdapter == null ) {
+            mActionAdapter = new CompanyActionAdapter( new ArrayList< CompanyActionModel >() );
+        }
         for ( int i = 0; i < actions.size(); i++ ) {
             ( ( CompanyActionAdapter ) mActionAdapter ).addItem( actions.get( i ), i );
+        }
+    }
+
+    private void fillHomeMenuAdapter( List< HomeMenuModel > menuModels ) {
+        if ( mHomeMenuAdapter == null ) {
+            mHomeMenuAdapter = new HomeMenuAdapter( new ArrayList< HomeMenuModel>() );
+        }
+        for ( int i = 0; i < menuModels.size(); i++ ) {
+            ( ( HomeMenuAdapter ) mHomeMenuAdapter ).addItem( menuModels.get( i ), i );
         }
     }
 
@@ -134,6 +150,21 @@ public class MainActivity extends BaseActivity{
         actions.add( new CompanyActionModel( "FOODIE", "http://194.58.122.145:8080/static/images/foodie_action.png" ) );
         actions.add( new CompanyActionModel( "ПАВЛИН МАВЛИН", "http://194.58.122.145:8080/static/images/pavlin_action.png" ) );
         return actions;
+    }
+
+    private LinkedList<HomeMenuModel> fillHomeMenuModel() {
+
+        LinkedList< HomeMenuModel > homeMenuModels = new LinkedList<>();
+        homeMenuModels.add( new HomeMenuModel( "ВСЕ ЗАВЕДЕНИЯ", getResources().getDrawable( R.drawable.restaurant ), "102",
+                                "ВСЕ БЛЮДА", getResources().getDrawable( R.drawable.all_dishes ) , "24" ) );
+        homeMenuModels.add( new HomeMenuModel( "ПИЦЦА", getResources().getDrawable( R.drawable.pizza ), "31",
+                                                        "СУШИ/СЭТЫ", getResources().getDrawable( R.drawable.sushi ), "12" ) );
+        homeMenuModels.add( new HomeMenuModel( "БУРГЕРЫ", getResources().getDrawable( R.drawable.burger ), "12",
+                                                       "МАНГАЛ МЕНЮ", getResources().getDrawable( R.drawable.shashlik ), "18" ) );
+        homeMenuModels.add( new HomeMenuModel( "WOK МЕНЮ", getResources().getDrawable( R.drawable.wok ), "11",
+                                                        "ИЗБРАННОЕ", getResources().getDrawable( R.drawable.favorite ), "02" ) );
+
+        return homeMenuModels;
     }
 
 
@@ -153,8 +184,12 @@ public class MainActivity extends BaseActivity{
             mActionRecView.setAdapter( null );
             mActionRecView = null;
         }
-        mActionLayoutManager = null;
+        if ( mHomeMenuRecView != null ) {
+            mHomeMenuRecView.setAdapter( null );
+            mHomeMenuRecView = null;
+        }
         mActionAdapter = null;
+        mHomeMenuAdapter = null;
         super.onDestroy();
     }
 

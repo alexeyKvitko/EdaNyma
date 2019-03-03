@@ -47,18 +47,20 @@ public class SplashActivity extends Activity {
         ( ( TextView ) this.findViewById( R.id.splashTextSmallThreeId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
         final Context activity = this;
         mBootstrapSuccess = true;
-        SingleShotLocationProvider.requestSingleUpdate( activity,
-                new SingleShotLocationProvider.LocationCallback() {
-                    @Override
-                    public void onNewLocationAvailable( SingleShotLocationProvider.GPSCoordinates location ) {
-                        mLatitude = String.valueOf( location.latitude );
-                        mLongitude = String.valueOf( location.longitude );
-                        new FetchBootstrapData().execute();
-                    }
-                } );
         if ( !AppUtils.isNetworkAvailable() ) {
             finishActivity( "Отсутствует интернет соединение" );
         }
+//        SingleShotLocationProvider.requestSingleUpdate( activity,
+//                new SingleShotLocationProvider.LocationCallback() {
+//                    @Override
+//                    public void onNewLocationAvailable( SingleShotLocationProvider.GPSCoordinates location ) {
+//                        mLatitude = String.valueOf( location.latitude );
+//                        mLongitude = String.valueOf( location.longitude );
+//                        new FetchBootstrapData().execute();
+//                    }
+//                } );
+        new FetchBootstrapData().execute();
+
     }
 
 
@@ -82,7 +84,7 @@ public class SplashActivity extends Activity {
 
         @Override
         protected Void doInBackground( Void... arg0 ) {
-//            if ( true ) return null;
+            if ( true ) return null;
             LoginUser loginUser = new LoginUser();
             Call< ApiResponse< AuthToken > > responseCall = RestController.getInstance().getApi().register( loginUser );
             try {

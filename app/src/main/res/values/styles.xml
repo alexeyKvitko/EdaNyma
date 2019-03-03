@@ -82,5 +82,13 @@
         <item name="colorControlActivated">@color/splashTextColor</item>
     </style>
 
+    <style name="bottomNavButon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+
 
 </resources>
