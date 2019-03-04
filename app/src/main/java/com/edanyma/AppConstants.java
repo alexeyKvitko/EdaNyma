@@ -33,6 +33,11 @@ public class AppConstants {
     public static final int DISH_DRAWER_INDEX = 2;
     public static final int BASKET_DRAWER_INDEX = 3;
 
+    public static final int BANNER_LEFT = 0;
+    public static final int BANNER_CENTER = 540;
+    public static final int BANNER_END = 984;
+
+
 
 
 }

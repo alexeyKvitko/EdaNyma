@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/rvItemActionId"
-        android:layout_width="296dp"
-        android:layout_height="180dp"
-        android:layout_margin="16dp"
-        card_view:cardCornerRadius="8dp"
-        card_view:cardElevation="12dp">
+        android:layout_width="328dp"
+        android:layout_height="180dp">
 
     <ImageView
         android:id="@+id/actionImageId"
@@ -21,8 +16,7 @@
         android:paddingHorizontal="16dp"
         android:paddingVertical="4dp"
         android:id="@+id/actionCompanyId"
-        android:layout_gravity="left|bottom"
-        android:elevation="8dp"
-        />
+        android:layout_gravity="center_horizontal|top"
+        android:elevation="8dp" />
     />
-</android.support.v7.widget.CardView>
+</FrameLayout>

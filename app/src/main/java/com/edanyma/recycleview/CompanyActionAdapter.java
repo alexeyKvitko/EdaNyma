@@ -1,10 +1,12 @@
 package com.edanyma.recycleview;
 
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,6 +37,7 @@ public class CompanyActionAdapter extends CommonBaseAdapter< CompanyActionModel 
 
     @Override
     public void onBindViewHolder(final BaseDataObjectHolder holder, final int position) {
+        Log.i( CLASS_TAG, "Position: "+position);
         CompanyActionDataObjectHolder categoryCardHolder = ( CompanyActionDataObjectHolder ) holder;
         categoryCardHolder.actionCompany.setText( mItemList.get( position ).getCompanyName() );
         PicassoClient.downloadImage( EdaNymaApp.getAppContext(),
@@ -44,7 +47,7 @@ public class CompanyActionAdapter extends CommonBaseAdapter< CompanyActionModel 
 
     public static class CompanyActionDataObjectHolder extends BaseDataObjectHolder {
 
-        private CardView actionCard;
+        private FrameLayout actionCard;
         public ImageView actionImage;
         public TextView actionCompany;
 
