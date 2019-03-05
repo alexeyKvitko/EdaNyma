@@ -49,6 +49,10 @@ public class CommonBaseAdapter<T> extends  RecyclerView.Adapter< BaseDataObjectH
         notifyItemInserted(index);
     }
 
+    public T getItem( int position ){
+        return mItemList.get( position );
+    }
+
 //    public void clearImages() {
 //        mImages = null;
 //        mIcons = null;

@@ -1,18 +1,16 @@
 package com.edanyma.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Fade;
-import android.transition.Transition;
-import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
@@ -22,6 +20,7 @@ import com.edanyma.model.CompanyActionModel;
 import com.edanyma.model.HomeMenuModel;
 import com.edanyma.recycleview.CompanyActionAdapter;
 import com.edanyma.recycleview.HomeMenuAdapter;
+import com.edanyma.utils.PicassoClient;
 import com.stone.vega.library.VegaLayoutManager;
 
 import java.util.ArrayList;
@@ -32,11 +31,11 @@ public class MainActivity extends BaseActivity {
 
     private final String TAG = "MainActivity";
 
-    private final int[] actionSlideIconIds = new int[]{ R.id.actionSlide1,R.id.actionSlide2,
+    private final int[] actionSlideIconIds = new int[]{ R.id.actionSlide1, R.id.actionSlide2,
             R.id.actionSlide3, R.id.actionSlide4, R.id.actionSlide5 };
 
     private RecyclerView mActionRecView;
-    private RecyclerView.Adapter mActionAdapter;
+    private CompanyActionAdapter mActionAdapter;
     private LinearLayoutManager mHorizontalLayoutManager;
 
     private RecyclerView mHomeMenuRecView;
@@ -44,6 +43,7 @@ public class MainActivity extends BaseActivity {
     private int mPrevScrollState;
     private int mCurrentSlide;
     private Handler mTimer;
+    private Context mContext;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -60,23 +60,9 @@ public class MainActivity extends BaseActivity {
 //        List<CompanyActionModel> companyActionModels = GlobalManager.getInstance().getBootstrapModel()
 //                                                            .getCompanyActions();
 //        fillActionAdapter( companyActionModels );
-
+        mContext = this;
         mTimer = new Handler();
-        mTimer.postDelayed(new Runnable()
-        {
-            private long time = 0;
-
-            @Override
-            public void run()
-            {
-                int prevSlide = mCurrentSlide;
-                mCurrentSlide++;
-                mCurrentSlide = mCurrentSlide == 5 ? 0 : mCurrentSlide;
-                changeSlideIcon( prevSlide );
-                mTimer.postDelayed(this, 3000);
-            }
-        }, 3000);
-
+        initTimer( 4,false );
         initRecyclerView();
     }
 
@@ -85,6 +71,9 @@ public class MainActivity extends BaseActivity {
         mPrevScrollState = AppConstants.FAKE_ID;
         mCurrentSlide = 0;
         changeSlideIcon( mCurrentSlide );
+        PicassoClient.downloadImage( mContext,
+                mActionAdapter.getItem( mCurrentSlide ).getActionImgUrl(),
+                ( ImageView ) findViewById( R.id.actionBgImageId ) );
         if ( mActionRecView == null ) {
             mActionRecView = findViewById( R.id.companyActionRVId );
             mHorizontalLayoutManager = new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false );
@@ -92,24 +81,21 @@ public class MainActivity extends BaseActivity {
                 @Override
                 public void onScrollStateChanged( RecyclerView recyclerView, int newState ) {
                     super.onScrollStateChanged( recyclerView, newState );
-                    if( ((RecyclerView.SCROLL_STATE_SETTLING == mPrevScrollState ||
+                    if ( ( ( RecyclerView.SCROLL_STATE_SETTLING == mPrevScrollState ||
                             RecyclerView.SCROLL_STATE_DRAGGING == mPrevScrollState ) &&
-                            RecyclerView.SCROLL_STATE_IDLE == newState) ||
-                            (RecyclerView.SCROLL_STATE_IDLE == mPrevScrollState &&
-                                    RecyclerView.SCROLL_STATE_DRAGGING == newState )){
+                            RecyclerView.SCROLL_STATE_IDLE == newState ) ||
+                            ( RecyclerView.SCROLL_STATE_IDLE == mPrevScrollState &&
+                                    RecyclerView.SCROLL_STATE_DRAGGING == newState ) ) {
                         changeCardAccordingToPosition();
 
                     }
-                    Log.i(TAG, "Prev State "+mPrevScrollState+", NEW STATE: "+ newState  );
-                    mPrevScrollState =  newState;
+                    mPrevScrollState = newState;
                 }
 
 
                 @Override
                 public void onScrolled( RecyclerView recyclerView, int dx, int dy ) {
                     super.onScrolled( recyclerView, dx, dy );
-                    Log.i(TAG, "Scrolled" );
-
                 }
             } );
             mActionRecView.setLayoutManager( mHorizontalLayoutManager );
@@ -126,6 +112,22 @@ public class MainActivity extends BaseActivity {
         }
         mHomeMenuRecView.getAdapter().notifyDataSetChanged();
         mHomeMenuAdapter.notifyDataSetChanged();
+    }
+
+    private void initTimer( final int delaySec, final boolean restartTimer ) {
+        mTimer.postDelayed( new Runnable() {
+            @Override
+            public void run() {
+                if ( !restartTimer ) {
+                    int prevSlide = mCurrentSlide;
+                    mCurrentSlide++;
+                    mCurrentSlide = mCurrentSlide == 5 ? 0 : mCurrentSlide;
+                    changeSlideIcon( prevSlide );
+                    changeSlideByTimer();
+                }
+                mTimer.postDelayed( this, delaySec*1000 );
+            }
+        }, delaySec*1000 );
     }
 
 
@@ -211,48 +213,47 @@ public class MainActivity extends BaseActivity {
             }
         } else {
             frameCount = 0;
-            currentView[1] = currentView[0];
+            currentView[ 1 ] = currentView[ 0 ];
             firstSlidePos = AppConstants.BANNER_LEFT;
             secondSlidePos = AppConstants.BANNER_LEFT;
         }
-            Animation anim = new TranslateAnimation( 0, frameCount, 0, 0 );
-            anim.setDuration( Math.abs( frameCount * 300 / AppConstants.BANNER_CENTER ) );
-            anim.setAnimationListener( new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart( Animation animation ) {
-                }
+        Animation anim = new TranslateAnimation( 0, frameCount, 0, 0 );
+        anim.setDuration( Math.abs( frameCount * 300 / AppConstants.BANNER_CENTER ) );
+        anim.setAnimationListener( new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart( Animation animation ) {
+            }
 
-                @Override
-                public void onAnimationEnd( Animation animation ) {
-                    currentView[ 0 ].setLeft( firstSlidePos );
-                    currentView[ 1 ].setLeft( secondSlidePos );
-                    for ( int i = 0; i < mHorizontalLayoutManager.getItemCount(); i++ ) {
-                        if ( mActionRecView.getChildAt( i ) != null ) {
-                            View view = mActionRecView.getChildAt( i );
-                            if ( view.getLeft() == 0 ) {
-                                int prevSlide = mCurrentSlide;
-                                mCurrentSlide = mActionRecView.getChildAdapterPosition( view );
-
-                                changeSlideIcon( prevSlide );
-                            }
+            @Override
+            public void onAnimationEnd( Animation animation ) {
+                currentView[ 0 ].setLeft( firstSlidePos );
+                currentView[ 1 ].setLeft( secondSlidePos );
+                for ( int i = 0; i < mHorizontalLayoutManager.getItemCount(); i++ ) {
+                    if ( mActionRecView.getChildAt( i ) != null ) {
+                        View view = mActionRecView.getChildAt( i );
+                        if ( view.getLeft() == 0 ) {
+                            int prevSlide = mCurrentSlide;
+                            mCurrentSlide = mActionRecView.getChildAdapterPosition( view );
+                            changeSlideIcon( prevSlide );
                         }
                     }
-                    mActionRecView.getAdapter().notifyDataSetChanged();
                 }
+                mActionRecView.getAdapter().notifyDataSetChanged();
+            }
 
-                @Override
-                public void onAnimationRepeat( Animation animation ) {
-                }
-            } );
-            currentView[ 0 ].startAnimation( anim );
-            currentView[ 1 ].startAnimation( anim );
+            @Override
+            public void onAnimationRepeat( Animation animation ) {
+            }
+        } );
+        currentView[ 0 ].startAnimation( anim );
+        currentView[ 1 ].startAnimation( anim );
 
 
     }
 
-    private void changeSlideIcon( final int prevSlide ){
-        if( AppConstants.FAKE_ID != prevSlide ){
-            Animation fadeOut = AnimationUtils.loadAnimation( this,R.anim.fade_out);
+    private void changeSlideIcon( final int prevSlide ) {
+        if ( AppConstants.FAKE_ID != prevSlide ) {
+            Animation fadeOut = AnimationUtils.loadAnimation( this, R.anim.fade_out );
             fadeOut.setAnimationListener( new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart( Animation animation ) {
@@ -260,26 +261,52 @@ public class MainActivity extends BaseActivity {
 
                 @Override
                 public void onAnimationEnd( Animation animation ) {
-                    Transition fade = new Fade( );
-                    fade.setDuration( 600 );
-                    TransitionManager.beginDelayedTransition( mActionRecView,fade );
-                    mActionRecView.scrollToPosition( mCurrentSlide );
-                    findViewById( actionSlideIconIds[prevSlide] ).setBackground( getDrawable( R.drawable.sel_slider_white ) );
-                    findViewById( actionSlideIconIds[prevSlide] ).setVisibility( View.VISIBLE );
-                    findViewById( actionSlideIconIds[prevSlide] ).startAnimation(
-                            AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.fade_in) );
-                    findViewById( actionSlideIconIds[mCurrentSlide] ).setBackground( getDrawable( R.drawable.sel_slider_red ) );
-                    findViewById( actionSlideIconIds[mCurrentSlide] ).startAnimation(
-                                AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.fade_in) );
+                    findViewById( actionSlideIconIds[ prevSlide ] ).setBackground( getDrawable( R.drawable.sel_slider_white ) );
+                    findViewById( actionSlideIconIds[ prevSlide ] ).setVisibility( View.VISIBLE );
+                    findViewById( actionSlideIconIds[ prevSlide ] ).startAnimation(
+                            AnimationUtils.loadAnimation( mContext, R.anim.fade_in ) );
+                    findViewById( actionSlideIconIds[ mCurrentSlide ] ).setBackground( getDrawable( R.drawable.sel_slider_red ) );
+                    findViewById( actionSlideIconIds[ mCurrentSlide ] ).startAnimation(
+                            AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.fade_in ) );
+                    initTimer( 8, true );
                 }
 
                 @Override
                 public void onAnimationRepeat( Animation animation ) {
                 }
             } );
-            findViewById( actionSlideIconIds[prevSlide] ).
-            startAnimation( fadeOut );
+            PicassoClient.downloadImage( mContext,
+                    mActionAdapter.getItem( prevSlide ).getActionImgUrl(),
+                    ( ImageView ) findViewById( R.id.actionBgImageId ) );
+            findViewById( actionSlideIconIds[ prevSlide ] ).
+                    startAnimation( fadeOut );
         }
+
+    }
+
+    private void changeSlideByTimer() {
+        Animation animation = AnimationUtils.loadAnimation( mContext, R.anim.slide_r );
+        animation.setAnimationListener( new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart( Animation animation ) {
+                mActionRecView.scrollToPosition( mCurrentSlide );
+            }
+
+            @Override
+            public void onAnimationEnd( Animation animation ) {
+                PicassoClient.downloadImage( mContext,
+                        mActionAdapter.getItem( mCurrentSlide ).getActionImgUrl(),
+                        ( ImageView ) findViewById( R.id.actionBgImageId ) );
+
+            }
+
+            @Override
+            public void onAnimationRepeat( Animation animation ) {
+            }
+        } );
+        mActionRecView.startAnimation( animation );
+        findViewById( R.id.actionBgImageId )
+                .startAnimation( AnimationUtils.loadAnimation( mContext, R.anim.slide_l ) );
 
     }
 

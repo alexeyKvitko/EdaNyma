@@ -41,30 +41,33 @@
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
+                style="@style/AppInputLayout"
+                android:id = "@+id/loginTextLayoutId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/neonGreen"
-                >
+                android:hint="@string/prompt_email">
 
-                <AutoCompleteTextView
-                    android:theme="@style/autoComplete"
-                    android:id="@+id/email"
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppEditText"
+                    android:id="@+id/emailPhoneId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
-                    android:inputType="textEmailAddress"
+                    android:theme="@style/editTextTheme"
                     android:maxLines="1"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                style="@style/AppInputLayout"
+                android:id = "@+id/passwordTextLayoutId"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColorHint="@color/neonGreen">
+                android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/password"
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppEditText"
+                    android:theme="@style/editTextTheme"
+                    android:id="@+id/passwordId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
@@ -88,7 +91,7 @@
         android:textColor="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:text="Войти"/>
+        android:text="@string/sign_in"/>
     <LinearLayout
         android:id="@+id/registrationQuestionId"
         android:layout_below="@+id/signInButtonId"
@@ -108,12 +111,34 @@
 
     <View
         android:layout_below="@+id/registrationQuestionId"
+        android:id="@+id/separatorLineId"
         android:layout_width="match_parent"
         android:layout_marginTop="24dp"
         android:layout_height="1dp"
         android:layout_marginHorizontal="32dp"
         android:layout_marginRight="12dp"
         android:background="@color/grayTextColor"/>
+    <TextView
+        style="@style/greenLabel"
+        android:id="@+id/otherLognId"
+        android:layout_below="@+id/separatorLineId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:text="или войти через"/>
+
+    <Button
+        android:layout_below="@+id/otherLognId"
+        android:id="@+id/signWithCoogleId"
+        android:elevation="6dp"
+        android:drawableTop="@drawable/ic_google_plus_48dp"
+        android:background="?attr/selectableItemBackground"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/white"
+        android:layout_width="48dp"
+        android:layout_height="48dp"/>
 
 
 </RelativeLayout>

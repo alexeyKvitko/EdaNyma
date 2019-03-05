@@ -29,5 +29,7 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="not_register">Еще не зарегистрированы?</string>
     <string name="registration">Регистрация</string>
+    <string name="sign_in">Войти</string>
+    <string name="sign_in_google">Войти через Google</string>
 
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#8bc34a</color>
+    <color name="colorPrimary">#535BFE</color>
     <color name="colorPrimaryDark">#008323</color>
     <color name="colorAccent">#F53240</color>
     <color name="primaryTextColor">#212121</color>
@@ -10,6 +10,10 @@
     <color name="iconGrayColor">#646a72</color>
     <color name="transpGrayTextColor">#DDCECECE</color>
     <color name="tealColor">#3B6A75</color>
-    <color name="neonGreen">#535BFE</color>
-    <color name="neonGreen1">#02E002</color>
+    <color name="blackButton">#3E454F</color>
+    <color name="blueNeon">#535BFE</color>
+
+    <color name="error_color">#C62828</color>
+    <color name="hint_color_active">#535BFE</color>
+    <color name="hint_color_inactive">#959595</color>
 </resources>
