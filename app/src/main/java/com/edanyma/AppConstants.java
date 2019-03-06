@@ -38,6 +38,7 @@ public class AppConstants {
     public static final int BANNER_END = 984;
 
     public static final String EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
+    public static final String PHONE_PATTERN = "^\\d{10}$";
 
 
 

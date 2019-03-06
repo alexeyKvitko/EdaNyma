@@ -4,6 +4,7 @@ import com.edanyma.model.ApiResponse;
 import com.edanyma.model.AuthToken;
 import com.edanyma.model.BootstrapModel;
 import com.edanyma.model.LoginUser;
+import com.edanyma.model.OurClientModel;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -16,6 +17,8 @@ public interface RestApi {
 
     final String API_COMPANY = "api/company/";
 
+    final String API_CLIENT= "api/client/";
+
     @POST("token/generate-token")
     Call< ApiResponse< AuthToken > > register( @Body LoginUser loginUser);
 
@@ -24,4 +27,8 @@ public interface RestApi {
     Call< BootstrapModel > fetchBootstrapData( @Header("Authorization") String authorization,
                                                @Path("latitude") String latitude,
                                                @Path("longitude") String longitude  );
+
+    @POST(API_CLIENT+"authorizationClient")
+    Call< ApiResponse > signIn( @Header("Authorization") String authorization,
+                                               @Body OurClientModel ourClientModel  );
 }

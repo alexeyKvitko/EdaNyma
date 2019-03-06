@@ -1,15 +1,16 @@
 package com.edanyma.activity;
 
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 
 import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.fragment.LoginFragment;
 import com.edanyma.model.ActivityState;
 
-public class PersonActivity extends BaseActivity implements LoginFragment.OnLoginListener{
+public class PersonActivity extends BaseActivity implements LoginFragment.OnSignInListener {
 
     private LoginFragment mLoginFragment;
 
@@ -29,7 +30,7 @@ public class PersonActivity extends BaseActivity implements LoginFragment.OnLogi
     }
 
     @Override
-    public void onLoginAction( Uri uri ) {
-
+    public void onLoginAction() {
+        NavUtils.navigateUpFromSameTask( this );
     }
 }

@@ -147,7 +147,7 @@ public class SplashActivity extends Activity {
 
         @Override
         protected Void doInBackground( Void... arg0 ) {
-            if ( true ) return null;
+//            if ( true ) return null;
             LoginUser loginUser = new LoginUser();
             Call< ApiResponse< AuthToken > > responseCall = RestController.getInstance().getApi().register( loginUser );
             try {
@@ -156,17 +156,17 @@ public class SplashActivity extends Activity {
                     ApiResponse< AuthToken > authToken = response.body();
                     GlobalManager.getInstance().setUserToken( ( String ) ( ( LinkedTreeMap ) authToken
                             .getResult() ).get( "token" ) );
-                    Call< BootstrapModel > bootstrapCall = RestController.getInstance()
-                            .getApi().fetchBootstrapData( AppConstants.AUTH_BEARER
-                                            + GlobalManager.getInstance().getUserToken(),
-                                    mLatitude, mLongitude );
-                    Response< BootstrapModel > responseBootstrap = bootstrapCall.execute();
-                    if ( responseBootstrap.body() != null ) {
-                        GlobalManager.getInstance().setBootstrapModel( responseBootstrap.body() );
-                    }
-                }
-                if ( GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() == null ) {
-                    mBootstrapSuccess = false;
+//                    Call< BootstrapModel > bootstrapCall = RestController.getInstance()
+//                            .getApi().fetchBootstrapData( AppConstants.AUTH_BEARER
+//                                            + GlobalManager.getInstance().getUserToken(),
+//                                    mLatitude, mLongitude );
+//                    Response< BootstrapModel > responseBootstrap = bootstrapCall.execute();
+//                    if ( responseBootstrap.body() != null ) {
+//                        GlobalManager.getInstance().setBootstrapModel( responseBootstrap.body() );
+//                        if ( GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() == null ) {
+//                            mBootstrapSuccess = false;
+//                        }
+//                    }
                 }
             } catch ( Exception e ) {
                 Log.i( TAG, e.getMessage() );

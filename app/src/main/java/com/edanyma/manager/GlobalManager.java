@@ -9,6 +9,7 @@ public class GlobalManager {
 
     private static BootstrapModel bootstrapModel;
     private static String userToken;
+    private static String userUUID;
 
     private GlobalManager() {}
 
@@ -31,5 +32,13 @@ public class GlobalManager {
 
     public static void setUserToken( String userToken ) {
         GlobalManager.userToken = userToken;
+    }
+
+    public static String getUserUUID() {
+        return userUUID;
+    }
+
+    public static void setUserUUID( String userUUID ) {
+        GlobalManager.userUUID = userUUID;
     }
 }

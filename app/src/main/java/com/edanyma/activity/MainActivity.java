@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
+import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.model.HomeMenuModel;
@@ -43,14 +43,13 @@ public class MainActivity extends BaseActivity {
     private int mPrevScrollState;
     private int mCurrentSlide;
     private Handler mTimer;
+    private SliderJob mSliderJob;
     private Context mContext;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
-        fillActionAdapter( fillCompanyAction() );
-        fillHomeMenuAdapter( fillHomeMenuModel() );
         initMainLayout();
     }
 
@@ -61,19 +60,14 @@ public class MainActivity extends BaseActivity {
 //                                                            .getCompanyActions();
 //        fillActionAdapter( companyActionModels );
         mContext = this;
-        mTimer = new Handler();
-        initTimer( 4,false );
+        fillActionAdapter( fillCompanyAction() );
+        fillHomeMenuAdapter( fillHomeMenuModel() );
         initRecyclerView();
     }
 
 
     private void initRecyclerView() {
-        mPrevScrollState = AppConstants.FAKE_ID;
-        mCurrentSlide = 0;
-        changeSlideIcon( mCurrentSlide );
-        PicassoClient.downloadImage( mContext,
-                mActionAdapter.getItem( mCurrentSlide ).getActionImgUrl(),
-                ( ImageView ) findViewById( R.id.actionBgImageId ) );
+
         if ( mActionRecView == null ) {
             mActionRecView = findViewById( R.id.companyActionRVId );
             mHorizontalLayoutManager = new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false );
@@ -114,21 +108,6 @@ public class MainActivity extends BaseActivity {
         mHomeMenuAdapter.notifyDataSetChanged();
     }
 
-    private void initTimer( final int delaySec, final boolean restartTimer ) {
-        mTimer.postDelayed( new Runnable() {
-            @Override
-            public void run() {
-                if ( !restartTimer ) {
-                    int prevSlide = mCurrentSlide;
-                    mCurrentSlide++;
-                    mCurrentSlide = mCurrentSlide == 5 ? 0 : mCurrentSlide;
-                    changeSlideIcon( prevSlide );
-                    changeSlideByTimer();
-                }
-                mTimer.postDelayed( this, delaySec*1000 );
-            }
-        }, delaySec*1000 );
-    }
 
 
     private void fillActionAdapter( List< CompanyActionModel > actions ) {
@@ -136,7 +115,7 @@ public class MainActivity extends BaseActivity {
             mActionAdapter = new CompanyActionAdapter( new ArrayList< CompanyActionModel >() );
         }
         for ( int i = 0; i < actions.size(); i++ ) {
-            ( ( CompanyActionAdapter ) mActionAdapter ).addItem( actions.get( i ), i );
+            mActionAdapter.addItem( actions.get( i ), i );
         }
     }
 
@@ -187,7 +166,6 @@ public class MainActivity extends BaseActivity {
         }
         mActionAdapter = null;
         mHomeMenuAdapter = null;
-        mTimer = null;
         super.onDestroy();
     }
 
@@ -231,7 +209,9 @@ public class MainActivity extends BaseActivity {
                 for ( int i = 0; i < mHorizontalLayoutManager.getItemCount(); i++ ) {
                     if ( mActionRecView.getChildAt( i ) != null ) {
                         View view = mActionRecView.getChildAt( i );
-                        if ( view.getLeft() == 0 ) {
+                        if ( view.getLeft() == 0 ){
+                            mTimer.removeCallbacks( mSliderJob );
+                            mTimer.postDelayed( mSliderJob, 4000 );
                             int prevSlide = mCurrentSlide;
                             mCurrentSlide = mActionRecView.getChildAdapterPosition( view );
                             changeSlideIcon( prevSlide );
@@ -247,8 +227,32 @@ public class MainActivity extends BaseActivity {
         } );
         currentView[ 0 ].startAnimation( anim );
         currentView[ 1 ].startAnimation( anim );
+    }
 
+    @Override
+    protected void onPause() {
+        mTimer.removeCallbacks( mSliderJob );
+        mTimer = null;
+        super.onPause();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPrevScrollState = AppConstants.FAKE_ID;
+        mCurrentSlide = 0;
+        changeSlideIcon( mCurrentSlide );
+        PicassoClient.downloadImage( mContext,
+                mActionAdapter.getItem( mCurrentSlide ).getActionImgUrl(),
+                ( ImageView ) findViewById( R.id.actionBgImageId ) );
+        mTimer = new Handler();
+        mSliderJob = new SliderJob();
+        mTimer.postDelayed( mSliderJob, 1000 );
+        if( GlobalManager.getInstance().getUserUUID() != null ){
+            findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.person_navigation ) );
+        } else {
+            findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.login_navigation ) );
+        }
     }
 
     private void changeSlideIcon( final int prevSlide ) {
@@ -268,7 +272,6 @@ public class MainActivity extends BaseActivity {
                     findViewById( actionSlideIconIds[ mCurrentSlide ] ).setBackground( getDrawable( R.drawable.sel_slider_red ) );
                     findViewById( actionSlideIconIds[ mCurrentSlide ] ).startAnimation(
                             AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.fade_in ) );
-                    initTimer( 8, true );
                 }
 
                 @Override
@@ -307,8 +310,21 @@ public class MainActivity extends BaseActivity {
         mActionRecView.startAnimation( animation );
         findViewById( R.id.actionBgImageId )
                 .startAnimation( AnimationUtils.loadAnimation( mContext, R.anim.slide_l ) );
-
     }
 
+
+   private class SliderJob implements  Runnable {
+             @Override
+        public void run() {
+            int prevSlide = mCurrentSlide;
+            mCurrentSlide++;
+            mCurrentSlide = mCurrentSlide == 5 ? 0 : mCurrentSlide;
+            changeSlideIcon( prevSlide );
+            changeSlideByTimer();
+            if( mTimer != null ){
+                mTimer.postDelayed( mSliderJob, 4000 );
+            }
+        }
+    }
 
 }

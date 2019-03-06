@@ -31,5 +31,9 @@
     <string name="registration">Регистрация</string>
     <string name="sign_in">Войти</string>
     <string name="sign_in_google">Войти через Google</string>
+    <string name="error_required_field">Поле обязательно для заполнения</string>
+    <string name="error_wrong_email">Введен неверный email</string>
+    <string name="error_wrong_phone">Введен неверный номер телеона</string>
+    <string name="internal_error">Внутренняя ошибка, повторите попытку позже</string>
 
 </resources>
