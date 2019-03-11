@@ -1,8 +1,9 @@
 package com.edanyma.fragment;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,23 +31,23 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 
-public class LoginFragment extends Fragment implements View.OnClickListener {
+public class SignInFragment extends Fragment implements View.OnClickListener {
 
-    private final String TAG = "LoginFragment";
+    private final String TAG = "SignInFragment";
 
     private OnSignInListener mListener;
 
     private AppCompatEditText mLogin;
     private AppCompatEditText mPassword;
-    private TextInputLayout mLoginLayout;
-    private TextInputLayout mPasswordLayout;
+
     private TextView mPasswordErrorView;
+    private TextView mSignUpView;
 
-    public LoginFragment() {}
+    public SignInFragment() {}
 
 
-    public static LoginFragment newInstance() {
-        LoginFragment fragment = new LoginFragment();
+    public static SignInFragment newInstance() {
+        SignInFragment fragment = new SignInFragment();
         return fragment;
     }
 
@@ -58,7 +59,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState ) {
-        return inflater.inflate( R.layout.fragment_login, container, false );
+        return inflater.inflate( R.layout.fragment_sign_in, container, false );
     }
 
     @Override
@@ -66,14 +67,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         super.onActivityCreated( savedInstanceState );
         ( ( TextView ) getView().findViewById( R.id.loginTitleId ) ).setTypeface( AppConstants.SANDORA, Typeface.BOLD );
         ( ( TextView ) getView().findViewById( R.id.forgotPassword ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
-        ( ( TextView ) getView().findViewById( R.id.otherLognId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
-        mLoginLayout = getView().findViewById( R.id.loginTextLayoutId );
-        mLoginLayout.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        mPasswordLayout = getView().findViewById( R.id.passwordTextLayoutId );
-        mPasswordLayout.setTypeface( AppConstants.ROBOTO_CONDENCED );
+        ( ( TextView ) getView().findViewById( R.id.otherLoginId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
+        ( ( TextView ) getView().findViewById( R.id.notSignUpId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
+        ( (TextInputLayout)getView().findViewById( R.id.loginTextLayoutId )).setTypeface( AppConstants.ROBOTO_CONDENCED );
+        ( (TextInputLayout)getView().findViewById( R.id.passwordTextLayoutId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
         Button signButton = getView().findViewById( R.id.signInButtonId );
         signButton.setTypeface( AppConstants.SANDORA );
         signButton.setOnClickListener( this );
+
+        mSignUpView = getView().findViewById( R.id.signUpId );
+        mSignUpView.setTypeface( AppConstants.ROBOTO_CONDENCED );
+        mSignUpView.setOnClickListener( this );
+
 
         mLogin = getView().findViewById( R.id.emailPhoneId );
         mPassword = getView().findViewById( R.id.passwordId );
@@ -84,7 +89,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     public void onSignInSuccess( ) {
         if ( mListener != null ) {
-            mListener.onLoginAction( );
+            mListener.onSignInAction( );
+        }
+    }
+
+    public void onStartSignUp(){
+        if ( mListener != null ) {
+            mListener.onStartSignUpAction();
         }
     }
 
@@ -97,7 +108,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             throw new RuntimeException( context.toString()
                     + " must implement OnSignInListener" );
         }
-
     }
 
     @Override
@@ -108,7 +118,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
     public interface OnSignInListener {
-        void onLoginAction( );
+        void onSignInAction( );
+        void onStartSignUpAction();
     }
 
 
@@ -126,9 +137,36 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick( View view ) {
-        if ( view.getId() == R.id.signInButtonId ) {
-            loginViaEmailPhone();
+        switch( view.getId()){
+            case R.id.signInButtonId:
+                loginViaEmailPhone();
+                break;
+            case R.id.signUpId:
+                clickSignUp();
+                break;
+                default:
+                    break;
+
         }
+    }
+
+    private void clickSignUp(){
+        final int colorFrom = getResources().getColor(R.color.blueNeon);
+        final int colorTo = getResources().getColor(R.color.colorAccent);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                int currentValue = (Integer)animator.getAnimatedValue();
+                Log.i( TAG,"CurrentValue: "+currentValue+", To value: "+colorTo+", Equals: "+(currentValue == colorTo));
+                mSignUpView.setTextColor( currentValue );
+                if( colorTo == currentValue){
+                    onStartSignUp();
+                }
+            }
+        });
+        colorAnimation.setDuration( 300 );
+        colorAnimation.start();
     }
 
     private void loginViaEmailPhone() {
@@ -195,6 +233,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 Call< ApiResponse > signInCall = RestController.getInstance()
                         .getApi().signIn( AppConstants.AUTH_BEARER
                                 + GlobalManager.getInstance().getUserToken(), ourClient[ 0 ] );
+
+
                 Response< ApiResponse > responseSignIn = signInCall.execute();
                 if ( responseSignIn.body() != null ) {
                     if( responseSignIn.body().getStatus() == 200 ){

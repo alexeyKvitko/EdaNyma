@@ -35,5 +35,8 @@
     <string name="error_wrong_email">Введен неверный email</string>
     <string name="error_wrong_phone">Введен неверный номер телеона</string>
     <string name="internal_error">Внутренняя ошибка, повторите попытку позже</string>
+    <string name="sign_up_title">Регистрация</string>
+    <string name="next_button">Продолжить</string>
+    <string name="already_signup">Уже зарегистрированы ?</string>
 
 </resources>
