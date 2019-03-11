@@ -24,6 +24,7 @@ import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.OurClientModel;
 import com.edanyma.rest.RestController;
+import com.edanyma.utils.AppUtils;
 
 import java.util.regex.Pattern;
 
@@ -123,17 +124,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    public boolean validateEmail( String email ) {
-        Pattern pattern = Pattern.compile( AppConstants.EMAIL_PATTERN );
-        return pattern.matcher( email ).matches();
-    }
-
-    public boolean validatePhone( String source ) {
-        String phone = source.replaceAll(" ","").replace("(","").replace( ")","" )
-                .replace( "+","" ).replaceAll( "-","" );
-        Pattern pattern = Pattern.compile( AppConstants.PHONE_PATTERN );
-        return pattern.matcher( phone ).matches();
-    }
 
     @Override
     public void onClick( View view ) {
@@ -179,10 +169,10 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         if ( login.trim().length() == 0 ) {
             loginErrorMsg = getResources().getString( R.string.error_required_field );
         }
-        if ( loginErrorMsg == null && login.indexOf( "@" ) > 0 && !validateEmail( login ) ) {
+        if ( loginErrorMsg == null && login.indexOf( "@" ) > 0 && !AppUtils.validateEmail( login ) ) {
             loginErrorMsg = getResources().getString( R.string.error_wrong_email );
         }
-        if ( loginErrorMsg == null && login.indexOf( "@" ) == -1 && !validatePhone( login ) ) {
+        if ( loginErrorMsg == null && login.indexOf( "@" ) == -1 && !AppUtils.validatePhone( login ) ) {
             loginErrorMsg = getResources().getString( R.string.error_wrong_phone );
         }
         if( login.indexOf( "@" ) > 0 ){

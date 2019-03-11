@@ -47,7 +47,11 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
 
     @Override
     public void OnSignUpListener() {
-
+        NavUtils.navigateUpFromSameTask( this );
     }
 
+    @Override
+    public void OnSignInListener() {
+        addReplaceFragment( SignInFragment.newInstance() );
+    }
 }

@@ -5,8 +5,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.TextView;
 
+import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
+
+import java.util.regex.Pattern;
 
 public abstract class AppUtils {
 
@@ -32,5 +35,17 @@ public abstract class AppUtils {
         }
 
         return count+countSuffix+ending ;
+    }
+
+    public static boolean validateEmail( String email ) {
+        Pattern pattern = Pattern.compile( AppConstants.EMAIL_PATTERN );
+        return pattern.matcher( email ).matches();
+    }
+
+    public static boolean validatePhone( String source ) {
+        String phone = source.replaceAll(" ","").replace("(","").replace( ")","" )
+                .replace( "+","" ).replaceAll( "-","" );
+        Pattern pattern = Pattern.compile( AppConstants.PHONE_PATTERN );
+        return pattern.matcher( phone ).matches();
     }
 }

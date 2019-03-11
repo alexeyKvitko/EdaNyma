@@ -28,6 +28,10 @@ public interface RestApi {
                                                @Path("latitude") String latitude,
                                                @Path("longitude") String longitude  );
 
+    @POST(API_CLIENT+"registerClient")
+    Call< ApiResponse > signUp( @Header("Authorization") String authorization,
+                                               @Body OurClientModel ourClientModel  );
+
     @POST(API_CLIENT+"authorizationClient")
     Call< ApiResponse > signIn( @Header("Authorization") String authorization,
                                                @Body OurClientModel ourClientModel  );

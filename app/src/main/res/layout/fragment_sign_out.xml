@@ -153,7 +153,7 @@
         android:text="или войти через"/>
 
     <Button
-        android:layout_below="@+id/otherLoginId"
+        android:layout_below="@+id/otherSignInId"
         android:id="@+id/signWithGoogleId"
         android:elevation="6dp"
         android:drawableTop="@drawable/ic_google_plus_48dp"
