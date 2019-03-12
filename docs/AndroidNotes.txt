@@ -1,127 +1,24 @@
 https://github.com/Ramotion
 https://www.behance.net/gallery/70933623/Delyo-UI-Kit-Food-Delivery-App
+https://android-developers.googleblog.com/2017/10/effective-phone-number-verification.html
 
 Retrofit:
 https://www.vogella.com/tutorials/Retrofit/article.html
 https://startandroid.ru/ru/blog/506-retrofit.html
 https://github.com/xmuSistone/VegaLayoutManager
 
-Охотник за пришельцами
-<ScrollView
-        android:id="@+id/mainScrollViewId"
-        android:layout_width="match_parent"
-        android:layout_height="308dp"
-        app:layout_constraintTop_toBottomOf="@+id/companyActionRVId">
+https://github.com/openid/AppAuth-Android
+https://habr.com/ru/post/281406/
+
+https://www.ekchang.com/tutorial/2018/03/25/styling_textinputlayout.html
+
+https://pixplicity.com,
 
 
-        <LinearLayout
-            android:id="@+id/appScreenId"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal|top"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/topLayoutId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.edanyma.owncomponent.MainCardItem
-                    android:id="@+id/restCardId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:countText="102"
-                    app:dishImg="@drawable/restaurant"
-                    app:titleText="ВСЕ ЗАВЕДЕНИЯ"></com.edanyma.owncomponent.MainCardItem>
-
-                <com.edanyma.owncomponent.MainCardItem
-                    android:id="@+id/allDishCardId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:countText="24"
-                    app:dishImg="@drawable/all_dishes"
-                    app:titleText="ВСЕ БЛЮДА"></com.edanyma.owncomponent.MainCardItem>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/middleLayoutId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.edanyma.owncomponent.MainCardItem
-                    android:id="@+id/pizzaCardId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:countText="24"
-                    app:dishImg="@drawable/pizza"
-                    app:titleText="ПИЦЦА"></com.edanyma.owncomponent.MainCardItem>
-
-                <com.edanyma.owncomponent.MainCardItem
-                    android:id="@+id/sushiCardId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:countText="18"
-                    app:dishImg="@drawable/sushi"
-                    app:titleText="СУШИ/СЭТЫ"></com.edanyma.owncomponent.MainCardItem>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/bottomLayoutId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.edanyma.owncomponent.MainCardItem
-                    android:id="@+id/burgerCardId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:countText="12"
-                    app:dishImg="@drawable/burger"
-                    app:titleText="БУРГЕРЫ"></com.edanyma.owncomponent.MainCardItem>
-
-                <com.edanyma.owncomponent.MainCardItem
-                    android:id="@+id/grillCardId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:countText="18"
-                    app:dishImg="@drawable/shashlik"
-                    app:titleText="МАНГАЛ МЕНЮ"></com.edanyma.owncomponent.MainCardItem>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/bottomFooterLayoutId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.edanyma.owncomponent.MainCardItem
-                    android:id="@+id/wokCardId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:countText="17"
-                    app:dishImg="@drawable/wok"
-                    app:titleText="WOK МЕНЮ"></com.edanyma.owncomponent.MainCardItem>
-
-
-                <com.edanyma.owncomponent.MainCardItem
-                    android:id="@+id/favoriteCardId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:countText="18"
-                    app:dishImg="@drawable/favorite"
-                    app:titleText="ИЗБРАННОЕ"></com.edanyma.owncomponent.MainCardItem>
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+ldpi    @ 1.00dp    = 0.75px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt
+mdpi    @ 1.00dp    = 1.00px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt
+tvdpi   @ 1.00dp    = 1.33px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt
+hdpi    @ 1.00dp    = 1.50px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt
+xhdpi   @ 1.00dp    = 2.00px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt
+xxhdpi  @ 1.00dp    = 3.00px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt
+xxxhdpi @ 1.00dp    = 4.00px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt

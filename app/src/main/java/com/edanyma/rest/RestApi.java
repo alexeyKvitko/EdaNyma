@@ -35,4 +35,10 @@ public interface RestApi {
     @POST(API_CLIENT+"authorizationClient")
     Call< ApiResponse > signIn( @Header("Authorization") String authorization,
                                                @Body OurClientModel ourClientModel  );
+
+    @POST(API_CLIENT+"validateAndSendEmail")
+    Call< ApiResponse > validateAndSendEmail( @Header("Authorization") String authorization,
+                                @Body OurClientModel ourClientModel  );
+
+
 }

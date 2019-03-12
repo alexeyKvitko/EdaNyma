@@ -3,6 +3,9 @@ package com.edanyma.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
@@ -47,5 +50,32 @@ public abstract class AppUtils {
                 .replace( "+","" ).replaceAll( "-","" );
         Pattern pattern = Pattern.compile( AppConstants.PHONE_PATTERN );
         return pattern.matcher( phone ).matches();
+    }
+
+    public static void transitionAnimation( final View sourceView, final View targetView ){
+        Animation fadeIn = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.fade_in );
+        Animation fadeOut = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.fade_out );
+        fadeIn.setAnimationListener( new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart( Animation animation ) {
+                targetView.setVisibility( View.VISIBLE );
+            }
+
+            @Override
+            public void onAnimationEnd( Animation animation ) {
+                sourceView.setVisibility( View.GONE );
+            }
+
+            @Override
+            public void onAnimationRepeat( Animation animation ) {}
+        } );
+
+        sourceView.startAnimation(  fadeOut );
+        targetView.startAnimation(  fadeIn );
+    }
+
+    public static int getRandomBetweenRange( int min, int max ) {
+        Double x = ( Math.random( ) * ( ( max - min ) + 1 ) ) + min;
+        return x.intValue( );
     }
 }

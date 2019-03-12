@@ -19,6 +19,8 @@ public class AppConstants {
 
     public static final String AUTH_BEARER = "Bearer ";
 
+    public static final String ASTERISKS= "*";
+
     public static final int FAKE_ID= -1;
 
     public static final int COMPANY_BOTTOM_INDEX = 0;
@@ -36,6 +38,8 @@ public class AppConstants {
     public static final int BANNER_LEFT = 0;
     public static final int BANNER_CENTER = 540;
     public static final int BANNER_END = 984;
+
+    public static final String SEND_PHONE_CODE = "1111";
 
     public static final String EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
     public static final String PHONE_PATTERN = "^\\d{10}$";

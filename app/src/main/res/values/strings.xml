@@ -38,5 +38,9 @@
     <string name="sign_up_title">Регистрация</string>
     <string name="next_button">Продолжить</string>
     <string name="already_signup">Уже зарегистрированы ?</string>
+    <string name="confirm_code_title">Введите Код</string>
+    <string name="confirm_code_button">Подтвердить</string>
+    <string name="resend_confirm_code">Отправить Код Повторно</string>
+    <string name="success_sign_up">Вы успешно зарегистрированы</string>
 
 </resources>

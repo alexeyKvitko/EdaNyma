@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/successContainerId"
+    android:layout_width="match_parent"
+    android:visibility="gone"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/successTopId"
+        android:layout_above="@+id/signUpSuccessImgId"
+        style="@style/splashText"
+        android:layout_marginLeft="56dp"
+        android:layout_marginBottom="16dp"
+        android:text="Спасибо" />
+    <ImageView
+        android:id="@+id/signUpSuccessImgId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/yummy_logo" />
+    <TextView
+        android:id="@+id/successBottomId"
+        android:layout_below="@+id/signUpSuccessImgId"
+        style="@style/splashText"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="16dp"
+        android:text="Вы Успешно Зарегистрировались" />
+</RelativeLayout>
