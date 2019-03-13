@@ -50,8 +50,7 @@
                     android:theme="@style/editTextTheme"
                     android:id="@+id/signUpAuthId"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="kpk_08@mail.ru"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/signUpErrorFieldId"
@@ -78,8 +77,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
-                    android:inputType="textPassword"
-                    android:text="12345678"/>
+                    android:inputType="textPassword"/>
 
                 <TextView
                     android:id="@+id/passwordErrorFieldId"
@@ -106,8 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
-                    android:inputType="textPassword"
-                    android:text="12345678"/>
+                    android:inputType="textPassword"/>
 
                 <TextView
                     android:id="@+id/confirmErrorFieldId"

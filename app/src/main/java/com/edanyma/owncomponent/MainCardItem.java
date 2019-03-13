@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -48,11 +49,11 @@ public class MainCardItem extends LinearLayout {
                     break;
             }
         }
-        final ImageView imageView = (ImageView ) this.findViewById( R.id.dishImgId ) ;
-        ((FrameLayout) this.findViewById( R.id.mainCardId )).setOnClickListener(new OnClickListener() {
+        final CardView cardImage = this.findViewById( R.id.cardDishImgId ) ;
+        this.findViewById( R.id.mainCardId ).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick( View view) {
-                imageView.startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.bounce) );
+                cardImage.startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.short_bounce) );
             }
         });
         attributes.recycle();

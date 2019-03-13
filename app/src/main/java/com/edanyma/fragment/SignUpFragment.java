@@ -13,6 +13,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatEditText;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,13 +55,15 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
 
     private TextView mResendCodeValue;
 
-    private String mConfirmationCode = "4785";
+    private String mConfirmationCode;
 
     private OurClientModel mClientModel;
 
     private int mSecondLeft;
 
     private Handler mCountdown;
+
+    private Runnable mCountdownJob;
 
     public SignUpFragment() {
     }
@@ -146,7 +149,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
     private void startCountdown() {
         mSecondLeft = 90;
         mCountdown = new Handler();
-        mCountdown.postDelayed( new Runnable() {
+        mCountdownJob = new Runnable() {
             @Override
             public void run() {
                 mResendCodeValue.setText( mSecondLeft + "" );
@@ -162,7 +165,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
                 mSecondLeft--;
                 mCountdown.postDelayed( this, 1000 );
             }
-        }, 1000 );
+        };
+        mCountdown.postDelayed( mCountdownJob, 1000 );
     }
 
 
@@ -228,6 +232,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        if ( mCountdown != null && mCountdownJob != null ){
+            mCountdown.removeCallbacks( mCountdownJob );
+        }
     }
 
     @Override
@@ -352,8 +359,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
 
     @Override
     public boolean onKey( View view, int i, KeyEvent keyEvent ) {
-        if ( i != 67 ) {
-            switch ( view.getId() ) {
+        if ( i != 67 && KeyEvent.ACTION_DOWN == keyEvent.getAction()) {
+            switch ( view.getId()  ) {
                 case R.id.confirmDigitOneId:
                     mDigitTwo.requestFocus();
                     break;
@@ -375,7 +382,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
 
     public interface OnSignUpListener {
         void OnSignUpListener();
-
         void OnSignInListener();
     }
 
@@ -390,15 +396,15 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
         protected String doInBackground( OurClientModel... ourClient ) {
             String result = null;
             try {
-                Call< ApiResponse > signUpCall = RestController.getInstance()
+                Call< ApiResponse<OurClientModel> > signUpCall = RestController.getInstance()
                         .getApi().signUp( AppConstants.AUTH_BEARER
                                 + GlobalManager.getInstance().getUserToken(), ourClient[ 0 ] );
 
 
-                Response< ApiResponse > responseSignUp = signUpCall.execute();
+                Response< ApiResponse<OurClientModel> > responseSignUp = signUpCall.execute();
                 if ( responseSignUp.body() != null ) {
                     if ( responseSignUp.body().getStatus() == 200 ) {
-                        GlobalManager.getInstance().setUserUUID( ( String ) responseSignUp.body().getResult() );
+                        GlobalManager.getInstance().setClient( responseSignUp.body().getResult() );
                     } else {
                         result = responseSignUp.body().getMessage();
                     }
@@ -435,12 +441,12 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
         protected String doInBackground( OurClientModel... ourClient ) {
             String result = null;
             try {
-                Call< ApiResponse > validateCall = RestController.getInstance()
+                Call< ApiResponse<String> > validateCall = RestController.getInstance()
                         .getApi().validateAndSendEmail( AppConstants.AUTH_BEARER
                                 + GlobalManager.getInstance().getUserToken(), ourClient[ 0 ] );
 
 
-                Response< ApiResponse > responseValidate = validateCall.execute();
+                Response< ApiResponse<String> > responseValidate = validateCall.execute();
                 if ( responseValidate.body() != null ) {
                     if ( responseValidate.body().getStatus() == 200 ) {
                         mConfirmationCode = ( String ) responseValidate.body().getResult();

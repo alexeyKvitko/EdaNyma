@@ -4,6 +4,7 @@
 
     <string name="action_settings">Настройки</string>
     <string name="action_login">Вход | Регистрация</string>
+    <string name="personal_area">Личный Кабинет</string>
 
 
     <string name="app_name">ЕдаНяма</string>
@@ -42,5 +43,13 @@
     <string name="confirm_code_button">Подтвердить</string>
     <string name="resend_confirm_code">Отправить Код Повторно</string>
     <string name="success_sign_up">Вы успешно зарегистрированы</string>
+    <string name="personal_area_title">Личный кабинет</string>
+    <string name="sign_out">Выход</string>
+    <string name="select">Выберите</string>
+    <string name="edit_profile_menu">Редактировать профиль</string>
+    <string name="change_pswd_menu">Сменить пароль</string>
+    <string name="address_menu">Адрес доставки</string>
+    <string name="pay_type_menu">Тип оплаты</string>
+    <string name="my_bonus_menu">Мои бонусы</string>
 
 </resources>

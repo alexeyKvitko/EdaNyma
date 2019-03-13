@@ -10,11 +10,11 @@ public class ApiResponse<T> {
 
     private int status;
     private String message;
-    private Object result;
+    private T result;
 
     public ApiResponse() {}
 
-    public ApiResponse(int status, String message, Object result) {
+    public ApiResponse(int status, String message, T result) {
         this.status = status;
         this.message = message;
         this.result = result;
@@ -36,11 +36,11 @@ public class ApiResponse<T> {
         this.message = message;
     }
 
-    public Object getResult() {
+    public T getResult() {
         return result;
     }
 
-    public void setResult(Object result) {
+    public void setResult(T result) {
         this.result = result;
     }
 

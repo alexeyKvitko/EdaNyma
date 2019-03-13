@@ -28,16 +28,16 @@ public interface RestApi {
                                                @Path("latitude") String latitude,
                                                @Path("longitude") String longitude  );
 
-    @POST(API_CLIENT+"registerClient")
-    Call< ApiResponse > signUp( @Header("Authorization") String authorization,
+    @POST(API_CLIENT+"registerMobileClient")
+    Call< ApiResponse<OurClientModel> > signUp( @Header("Authorization") String authorization,
                                                @Body OurClientModel ourClientModel  );
 
-    @POST(API_CLIENT+"authorizationClient")
-    Call< ApiResponse > signIn( @Header("Authorization") String authorization,
+    @POST(API_CLIENT+"authorizationMobileClient")
+    Call< ApiResponse<OurClientModel> > signIn( @Header("Authorization") String authorization,
                                                @Body OurClientModel ourClientModel  );
 
     @POST(API_CLIENT+"validateAndSendEmail")
-    Call< ApiResponse > validateAndSendEmail( @Header("Authorization") String authorization,
+    Call< ApiResponse<String> > validateAndSendEmail( @Header("Authorization") String authorization,
                                 @Body OurClientModel ourClientModel  );
 
 

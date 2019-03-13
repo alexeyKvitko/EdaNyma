@@ -133,7 +133,7 @@ public abstract class BaseActivity extends AppCompatActivity
         closeDrawer();
         unselectBottomNavigation();
         if( view instanceof ImageButton ){
-            ((ImageButton) view).setSelected( true );
+            view.setSelected( true );
         }
         switch ( view.getId() ){
             case R.id.drawerLoginId:

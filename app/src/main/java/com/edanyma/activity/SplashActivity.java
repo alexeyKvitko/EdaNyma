@@ -153,8 +153,9 @@ public class SplashActivity extends Activity {
                 Response< ApiResponse< AuthToken > > response = responseCall.execute();
                 if ( response.body() != null ) {
                     ApiResponse< AuthToken > authToken = response.body();
-                    GlobalManager.getInstance().setUserToken( ( String ) ( ( LinkedTreeMap ) authToken
-                            .getResult() ).get( "token" ) );
+                    GlobalManager.getInstance().setUserToken( authToken.getResult().getToken() );
+//                    GlobalManager.getInstance().setUserToken( ( String ) ( ( LinkedTreeMap ) authToken
+//                            .getResult() ).get( "token" ) );
 //                    Call< BootstrapModel > bootstrapCall = RestController.getInstance()
 //                            .getApi().fetchBootstrapData( AppConstants.AUTH_BEARER
 //                                            + GlobalManager.getInstance().getUserToken(),

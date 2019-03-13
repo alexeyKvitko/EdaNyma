@@ -84,6 +84,19 @@
         <item name="android:layout_centerVertical">true</item>
     </style>
 
+    <style name="personalMenuItem">
+        <item name="android:background">@drawable/border_bottom</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/iconGrayColor</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+
+
     <style name="actionSlide">
         <item name="android:layout_width">8dp</item>
         <item name="android:layout_height">8dp</item>

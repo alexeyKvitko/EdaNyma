@@ -8,19 +8,28 @@ import android.support.v4.app.NavUtils;
 
 import com.edanyma.AppConstants;
 import com.edanyma.R;
+import com.edanyma.fragment.PersonalAreaFragment;
 import com.edanyma.fragment.SignInFragment;
 import com.edanyma.fragment.SignUpFragment;
+import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 
 public class PersonActivity extends BaseActivity implements SignInFragment.OnSignInListener,
-        SignUpFragment.OnSignUpListener{
+        SignUpFragment.OnSignUpListener, PersonalAreaFragment.OnPersonalAreaActionListener{
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_person );
         initBaseActivity( new ActivityState( AppConstants.LOGIN_BOTTOM_INDEX ) );
-        addReplaceFragment( SignInFragment.newInstance() );
+        if(  GlobalManager.getClient() == null ){
+            findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.login_navigation ) );
+            addReplaceFragment( SignInFragment.newInstance() );
+        } else {
+            findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.person_navigation ) );
+            addReplaceFragment( PersonalAreaFragment.newInstance() );
+        }
+
     }
 
     private void addReplaceFragment( Fragment newFragment ){
@@ -53,5 +62,11 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     @Override
     public void OnSignInListener() {
         addReplaceFragment( SignInFragment.newInstance() );
+    }
+
+    @Override
+    public void OnSignOutAction() {
+        GlobalManager.setClient( null );
+        NavUtils.navigateUpFromSameTask( this );
     }
 }

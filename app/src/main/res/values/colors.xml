@@ -9,6 +9,7 @@
     <color name="grayTextColor">#CECECE</color>
     <color name="iconGrayColor">#646a72</color>
     <color name="transpGrayTextColor">#DDCECECE</color>
+    <color name="transparentBlack">#00000000</color>
     <color name="tealColor">#3B6A75</color>
     <color name="blackButton">#3E454F</color>
     <color name="blueNeon">#535BFE</color>

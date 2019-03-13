@@ -8,8 +8,8 @@
         android:id="@+id/successTopId"
         android:layout_above="@+id/signUpSuccessImgId"
         style="@style/splashText"
-        android:layout_marginLeft="56dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginBottom="-8dp"
         android:text="Спасибо" />
     <ImageView
         android:id="@+id/signUpSuccessImgId"
@@ -22,7 +22,7 @@
         android:id="@+id/successBottomId"
         android:layout_below="@+id/signUpSuccessImgId"
         style="@style/splashText"
-        android:layout_marginLeft="56dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="-8dp"
         android:text="Вы Успешно Зарегистрировались" />
 </RelativeLayout>

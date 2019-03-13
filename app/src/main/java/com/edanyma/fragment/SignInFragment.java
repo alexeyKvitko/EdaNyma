@@ -148,7 +148,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onAnimationUpdate(ValueAnimator animator) {
                 int currentValue = (Integer)animator.getAnimatedValue();
-                Log.i( TAG,"CurrentValue: "+currentValue+", To value: "+colorTo+", Equals: "+(currentValue == colorTo));
                 mSignUpView.setTextColor( currentValue );
                 if( colorTo == currentValue){
                     onStartSignUp();
@@ -220,15 +219,15 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         protected String doInBackground( OurClientModel... ourClient ) {
             String result = null;
             try {
-                Call< ApiResponse > signInCall = RestController.getInstance()
+                Call< ApiResponse<OurClientModel> > signInCall = RestController.getInstance()
                         .getApi().signIn( AppConstants.AUTH_BEARER
                                 + GlobalManager.getInstance().getUserToken(), ourClient[ 0 ] );
 
 
-                Response< ApiResponse > responseSignIn = signInCall.execute();
+                Response< ApiResponse<OurClientModel> > responseSignIn = signInCall.execute();
                 if ( responseSignIn.body() != null ) {
                     if( responseSignIn.body().getStatus() == 200 ){
-                      GlobalManager.getInstance().setUserUUID( (String) responseSignIn.body().getResult() );
+                      GlobalManager.getInstance().setClient( responseSignIn.body().getResult() );
                     } else {
                         result = responseSignIn.body().getMessage();
                     }

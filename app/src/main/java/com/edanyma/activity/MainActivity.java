@@ -10,6 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
@@ -248,10 +249,15 @@ public class MainActivity extends BaseActivity {
         mTimer = new Handler();
         mSliderJob = new SliderJob();
         mTimer.postDelayed( mSliderJob, 1000 );
-        if( GlobalManager.getInstance().getUserUUID() != null ){
+        if( GlobalManager.getInstance().getClient() != null
+                                && GlobalManager.getInstance().getClient().getUuid() != null ){
             findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.person_navigation ) );
+            (( TextView ) mNavigationView.getHeaderView(0).findViewById( R.id.drawerLoginId ))
+                                    .setText( getResources().getString( R.string.personal_area ) );
         } else {
             findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.login_navigation ) );
+            (( TextView ) mNavigationView.getHeaderView(0).findViewById( R.id.drawerLoginId ))
+                                    .setText( getResources().getString( R.string.action_login ) );
         }
     }
 

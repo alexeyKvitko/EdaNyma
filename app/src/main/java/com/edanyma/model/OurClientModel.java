@@ -13,6 +13,7 @@ public class OurClientModel {
     private String confirm;
     private String uuid;
     private Integer bonus;
+    private String additionalMessage;
 
     public Integer getId() {
         return id;
@@ -68,6 +69,14 @@ public class OurClientModel {
 
     public void setBonus( Integer bonus ) {
         this.bonus = bonus;
+    }
+
+    public String getAdditionalMessage() {
+        return additionalMessage;
+    }
+
+    public void setAdditionalMessage( String additionalMessage ) {
+        this.additionalMessage = additionalMessage;
     }
 
     @Override public boolean equals( Object o) {

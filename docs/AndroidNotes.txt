@@ -2,6 +2,8 @@ https://github.com/Ramotion
 https://www.behance.net/gallery/70933623/Delyo-UI-Kit-Food-Delivery-App
 https://android-developers.googleblog.com/2017/10/effective-phone-number-verification.html
 https://habr.com/ru/company/mailru/blog/260841/
+https://code.tutsplus.com/ru/tutorials/how-to-get-started-with-push-notifications-on-android--cms-25870 
+https://stfalcon.com/ru/blog/post/android-websocket 
 
 Retrofit:
 https://www.vogella.com/tutorials/Retrofit/article.html

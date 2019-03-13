@@ -54,7 +54,9 @@
                     android:theme="@style/editTextTheme"
                     android:id="@+id/emailPhoneId"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="kpk_08@mail.ru"
+                    />
                 <TextView
                     style="@style/errorText"
                     android:visibility="gone"
@@ -80,7 +82,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
-                    android:inputType="textPassword"/>
+                    android:inputType="textPassword"
+                    android:text="12345678"/>
+
                 <TextView
                     style="@style/errorText"
                     android:id="@+id/passwordErrorFieldId"
