@@ -1,20 +1,28 @@
 package com.edanyma.utils;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.TextView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
+import com.edanyma.fragment.SignUpFragment;
+
+import android.os.Handler;
+import android.widget.TextView;
+
 
 import java.util.regex.Pattern;
 
 public abstract class AppUtils {
+
+    private static boolean isAnimated;
 
     public static boolean isNetworkAvailable() {
         ConnectivityManager cm = (ConnectivityManager)
@@ -72,6 +80,24 @@ public abstract class AppUtils {
 
         sourceView.startAnimation(  fadeOut );
         targetView.startAnimation(  fadeIn );
+    }
+
+    public static void clickAnimation( final View view ) {
+        Animation bounce = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.short_bounce );
+        view.startAnimation( bounce );
+        final int colorFrom = EdaNymaApp.getAppContext().getResources().getColor( R.color.blueNeon );
+        final int colorTo = EdaNymaApp.getAppContext().getResources().getColor( R.color.colorAccent );
+        ValueAnimator colorAnimation = ValueAnimator.ofObject( new ArgbEvaluator(), colorFrom, colorTo );
+        colorAnimation.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate( ValueAnimator animator ) {
+                if ( view instanceof TextView ){
+                    ((TextView) view).setTextColor( ( Integer ) animator.getAnimatedValue() );
+                }
+            }
+        } );
+        colorAnimation.setDuration( 200 );
+        colorAnimation.start();
     }
 
     public static int getRandomBetweenRange( int min, int max ) {

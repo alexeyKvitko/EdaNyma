@@ -10,12 +10,14 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
@@ -25,8 +27,6 @@ import com.edanyma.model.ApiResponse;
 import com.edanyma.model.OurClientModel;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
-
-import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -67,14 +67,18 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         ( ( TextView ) getView().findViewById( R.id.loginTitleId ) ).setTypeface( AppConstants.SANDORA, Typeface.BOLD );
-        ( ( TextView ) getView().findViewById( R.id.forgotPassword ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
         ( ( TextView ) getView().findViewById( R.id.otherLoginId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
         ( ( TextView ) getView().findViewById( R.id.notSignUpId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
         ( (TextInputLayout)getView().findViewById( R.id.loginTextLayoutId )).setTypeface( AppConstants.ROBOTO_CONDENCED );
         ( (TextInputLayout)getView().findViewById( R.id.passwordTextLayoutId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
+
         Button signButton = getView().findViewById( R.id.signInButtonId );
         signButton.setTypeface( AppConstants.SANDORA );
         signButton.setOnClickListener( this );
+
+        TextView forgotPassword = getView().findViewById( R.id.forgotPasswordId );
+        forgotPassword.setTypeface( AppConstants.ROBOTO_CONDENCED );
+        forgotPassword.setOnClickListener( this );
 
         mSignUpView = getView().findViewById( R.id.signUpId );
         mSignUpView.setTypeface( AppConstants.ROBOTO_CONDENCED );
@@ -86,6 +90,9 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         mLogin.setTypeface( AppConstants.ROBOTO_CONDENCED );
         mPassword.setTypeface( AppConstants.ROBOTO_CONDENCED );
 
+        ImageButton btn = getActivity().findViewById( R.id.navButtonId );
+        btn.setOnClickListener( this );
+
     }
 
     public void onSignInSuccess( ) {
@@ -94,9 +101,27 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void onStartSignUp(){
+    public void onStartSignUp(View view){
         if ( mListener != null ) {
-            mListener.onStartSignUpAction();
+            AppUtils.clickAnimation( view );
+            new Handler().postDelayed( new Runnable() {
+                @Override
+                public void run() {
+                    mListener.onStartSignUpAction();
+                }
+            }, 300 );
+        }
+    }
+
+    public void onForgotPassword( View view ){
+        if ( mListener != null ) {
+            AppUtils.clickAnimation( view );
+            new Handler().postDelayed( new Runnable() {
+                @Override
+                public void run() {
+                    mListener.onForgotPasswordAction();
+                }
+            },300 );
         }
     }
 
@@ -121,18 +146,33 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     public interface OnSignInListener {
         void onSignInAction( );
         void onStartSignUpAction();
+        void onForgotPasswordAction();
     }
 
-
+    private void goBack( View view ){
+        AppUtils.clickAnimation( view );
+        new Handler().postDelayed( new Runnable() {
+            @Override
+            public void run() {
+                NavUtils.navigateUpFromSameTask( getActivity() );
+            }
+        }, 300 );
+    }
 
     @Override
     public void onClick( View view ) {
         switch( view.getId()){
+            case R.id.forgotPasswordId:
+                onForgotPassword( view );
+                break;
             case R.id.signInButtonId:
                 loginViaEmailPhone();
                 break;
+            case R.id.navButtonId:
+                goBack( view );
+                break;
             case R.id.signUpId:
-                clickSignUp();
+                onStartSignUp( view );
                 break;
                 default:
                     break;
@@ -140,23 +180,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void clickSignUp(){
-        final int colorFrom = getResources().getColor(R.color.blueNeon);
-        final int colorTo = getResources().getColor(R.color.colorAccent);
-        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                int currentValue = (Integer)animator.getAnimatedValue();
-                mSignUpView.setTextColor( currentValue );
-                if( colorTo == currentValue){
-                    onStartSignUp();
-                }
-            }
-        });
-        colorAnimation.setDuration( 300 );
-        colorAnimation.start();
-    }
 
     private void loginViaEmailPhone() {
         OurClientModel clientModel = new OurClientModel();

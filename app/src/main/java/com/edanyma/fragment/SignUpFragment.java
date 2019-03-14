@@ -11,18 +11,22 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.AppCompatEditText;
 import android.telephony.SmsManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
+import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
@@ -38,7 +42,11 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
 
     private final String TAG = "SignUpFragment";
 
+    private static final String IS_NEW_OR_FORGOT_PARAM = "isNewOrForgot";
+
     private OnSignUpListener mListener;
+
+    private String mIsNewOrForgot;
 
     private AppCompatEditText mSignUpAuth;
     private AppCompatEditText mPassword;
@@ -68,14 +76,20 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
     public SignUpFragment() {
     }
 
-    public static SignUpFragment newInstance() {
+    public static SignUpFragment newInstance( String param ) {
         SignUpFragment fragment = new SignUpFragment();
+        Bundle args = new Bundle();
+        args.putString( IS_NEW_OR_FORGOT_PARAM, param );
+        fragment.setArguments( args );
         return fragment;
     }
 
     @Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+        if ( getArguments() != null ) {
+            mIsNewOrForgot = getArguments().getString( IS_NEW_OR_FORGOT_PARAM );
+        }
     }
 
 
@@ -99,7 +113,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
         ( ( TextView ) getView().findViewById( R.id.resendCodeLabelId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
         ( ( TextView ) getView().findViewById( R.id.successTopId ) ).setTypeface( AppConstants.B52 );
         ( ( TextView ) getView().findViewById( R.id.successBottomId ) ).setTypeface( AppConstants.B52 );
-
         getView().findViewById( R.id.resendCodeLabelId ).setOnClickListener( this );
 
         mPasswordErrorView = getView().findViewById( R.id.confirmErrorFieldId );
@@ -143,8 +156,25 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
 
         mResendCodeValue = getView().findViewById( R.id.resendCodeValueId );
         mResendCodeValue.setTypeface( AppConstants.ROBOTO_CONDENCED );
+        getActivity().findViewById( R.id.navButtonId ).setOnClickListener( this );
+
+        if( AppConstants.FORGOT_PASSWORD.equals( getArguments().getString( IS_NEW_OR_FORGOT_PARAM ) ) ){
+            hideUnnecessaryViews();
+        }
     }
 
+    private void hideUnnecessaryViews(){
+        getView().findViewById( R.id.signInId ).setVisibility( View.GONE );
+        getView().findViewById( R.id.signOutLineId ).setVisibility( View.GONE );
+        getView().findViewById( R.id.otherSignInId ).setVisibility( View.GONE );
+        getView().findViewById( R.id.signWithGoogleId ).setVisibility( View.GONE );
+        ( ( TextView ) getView().findViewById( R.id.signUpTitleId ) )
+                                .setText( getResources().getString( R.string.fogot_password ) );
+        ( ( TextView ) getView().findViewById( R.id.successBottomId ) )
+                                .setText( getResources().getString( R.string.success_change_password ) );
+        ( ( TextInputLayout ) getView().findViewById( R.id.signUpPasswordLayoutId ) )
+                                    .setHint( getResources().getString( R.string.new_password ) );
+    }
 
     private void startCountdown() {
         mSecondLeft = 90;
@@ -187,40 +217,34 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
         }
     }
 
-    private void clickSignIn() {
-        final int colorFrom = getResources().getColor( R.color.blueNeon );
-        final int colorTo = getResources().getColor( R.color.colorAccent );
-        ValueAnimator colorAnimation = ValueAnimator.ofObject( new ArgbEvaluator(), colorFrom, colorTo );
-        colorAnimation.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
+    private void clickSignIn( View view ) {
+        AppUtils.clickAnimation( view );
+        new Handler().postDelayed( new Runnable() {
             @Override
-            public void onAnimationUpdate( ValueAnimator animator ) {
-                int currentValue = ( Integer ) animator.getAnimatedValue();
-                mSignInView.setTextColor( currentValue );
-                if ( colorTo == currentValue ) {
-                    onStartSignIn();
-                }
+            public void run() {
+                onStartSignIn();
             }
-        } );
-        colorAnimation.setDuration( 300 );
-        colorAnimation.start();
+        }, 300 );
     }
 
-    private void clickResendCode() {
-        final int colorFrom = getResources().getColor( R.color.blueNeon );
-        final int colorTo = getResources().getColor( R.color.colorAccent );
-        ValueAnimator colorAnimation = ValueAnimator.ofObject( new ArgbEvaluator(), colorFrom, colorTo );
-        colorAnimation.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
+    private void clickResendCode( View view ) {
+        AppUtils.clickAnimation( view );
+        new Handler().postDelayed( new Runnable() {
             @Override
-            public void onAnimationUpdate( ValueAnimator animator ) {
-                int currentValue = ( Integer ) animator.getAnimatedValue();
-                mSignInView.setTextColor( currentValue );
-                if ( colorTo == currentValue ) {
-                    new SignUpFragment.ValidateClientSignUp().execute( mClientModel );
-                }
+            public void run() {
+                new SignUpFragment.ValidateClientSignUp().execute( mClientModel );
             }
-        } );
-        colorAnimation.setDuration( 300 );
-        colorAnimation.start();
+        }, 300 );
+    }
+
+    private void goBack( View view ){
+        AppUtils.clickAnimation( view );
+        new Handler().postDelayed( new Runnable() {
+            @Override
+            public void run() {
+                getActivity().getSupportFragmentManager().popBackStackImmediate();
+            }
+        }, 300 );
     }
 
     public static void hideKeyboardFrom(Context context, View view) {
@@ -238,6 +262,12 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
     }
 
     @Override
+    public void onPause() {
+        getView().startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.fade_out ) );
+        super.onPause();
+    }
+
+    @Override
     public void onClick( View view ) {
         switch ( view.getId() ) {
             case R.id.signUpButtonId:
@@ -248,10 +278,13 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
                 confirmEmailPhone();
                 break;
             case R.id.resendCodeLabelId:
-                clickResendCode();
+                clickResendCode( view );
                 break;
             case R.id.signInId:
-                clickSignIn();
+                clickSignIn( view );
+                break;
+            case R.id.navButtonId:
+                goBack( view );
                 break;
             default:
                 break;
@@ -319,6 +352,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
             return;
         }
         mClientModel.setPassword( password );
+        if ( AppConstants.FORGOT_PASSWORD.equals( mIsNewOrForgot ) ){
+            mClientModel.setAdditionalMessage( AppConstants.FORGOT_PASSWORD );
+        }
         AppUtils.transitionAnimation( getView().findViewById( R.id.signUpContailnerId ),
                 getView().findViewById( R.id.pleaseWaitContainerId ) );
         new SignUpFragment.ValidateClientSignUp().execute( mClientModel );

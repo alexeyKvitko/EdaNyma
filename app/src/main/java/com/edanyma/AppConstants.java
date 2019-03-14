@@ -44,7 +44,9 @@ public class AppConstants {
     public static final String EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
     public static final String PHONE_PATTERN = "^\\d{10}$";
 
-
+    public static final String NEW_CLIENT = "NEW";
+    public static final String FORGOT_PASSWORD = "FORGOT_PASSWORD";
+    public static final String FAKE_PASSWORD = "12345678";
 
 
 }

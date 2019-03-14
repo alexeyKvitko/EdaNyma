@@ -1,10 +1,12 @@
 package com.edanyma.activity;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
+import android.widget.ImageButton;
 
 import com.edanyma.AppConstants;
 import com.edanyma.R;
@@ -15,7 +17,7 @@ import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 
 public class PersonActivity extends BaseActivity implements SignInFragment.OnSignInListener,
-        SignUpFragment.OnSignUpListener, PersonalAreaFragment.OnPersonalAreaActionListener{
+        SignUpFragment.OnSignUpListener, PersonalAreaFragment.OnPersonalAreaActionListener {
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -29,7 +31,7 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
             findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.person_navigation ) );
             addReplaceFragment( PersonalAreaFragment.newInstance() );
         }
-
+        (( ImageButton) findViewById( R.id.navButtonId ) ).setImageDrawable( getResources().getDrawable( R.drawable.ic_chevron_left_black_24dp ) );
     }
 
     private void addReplaceFragment( Fragment newFragment ){
@@ -51,7 +53,7 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
 
     @Override
     public void onStartSignUpAction() {
-        addReplaceFragment( SignUpFragment.newInstance() );
+        addReplaceFragment( SignUpFragment.newInstance( AppConstants.NEW_CLIENT ) );
     }
 
     @Override
@@ -68,5 +70,10 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     public void OnSignOutAction() {
         GlobalManager.setClient( null );
         NavUtils.navigateUpFromSameTask( this );
+    }
+
+    @Override
+    public void onForgotPasswordAction() {
+        addReplaceFragment( SignUpFragment.newInstance( AppConstants.FORGOT_PASSWORD ) );
     }
 }

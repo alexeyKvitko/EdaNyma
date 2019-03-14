@@ -1,13 +1,10 @@
 package com.edanyma.fragment;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
-import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

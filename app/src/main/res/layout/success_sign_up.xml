@@ -10,7 +10,7 @@
         style="@style/splashText"
         android:layout_marginLeft="32dp"
         android:layout_marginBottom="-8dp"
-        android:text="Спасибо" />
+        android:text="@string/thank_label" />
     <ImageView
         android:id="@+id/signUpSuccessImgId"
         android:layout_width="wrap_content"
@@ -24,5 +24,5 @@
         style="@style/splashText"
         android:layout_marginLeft="32dp"
         android:layout_marginTop="-8dp"
-        android:text="Вы Успешно Зарегистрировались" />
+        android:text="@string/success_sign_in_label" />
 </RelativeLayout>

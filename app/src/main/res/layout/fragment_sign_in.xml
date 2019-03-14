@@ -16,7 +16,7 @@
         android:text="@string/login_title" />
 
     <TextView
-        android:id="@+id/forgotPassword"
+        android:id="@+id/forgotPasswordId"
         style="@style/greenLabel"
         android:layout_below="@+id/loginTitleId"
         android:layout_alignParentRight="true"
