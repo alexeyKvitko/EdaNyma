@@ -88,7 +88,7 @@ public class PersonalAreaFragment extends Fragment {
 
     public void onSignOutAction(){
         if( mListener != null ){
-            mListener.OnSignOutAction();
+            mListener.onSignOutAction();
         }
     }
 
@@ -111,6 +111,6 @@ public class PersonalAreaFragment extends Fragment {
     }
 
     public interface OnPersonalAreaActionListener {
-        void OnSignOutAction();
+        void onSignOutAction();
     }
 }

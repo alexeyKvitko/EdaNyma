@@ -4,12 +4,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <uses-feature
         android:name="android.hardware.location.gps"
@@ -23,6 +24,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.FullScreen">
+        <activity android:name=".activity.CityActivity"></activity>
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait">
@@ -34,10 +36,11 @@
         </activity>
         <activity
             android:name=".activity.MainActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".activity.PersonActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".activity.MainActivity"></activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PersonActivity"
+            android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

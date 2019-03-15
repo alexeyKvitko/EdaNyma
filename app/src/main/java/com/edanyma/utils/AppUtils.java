@@ -5,18 +5,17 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
-import com.edanyma.fragment.SignUpFragment;
-
-import android.os.Handler;
-import android.widget.TextView;
-
 
 import java.util.regex.Pattern;
 
@@ -96,6 +95,12 @@ public abstract class AppUtils {
                 }
             }
         } );
+        if ( Build.VERSION.SDK_INT >= 26) {
+            ((Vibrator) EdaNymaApp.getAppContext().getSystemService(Context.VIBRATOR_SERVICE))
+                                        .vibrate( VibrationEffect.createOneShot(100,10));
+        } else {
+            ((Vibrator) EdaNymaApp.getAppContext().getSystemService(Context.VIBRATOR_SERVICE)).vibrate(150);
+        }
         colorAnimation.setDuration( 200 );
         colorAnimation.start();
     }

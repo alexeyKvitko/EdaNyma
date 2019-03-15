@@ -154,19 +154,17 @@ public class SplashActivity extends Activity {
                 if ( response.body() != null ) {
                     ApiResponse< AuthToken > authToken = response.body();
                     GlobalManager.getInstance().setUserToken( authToken.getResult().getToken() );
-//                    GlobalManager.getInstance().setUserToken( ( String ) ( ( LinkedTreeMap ) authToken
-//                            .getResult() ).get( "token" ) );
-//                    Call< BootstrapModel > bootstrapCall = RestController.getInstance()
-//                            .getApi().fetchBootstrapData( AppConstants.AUTH_BEARER
-//                                            + GlobalManager.getInstance().getUserToken(),
-//                                    mLatitude, mLongitude );
-//                    Response< BootstrapModel > responseBootstrap = bootstrapCall.execute();
-//                    if ( responseBootstrap.body() != null ) {
-//                        GlobalManager.getInstance().setBootstrapModel( responseBootstrap.body() );
-//                        if ( GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() == null ) {
-//                            mBootstrapSuccess = false;
-//                        }
-//                    }
+                    Call< BootstrapModel > bootstrapCall = RestController.getInstance()
+                            .getApi().fetchBootstrapData( AppConstants.AUTH_BEARER
+                                            + GlobalManager.getInstance().getUserToken(),
+                                    mLatitude, mLongitude );
+                    Response< BootstrapModel > responseBootstrap = bootstrapCall.execute();
+                    if ( responseBootstrap.body() != null ) {
+                        GlobalManager.getInstance().setBootstrapModel( responseBootstrap.body() );
+                        if ( GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() == null ) {
+                            mBootstrapSuccess = false;
+                        }
+                    }
                 }
             } catch ( Exception e ) {
                 Log.i( TAG, e.getMessage() );

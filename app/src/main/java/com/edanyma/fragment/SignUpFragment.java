@@ -1,7 +1,5 @@
 package com.edanyma.fragment;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -11,22 +9,17 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NavUtils;
 import android.support.v7.widget.AppCompatEditText;
 import android.telephony.SmsManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
-import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
@@ -213,7 +206,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
 
     public void onStartSignIn() {
         if ( mListener != null ) {
-            mListener.OnSignInListener();
+            mListener.onSignInListener();
         }
     }
 
@@ -237,16 +230,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
         }, 300 );
     }
 
-    private void goBack( View view ){
-        AppUtils.clickAnimation( view );
-        new Handler().postDelayed( new Runnable() {
-            @Override
-            public void run() {
-                getActivity().getSupportFragmentManager().popBackStackImmediate();
-            }
-        }, 300 );
-    }
-
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService( Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -261,11 +244,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
         }
     }
 
-    @Override
-    public void onPause() {
-        getView().startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.fade_out ) );
-        super.onPause();
-    }
 
     @Override
     public void onClick( View view ) {
@@ -284,7 +262,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
                 clickSignIn( view );
                 break;
             case R.id.navButtonId:
-                goBack( view );
+                getActivity().onBackPressed();
                 break;
             default:
                 break;
@@ -378,7 +356,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
             new Handler().postDelayed( new Runnable() {
                 @Override
                 public void run() {
-                    mListener.OnSignUpListener();
+                    mListener.onSignUpAction();
                 }
             }, 3000 );
 
@@ -417,8 +395,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
     }
 
     public interface OnSignUpListener {
-        void OnSignUpListener();
-        void OnSignInListener();
+        void onSignUpAction();
+        void onSignInListener();
     }
 
     private class ClientSignUp extends AsyncTask< OurClientModel, Void, String > {

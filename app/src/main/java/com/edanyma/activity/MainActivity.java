@@ -57,11 +57,12 @@ public class MainActivity extends BaseActivity {
 
     private void initMainLayout() {
         initBaseActivity( new ActivityState( AppConstants.HOME_BOTTOM_INDEX ) );
-//        List<CompanyActionModel> companyActionModels = GlobalManager.getInstance().getBootstrapModel()
-//                                                            .getCompanyActions();
-//        fillActionAdapter( companyActionModels );
         mContext = this;
-        fillActionAdapter( fillCompanyAction() );
+        List<CompanyActionModel> companyActionModels = GlobalManager.getInstance().getBootstrapModel()
+                                                            .getCompanyActions();
+        fillActionAdapter( companyActionModels );
+
+//        fillActionAdapter( fillCompanyAction() );
         fillHomeMenuAdapter( fillHomeMenuModel() );
         initRecyclerView();
     }

@@ -132,7 +132,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
             mListener = ( OnSignInListener ) context;
         } else {
             throw new RuntimeException( context.toString()
-                    + " must implement OnSignInListener" );
+                    + " must implement onSignInListener" );
         }
     }
 
@@ -149,16 +149,6 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         void onForgotPasswordAction();
     }
 
-    private void goBack( View view ){
-        AppUtils.clickAnimation( view );
-        new Handler().postDelayed( new Runnable() {
-            @Override
-            public void run() {
-                NavUtils.navigateUpFromSameTask( getActivity() );
-            }
-        }, 300 );
-    }
-
     @Override
     public void onClick( View view ) {
         switch( view.getId()){
@@ -169,7 +159,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                 loginViaEmailPhone();
                 break;
             case R.id.navButtonId:
-                goBack( view );
+                getActivity().onBackPressed();
                 break;
             case R.id.signUpId:
                 onStartSignUp( view );

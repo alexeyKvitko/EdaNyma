@@ -10,6 +10,6 @@
     <dimen name="card_elevation">3dp</dimen>
     <dimen name="card_corner_radius">2dp</dimen>
     <dimen name="fragment_margin_top">48dp</dimen>
-    <dimen name="fragment_margin_bottom">56dp</dimen>
+    <dimen name="fragment_margin_bottom">48dp</dimen>
 
 </resources>

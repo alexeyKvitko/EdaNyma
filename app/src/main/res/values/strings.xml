@@ -57,5 +57,7 @@
     <string name="thank_label">Спасибо</string>
     <string name="success_sign_in_label">Вы Успешно Зарегистрировались</string>
     <string name="success_change_password">Ваш Праоль Изменен</string>
+    <string name="city_place">Доставка по Городу</string>
+    <string name="not_available">Not Avilable</string>
 
 </resources>

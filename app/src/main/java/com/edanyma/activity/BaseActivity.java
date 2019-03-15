@@ -22,6 +22,7 @@ import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
+import com.edanyma.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -44,7 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity
         mDeliveryTV.setTypeface( AppConstants.ROBOTO_CONDENCED );
         mDeliveryTV.setText( GlobalManager.getInstance().getBootstrapModel() != null ?
                 GlobalManager.getInstance().getBootstrapModel().getDeliveryCity():
-                "Not Avilable");
+                getResources().getString( R.string.not_available));
         mDrawer = findViewById( R.id.drawer_layout );
         mNavigationButton = findViewById( R.id.navButtonId );
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -76,14 +77,11 @@ public abstract class BaseActivity extends AppCompatActivity
         mNavigationView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                // Remember to remove the installed OnGlobalLayoutListener
                 mNavigationView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                // Loop through and find each MenuItem View
                 for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
                     final MenuItem item = mNavigationView.getMenu().getItem( i );
                     mNavigationView.findViewsWithText(mMenuItems, item.getTitle(), View.FIND_VIEWS_WITH_TEXT);
                 }
-                // Loop through each MenuItem View and apply your custom Typeface
                 for (final View menuItem : mMenuItems) {
                     TextView tv = (TextView) menuItem;
                     tv.setTypeface( AppConstants.ROBOTO_CONDENCED);
@@ -91,6 +89,8 @@ public abstract class BaseActivity extends AppCompatActivity
                 }
             }
         });
+
+        findViewById( R.id.navButtonCityId ).setOnClickListener( this );
     }
 
     @Override
@@ -112,13 +112,13 @@ public abstract class BaseActivity extends AppCompatActivity
         closeDrawer();
         switch ( selId ) {
             case R.id.navigation_login:
-                startPersonActivity();
+                startNewActivity( PersonActivity.class );
                 break;
             case R.id.navigation_home:
-                startMainActivity();
+                startNewActivity( MainActivity.class );
                 break;
             case R.id.nav_home:
-                startMainActivity();
+                startNewActivity( MainActivity.class );
                 break;
 
         }
@@ -137,13 +137,16 @@ public abstract class BaseActivity extends AppCompatActivity
         }
         switch ( view.getId() ){
             case R.id.drawerLoginId:
-                startPersonActivity();
+                startNewActivity( PersonActivity.class );
                 break;
             case R.id.navigation_home:
-                startMainActivity();
+                startNewActivity( MainActivity.class );
                 break;
             case R.id.navigation_login:
-                startPersonActivity();
+                startNewActivity( PersonActivity.class );
+                break;
+            case R.id.navButtonCityId:
+                startCityActivity( view );
                 break;
             default:
                 break;
@@ -161,20 +164,22 @@ public abstract class BaseActivity extends AppCompatActivity
         }
     }
 
-    private void startPersonActivity(){
-        Intent intent = new Intent( EdaNymaApp.getAppContext(), PersonActivity.class );
+    private void startNewActivity( Class<?> newClass){
+        Intent intent = new Intent( EdaNymaApp.getAppContext(), newClass );
         intent.addFlags( Intent.FLAG_ACTIVITY_NO_ANIMATION );
         intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
         startActivity( intent );
         overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
     }
 
-    private void startMainActivity(){
-        Intent intent = new Intent( EdaNymaApp.getAppContext(), MainActivity.class );
-        intent.addFlags( Intent.FLAG_ACTIVITY_NO_ANIMATION );
-        intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
-        startActivity( intent );
-        overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
+    private void startCityActivity( View view ){
+        AppUtils.clickAnimation( view );
+        new Handler().postDelayed( new Runnable() {
+            @Override
+            public void run() {
+                startNewActivity( CityActivity.class );
+            }
+        }, 300 );
     }
 
     private void unselectBottomNavigation(){

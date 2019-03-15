@@ -1,7 +1,6 @@
 package com.edanyma.activity;
 
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -36,7 +35,7 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
 
     private void addReplaceFragment( Fragment newFragment ){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations( R.anim.fade_in, R.anim.fade_out );
+        fragmentTransaction.setCustomAnimations( R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out );
         if( getSupportFragmentManager().getFragments().size() == 0 ){
             fragmentTransaction.add( R.id.personFragmentContainerId, newFragment );
         } else {
@@ -57,17 +56,18 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     }
 
     @Override
-    public void OnSignUpListener() {
+    public void onSignUpAction() {
         NavUtils.navigateUpFromSameTask( this );
+        overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
     }
 
     @Override
-    public void OnSignInListener() {
+    public void onSignInListener() {
         addReplaceFragment( SignInFragment.newInstance() );
     }
 
     @Override
-    public void OnSignOutAction() {
+    public void onSignOutAction() {
         GlobalManager.setClient( null );
         NavUtils.navigateUpFromSameTask( this );
     }
@@ -75,5 +75,15 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     @Override
     public void onForgotPasswordAction() {
         addReplaceFragment( SignUpFragment.newInstance( AppConstants.FORGOT_PASSWORD ) );
+    }
+
+    @Override
+    public void onBackPressed() {
+        if( getSupportFragmentManager().getFragments().size() == 0 ){
+            NavUtils.navigateUpFromSameTask( this );
+            overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
+        }
+        super.onBackPressed();
+        overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
     }
 }

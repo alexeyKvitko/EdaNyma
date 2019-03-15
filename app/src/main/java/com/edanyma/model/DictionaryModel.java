@@ -10,6 +10,7 @@ public class DictionaryModel {
     private String id;
     private String name;
     private String displayName;
+    private String url;
     private String latitude;
     private String longitude;
     private Integer order;
@@ -60,6 +61,14 @@ public class DictionaryModel {
 
     public void setOrder( Integer order ) {
         this.order = order;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl( String url ) {
+        this.url = url;
     }
 
     @Override public boolean equals( Object o) {
