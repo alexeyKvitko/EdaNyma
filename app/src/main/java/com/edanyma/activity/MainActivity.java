@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,16 +20,16 @@ import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.model.HomeMenuModel;
+import com.edanyma.owncomponent.MainCardItem;
 import com.edanyma.recycleview.CompanyActionAdapter;
 import com.edanyma.recycleview.HomeMenuAdapter;
 import com.edanyma.utils.PicassoClient;
 import com.stone.vega.library.VegaLayoutManager;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardClickListener {
 
     private final String TAG = "MainActivity";
 
@@ -40,7 +41,7 @@ public class MainActivity extends BaseActivity {
     private LinearLayoutManager mHorizontalLayoutManager;
 
     private RecyclerView mHomeMenuRecView;
-    private RecyclerView.Adapter mHomeMenuAdapter;
+    private HomeMenuAdapter mHomeMenuAdapter;
     private int mPrevScrollState;
     private int mCurrentSlide;
     private Handler mTimer;
@@ -61,9 +62,7 @@ public class MainActivity extends BaseActivity {
         List<CompanyActionModel> companyActionModels = GlobalManager.getInstance().getBootstrapModel()
                                                             .getCompanyActions();
         fillActionAdapter( companyActionModels );
-
-//        fillActionAdapter( fillCompanyAction() );
-        fillHomeMenuAdapter( fillHomeMenuModel() );
+        fillHomeMenuAdapter( GlobalManager.getInstance().getHomeMenus() );
         initRecyclerView();
     }
 
@@ -83,12 +82,9 @@ public class MainActivity extends BaseActivity {
                             ( RecyclerView.SCROLL_STATE_IDLE == mPrevScrollState &&
                                     RecyclerView.SCROLL_STATE_DRAGGING == newState ) ) {
                         changeCardAccordingToPosition();
-
                     }
                     mPrevScrollState = newState;
                 }
-
-
                 @Override
                 public void onScrolled( RecyclerView recyclerView, int dx, int dy ) {
                     super.onScrolled( recyclerView, dx, dy );
@@ -124,36 +120,14 @@ public class MainActivity extends BaseActivity {
     private void fillHomeMenuAdapter( List< HomeMenuModel > menuModels ) {
         if ( mHomeMenuAdapter == null ) {
             mHomeMenuAdapter = new HomeMenuAdapter( new ArrayList< HomeMenuModel >() );
+            mHomeMenuAdapter.setOnItemClickListener( this );
         }
         for ( int i = 0; i < menuModels.size(); i++ ) {
-            ( ( HomeMenuAdapter ) mHomeMenuAdapter ).addItem( menuModels.get( i ), i );
+             mHomeMenuAdapter.addItem( menuModels.get( i ), i );
         }
     }
 
-    private LinkedList< CompanyActionModel > fillCompanyAction() {
-        LinkedList< CompanyActionModel > actions = new LinkedList<>();
-        actions.add( new CompanyActionModel( "FIDELE", "http://194.58.122.145:8080/static/images/fidele_action.jpg" ) );
-        actions.add( new CompanyActionModel( "ДОСТАВКА КУХНЯ", "http://194.58.122.145:8080/static/images/kuhnya_action.jpg" ) );
-        actions.add( new CompanyActionModel( "PIZZA ROLLA", "http://194.58.122.145:8080/static/images/pizrol_action.jpg" ) );
-        actions.add( new CompanyActionModel( "FOODIE", "http://194.58.122.145:8080/static/images/foodie_action.jpg" ) );
-        actions.add( new CompanyActionModel( "ПАВЛИН МАВЛИН", "http://194.58.122.145:8080/static/images/pavlin_action.jpg" ) );
-        return actions;
-    }
 
-    private LinkedList< HomeMenuModel > fillHomeMenuModel() {
-
-        LinkedList< HomeMenuModel > homeMenuModels = new LinkedList<>();
-        homeMenuModels.add( new HomeMenuModel( "ВСЕ ЗАВЕДЕНИЯ", getResources().getDrawable( R.drawable.restaurant ), "102",
-                "ВСЕ БЛЮДА", getResources().getDrawable( R.drawable.all_dishes ), "24" ) );
-        homeMenuModels.add( new HomeMenuModel( "ПИЦЦА", getResources().getDrawable( R.drawable.pizza ), "31",
-                "СУШИ/СЭТЫ", getResources().getDrawable( R.drawable.sushi ), "12" ) );
-        homeMenuModels.add( new HomeMenuModel( "БУРГЕРЫ", getResources().getDrawable( R.drawable.burger ), "12",
-                "МАНГАЛ МЕНЮ", getResources().getDrawable( R.drawable.shashlik ), "18" ) );
-        homeMenuModels.add( new HomeMenuModel( "WOK МЕНЮ", getResources().getDrawable( R.drawable.wok ), "11",
-                "ИЗБРАННОЕ", getResources().getDrawable( R.drawable.favorite ), "02" ) );
-
-        return homeMenuModels;
-    }
 
 
     @Override
@@ -260,6 +234,9 @@ public class MainActivity extends BaseActivity {
             (( TextView ) mNavigationView.getHeaderView(0).findViewById( R.id.drawerLoginId ))
                                     .setText( getResources().getString( R.string.action_login ) );
         }
+        if ( mHomeMenuAdapter != null ){
+            mHomeMenuAdapter.notifyDataSetChanged();
+        }
     }
 
     private void changeSlideIcon( final int prevSlide ) {
@@ -319,8 +296,20 @@ public class MainActivity extends BaseActivity {
                 .startAnimation( AnimationUtils.loadAnimation( mContext, R.anim.slide_l ) );
     }
 
+    @Override
+    public void onItemClick( int position, View view ) {
+        String homeMenuTag = (( TextView )view.findViewById( R.id.dishTitleTextId )).getText().toString();
+        switch ( homeMenuTag ){
+            case AppConstants.ALL_COMPANIES:
+                startNewActivity( CompanyActivity.class );
+                break;
+                default:
+                    break;
+        }
+    }
 
-   private class SliderJob implements  Runnable {
+
+    private class SliderJob implements  Runnable {
              @Override
         public void run() {
             int prevSlide = mCurrentSlide;

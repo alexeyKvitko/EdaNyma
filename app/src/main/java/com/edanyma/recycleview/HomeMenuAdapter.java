@@ -35,9 +35,7 @@ public class HomeMenuAdapter extends CommonBaseAdapter< HomeMenuModel > {
     @Override
     public void onBindViewHolder(final BaseDataObjectHolder holder, final int position) {
         HomeMenuDataObjectHolder homeMenuCardHolder = (HomeMenuDataObjectHolder) holder;
-//        categoryCardHolder.actionCompany.setText( mItemList.get( position ).getCompanyName() );
-//        PicassoClient.downloadImage( EdaNymaApp.getAppContext(),
-//                mItemList.get( position ).getActionImgUrl(),categoryCardHolder.actionImage);
+
         homeMenuCardHolder.leftMenuImage.setImageDrawable( mItemList.get( position).getLeftMenuImg());
         homeMenuCardHolder.leftMenuTitle.setText( mItemList.get( position).getLeftMenuName() );
         homeMenuCardHolder.leftMenuCount.setText( AppUtils.declension( mItemList.get( position).getLeftMenuCount() ) );
@@ -64,11 +62,19 @@ public class HomeMenuAdapter extends CommonBaseAdapter< HomeMenuModel > {
             leftMenuImage = leftCardItem.findViewById( R.id.dishImgId );
             leftMenuTitle = leftCardItem.findViewById( R.id.dishTitleTextId );
             leftMenuCount = leftCardItem.findViewById( R.id.dishCountTextId );
+            leftCardItem.setOnClickListener( this );
             
             MainCardItem rightCardItem = itemView.findViewById( R.id.rightCardId );
             rightMenuImage = rightCardItem.findViewById( R.id.dishImgId );
             rightMenuTitle = rightCardItem.findViewById( R.id.dishTitleTextId );
             rightMenuCount = rightCardItem.findViewById( R.id.dishCountTextId );
+            rightCardItem.setOnClickListener( this );
+        }
+
+        @Override
+        public void onClick( View view ) {
+            AppUtils.bounceAnimation( view.findViewById( R.id.cardDishImgId ) );
+            super.onClick( view );
         }
     }
 }

@@ -7,13 +7,13 @@ import java.io.Serializable;
 
 public class ActivityState implements Serializable {
 
-    private int bottomMenuIndex;
+    private int mBottomMenuIndex;
     private int drawerMenuIndex;
     private int selectedBottomId;
     private int selectedDrawerId;
 
     public ActivityState( int bottomMenuIndex ) {
-        this.bottomMenuIndex = bottomMenuIndex;
+        this.mBottomMenuIndex = bottomMenuIndex;
         switch ( bottomMenuIndex ){
             case AppConstants.COMPANY_BOTTOM_INDEX:
                 this.drawerMenuIndex = AppConstants.COMPANY_DRAWER_INDEX;
@@ -45,7 +45,7 @@ public class ActivityState implements Serializable {
     }
 
     public int getBottomMenuIndex() {
-        return bottomMenuIndex;
+        return mBottomMenuIndex;
     }
 
     public int getDrawerMenuIndex() {

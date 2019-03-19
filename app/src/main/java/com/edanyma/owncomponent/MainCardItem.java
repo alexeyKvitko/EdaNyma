@@ -49,13 +49,6 @@ public class MainCardItem extends LinearLayout {
                     break;
             }
         }
-        final CardView cardImage = this.findViewById( R.id.cardDishImgId ) ;
-        this.findViewById( R.id.mainCardId ).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick( View view) {
-                cardImage.startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.short_bounce) );
-            }
-        });
         attributes.recycle();
     }
 

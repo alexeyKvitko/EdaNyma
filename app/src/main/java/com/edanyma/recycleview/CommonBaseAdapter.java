@@ -84,7 +84,7 @@ public class CommonBaseAdapter<T> extends  RecyclerView.Adapter< BaseDataObjectH
 
     public interface CardClickListener {
         void onItemClick(int position, View v);
-        void onAdditionalItemClick(int position, View v);
+//        void onAdditionalItemClick(int position, View v);
     }
 
     public LruCache<Integer, Bitmap> getImages() {

@@ -34,6 +34,8 @@ public class AppConstants {
     public static final int BANNER_CENTER = 540;
     public static final int BANNER_END = 984;
 
+    public static final String PREV_NAV_STATE = "prev_nav_state";
+
     public static final String SEND_PHONE_CODE = "1111";
 
     public static final String EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
@@ -42,6 +44,16 @@ public class AppConstants {
     public static final String NEW_CLIENT = "NEW";
     public static final String FORGOT_PASSWORD = "FORGOT_PASSWORD";
     public static final String FAKE_PASSWORD = "12345678";
+
+    public static final String ALL_COMPANIES = "ВСЕ ЗАВЕДЕНИЯ";
+    public static final String ALL_DISHES = "ВСЕ БЛЮДА";
+    public static final String DISH_PIZZA = "ПИЦЦА";
+    public static final String DISH_SUSHI = "СУШИ/СЭТЫ";
+    public static final String DISH_BURGERS = "БУРГЕРЫ";
+    public static final String DISH_GRILL = "МАНГАЛ МЕНЮ";
+    public static final String DISH_WOK = "WOK МЕНЮ";
+    public static final String DISH_FAVOITES = "ИЗБРАННОЕ";
+
 
 
 }

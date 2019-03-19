@@ -15,15 +15,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.edanyma.AppConstants;
+import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.AuthToken;
 import com.edanyma.model.BootstrapModel;
+import com.edanyma.model.DictionaryModel;
 import com.edanyma.model.LoginUser;
 import com.edanyma.receiver.SingleShotLocationProvider;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
+import com.edanyma.utils.PicassoClient;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.ArrayList;

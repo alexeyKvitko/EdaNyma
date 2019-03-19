@@ -84,25 +84,17 @@ public abstract class AppUtils {
     public static void clickAnimation( final View view ) {
         Animation bounce = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.short_bounce );
         view.startAnimation( bounce );
-        final int colorFrom = EdaNymaApp.getAppContext().getResources().getColor( R.color.blueNeon );
-        final int colorTo = EdaNymaApp.getAppContext().getResources().getColor( R.color.colorAccent );
-        ValueAnimator colorAnimation = ValueAnimator.ofObject( new ArgbEvaluator(), colorFrom, colorTo );
-        colorAnimation.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate( ValueAnimator animator ) {
-                if ( view instanceof TextView ){
-                    ((TextView) view).setTextColor( ( Integer ) animator.getAnimatedValue() );
-                }
-            }
-        } );
+    }
+
+    public static void bounceAnimation( final View view ) {
+        Animation bounce = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.bounce );
+        view.startAnimation( bounce );
         if ( Build.VERSION.SDK_INT >= 26) {
             ((Vibrator) EdaNymaApp.getAppContext().getSystemService(Context.VIBRATOR_SERVICE))
-                                        .vibrate( VibrationEffect.createOneShot(100,10));
+                    .vibrate( VibrationEffect.createOneShot(50,10));
         } else {
-            ((Vibrator) EdaNymaApp.getAppContext().getSystemService(Context.VIBRATOR_SERVICE)).vibrate(150);
+            ((Vibrator) EdaNymaApp.getAppContext().getSystemService(Context.VIBRATOR_SERVICE)).vibrate(50);
         }
-        colorAnimation.setDuration( 200 );
-        colorAnimation.start();
     }
 
     public static int getRandomBetweenRange( int min, int max ) {

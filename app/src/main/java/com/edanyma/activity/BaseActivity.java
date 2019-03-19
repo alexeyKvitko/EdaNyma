@@ -1,6 +1,7 @@
 package com.edanyma.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.NavigationView;
@@ -43,9 +44,6 @@ public abstract class BaseActivity extends AppCompatActivity
         mCurrentState = activityState;
         mDeliveryTV = this.findViewById( R.id.deliveryCityId );
         mDeliveryTV.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        mDeliveryTV.setText( GlobalManager.getInstance().getBootstrapModel() != null ?
-                GlobalManager.getInstance().getBootstrapModel().getDeliveryCity():
-                getResources().getString( R.string.not_available));
         mDrawer = findViewById( R.id.drawer_layout );
         mNavigationButton = findViewById( R.id.navButtonId );
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -111,11 +109,8 @@ public abstract class BaseActivity extends AppCompatActivity
         }
         closeDrawer();
         switch ( selId ) {
-            case R.id.navigation_login:
-                startNewActivity( PersonActivity.class );
-                break;
-            case R.id.navigation_home:
-                startNewActivity( MainActivity.class );
+            case R.id.nav_all_company:
+                startNewActivity( CompanyActivity.class );
                 break;
             case R.id.nav_home:
                 startNewActivity( MainActivity.class );
@@ -138,6 +133,9 @@ public abstract class BaseActivity extends AppCompatActivity
         switch ( view.getId() ){
             case R.id.drawerLoginId:
                 startNewActivity( PersonActivity.class );
+                break;
+            case R.id.navigation_company:
+                startNewActivity( CompanyActivity.class );
                 break;
             case R.id.navigation_home:
                 startNewActivity( MainActivity.class );
@@ -164,22 +162,18 @@ public abstract class BaseActivity extends AppCompatActivity
         }
     }
 
-    private void startNewActivity( Class<?> newClass){
+    protected void startNewActivity( Class<?> newClass){
         Intent intent = new Intent( EdaNymaApp.getAppContext(), newClass );
         intent.addFlags( Intent.FLAG_ACTIVITY_NO_ANIMATION );
         intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
+        intent.putExtra( AppConstants.PREV_NAV_STATE, mCurrentState.getBottomMenuIndex() );
         startActivity( intent );
         overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
     }
 
     private void startCityActivity( View view ){
         AppUtils.clickAnimation( view );
-        new Handler().postDelayed( new Runnable() {
-            @Override
-            public void run() {
-                startNewActivity( CityActivity.class );
-            }
-        }, 300 );
+        startNewActivity( CityActivity.class );
     }
 
     private void unselectBottomNavigation(){
@@ -191,6 +185,9 @@ public abstract class BaseActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        mDeliveryTV.setText( GlobalManager.getInstance().getBootstrapModel() != null ?
+                GlobalManager.getInstance().getBootstrapModel().getDeliveryCity():
+                getResources().getString( R.string.not_available));
         unselectBottomNavigation();
         findViewById( mCurrentState.getSelectedBottomId() ).setSelected( true );
         if( AppConstants.FAKE_ID != mCurrentState.getDrawerMenuIndex()){
@@ -202,5 +199,7 @@ public abstract class BaseActivity extends AppCompatActivity
         }
     }
 
-
+    public ActivityState getCurrentState() {
+        return mCurrentState;
+    }
 }

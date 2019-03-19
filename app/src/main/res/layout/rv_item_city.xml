@@ -1,12 +1,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemCityRecViewId"
     android:paddingBottom="16dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="23dp"
     android:orientation="horizontal">
     <FrameLayout
+        android:id="@+id/leftCityCardId"
         android:layout_width="94dp"
         android:layout_height="106dp">
         <ImageView
@@ -14,8 +16,14 @@
             android:layout_gravity="center_horizontal|top"
             android:layout_width="76dp"
             android:layout_height="76dp"
+            android:elevation="7dp"/>
+        <ImageView
+            android:id="@+id/leftCheckImgId"
+            android:layout_gravity="right|top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:elevation="8dp"
-            app:srcCompat="@drawable/alupka"/>
+            app:srcCompat="@drawable/ic_check_outline_black_24dp"/>
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -28,11 +36,11 @@
             card_view:cardElevation="6dp">
             <TextView
                 style="@style/cityText"
-                android:id="@+id/leftCityTextId"
-                android:text="Алупка"/>
+                android:id="@+id/leftCityTextId"/>
         </android.support.v7.widget.CardView>
     </FrameLayout>
     <FrameLayout
+        android:id="@+id/centerCityCardId"
         android:layout_width="94dp"
         android:layout_height="106dp"
         android:layout_marginLeft="16dp">
@@ -41,8 +49,14 @@
             android:layout_gravity="center_horizontal|top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:elevation="7dp"/>
+        <ImageView
+            android:id="@+id/centerCheckImgId"
+            android:layout_gravity="right|top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:elevation="8dp"
-            app:srcCompat="@drawable/alushta"/>
+            app:srcCompat="@drawable/ic_check_outline_black_24dp"/>
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -55,11 +69,11 @@
             card_view:cardElevation="6dp">
             <TextView
                 style="@style/cityText"
-                android:id="@+id/centerCityTextId"
-                android:text="Алушта"/>
+                android:id="@+id/centerCityTextId"/>
         </android.support.v7.widget.CardView>
     </FrameLayout>
     <FrameLayout
+        android:id="@+id/rightCityCardId"
         android:layout_width="94dp"
         android:layout_height="106dp"
         android:layout_marginLeft="16dp">
@@ -68,8 +82,14 @@
             android:layout_gravity="center_horizontal|top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:elevation="7dp"/>
+        <ImageView
+            android:id="@+id/rightCheckImgId"
+            android:layout_gravity="right|top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:elevation="8dp"
-            app:srcCompat="@drawable/armyansk"/>
+            app:srcCompat="@drawable/ic_check_outline_black_24dp"/>
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -82,8 +102,7 @@
             card_view:cardElevation="6dp">
             <TextView
                 style="@style/cityText"
-                android:id="@+id/rightCityTextId"
-                android:text="Армянск"/>
+                android:id="@+id/rightCityTextId"/>
         </android.support.v7.widget.CardView>
     </FrameLayout>
 </LinearLayout>

@@ -13,6 +13,7 @@
     <color name="tealColor">#3B6A75</color>
     <color name="blackButton">#3E454F</color>
     <color name="blueNeon">#535BFE</color>
+    <color name="lightBackground">#FFFFFFFF</color>
 
     <color name="error_color">#C62828</color>
     <color name="hint_color_active">#535BFE</color>
