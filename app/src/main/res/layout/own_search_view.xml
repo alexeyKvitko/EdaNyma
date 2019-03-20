@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ownSearchViewId"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/search_bckg">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginVertical="8dp">
+
+            <android.support.v7.widget.SearchView
+                android:id="@+id/searchInputId"
+                style="@style/AppEditText"
+                android:theme="@style/editTextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="42dp"
+                android:focusable="false"
+                app:iconifiedByDefault="false"
+                app:queryHint="Поиск заведения">
+
+            </android.support.v7.widget.SearchView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="16dp"
+            android:gravity="center_vertical"
+            app:srcCompat="@drawable/outline_tune_black_24" />
+    </RelativeLayout>
+
+
+</FrameLayout><!--<ImageView--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_marginLeft="24dp"--><!--android:layout_centerInParent="true"--><!--android:layout_alignParentLeft="true"--><!--app:srcCompat="@drawable/ic_magnify_black_24dp"/>-->

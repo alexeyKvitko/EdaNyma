@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.R;
@@ -54,6 +55,7 @@ public class CityActivity extends BaseActivity implements CityAdapter.CardClickL
 
     private void initViews() {
         initBaseActivity( new ActivityState( this.getIntent().getIntExtra( AppConstants.PREV_NAV_STATE, AppConstants.FAKE_ID ) ) );
+        ( ( TextView ) findViewById( R.id.cityTitleId ) ).setTypeface( AppConstants.B52 );
         ( ( ImageButton ) findViewById( R.id.navButtonId ) ).setImageDrawable( getResources().getDrawable( R.drawable.ic_chevron_left_black_24dp ) );
         findViewById( R.id.navButtonId ).setOnClickListener( new View.OnClickListener() {
             @Override

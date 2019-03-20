@@ -59,5 +59,6 @@
     <string name="success_change_password">Ваш Праоль Изменен</string>
     <string name="city_place">Доставка по Городу</string>
     <string name="not_available">Not Avilable</string>
+    <string name="all_company_label">Все заведения</string>
 
 </resources>

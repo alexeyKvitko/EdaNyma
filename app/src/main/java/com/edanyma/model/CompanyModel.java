@@ -10,6 +10,7 @@ public class CompanyModel {
     private String companyName;
     private String displayName;
     private DictionaryModel city;
+    private String thumbUrl;
     private String url;
     private String email;
     private String phoneOne;
@@ -64,6 +65,14 @@ public class CompanyModel {
 
     public void setCity( DictionaryModel city ) {
         this.city = city;
+    }
+
+    public String getThumbUrl() {
+        return thumbUrl;
+    }
+
+    public void setThumbUrl( String thumbUrl ) {
+        this.thumbUrl = thumbUrl;
     }
 
     public String getUrl() {
