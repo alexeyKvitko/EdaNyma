@@ -36,11 +36,11 @@ public class CompanyActionAdapter extends CommonBaseAdapter< CompanyActionModel 
     }
 
     @Override
-    public void onBindViewHolder(final BaseDataObjectHolder holder, final int position) {
-        CompanyActionDataObjectHolder categoryCardHolder = ( CompanyActionDataObjectHolder ) holder;
-        categoryCardHolder.actionCompany.setText( mItemList.get( position ).getCompanyName() );
+    public void onBindViewHolder(final BaseDataObjectHolder h, final int position) {
+        CompanyActionDataObjectHolder holder = ( CompanyActionDataObjectHolder ) h;
+        holder.actionCompany.setText( mItemList.get( position ).getCompanyName() );
         PicassoClient.downloadImage( EdaNymaApp.getAppContext(),
-                mItemList.get( position ).getActionImgUrl(),categoryCardHolder.actionImage);
+                mItemList.get( position ).getActionImgUrl(),holder.actionImage);
     }
 
 

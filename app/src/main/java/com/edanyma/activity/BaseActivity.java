@@ -1,7 +1,6 @@
 package com.edanyma.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.NavigationView;
@@ -26,6 +25,7 @@ import com.edanyma.model.ActivityState;
 import com.edanyma.utils.AppUtils;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public abstract class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
@@ -163,10 +163,19 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     protected void startNewActivity( Class<?> newClass){
+        startNewActivity( newClass, null );
+    }
+
+    protected void startNewActivity( Class<?> newClass, Map<String,String> params){
         Intent intent = new Intent( EdaNymaApp.getAppContext(), newClass );
         intent.addFlags( Intent.FLAG_ACTIVITY_NO_ANIMATION );
         intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
         intent.putExtra( AppConstants.PREV_NAV_STATE, mCurrentState.getBottomMenuIndex() );
+        if( params != null ){
+            for( String key : params.keySet() ){
+                intent.putExtra( key, params.get( key ) );
+            }
+        }
         startActivity( intent );
         overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
     }

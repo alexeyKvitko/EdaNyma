@@ -20,6 +20,7 @@ public class CompanyModel {
     private Integer delivery;
     private String commentCount;
     private String deliveryCondition;
+    private Integer deliveryTimeMin;
     private Integer payTypeCash;
     private Integer payTypeCard;
     private Integer payTypeWallet;
@@ -129,6 +130,14 @@ public class CompanyModel {
 
     public void setDelivery( Integer delivery ) {
         this.delivery = delivery;
+    }
+
+    public Integer getDeliveryTimeMin() {
+        return deliveryTimeMin;
+    }
+
+    public void setDeliveryTimeMin( Integer deliveryTimeMin ) {
+        this.deliveryTimeMin = deliveryTimeMin;
     }
 
     public String getCommentCount() {

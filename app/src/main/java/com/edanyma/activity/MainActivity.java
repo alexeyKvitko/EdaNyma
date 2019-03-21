@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -20,14 +19,15 @@ import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.model.HomeMenuModel;
-import com.edanyma.owncomponent.MainCardItem;
 import com.edanyma.recycleview.CompanyActionAdapter;
 import com.edanyma.recycleview.HomeMenuAdapter;
 import com.edanyma.utils.PicassoClient;
 import com.stone.vega.library.VegaLayoutManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardClickListener {
 
@@ -59,8 +59,8 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
     private void initMainLayout() {
         initBaseActivity( new ActivityState( AppConstants.HOME_BOTTOM_INDEX ) );
         mContext = this;
-        List<CompanyActionModel> companyActionModels = GlobalManager.getInstance().getBootstrapModel()
-                                                            .getCompanyActions();
+        List< CompanyActionModel > companyActionModels = GlobalManager.getInstance().getBootstrapModel()
+                .getCompanyActions();
         fillActionAdapter( companyActionModels );
         fillHomeMenuAdapter( GlobalManager.getInstance().getHomeMenus() );
         initRecyclerView();
@@ -85,6 +85,7 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
                     }
                     mPrevScrollState = newState;
                 }
+
                 @Override
                 public void onScrolled( RecyclerView recyclerView, int dx, int dy ) {
                     super.onScrolled( recyclerView, dx, dy );
@@ -107,7 +108,6 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
     }
 
 
-
     private void fillActionAdapter( List< CompanyActionModel > actions ) {
         if ( mActionAdapter == null ) {
             mActionAdapter = new CompanyActionAdapter( new ArrayList< CompanyActionModel >() );
@@ -123,11 +123,9 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
             mHomeMenuAdapter.setOnItemClickListener( this );
         }
         for ( int i = 0; i < menuModels.size(); i++ ) {
-             mHomeMenuAdapter.addItem( menuModels.get( i ), i );
+            mHomeMenuAdapter.addItem( menuModels.get( i ), i );
         }
     }
-
-
 
 
     @Override
@@ -185,7 +183,7 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
                 for ( int i = 0; i < mHorizontalLayoutManager.getItemCount(); i++ ) {
                     if ( mActionRecView.getChildAt( i ) != null ) {
                         View view = mActionRecView.getChildAt( i );
-                        if ( view.getLeft() == 0 ){
+                        if ( view.getLeft() == 0 ) {
                             mTimer.removeCallbacks( mSliderJob );
                             mTimer.postDelayed( mSliderJob, 4000 );
                             int prevSlide = mCurrentSlide;
@@ -224,17 +222,17 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         mTimer = new Handler();
         mSliderJob = new SliderJob();
         mTimer.postDelayed( mSliderJob, 1000 );
-        if( GlobalManager.getInstance().getClient() != null
-                                && GlobalManager.getInstance().getClient().getUuid() != null ){
+        if ( GlobalManager.getInstance().getClient() != null
+                && GlobalManager.getInstance().getClient().getUuid() != null ) {
             findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.person_navigation ) );
-            (( TextView ) mNavigationView.getHeaderView(0).findViewById( R.id.drawerLoginId ))
-                                    .setText( getResources().getString( R.string.personal_area ) );
+            ( ( TextView ) mNavigationView.getHeaderView( 0 ).findViewById( R.id.drawerLoginId ) )
+                    .setText( getResources().getString( R.string.personal_area ) );
         } else {
             findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.login_navigation ) );
-            (( TextView ) mNavigationView.getHeaderView(0).findViewById( R.id.drawerLoginId ))
-                                    .setText( getResources().getString( R.string.action_login ) );
+            ( ( TextView ) mNavigationView.getHeaderView( 0 ).findViewById( R.id.drawerLoginId ) )
+                    .setText( getResources().getString( R.string.action_login ) );
         }
-        if ( mHomeMenuAdapter != null ){
+        if ( mHomeMenuAdapter != null ) {
             mHomeMenuAdapter.notifyDataSetChanged();
         }
     }
@@ -298,26 +296,24 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
 
     @Override
     public void onItemClick( int position, View view ) {
-        String homeMenuTag = (( TextView )view.findViewById( R.id.dishTitleTextId )).getText().toString();
-        switch ( homeMenuTag ){
-            case AppConstants.ALL_COMPANIES:
-                startNewActivity( CompanyActivity.class );
-                break;
-                default:
-                    break;
+        String homeMenuTag = ( ( TextView ) view.findViewById( R.id.dishTitleTextId ) ).getText().toString();
+        if ( !AppConstants.ALL_DISHES.equals( homeMenuTag ) ) {
+            Map< String, String > params = new HashMap<>();
+            params.put( AppConstants.COMPANY_FILTER, homeMenuTag );
+            startNewActivity( CompanyActivity.class, params );
         }
     }
 
 
-    private class SliderJob implements  Runnable {
-             @Override
+    private class SliderJob implements Runnable {
+        @Override
         public void run() {
             int prevSlide = mCurrentSlide;
             mCurrentSlide++;
             mCurrentSlide = mCurrentSlide == 5 ? 0 : mCurrentSlide;
             changeSlideIcon( prevSlide );
             changeSlideByTimer();
-            if( mTimer != null ){
+            if ( mTimer != null ) {
                 mTimer.postDelayed( mSliderJob, 4000 );
             }
         }

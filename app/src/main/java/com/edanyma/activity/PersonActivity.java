@@ -33,13 +33,13 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
         (( ImageButton) findViewById( R.id.navButtonId ) ).setImageDrawable( getResources().getDrawable( R.drawable.ic_chevron_left_black_24dp ) );
     }
 
-    private void addReplaceFragment( Fragment newFragment ){
+    protected void addReplaceFragment( Fragment newFragment){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations( R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out );
         if( getSupportFragmentManager().getFragments().size() == 0 ){
-            fragmentTransaction.add( R.id.personFragmentContainerId, newFragment );
+            fragmentTransaction.add( R.id.personFragmentContainerId , newFragment );
         } else {
-            fragmentTransaction.replace( R.id.personFragmentContainerId, newFragment );
+            fragmentTransaction.replace( R.id.personFragmentContainerId , newFragment );
             fragmentTransaction.addToBackStack( null );
         }
         fragmentTransaction.commit();
