@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/filterContainerId"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/fragment_margin_top"
+    android:layout_marginBottom="@dimen/fragment_margin_bottom">
+
+    <TextView
+        android:id="@+id/filterTitleId"
+        style="@style/splashText"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="16dp"
+        android:text="Фильтр" />
+
+
+</RelativeLayout>

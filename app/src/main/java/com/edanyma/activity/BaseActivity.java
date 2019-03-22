@@ -25,6 +25,7 @@ import com.edanyma.model.ActivityState;
 import com.edanyma.utils.AppUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class BaseActivity extends AppCompatActivity
@@ -87,7 +88,6 @@ public abstract class BaseActivity extends AppCompatActivity
                 }
             }
         });
-
         findViewById( R.id.navButtonCityId ).setOnClickListener( this );
     }
 
@@ -135,7 +135,9 @@ public abstract class BaseActivity extends AppCompatActivity
                 startNewActivity( PersonActivity.class );
                 break;
             case R.id.navigation_company:
-                startNewActivity( CompanyActivity.class );
+                Map< String, String > params = new HashMap<>();
+                params.put( AppConstants.COMPANY_FILTER, AppConstants.ALL_COMPANIES );
+                startNewActivity( CompanyActivity.class, params );
                 break;
             case R.id.navigation_home:
                 startNewActivity( MainActivity.class );

@@ -21,8 +21,9 @@ import com.edanyma.model.CompanyActionModel;
 import com.edanyma.model.HomeMenuModel;
 import com.edanyma.recycleview.CompanyActionAdapter;
 import com.edanyma.recycleview.HomeMenuAdapter;
+import com.edanyma.recycleview.VegaLayoutManager;
+import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.PicassoClient;
-import com.stone.vega.library.VegaLayoutManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,10 +119,7 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
     }
 
     private void fillHomeMenuAdapter( List< HomeMenuModel > menuModels ) {
-        if ( mHomeMenuAdapter == null ) {
-            mHomeMenuAdapter = new HomeMenuAdapter( new ArrayList< HomeMenuModel >() );
-            mHomeMenuAdapter.setOnItemClickListener( this );
-        }
+        initAdapter();
         for ( int i = 0; i < menuModels.size(); i++ ) {
             mHomeMenuAdapter.addItem( menuModels.get( i ), i );
         }
@@ -232,9 +230,15 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
             ( ( TextView ) mNavigationView.getHeaderView( 0 ).findViewById( R.id.drawerLoginId ) )
                     .setText( getResources().getString( R.string.action_login ) );
         }
-        if ( mHomeMenuAdapter != null ) {
-            mHomeMenuAdapter.notifyDataSetChanged();
+        initAdapter();
+    }
+
+    private void initAdapter(){
+        if ( mHomeMenuAdapter == null ) {
+            mHomeMenuAdapter = new HomeMenuAdapter( new ArrayList< HomeMenuModel >() );
         }
+        mHomeMenuAdapter.setOnItemClickListener( this );
+        mHomeMenuAdapter.notifyDataSetChanged();
     }
 
     private void changeSlideIcon( final int prevSlide ) {
@@ -297,13 +301,19 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
     @Override
     public void onItemClick( int position, View view ) {
         String homeMenuTag = ( ( TextView ) view.findViewById( R.id.dishTitleTextId ) ).getText().toString();
+        String homeMenuCount = ( ( TextView ) view.findViewById( R.id.dishCountTextId ) ).getText().toString();
         if ( !AppConstants.ALL_DISHES.equals( homeMenuTag ) ) {
-            Map< String, String > params = new HashMap<>();
-            params.put( AppConstants.COMPANY_FILTER, homeMenuTag );
-            startNewActivity( CompanyActivity.class, params );
+            if ( Integer.valueOf( homeMenuCount.substring( 0,1 ) ).equals( 0 ) ){
+                AppUtils.showToastWithAnimation( findViewById( R.id.toastLayoutId ), "Сообщение", "В Вашем городе еще нет выбранных заведений" );
+            } else{
+                Map< String, String > params = new HashMap<>();
+                params.put( AppConstants.COMPANY_FILTER, homeMenuTag );
+                startNewActivity( CompanyActivity.class, params );
+            }
+        } else {
+            AppUtils.showToastWithAnimation( findViewById( R.id.toastLayoutId ), "Сообщение", "Этот раздел в разработке ..." );
         }
     }
-
 
     private class SliderJob implements Runnable {
         @Override

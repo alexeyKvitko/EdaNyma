@@ -14,6 +14,7 @@
 
             <android.support.v7.widget.SearchView
                 android:id="@+id/searchInputId"
+                android:background="@drawable/border_debug_blue"
                 style="@style/AppEditText"
                 android:theme="@style/editTextTheme"
                 android:layout_width="match_parent"
@@ -26,6 +27,7 @@
             </android.support.v7.widget.SearchView>
 
         <ImageView
+            android:id="@+id/ownFilterId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

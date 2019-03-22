@@ -17,9 +17,9 @@ import com.edanyma.model.BootstrapModel;
 import com.edanyma.model.DictionaryModel;
 import com.edanyma.model.TripleModel;
 import com.edanyma.recycleview.CityAdapter;
+import com.edanyma.recycleview.VegaLayoutManager;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
-import com.stone.vega.library.VegaLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +96,7 @@ public class CityActivity extends BaseActivity implements CityAdapter.CardClickL
         }
         mCityRecView.getAdapter().notifyDataSetChanged();
         mCityAdapter.notifyDataSetChanged();
+        mCityAdapter.setOnItemClickListener( this );
     }
 
     private void fillCityAdapter( List< DictionaryModel > cities ) {

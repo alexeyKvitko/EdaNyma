@@ -18,16 +18,17 @@ import com.edanyma.R;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.CompanyLight;
 import com.edanyma.model.CompanyModel;
+import com.edanyma.owncomponent.OwnSearchView;
 import com.edanyma.recycleview.CompanyAdapter;
+import com.edanyma.recycleview.VegaLayoutManager;
 import com.edanyma.utils.AppUtils;
-import com.stone.vega.library.VegaLayoutManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
-public class ChooseCompanyFragment extends Fragment {
+public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OnFilterClickListener {
 
     private final String TAG = "ChooseCompanyFragment";
 
@@ -95,7 +96,7 @@ public class ChooseCompanyFragment extends Fragment {
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
-        fillCompanyAdapter( GlobalManager.getBootstrapModel().getCompanies() );
+        initAdapter();
         TextView companyTitle = getView().findViewById( R.id.companyTitleId );
         companyTitle.setTypeface( AppConstants.B52 );
         companyTitle.setText( mCompanyFilter );
@@ -106,6 +107,8 @@ public class ChooseCompanyFragment extends Fragment {
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation( 0 );
         mGrayFilter = new ColorMatrixColorFilter( matrix );
+        OwnSearchView ownSearchView = getView().findViewById( R.id.searchCompanyId );
+        ownSearchView.setOnFilterClickListener( this );
     }
 
     private void initRecView() {
@@ -128,8 +131,14 @@ public class ChooseCompanyFragment extends Fragment {
             } );
         }
         mCompanyRecView.getAdapter().notifyDataSetChanged();
+    }
+
+    private void initAdapter(){
+        if ( mCompanyAdapter == null ) {
+            fillCompanyAdapter( GlobalManager.getBootstrapModel().getCompanies() );
+        }
+//        mCompanyAdapter.setOnItemClickListener( this );
         mCompanyAdapter.notifyDataSetChanged();
-        changeSaturation();
     }
 
     private void fillCompanyAdapter( List< CompanyModel > companies ) {
@@ -186,13 +195,19 @@ public class ChooseCompanyFragment extends Fragment {
                 }
             }
         }
-
     }
 
     public void onCompanyChoose( CompanyModel company ) {
         if ( mListener != null ) {
             mListener.onCompanyChose( company );
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initAdapter();
+        mCompanyRecView.getAdapter().notifyDataSetChanged();
     }
 
     @Override
@@ -217,8 +232,16 @@ public class ChooseCompanyFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onFilterButtonClick() {
+       if ( mListener != null ){
+           mListener.onFilterClick();
+       }
+    }
+
 
     public interface OnCompanyChosenListener {
         void onCompanyChose( CompanyModel company );
+        void onFilterClick();
     }
 }
