@@ -284,7 +284,9 @@ public class VegaLayoutManager extends RecyclerView.LayoutManager {
     @Override
     public void onAttachedToWindow(RecyclerView view) {
         super.onAttachedToWindow(view);
-        new StartSnapHelper().attachToRecyclerView(view);
+        if ( view.getOnFlingListener() == null ){
+            new StartSnapHelper().attachToRecyclerView(view);
+        }
     }
 
     @Override

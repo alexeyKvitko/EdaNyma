@@ -103,7 +103,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OnF
         TextView companyCount = getView().findViewById( R.id.companyCountId );
         companyCount.setTypeface( AppConstants.ROBOTO_CONDENCED );
         companyCount.setText( AppUtils.declension( mCompanyCount+"" ) );
-        initRecView();
+//        initRecView();
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation( 0 );
         mGrayFilter = new ColorMatrixColorFilter( matrix );
@@ -114,6 +114,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OnF
     private void initRecView() {
         if ( mCompanyRecView == null ) {
             mCompanyRecView = getView().findViewById( R.id.companyRVId );
+            mCompanyRecView.setOnFlingListener( null );
             mLayoutManager = new VegaLayoutManager();
             mCompanyRecView.setLayoutManager( mLayoutManager );
             mCompanyRecView.setAdapter( mCompanyAdapter );
@@ -207,7 +208,18 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OnF
     public void onResume() {
         super.onResume();
         initAdapter();
-        mCompanyRecView.getAdapter().notifyDataSetChanged();
+        initRecView();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if ( mCompanyRecView!= null ) {
+            mCompanyRecView.setAdapter( null );
+            mCompanyRecView.clearOnScrollListeners();
+            mCompanyRecView = null;
+        }
+        mCompanyAdapter = null;
     }
 
     @Override

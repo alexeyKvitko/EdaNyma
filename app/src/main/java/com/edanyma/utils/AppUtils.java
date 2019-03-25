@@ -113,8 +113,15 @@ public abstract class AppUtils {
     }
 
     public static void clickAnimation( final View view ) {
+        if ( Build.VERSION.SDK_INT >= 26) {
+            ((Vibrator) EdaNymaApp.getAppContext().getSystemService(Context.VIBRATOR_SERVICE))
+                    .vibrate( VibrationEffect.createOneShot(50,10));
+        } else {
+            ((Vibrator) EdaNymaApp.getAppContext().getSystemService(Context.VIBRATOR_SERVICE)).vibrate(50);
+        }
         Animation bounce = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.short_bounce );
         view.startAnimation( bounce );
+
     }
 
     public static void bounceAnimation( final View view ) {

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/border_disable_radius"
+    android:layout_marginTop="8dp"
+    android:layout_marginRight="4dp">
+    <TextView
+        style="@style/greenLabel"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="6dp"
+        android:id="@+id/filterButtonId"/>
+</RelativeLayout>

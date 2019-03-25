@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/filterContainerId"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,9 +10,49 @@
     <TextView
         android:id="@+id/filterTitleId"
         style="@style/splashText"
-        android:layout_marginLeft="56dp"
+        android:layout_marginLeft="32dp"
         android:layout_marginTop="16dp"
-        android:text="Фильтр" />
+        android:text="@string/filter_title" />
 
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="64dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.edanyma.owncomponent.FilterSelect
+                android:id="@+id/filterDishId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:filterTitle="@string/filter_dish" />
+
+            <com.edanyma.owncomponent.FilterSelect
+                android:id="@+id/filterKitchenId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:filterTitle="@string/filter_kitchen" />
+
+            <com.edanyma.owncomponent.FilterSelect
+                android:id="@+id/filterPayId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:filterTitle="@string/filter_pay_type" />
+
+            <com.edanyma.owncomponent.FilterSelect
+                android:id="@+id/filterExtraId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:filterTitle="@string/filter_additional" />
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

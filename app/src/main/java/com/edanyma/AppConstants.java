@@ -2,6 +2,9 @@ package com.edanyma;
 
 import android.graphics.Typeface;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class AppConstants {
 
     public static final Typeface ROBOTO_BLACK = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/Roboto-Black.ttf");
@@ -15,8 +18,14 @@ public class AppConstants {
     public static final String AUTH_BEARER = "Bearer ";
 
     public static final String ASTERISKS= "*";
+    public static final String CLOSE= "CLOSE";
+    public static final String OPEN= "OPEN";
 
     public static final int FAKE_ID= -1;
+    public static final String STR_FAKE_ID= "-1";
+
+    public static final int CLOSE_DISH_FILTER_BUTTON = 6;
+    public static final int CLOSE_KITCHEN_FILTER_BUTTON = 4;
 
     public static final int COMPANY_BOTTOM_INDEX = 0;
     public static final int DISH_BOTTOM_INDEX = 1;
@@ -54,6 +63,24 @@ public class AppConstants {
     public static final String DISH_GRILL = "МАНГАЛ МЕНЮ";
     public static final String DISH_WOK = "WOK МЕНЮ";
     public static final String DISH_FAVOITES = "ИЗБРАННОЕ";
+
+    public static final Map<String,String> PAY_TYPES = new LinkedHashMap<String,String>(){
+        {
+            put("CASH","Наличными");
+            put("CARD","Банковской Картой");
+            put("WALLET","Электронный кошелек");
+        }
+    };
+
+    public static final Map<String,String> EXTRA_FILTER = new LinkedHashMap<String,String>(){
+        {
+            put("FAVORITES","Избранное");
+            put("ACTION","Акция");
+            put("FREE_DELI","Бесплатная Доставка");
+            put("HIGH_RATING","Высокий Рейтинг");
+            put("NEW","Новые");
+        }
+    };
 
 
 

@@ -6,7 +6,7 @@ import org.pojomatic.annotations.AutoProperty;
 import java.util.List;
 
 @AutoProperty
-public class MenuTypeModel {
+public class MenuTypeModel extends DictionaryModel{
 
     private List<MenuCategoryModel> menuCategories;
     private boolean menuOpen;

@@ -130,6 +130,7 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
     public void onDestroy() {
         if ( mActionRecView != null ) {
             mActionRecView.setAdapter( null );
+            mActionRecView.clearOnScrollListeners();
             mActionRecView = null;
         }
         if ( mHomeMenuRecView != null ) {

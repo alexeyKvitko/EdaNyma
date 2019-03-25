@@ -66,7 +66,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
-        ( ( TextView ) getView().findViewById( R.id.loginTitleId ) ).setTypeface( AppConstants.SANDORA, Typeface.BOLD );
+        ( ( TextView ) getView().findViewById( R.id.loginTitleId ) ).setTypeface( AppConstants.B52 );
         ( ( TextView ) getView().findViewById( R.id.otherLoginId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
         ( ( TextView ) getView().findViewById( R.id.notSignUpId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
         ( (TextInputLayout)getView().findViewById( R.id.loginTextLayoutId )).setTypeface( AppConstants.ROBOTO_CONDENCED );

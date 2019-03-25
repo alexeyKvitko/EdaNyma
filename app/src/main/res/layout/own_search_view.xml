@@ -14,7 +14,6 @@
 
             <android.support.v7.widget.SearchView
                 android:id="@+id/searchInputId"
-                android:background="@drawable/border_debug_blue"
                 style="@style/AppEditText"
                 android:theme="@style/editTextTheme"
                 android:layout_width="match_parent"
@@ -32,10 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:layout_marginRight="16dp"
             android:gravity="center_vertical"
             app:srcCompat="@drawable/outline_tune_black_24" />
     </RelativeLayout>
 
 
-</FrameLayout><!--<ImageView--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_marginLeft="24dp"--><!--android:layout_centerInParent="true"--><!--android:layout_alignParentLeft="true"--><!--app:srcCompat="@drawable/ic_magnify_black_24dp"/>-->
+</FrameLayout>

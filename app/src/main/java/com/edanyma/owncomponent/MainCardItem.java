@@ -53,7 +53,7 @@ public class MainCardItem extends LinearLayout {
     }
 
     private void setTitleText( String titleText, Integer id ){
-        TextView titleTextView = (TextView) this.findViewById( id );
+        TextView titleTextView = this.findViewById( id );
         titleTextView.setText( titleText );
         titleTextView.setTypeface( AppConstants.B52 );
     }

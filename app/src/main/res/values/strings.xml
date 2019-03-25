@@ -61,4 +61,10 @@
     <string name="not_available">Not Avilable</string>
     <string name="all_company_label">Все заведения</string>
 
+    <string name="filter_dish">Блюда</string>
+    <string name="filter_kitchen">Кухни</string>
+    <string name="filter_pay_type">Способы оплаты</string>
+    <string name="filter_additional">Долнительно</string>
+    <string name="filter_title">Фильтр</string>
+
 </resources>

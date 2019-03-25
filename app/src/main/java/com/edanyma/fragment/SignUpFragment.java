@@ -96,8 +96,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
-        ( ( TextView ) getView().findViewById( R.id.signUpTitleId ) ).setTypeface( AppConstants.SANDORA, Typeface.BOLD );
-        ( ( TextView ) getView().findViewById( R.id.confirmCodeTitleId ) ).setTypeface( AppConstants.SANDORA, Typeface.BOLD );
+        ( ( TextView ) getView().findViewById( R.id.signUpTitleId ) ).setTypeface( AppConstants.B52 );
+        ( ( TextView ) getView().findViewById( R.id.confirmCodeTitleId ) ).setTypeface( AppConstants.B52 );
         ( ( TextInputLayout ) getView().findViewById( R.id.signUpTextLayoutId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
         ( ( TextInputLayout ) getView().findViewById( R.id.signUpPasswordLayoutId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
         ( ( TextInputLayout ) getView().findViewById( R.id.signUpConfirmLayoutId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );

@@ -5,4 +5,8 @@
         <attr name="titleText" format="string"/>
         <attr name="countText" format="string"/>
     </declare-styleable>
+    <declare-styleable name="FilterSelectAttrs">
+        <attr name="filterButton" format="string"/>
+        <attr name="filterTitle" format="string"/>
+    </declare-styleable>
 </resources>
