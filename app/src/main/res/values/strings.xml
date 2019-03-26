@@ -71,5 +71,6 @@
     <string name="hide_all">Скрыть Все</string>
     <string name="clear_filter">Очистить</string>
     <string name="filter_by_label">Отобрано по</string>
+    <string name="title_activity_dish">DishActivity</string>
 
 </resources>

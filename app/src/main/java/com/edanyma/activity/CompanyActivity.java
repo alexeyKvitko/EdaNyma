@@ -12,9 +12,11 @@ import com.edanyma.fragment.ChooseCompanyFragment;
 import com.edanyma.fragment.FilterFragment;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
-import com.edanyma.model.CompanyModel;
 import com.edanyma.model.FilterModel;
 import com.edanyma.utils.AppUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CompanyActivity extends BaseActivity implements ChooseCompanyFragment.OnCompanyChosenListener,
                                                             FilterFragment.OnApplyFilterListener{
@@ -61,8 +63,10 @@ public class CompanyActivity extends BaseActivity implements ChooseCompanyFragme
 
 
     @Override
-    public void onCompanyChose( CompanyModel company ) {
-
+    public void onCompanyChose( String companyId ) {
+        Map< String, String > params = new HashMap<>();
+        params.put( AppConstants.COMPANY_ID, companyId );
+        startNewActivity( DishActivity.class, params );
     }
 
     @Override

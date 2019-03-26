@@ -45,6 +45,7 @@ public class AppConstants {
 
     public static final String PREV_NAV_STATE = "prev_nav_state";
     public static final String COMPANY_FILTER = "companyFiler";
+    public static final String COMPANY_ID = "companyId";
 
     public static final String SEND_PHONE_CODE = "1111";
 

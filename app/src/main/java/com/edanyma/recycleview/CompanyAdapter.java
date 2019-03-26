@@ -84,6 +84,7 @@ public class CompanyAdapter extends CommonBaseAdapter< CompanyLight > {
                 public void onClick( View view ) {
                     itemView.findViewById( R.id.cardCompanyImgId ).startAnimation(
                             AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.bounce) );
+                    CompanyDataObjectHolder.super.onClick( view );
                 }
             } );
         }

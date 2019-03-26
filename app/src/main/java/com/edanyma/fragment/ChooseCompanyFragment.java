@@ -31,7 +31,8 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OwnSearchViewListener {
+public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OwnSearchViewListener,
+                                                        CompanyAdapter.CardClickListener{
 
     private final String TAG = "ChooseCompanyFragment";
 
@@ -140,6 +141,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
             } );
         }
         mCompanyRecView.getAdapter().notifyDataSetChanged();
+        mCompanyAdapter.setOnItemClickListener( this );
     }
 
     private void initAdapter() {
@@ -267,9 +269,9 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
         }
     }
 
-    public void onCompanyChoose( CompanyModel company ) {
+    public void onCompanyChoose( CompanyLight company ) {
         if ( mListener != null ) {
-            mListener.onCompanyChose( company );
+            mListener.onCompanyChose( company.getId() );
         }
     }
 
@@ -343,9 +345,14 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
         mCompanyAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onItemClick( int position, View v ) {
+        onCompanyChoose( mCompanyAdapter.getItem( position ) );
+    }
+
 
     public interface OnCompanyChosenListener {
-        void onCompanyChose( CompanyModel company );
+        void onCompanyChose( String companyId );
         void onFilterClick();
     }
 

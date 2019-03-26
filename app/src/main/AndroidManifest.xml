@@ -24,7 +24,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.FullScreen">
-        <activity android:name=".activity.CompanyActivity"></activity>
+        <activity
+            android:name=".activity.DishActivity"
+            android:label="@string/title_activity_dish"></activity>
+        <activity android:name=".activity.CompanyActivity" />
         <activity android:name=".activity.CityActivity" />
         <activity
             android:name=".activity.SplashActivity"
