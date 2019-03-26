@@ -63,6 +63,11 @@ public class AppConstants {
     public static final String DISH_GRILL = "МАНГАЛ МЕНЮ";
     public static final String DISH_WOK = "WOK МЕНЮ";
     public static final String DISH_FAVOITES = "ИЗБРАННОЕ";
+    public static final String CUSTOM_FILTER = "CUSTOM_FILTER";
+
+    public static final String PAY_TYPE_CASH = "CASH";
+    public static final String PAY_TYPE_CARD = "CARD";
+    public static final String PAY_TYPE_WALLET = "WALLET";
 
     public static final Map<String,String> PAY_TYPES = new LinkedHashMap<String,String>(){
         {

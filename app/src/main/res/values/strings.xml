@@ -66,5 +66,10 @@
     <string name="filter_pay_type">Способы оплаты</string>
     <string name="filter_additional">Долнительно</string>
     <string name="filter_title">Фильтр</string>
+    <string name="apply_filter">Применить Фильтр</string>
+    <string name="show_all">Больше</string>
+    <string name="hide_all">Скрыть Все</string>
+    <string name="clear_filter">Очистить</string>
+    <string name="filter_by_label">Отобрано по</string>
 
 </resources>

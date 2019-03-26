@@ -1,6 +1,5 @@
 package com.edanyma.activity;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,17 +10,23 @@ import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.fragment.ChooseCompanyFragment;
 import com.edanyma.fragment.FilterFragment;
+import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyModel;
+import com.edanyma.model.FilterModel;
 import com.edanyma.utils.AppUtils;
 
 public class CompanyActivity extends BaseActivity implements ChooseCompanyFragment.OnCompanyChosenListener,
-                                                     FilterFragment.OnApplyFilterListener{
+                                                            FilterFragment.OnApplyFilterListener{
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_company );
+        initialize();
+    }
+
+    private void initialize(){
         initBaseActivity( new ActivityState( AppConstants.COMPANY_BOTTOM_INDEX ) );
         ( ( ImageButton ) findViewById( R.id.navButtonId ) ).setImageDrawable( getResources().getDrawable( R.drawable.ic_chevron_left_black_24dp ) );
         findViewById( R.id.navButtonId ).setOnClickListener( new View.OnClickListener() {
@@ -32,7 +37,8 @@ public class CompanyActivity extends BaseActivity implements ChooseCompanyFragme
             }
         } );
         addReplaceFragment( ChooseCompanyFragment.newInstance(
-                                this.getIntent().getStringExtra( AppConstants.COMPANY_FILTER ) ) );
+                this.getIntent().getStringExtra( AppConstants.COMPANY_FILTER ) ) );
+
     }
 
     protected void addReplaceFragment( Fragment newFragment ) {
@@ -65,7 +71,9 @@ public class CompanyActivity extends BaseActivity implements ChooseCompanyFragme
     }
 
     @Override
-    public void onApplyFilter( Uri uri ) {
-
+    public void onApplyFilter( FilterModel filterModel ) {
+        GlobalManager.getInstance().setCompanyFilter( filterModel );
+        addReplaceFragment( ChooseCompanyFragment.newInstance( AppConstants.CUSTOM_FILTER ) );
     }
+
 }

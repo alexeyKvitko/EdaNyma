@@ -16,7 +16,9 @@ import com.edanyma.utils.AppUtils;
 
 public class OwnSearchView extends LinearLayout {
 
-    private OnFilterClickListener mListener;
+    private final String TAG = "OwnSearchView";
+
+    private OwnSearchViewListener mListener;
 
     private LinearLayout mThis;
 
@@ -29,7 +31,7 @@ public class OwnSearchView extends LinearLayout {
         initialize();
     }
 
-    public void setOnFilterClickListener( OnFilterClickListener listener ) {
+    public void setOnApplySearchListener( OwnSearchViewListener listener ) {
         mListener = listener;
     }
 
@@ -48,9 +50,28 @@ public class OwnSearchView extends LinearLayout {
                 }
             }
         } );
+        mSearchInput.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit( String query ) {
+                if( mListener != null ){
+                    mListener.onApplySearch( query.toString() );
+                }
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange( String newText ) {
+                if( newText.length() == 0 ){
+                    mListener.onApplySearch( null );
+                }
+
+                return false;
+            }
+        } );
+
     }
 
-    public interface OnFilterClickListener {
+    public interface OwnSearchViewListener {
+        void onApplySearch( String query );
         void onFilterButtonClick();
     }
 

@@ -1,6 +1,7 @@
 package com.edanyma.owncomponent;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ public class FilterButton extends LinearLayout {
 
     private DictionaryModel mFilterButton;
     private boolean mButtonSelect;
+    private Drawable mDefBackground;
 
     public FilterButton( Context context ) {
         super( context );
@@ -29,6 +31,7 @@ public class FilterButton extends LinearLayout {
 
     public void setFilterButton( final DictionaryModel filterButton, boolean selected ){
         final TextView buttonTextView =  this.findViewById( R.id.filterButtonId );
+        mDefBackground = buttonTextView.getBackground();
         mFilterButton = filterButton;
         mButtonSelect = false;
         buttonTextView.setText( mFilterButton.getDisplayName() );
@@ -46,13 +49,14 @@ public class FilterButton extends LinearLayout {
             }
         } );
         if( selected ){
+            mButtonSelect = true;
             buttonTextView.setBackground( EdaNymaApp.getAppContext()
                     .getResources().getDrawable( R.drawable.border_neon_radius ) );
+        } else {
+            buttonTextView.setBackground( EdaNymaApp.getAppContext()
+                    .getResources().getDrawable( R.drawable.border_disable_radius ) );
         }
-        if ( AppConstants.STR_FAKE_ID.equals( filterButton.getId() ) ){
-            buttonTextView.setBackground( EdaNymaApp.getAppContext().getResources().getDrawable( R.drawable.background_transparent ) );
-            buttonTextView.setOnClickListener( null );
-        }
+
     }
 
 

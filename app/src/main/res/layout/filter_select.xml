@@ -6,7 +6,8 @@
 
     <TextView
         android:id="@+id/filterTitleId"
-        android:paddingVertical="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
         android:paddingRight="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,5 +26,13 @@
         app:alignItems="stretch"
         app:alignContent="stretch"></com.google.android.flexbox.FlexboxLayout>
 
+    <TextView
+        style="@style/grayTextSmall"
+        android:layout_below="@+id/filterButtonsContainerId"
+        android:id="@+id/filterShowAllId"
+        android:layout_marginLeft="12dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
+        />
 
 </RelativeLayout>

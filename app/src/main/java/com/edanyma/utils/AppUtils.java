@@ -2,6 +2,7 @@ package com.edanyma.utils;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -12,6 +13,7 @@ import android.os.Vibrator;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
@@ -44,8 +46,17 @@ public abstract class AppUtils {
                 ending = "я";
             }
         }
-
         return count+countSuffix+ending ;
+    }
+
+    public static String declensionFilter( int count ){
+        String countSuffix = " фильтр";
+        String ending="ам";
+        int mod = count % 10;
+        if( mod == 1 ){
+                ending = "у";
+        }
+        return " "+count+countSuffix+ending ;
     }
 
     public static boolean validateEmail( String email ) {
@@ -138,5 +149,10 @@ public abstract class AppUtils {
     public static int getRandomBetweenRange( int min, int max ) {
         Double x = ( Math.random( ) * ( ( max - min ) + 1 ) ) + min;
         return x.intValue( );
+    }
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService( Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

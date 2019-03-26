@@ -2,7 +2,6 @@ package com.edanyma.fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -230,10 +229,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
         }, 300 );
     }
 
-    public static void hideKeyboardFrom(Context context, View view) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService( Activity.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
+
 
     @Override
     public void onDetach() {
@@ -252,7 +248,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
                 signUpViaEmailPhone();
                 break;
             case R.id.confirmCodeButtonId:
-                hideKeyboardFrom( getActivity(), view );
+                AppUtils.hideKeyboardFrom( getActivity(), view );
                 confirmEmailPhone();
                 break;
             case R.id.resendCodeLabelId:

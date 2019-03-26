@@ -14,21 +14,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
+import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.CompanyLight;
 import com.edanyma.model.CompanyModel;
+import com.edanyma.model.FilterModel;
 import com.edanyma.owncomponent.OwnSearchView;
 import com.edanyma.recycleview.CompanyAdapter;
 import com.edanyma.recycleview.VegaLayoutManager;
 import com.edanyma.utils.AppUtils;
+import com.edanyma.utils.ConvertUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
-public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OnFilterClickListener {
+public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OwnSearchViewListener {
 
     private final String TAG = "ChooseCompanyFragment";
 
@@ -40,11 +43,12 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OnF
     private CompanyAdapter mCompanyAdapter;
     private VegaLayoutManager mLayoutManager;
     private ColorMatrixColorFilter mGrayFilter;
-    private String mCompanyFilter;
+    private String mInitFilterParam;
+    private FilterModel mCompanyFilter;
     private int mCompanyCount;
+    private boolean mSearchMade;
 
     private List< Integer > mCategoryIds;
-
 
 
     public ChooseCompanyFragment() {
@@ -61,9 +65,10 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OnF
     @Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+        mCompanyFilter = null;
         if ( getArguments() != null ) {
-            mCompanyFilter = getArguments().getString( COMPANY_FILTER );
-            switch ( mCompanyFilter ) {
+            mInitFilterParam = getArguments().getString( COMPANY_FILTER );
+            switch ( mInitFilterParam ) {
                 case AppConstants.DISH_PIZZA:
                     mCategoryIds = GlobalManager.getBootstrapModel().getFastMenu().getPizzaIds();
                     break;
@@ -78,6 +83,10 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OnF
                     break;
                 case AppConstants.DISH_WOK:
                     mCategoryIds = GlobalManager.getBootstrapModel().getFastMenu().getWokIds();
+                    break;
+                case AppConstants.CUSTOM_FILTER:
+                    setCustomFilter();
+                    mCategoryIds = null;
                     break;
                 default:
                     mCategoryIds = null;
@@ -96,19 +105,18 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OnF
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
+        mSearchMade = false;
         initAdapter();
         TextView companyTitle = getView().findViewById( R.id.companyTitleId );
         companyTitle.setTypeface( AppConstants.B52 );
-        companyTitle.setText( mCompanyFilter );
+        companyTitle.setText( mInitFilterParam );
         TextView companyCount = getView().findViewById( R.id.companyCountId );
         companyCount.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        companyCount.setText( AppUtils.declension( mCompanyCount+"" ) );
-//        initRecView();
         ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation( 0 );
         mGrayFilter = new ColorMatrixColorFilter( matrix );
         OwnSearchView ownSearchView = getView().findViewById( R.id.searchCompanyId );
-        ownSearchView.setOnFilterClickListener( this );
+        ownSearchView.setOnApplySearchListener( this );
     }
 
     private void initRecView() {
@@ -134,46 +142,107 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OnF
         mCompanyRecView.getAdapter().notifyDataSetChanged();
     }
 
-    private void initAdapter(){
+    private void initAdapter() {
         if ( mCompanyAdapter == null ) {
             fillCompanyAdapter( GlobalManager.getBootstrapModel().getCompanies() );
         }
-//        mCompanyAdapter.setOnItemClickListener( this );
         mCompanyAdapter.notifyDataSetChanged();
     }
 
     private void fillCompanyAdapter( List< CompanyModel > companies ) {
         if ( mCompanyAdapter == null ) {
             mCompanyAdapter = new CompanyAdapter( new ArrayList< CompanyLight >() );
+        } else {
+            mCompanyAdapter.deleteAllItem();
         }
         int idx = 0;
         for ( CompanyModel companyModel : companies ) {
             boolean filtered = true;
-            CompanyLight company = new CompanyLight();
-            company.setId( companyModel.getId() );
-            company.setThumbUrl( companyModel.getThumbUrl() );
-            company.setDisplayName( companyModel.getDisplayName() );
-            company.setDelivery( "от " + companyModel.getDelivery().toString() + " руб." );
-            company.setCommentCount( companyModel.getCommentCount() );
-            company.setDeliveryTimeMin( "~" + companyModel.getDeliveryTimeMin() + "мин." );
-            company.setDayoffWork( companyModel.getDayoffWork() );
-            company.setWeekdayWork( companyModel.getWeekdayWork() );
-            if( mCategoryIds != null ){
-                String[] companyCategories =  companyModel.getMenuCategoiesIds().split( "," );
+            CompanyLight company = ConvertUtils.convertToCompanyLight( companyModel );
+            if ( mCategoryIds != null ) {
+                String[] companyCategories = companyModel.getMenuCategoiesIds().split( "," );
                 filtered = false;
-                for( Integer categoryId: mCategoryIds ){
-                    if ( Arrays.asList(companyCategories).contains( categoryId.toString() ) ){
+                for ( Integer categoryId : mCategoryIds ) {
+                    if ( Arrays.asList( companyCategories ).contains( categoryId.toString() ) ) {
                         filtered = true;
                         break;
                     }
                 }
             }
-            if ( filtered ){
+            if ( mCompanyFilter != null ) {
+                filtered = applyCompanyFilter( companyModel );
+            }
+            if ( filtered ) {
                 mCompanyAdapter.addItem( company, idx );
                 idx++;
             }
         }
         mCompanyCount = idx;
+        setCompanyCountText();
+    }
+
+    private void setCompanyCountText(){
+        ((TextView) getView().findViewById( R.id.companyCountId ))
+                .setText( AppUtils.declension( mCompanyCount + "" ) );
+    }
+
+    private void setCustomFilter() {
+        mCompanyFilter = GlobalManager.getInstance().getCompanyFilter();
+        if ( mCompanyFilter != null ) {
+            int totalFilter = mCompanyFilter.getDishesId().size()
+                    + mCompanyFilter.getKitchenId().size()
+                    + mCompanyFilter.getPayTypes().size()
+                    + mCompanyFilter.getExtraFilters().size();
+            mInitFilterParam = EdaNymaApp.getAppContext().getResources().getString( R.string.filter_by_label ) +
+                    AppUtils.declensionFilter( totalFilter );
+        } else {
+            mInitFilterParam = AppConstants.ALL_COMPANIES;
+        }
+    }
+
+    public boolean applyCompanyFilter( CompanyModel company ) {
+        boolean filtered = true;
+        if ( mCompanyFilter.getDishesId().size() > 0 ) {
+            String[] companyDishes = company.getMenuCategoiesIds().split( "," );
+            filtered = false;
+            for ( String dishId : mCompanyFilter.getDishesId() ) {
+                if ( Arrays.asList( companyDishes ).contains( dishId ) ) {
+                    filtered = true;
+                    break;
+                }
+            }
+        }
+        if ( filtered && mCompanyFilter.getKitchenId().size() > 0 ) {
+            String companyKitchens = company.getMenuTypeIds();
+            filtered = false;
+            for ( String kitchenId : mCompanyFilter.getKitchenId() ) {
+                if ( Arrays.asList( companyKitchens ).contains( kitchenId ) ) {
+                    filtered = true;
+                    break;
+                }
+            }
+        }
+        if ( filtered && mCompanyFilter.getPayTypes().size() > 0 ) {
+            filtered = false;
+            for ( String payType : mCompanyFilter.getPayTypes() ) {
+                switch ( payType ) {
+                    case AppConstants.PAY_TYPE_CASH:
+                        filtered = company.getPayTypeCash().equals( 1 );
+                        break;
+                    case AppConstants.PAY_TYPE_CARD:
+                        filtered = company.getPayTypeCard().equals( 1 );
+                        break;
+                    case AppConstants.PAY_TYPE_WALLET:
+                        filtered = company.getPayTypeWallet().equals( 1 );
+                        break;
+                    default:
+                        filtered = false;
+                        break;
+                }
+            }
+        }
+        //TODO APPLY EXTRA FILTERS
+        return filtered;
     }
 
     public void changeSaturation() {
@@ -214,7 +283,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OnF
     @Override
     public void onPause() {
         super.onPause();
-        if ( mCompanyRecView!= null ) {
+        if ( mCompanyRecView != null ) {
             mCompanyRecView.setAdapter( null );
             mCompanyRecView.clearOnScrollListeners();
             mCompanyRecView = null;
@@ -245,15 +314,45 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OnF
     }
 
     @Override
-    public void onFilterButtonClick() {
-       if ( mListener != null ){
-           mListener.onFilterClick();
-       }
+    public void onApplySearch(String query ) {
+        if( query == null && mSearchMade) {
+            fillCompanyAdapter( GlobalManager.getBootstrapModel().getCompanies() );
+            mCompanyRecView.getAdapter().notifyDataSetChanged();
+            mCompanyAdapter.notifyDataSetChanged();
+            mSearchMade = false;
+            AppUtils.hideKeyboardFrom( getActivity(), getView() );
+            return;
+        } else if( query == null && !mSearchMade ){
+            return;
+        }
+        if( query.length() < 3 ){
+            return;
+        }
+        mCompanyAdapter.deleteAllItem();
+        int idx = 0;
+        for( CompanyModel companyModel :GlobalManager.getInstance().getBootstrapModel().getCompanies() ){
+            if( companyModel.getDisplayName().toUpperCase().indexOf( query.toUpperCase() ) > -1 ){
+                mCompanyAdapter.addItem( ConvertUtils.convertToCompanyLight( companyModel ), idx );
+                idx++;
+            }
+        }
+        mSearchMade = true;
+        mCompanyCount = mCompanyAdapter.getItemCount();
+        setCompanyCountText();
+        mCompanyRecView.getAdapter().notifyDataSetChanged();
+        mCompanyAdapter.notifyDataSetChanged();
     }
 
 
     public interface OnCompanyChosenListener {
         void onCompanyChose( CompanyModel company );
         void onFilterClick();
+    }
+
+    @Override
+    public void onFilterButtonClick() {
+        if ( mListener != null ) {
+            mListener.onFilterClick();
+        }
     }
 }

@@ -5,6 +5,7 @@ import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.model.BootstrapModel;
 import com.edanyma.model.CompanyModel;
+import com.edanyma.model.FilterModel;
 import com.edanyma.model.HomeMenuModel;
 import com.edanyma.model.MenuCategoryModel;
 import com.edanyma.model.OurClientModel;
@@ -21,6 +22,7 @@ public class GlobalManager {
     private static List< HomeMenuModel > homeMenus;
     private static String userToken;
     private static OurClientModel client;
+    private static FilterModel companyFilter;
 
     private GlobalManager() {
     }
@@ -113,5 +115,13 @@ public class GlobalManager {
 
     public static List< HomeMenuModel > getHomeMenus() {
         return homeMenus;
+    }
+
+    public static FilterModel getCompanyFilter() {
+        return companyFilter;
+    }
+
+    public static void setCompanyFilter( FilterModel companyFilter ) {
+        GlobalManager.companyFilter = companyFilter;
     }
 }
