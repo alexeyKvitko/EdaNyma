@@ -20,8 +20,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="42dp"
                 android:focusable="false"
-                app:iconifiedByDefault="false"
-                app:queryHint="Поиск заведения">
+                app:queryBackground="@null"
+                app:iconifiedByDefault="false">
 
             </android.support.v7.widget.SearchView>
 

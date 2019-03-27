@@ -21,8 +21,8 @@ import com.edanyma.model.CompanyLight;
 import com.edanyma.model.CompanyModel;
 import com.edanyma.model.FilterModel;
 import com.edanyma.owncomponent.OwnSearchView;
-import com.edanyma.recycleview.CompanyAdapter;
-import com.edanyma.recycleview.VegaLayoutManager;
+import com.edanyma.recyclerview.CompanyAdapter;
+import com.edanyma.recyclerview.VegaLayoutManager;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
 
@@ -43,6 +43,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
     private RecyclerView mCompanyRecView;
     private CompanyAdapter mCompanyAdapter;
     private VegaLayoutManager mLayoutManager;
+
     private ColorMatrixColorFilter mGrayFilter;
     private String mInitFilterParam;
     private FilterModel mCompanyFilter;
@@ -71,19 +72,19 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
             mInitFilterParam = getArguments().getString( COMPANY_FILTER );
             switch ( mInitFilterParam ) {
                 case AppConstants.DISH_PIZZA:
-                    mCategoryIds = GlobalManager.getBootstrapModel().getFastMenu().getPizzaIds();
+                    mCategoryIds = GlobalManager.getInstance().getBootstrapModel().getFastMenu().getPizzaIds();
                     break;
                 case AppConstants.DISH_SUSHI:
-                    mCategoryIds = GlobalManager.getBootstrapModel().getFastMenu().getShushiIds();
+                    mCategoryIds = GlobalManager.getInstance().getBootstrapModel().getFastMenu().getShushiIds();
                     break;
                 case AppConstants.DISH_BURGERS:
-                    mCategoryIds = GlobalManager.getBootstrapModel().getFastMenu().getBurgerIds();
+                    mCategoryIds = GlobalManager.getInstance().getBootstrapModel().getFastMenu().getBurgerIds();
                     break;
                 case AppConstants.DISH_GRILL:
-                    mCategoryIds = GlobalManager.getBootstrapModel().getFastMenu().getGrillIds();
+                    mCategoryIds = GlobalManager.getInstance().getBootstrapModel().getFastMenu().getGrillIds();
                     break;
                 case AppConstants.DISH_WOK:
-                    mCategoryIds = GlobalManager.getBootstrapModel().getFastMenu().getWokIds();
+                    mCategoryIds = GlobalManager.getInstance().getBootstrapModel().getFastMenu().getWokIds();
                     break;
                 case AppConstants.CUSTOM_FILTER:
                     setCustomFilter();
@@ -107,7 +108,6 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         mSearchMade = false;
-        initAdapter();
         TextView companyTitle = getView().findViewById( R.id.companyTitleId );
         companyTitle.setTypeface( AppConstants.B52 );
         companyTitle.setText( mInitFilterParam );
@@ -146,7 +146,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
 
     private void initAdapter() {
         if ( mCompanyAdapter == null ) {
-            fillCompanyAdapter( GlobalManager.getBootstrapModel().getCompanies() );
+            fillCompanyAdapter( GlobalManager.getInstance().getBootstrapModel().getCompanies() );
         }
         mCompanyAdapter.notifyDataSetChanged();
     }
@@ -318,7 +318,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
     @Override
     public void onApplySearch(String query ) {
         if( query == null && mSearchMade) {
-            fillCompanyAdapter( GlobalManager.getBootstrapModel().getCompanies() );
+            fillCompanyAdapter( GlobalManager.getInstance().getBootstrapModel().getCompanies() );
             mCompanyRecView.getAdapter().notifyDataSetChanged();
             mCompanyAdapter.notifyDataSetChanged();
             mSearchMade = false;

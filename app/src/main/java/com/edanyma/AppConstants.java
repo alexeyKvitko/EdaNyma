@@ -11,6 +11,7 @@ public class AppConstants {
     public static final Typeface ROBOTO_CONDENCED = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/RobotoCondensed.ttf");
     public static final Typeface B52 = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/B52.otf");
     public static final Typeface SANDORA = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/sandora.ttf");
+    public static final Typeface OFFICE = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/office.ttf");
 
     public static final String DEFAULT_USER = "guest";
     public static final String DEFAULT_PASSWORD = "1111";
@@ -22,7 +23,9 @@ public class AppConstants {
     public static final String OPEN= "OPEN";
 
     public static final int FAKE_ID= -1;
-    public static final String STR_FAKE_ID= "-1";
+
+    public static final String STATIC_COMPANY= "companies/%s.jpg";
+    public static final String STATIC_COMPANY_LOGO= "logos/%s.png";
 
     public static final int CLOSE_DISH_FILTER_BUTTON = 6;
     public static final int CLOSE_KITCHEN_FILTER_BUTTON = 4;

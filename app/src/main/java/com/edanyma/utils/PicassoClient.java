@@ -18,6 +18,16 @@ public class PicassoClient {
         }
     }
 
+    public static void downloadImage(Context c, String url, ImageView img, int width, int height)
+    {
+        if(url != null && url.length()>0)
+        {
+            Picasso.with(c).load(url).resize( width, height ).centerInside().into(img);
+        }else {
+            Picasso.with(c).load(R.drawable.loading).into(img);
+        }
+    }
+
     public static void preloadImage(Context c, String url ){
         if(url != null && url.length() > 0 )
         {

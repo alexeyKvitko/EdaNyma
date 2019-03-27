@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/main_background_light"
     android:fitsSystemWindows="true"
-    tools:context="com.edanyma.activity.DishActivity">
+    tools:context="com.edanyma.activity.CompanyDishActivity">
 
     <include layout="@layout/header" />
     <include layout="@layout/footer" />

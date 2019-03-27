@@ -15,6 +15,7 @@ public class BootstrapModel {
     private FastMenuModel fastMenu;
     private String deliveryCity;
     private boolean isDefault;
+    private String staticUrl;
 
     public List< CompanyModel > getCompanies() {
         return companies;
@@ -70,6 +71,14 @@ public class BootstrapModel {
 
     public void setCompanyActions( List< CompanyActionModel > companyActions ) {
         this.companyActions = companyActions;
+    }
+
+    public String getStaticUrl() {
+        return staticUrl;
+    }
+
+    public void setStaticUrl( String staticUrl ) {
+        this.staticUrl = staticUrl;
     }
 
     @Override public boolean equals( Object o) {

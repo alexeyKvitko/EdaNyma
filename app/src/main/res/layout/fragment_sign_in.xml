@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/forgotPasswordId"
-        style="@style/greenLabel"
+        style="@style/blueNeonLabel"
         android:layout_below="@+id/loginTitleId"
         android:layout_alignParentRight="true"
         android:layout_marginTop="8dp"
@@ -121,7 +121,7 @@
             android:text="@string/not_register"/>
         <TextView
             android:id="@+id/signUpId"
-            style="@style/greenLabel"
+            style="@style/blueNeonLabel"
             android:padding="6dp"
             android:text="@string/registration"/>
     </LinearLayout>

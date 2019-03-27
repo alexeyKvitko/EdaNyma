@@ -66,7 +66,7 @@ public class CompanyActivity extends BaseActivity implements ChooseCompanyFragme
     public void onCompanyChose( String companyId ) {
         Map< String, String > params = new HashMap<>();
         params.put( AppConstants.COMPANY_ID, companyId );
-        startNewActivity( DishActivity.class, params );
+        startNewActivity( CompanyDishActivity.class, params );
     }
 
     @Override
@@ -79,5 +79,6 @@ public class CompanyActivity extends BaseActivity implements ChooseCompanyFragme
         GlobalManager.getInstance().setCompanyFilter( filterModel );
         addReplaceFragment( ChooseCompanyFragment.newInstance( AppConstants.CUSTOM_FILTER ) );
     }
+
 
 }

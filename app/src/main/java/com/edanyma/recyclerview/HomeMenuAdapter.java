@@ -1,4 +1,4 @@
-package com.edanyma.recycleview;
+package com.edanyma.recyclerview;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,12 +6,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.model.HomeMenuModel;
 import com.edanyma.owncomponent.MainCardItem;
 import com.edanyma.utils.AppUtils;
-import com.edanyma.utils.PicassoClient;
 
 import java.util.ArrayList;
 

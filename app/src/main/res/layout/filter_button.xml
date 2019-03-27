@@ -5,7 +5,7 @@
     android:layout_marginTop="8dp"
     android:layout_marginRight="4dp">
     <TextView
-        style="@style/greenLabel"
+        style="@style/blueNeonLabel"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
         android:paddingTop="4dp"

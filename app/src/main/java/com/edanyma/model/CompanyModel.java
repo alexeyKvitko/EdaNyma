@@ -10,7 +10,7 @@ public class CompanyModel {
     private String companyName;
     private String displayName;
     private DictionaryModel city;
-    private String thumbUrl;
+    private String thumb;
     private String url;
     private String email;
     private String phoneOne;
@@ -68,12 +68,12 @@ public class CompanyModel {
         this.city = city;
     }
 
-    public String getThumbUrl() {
-        return thumbUrl;
+    public String getThumb() {
+        return thumb;
     }
 
-    public void setThumbUrl( String thumbUrl ) {
-        this.thumbUrl = thumbUrl;
+    public void setThumb( String thumb ) {
+        this.thumb = thumb;
     }
 
     public String getUrl() {

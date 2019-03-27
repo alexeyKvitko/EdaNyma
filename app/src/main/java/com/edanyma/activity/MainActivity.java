@@ -19,9 +19,9 @@ import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.model.HomeMenuModel;
-import com.edanyma.recycleview.CompanyActionAdapter;
-import com.edanyma.recycleview.HomeMenuAdapter;
-import com.edanyma.recycleview.VegaLayoutManager;
+import com.edanyma.recyclerview.CompanyActionAdapter;
+import com.edanyma.recyclerview.HomeMenuAdapter;
+import com.edanyma.recyclerview.VegaLayoutManager;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.PicassoClient;
 

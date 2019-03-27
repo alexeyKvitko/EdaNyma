@@ -1,4 +1,4 @@
-package com.edanyma.recycleview;
+package com.edanyma.recyclerview;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;

@@ -1,4 +1,4 @@
-package com.edanyma.recycleview;
+package com.edanyma.recyclerview;
 
 import android.graphics.Rect;
 import android.support.v4.util.ArrayMap;

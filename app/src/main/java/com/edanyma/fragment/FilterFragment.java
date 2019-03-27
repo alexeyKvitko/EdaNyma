@@ -119,7 +119,7 @@ public class FilterFragment extends Fragment {
 
     private void addCategoriesFilter( boolean hideShowAll ) {
         List< DictionaryModel > categoriesFilter = new LinkedList<>();
-        for ( MenuCategoryModel menuCategory : GlobalManager.getBootstrapModel()
+        for ( MenuCategoryModel menuCategory : GlobalManager.getInstance().getBootstrapModel()
                 .getDeliveryMenu().getMenuCategories() ) {
             DictionaryModel model = new DictionaryModel();
             model.setId( menuCategory.getId() );
@@ -131,7 +131,7 @@ public class FilterFragment extends Fragment {
 
     private void addTypesFilter( boolean hideShowAll ) {
         List< DictionaryModel > typesFilter = new LinkedList<>();
-        for ( MenuTypeModel menuType : GlobalManager.getBootstrapModel()
+        for ( MenuTypeModel menuType : GlobalManager.getInstance().getBootstrapModel()
                 .getDeliveryMenu().getMenuTypes() ) {
             DictionaryModel model = new DictionaryModel();
             model.setId( menuType.getId() );

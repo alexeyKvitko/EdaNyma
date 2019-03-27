@@ -115,7 +115,7 @@
             android:id="@+id/resendCodeValueId"
             android:text="90"/>
         <TextView
-            style="@style/greenLabel"
+            style="@style/blueNeonLabel"
             android:id="@+id/resendCodeLabelId"
             android:layout_marginTop="16dp"
             android:visibility="gone"

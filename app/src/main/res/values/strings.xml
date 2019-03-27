@@ -72,5 +72,8 @@
     <string name="clear_filter">Очистить</string>
     <string name="filter_by_label">Отобрано по</string>
     <string name="title_activity_dish">DishActivity</string>
+    <string name="search_comapny_hint">Найти заведение</string>
+    <string name="find_dish_hint">Найти блюдо</string>
+    <string name="buy_entity">Купить</string>
 
 </resources>

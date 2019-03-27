@@ -13,7 +13,7 @@
 
     <TextView
         android:id="@+id/signInId"
-        style="@style/greenLabel"
+        style="@style/blueNeonLabel"
         android:layout_below="@+id/signUpTitleId"
         android:layout_alignParentRight="true"
         android:layout_marginTop="8dp"
