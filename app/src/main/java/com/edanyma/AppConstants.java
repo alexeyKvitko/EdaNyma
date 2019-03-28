@@ -18,6 +18,9 @@ public class AppConstants {
 
     public static final String AUTH_BEARER = "Bearer ";
 
+    public static final int HEADER_ACTION_REMOVE = -1;
+    public static final int HEADER_ACTION_RESTORE = 1;
+
     public static final String ASTERISKS= "*";
     public static final String CLOSE= "CLOSE";
     public static final String OPEN= "OPEN";

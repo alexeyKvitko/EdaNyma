@@ -1,16 +1,16 @@
 package com.edanyma.fragment;
 
 import android.content.Context;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
@@ -22,7 +22,7 @@ import com.edanyma.model.CompanyModel;
 import com.edanyma.model.FilterModel;
 import com.edanyma.owncomponent.OwnSearchView;
 import com.edanyma.recyclerview.CompanyAdapter;
-import com.edanyma.recyclerview.VegaLayoutManager;
+import com.edanyma.recyclerview.SaturationRecyclerView;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
 
@@ -32,7 +32,8 @@ import java.util.List;
 
 
 public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OwnSearchViewListener,
-                                                        CompanyAdapter.CardClickListener{
+        CompanyAdapter.CardClickListener,
+        SaturationRecyclerView.OnActionHeaderListener {
 
     private final String TAG = "ChooseCompanyFragment";
 
@@ -40,15 +41,15 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
 
     private OnCompanyChosenListener mListener;
 
-    private RecyclerView mCompanyRecView;
+    private SaturationRecyclerView mCompanyRecView;
     private CompanyAdapter mCompanyAdapter;
-    private VegaLayoutManager mLayoutManager;
 
-    private ColorMatrixColorFilter mGrayFilter;
+
     private String mInitFilterParam;
     private FilterModel mCompanyFilter;
     private int mCompanyCount;
     private boolean mSearchMade;
+    private RelativeLayout mHeaderContainer;
 
     private List< Integer > mCategoryIds;
 
@@ -108,14 +109,12 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         mSearchMade = false;
+        mHeaderContainer = getView().findViewById( R.id.chooseCompanyHeaderId );
         TextView companyTitle = getView().findViewById( R.id.companyTitleId );
         companyTitle.setTypeface( AppConstants.B52 );
         companyTitle.setText( mInitFilterParam );
         TextView companyCount = getView().findViewById( R.id.companyCountId );
         companyCount.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        ColorMatrix matrix = new ColorMatrix();
-        matrix.setSaturation( 0 );
-        mGrayFilter = new ColorMatrixColorFilter( matrix );
         OwnSearchView ownSearchView = getView().findViewById( R.id.searchCompanyId );
         ownSearchView.setOnApplySearchListener( this );
     }
@@ -123,22 +122,8 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
     private void initRecView() {
         if ( mCompanyRecView == null ) {
             mCompanyRecView = getView().findViewById( R.id.companyRVId );
-            mCompanyRecView.setOnFlingListener( null );
-            mLayoutManager = new VegaLayoutManager();
-            mCompanyRecView.setLayoutManager( mLayoutManager );
-            mCompanyRecView.setAdapter( mCompanyAdapter );
-            mCompanyRecView.setHasFixedSize( false );
-            mCompanyRecView.addOnScrollListener( new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged( RecyclerView recyclerView, int newState ) {
-                }
-
-                @Override
-                public void onScrolled( RecyclerView recyclerView, int dx, int dy ) {
-                    super.onScrolled( recyclerView, dx, dy );
-                    changeSaturation();
-                }
-            } );
+            mCompanyRecView.initialize( mCompanyAdapter, R.id.companyImgId , 200, 116, 16);
+            mCompanyRecView.setOnActionHeaderListener( this );
         }
         mCompanyRecView.getAdapter().notifyDataSetChanged();
         mCompanyAdapter.setOnItemClickListener( this );
@@ -183,8 +168,8 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
         setCompanyCountText();
     }
 
-    private void setCompanyCountText(){
-        ((TextView) getView().findViewById( R.id.companyCountId ))
+    private void setCompanyCountText() {
+        ( ( TextView ) getView().findViewById( R.id.companyCountId ) )
                 .setText( AppUtils.declension( mCompanyCount + "" ) );
     }
 
@@ -247,27 +232,6 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
         return filtered;
     }
 
-    public void changeSaturation() {
-        final View currentView[] = new View[ 3 ];
-        int notNull = 0;
-        for ( int i = 0; i < mLayoutManager.getItemCount(); i++ ) {
-            if ( mCompanyRecView.getChildAt( i ) != null ) {
-                currentView[ i ] = mCompanyRecView.getChildAt( i );
-                notNull++;
-            }
-        }
-        if ( notNull > 0 ) {
-            int grayIdx = ( notNull == 2 || notNull == 1 ) ? 0 : 1;
-            for ( int i = 0; i < notNull; i++ ) {
-                final ImageView imageView = currentView[ i ].findViewById( R.id.companyImgId );
-                if ( grayIdx != i ) {
-                    imageView.setColorFilter( mGrayFilter );
-                } else {
-                    imageView.setColorFilter( null );
-                }
-            }
-        }
-    }
 
     public void onCompanyChoose( CompanyLight company ) {
         if ( mListener != null ) {
@@ -316,24 +280,24 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
     }
 
     @Override
-    public void onApplySearch(String query ) {
-        if( query == null && mSearchMade) {
+    public void onApplySearch( String query ) {
+        if ( query == null && mSearchMade ) {
             fillCompanyAdapter( GlobalManager.getInstance().getBootstrapModel().getCompanies() );
             mCompanyRecView.getAdapter().notifyDataSetChanged();
             mCompanyAdapter.notifyDataSetChanged();
             mSearchMade = false;
             AppUtils.hideKeyboardFrom( getActivity(), getView() );
             return;
-        } else if( query == null && !mSearchMade ){
+        } else if ( query == null && !mSearchMade ) {
             return;
         }
-        if( query.length() < 3 ){
+        if ( query.length() < 3 ) {
             return;
         }
         mCompanyAdapter.deleteAllItem();
         int idx = 0;
-        for( CompanyModel companyModel :GlobalManager.getInstance().getBootstrapModel().getCompanies() ){
-            if( companyModel.getDisplayName().toUpperCase().indexOf( query.toUpperCase() ) > -1 ){
+        for ( CompanyModel companyModel : GlobalManager.getInstance().getBootstrapModel().getCompanies() ) {
+            if ( companyModel.getDisplayName().toUpperCase().indexOf( query.toUpperCase() ) > -1 ) {
                 mCompanyAdapter.addItem( ConvertUtils.convertToCompanyLight( companyModel ), idx );
                 idx++;
             }
@@ -346,14 +310,52 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
     }
 
     @Override
-    public void onItemClick( int position, View v ) {
-        onCompanyChoose( mCompanyAdapter.getItem( position ) );
+    public void onItemClick( final int position, View view ) {
+        AppUtils.bounceAnimation( view.findViewById( R.id.companyImgId ) );
+        new Handler( ).postDelayed( new Runnable() {
+            @Override
+            public void run() {
+                onCompanyChoose( mCompanyAdapter.getItem( position ) );
+            }
+        }, 300 );
     }
 
+    @Override
+    public void onRemoveHeaderAction() {
+        Animation slideUp = AnimationUtils.loadAnimation( getActivity(), R.anim.slide_up );
+        slideUp.setAnimationListener( new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart( Animation animation ) {}
 
-    public interface OnCompanyChosenListener {
-        void onCompanyChose( String companyId );
-        void onFilterClick();
+            @Override
+            public void onAnimationEnd( Animation animation ) {
+                mHeaderContainer.setVisibility( View.GONE );
+            }
+
+            @Override
+            public void onAnimationRepeat( Animation animation ) {}
+        } );
+        mHeaderContainer.startAnimation( slideUp );
+
+    }
+
+    @Override
+    public void onRestoreHeaderAction() {
+        Animation slideDown = AnimationUtils.loadAnimation( getActivity(), R.anim.slide_down );
+        slideDown.setAnimationListener( new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart( Animation animation ) {
+                mHeaderContainer.setVisibility( View.VISIBLE );
+            }
+
+            @Override
+            public void onAnimationEnd( Animation animation ) {
+            }
+
+            @Override
+            public void onAnimationRepeat( Animation animation ) {}
+        } );
+        mHeaderContainer.startAnimation( slideDown );
     }
 
     @Override
@@ -361,5 +363,10 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
         if ( mListener != null ) {
             mListener.onFilterClick();
         }
+    }
+
+    public interface OnCompanyChosenListener {
+        void onCompanyChose( String companyId );
+        void onFilterClick();
     }
 }
