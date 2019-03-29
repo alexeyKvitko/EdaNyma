@@ -17,7 +17,7 @@ import com.edanyma.model.BootstrapModel;
 import com.edanyma.model.DictionaryModel;
 import com.edanyma.model.TripleModel;
 import com.edanyma.recyclerview.CityAdapter;
-import com.edanyma.recyclerview.VegaLayoutManager;
+import com.edanyma.recyclerview.manager.VegaLayoutManager;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 

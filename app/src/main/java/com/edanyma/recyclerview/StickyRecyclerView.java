@@ -1,6 +1,5 @@
 package com.edanyma.recyclerview;
 
-import android.animation.ArgbEvaluator;
 import android.animation.IntEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -9,27 +8,22 @@ import android.graphics.ColorMatrixColorFilter;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.edanyma.AppConstants;
-import com.edanyma.EdaNymaApp;
-import com.edanyma.R;
+import com.edanyma.recyclerview.manager.StickyLayoutManager;
 import com.edanyma.utils.ConvertUtils;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class SaturationRecyclerView extends RecyclerView {
+public class StickyRecyclerView extends RecyclerView {
 
     private final String TAG = "SaturationRecyclerView";
 
-    private VegaLayoutManager mLayoutManager;
+    private StickyLayoutManager mLayoutManager;
     private ColorMatrixColorFilter mGrayFilter;
     private int mImgViewId;
     private int mHeaderAction;
@@ -37,18 +31,19 @@ public class SaturationRecyclerView extends RecyclerView {
     private int mScrollValue;
     private float mOpenMarginTop;
     private float mCloseMarginTop;
+    private boolean mAnimateHeader;
 
-    public SaturationRecyclerView( Context context ) {
+    public StickyRecyclerView( Context context ) {
         super( context );
     }
 
     private OnActionHeaderListener mListener;
 
-    public SaturationRecyclerView( Context context, @Nullable AttributeSet attrs ) {
+    public StickyRecyclerView( Context context, @Nullable AttributeSet attrs ) {
         super( context, attrs );
     }
 
-    public SaturationRecyclerView( Context context, @Nullable AttributeSet attrs, int defStyle ) {
+    public StickyRecyclerView( Context context, @Nullable AttributeSet attrs, int defStyle ) {
         super( context, attrs, defStyle );
     }
 
@@ -58,7 +53,7 @@ public class SaturationRecyclerView extends RecyclerView {
         mImgViewId = viewId;
         mGrayFilter = new ColorMatrixColorFilter( matrix );
         this.setOnFlingListener( null );
-        mLayoutManager = new VegaLayoutManager( this, cardHeight );
+        mLayoutManager = new StickyLayoutManager( this.getContext(), this, cardHeight );
         mOpenMarginTop = ConvertUtils.convertDpToPixel( open );
         mCloseMarginTop = ConvertUtils.convertDpToPixel( close );
         this.setLayoutManager( mLayoutManager );
@@ -91,7 +86,7 @@ public class SaturationRecyclerView extends RecyclerView {
 
     private void animateLayot(Float start, Float end ){
         final RelativeLayout.LayoutParams layoutParams = ( RelativeLayout.LayoutParams ) this.getLayoutParams();
-        final SaturationRecyclerView mThis = this;
+        final StickyRecyclerView mThis = this;
         ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), start.intValue(), end.intValue() );
         valAnimator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -117,7 +112,7 @@ public class SaturationRecyclerView extends RecyclerView {
 
     private void changeSaturation() {
         final List<View> displayViews = new LinkedList<>( );
-        final SaturationRecyclerView mThis = this;
+        final StickyRecyclerView mThis = this;
         int notNull = 0;
         for ( int i = 0; i < mLayoutManager.getItemCount(); i++ ) {
             if ( mThis.getChildAt( i ) != null ) {
@@ -147,4 +142,11 @@ public class SaturationRecyclerView extends RecyclerView {
     }
 
 
+    public boolean isAnimateHeader() {
+        return mAnimateHeader;
+    }
+
+    public void setAnimateHeader( boolean animateHeader ) {
+        this.mAnimateHeader = animateHeader;
+    }
 }

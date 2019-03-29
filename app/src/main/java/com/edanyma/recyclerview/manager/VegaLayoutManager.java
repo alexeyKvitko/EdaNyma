@@ -1,9 +1,8 @@
-package com.edanyma.recyclerview;
+package com.edanyma.recyclerview.manager;
 
 import android.graphics.Rect;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.view.View;
@@ -26,19 +25,13 @@ public class VegaLayoutManager extends RecyclerView.LayoutManager {
     private int maxScroll = -1;
     private RecyclerView.Adapter adapter;
     private RecyclerView.Recycler recycler;
-    private RecyclerView mParent;
-    private int mMinHeight;
 
 
     public VegaLayoutManager() {
         setAutoMeasureEnabled( true );
     }
 
-    public VegaLayoutManager( RecyclerView parent, int height ) {
-        setAutoMeasureEnabled( true );
-        mParent = parent;
-        mMinHeight = height;
-    }
+
 
     @Override
     public RecyclerView.LayoutParams generateDefaultLayoutParams() {
@@ -278,18 +271,6 @@ public class VegaLayoutManager extends RecyclerView.LayoutManager {
         if ( getItemCount() == 0 || dy == 0 ) {
             return 0;
         }
-        if ( mParent instanceof SaturationRecyclerView ) {
-            if ( dy > 0 && scroll == 0 ) {
-                ( ( SaturationRecyclerView ) mParent ).removeHeaderAction();
-                return 0;
-            }
-            if ( dy < 0 &&  scroll < mMinHeight  ) {
-                ( ( SaturationRecyclerView ) mParent ).restoreHeaderAction();
-                return 0;
-            }
-        }
-
-        Log.i( TAG, "Scroll position: " + scroll );
         int travel = dy;
         if ( dy + scroll < 0 ) {
             travel = -scroll;

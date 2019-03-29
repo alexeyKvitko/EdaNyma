@@ -3,22 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/companyDishContainerId"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageView
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/fragment_margin_top"
+    android:layout_marginBottom="@dimen/fragment_margin_bottom">
+    <LinearLayout
         android:id="@+id/expandLineId"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginLeft="52dp"
-        android:layout_marginTop="16dp"
         android:visibility="gone"
-        app:srcCompat="@drawable/ic_arrow_expand_vertical_black_18dp" />
-
-    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/fragment_margin_top"
-        android:layout_marginBottom="@dimen/fragment_margin_bottom">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:background="@drawable/border_bottom">
+        <TextView
+            android:id="@+id/selectedDishTopId"
+            style="@style/blueNeonLabel"
+            android:background="@drawable/border_bottom_neon" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <ImageView
+            android:id="@+id/filterSmallBtnId"
+            android:layout_marginRight="8dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            app:srcCompat="@drawable/outline_tune_black_18"/>
+
+    </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/companyDishHeaderId"
@@ -132,12 +142,11 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <com.edanyma.recyclerview.SaturationRecyclerView
+        <com.edanyma.recyclerview.StickyRecyclerView
             android:id="@+id/dishEntityRVId"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="204dp" />
 
-    </RelativeLayout>
 </RelativeLayout>

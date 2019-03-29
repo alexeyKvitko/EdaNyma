@@ -21,7 +21,7 @@ import com.edanyma.model.CompanyActionModel;
 import com.edanyma.model.HomeMenuModel;
 import com.edanyma.recyclerview.CompanyActionAdapter;
 import com.edanyma.recyclerview.HomeMenuAdapter;
-import com.edanyma.recyclerview.VegaLayoutManager;
+import com.edanyma.recyclerview.manager.VegaLayoutManager;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.PicassoClient;
 

@@ -22,7 +22,7 @@ import com.edanyma.model.CompanyModel;
 import com.edanyma.model.FilterModel;
 import com.edanyma.owncomponent.OwnSearchView;
 import com.edanyma.recyclerview.CompanyAdapter;
-import com.edanyma.recyclerview.SaturationRecyclerView;
+import com.edanyma.recyclerview.StickyRecyclerView;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
 
@@ -33,7 +33,7 @@ import java.util.List;
 
 public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OwnSearchViewListener,
         CompanyAdapter.CardClickListener,
-        SaturationRecyclerView.OnActionHeaderListener {
+        StickyRecyclerView.OnActionHeaderListener {
 
     private final String TAG = "ChooseCompanyFragment";
 
@@ -41,7 +41,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
 
     private OnCompanyChosenListener mListener;
 
-    private SaturationRecyclerView mCompanyRecView;
+    private StickyRecyclerView mCompanyRecView;
     private CompanyAdapter mCompanyAdapter;
 
 

@@ -34,6 +34,8 @@ public class DishEntityAdapter extends CommonBaseAdapter< MenuEntityModel > {
         holder.dishEntityCard.setEntityTitle( mItemList.get( position ).getDisplayName() );
         holder.dishEntityCard.setEntityDesc( mItemList.get( position ).getDescription() );
         holder.dishEntityCard.setEntityPrice( mItemList.get( position ).getPriceOne() );
+        holder.dishEntityCard.setEntitySize( mItemList.get( position ).getSizeOne() != null ?
+                mItemList.get( position ).getSizeOne() : mItemList.get( position ).getWeightOne() );
     }
 
 

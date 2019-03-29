@@ -78,7 +78,6 @@ public class OwnSearchView extends LinearLayout {
                 if( newText == null || newText.length() == 0 ){
                     mListener.onApplySearch( null );
                 }
-
                 return false;
             }
         } );

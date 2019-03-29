@@ -10,11 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
+import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.activity.CompanyDishActivity;
 import com.edanyma.manager.GlobalManager;
@@ -22,8 +25,9 @@ import com.edanyma.model.CompanyInfoModel;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.owncomponent.OwnSearchView;
 import com.edanyma.recyclerview.DishEntityAdapter;
-import com.edanyma.recyclerview.SaturationRecyclerView;
+import com.edanyma.recyclerview.StickyRecyclerView;
 import com.edanyma.utils.AppUtils;
+import com.edanyma.utils.ConvertUtils;
 import com.edanyma.utils.PicassoClient;
 
 import java.util.ArrayList;
@@ -32,17 +36,28 @@ import java.util.List;
 
 public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSearchViewListener,
         DishEntityAdapter.CardClickListener,
-        SaturationRecyclerView.OnActionHeaderListener {
+        StickyRecyclerView.OnActionHeaderListener {
 
-    private final String TAG = "CompanyDishFragment";
+    private static final String TAG = "CompanyDishFragment";
 
-    private CompanyInfoModel mCompanyDish;
+    private static final int REC_VIEW_CARD_HEIGHT = 150;
+    private static final int HEADER_EXPAND_MARGIN_TOP = 212;
+    private static final int HEADER_COLLAPSE_MARGIN_TOP = 28;
+    private static final int HEADER_COLLAPSE_ANIMATION_MARGIN = 176;
+    private static final int HEADER_ANIMATION_DURATION = 600;
+
+
+
     private TextView mSelectedDish;
-
-    private SaturationRecyclerView mDishRecView;
+    private TextView mSelectedDishTop;
+    private StickyRecyclerView mDishRecView;
     private DishEntityAdapter mDishEntityAdapter;
     private RelativeLayout mHeaderContainer;
-    private ImageView mExpandLine;
+    private LinearLayout mExpandLine;
+    private ImageView mSmallFilterBtn;
+
+    private boolean mSearchMade;
+    private CompanyInfoModel mCompanyDish;
 
     public CompanyDishFragment() {
     }
@@ -67,6 +82,7 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         mCompanyDish = ( ( CompanyDishActivity ) getActivity() ).getCompanyDish();
+        mSearchMade = false;
         TextView companyTitle = getView().findViewById( R.id.companyDishTitleId );
         ImageView companyLogo = getView().findViewById( R.id.companyDishLogoId );
         PicassoClient.downloadImage( getActivity(), GlobalManager.getInstance().getBootstrapModel()
@@ -87,27 +103,29 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
         companyDeliTime.setTypeface( AppConstants.ROBOTO_CONDENCED );
         companyDeliTime.setText( "от " + mCompanyDish.getCompanyModel().getDeliveryTimeMin().toString() + " мин." );
 
+        ((OwnSearchView) getView().findViewById( R.id.searchDishId ))
+                                                            .setOnApplySearchListener( this );
+
         mSelectedDish = getView().findViewById( R.id.selectedDishTitleId );
         mSelectedDish.setTypeface( AppConstants.ROBOTO_CONDENCED, Typeface.BOLD );
         mSelectedDish.setText( "Все Блюда от " + mCompanyDish.getCompanyModel().getDisplayName() );
 
+        mSelectedDishTop = getView().findViewById( R.id.selectedDishTopId );
+        mSelectedDishTop.setTypeface( AppConstants.ROBOTO_CONDENCED, Typeface.BOLD );
+        mSelectedDishTop.setText( "Все Блюда от " + mCompanyDish.getCompanyModel().getDisplayName() );
+
         mHeaderContainer = getView().findViewById( R.id.companyDishHeaderId );
         mExpandLine = getView().findViewById( R.id.expandLineId );
+        mSmallFilterBtn = getView().findViewById( R.id.filterSmallBtnId );
 
-        mExpandLine.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
-                AppUtils.clickAnimation( view );
-                mDishRecView.restoreHeaderAction();
-            }
-        } );
     }
 
     private void initRecView() {
         if ( mDishRecView == null ) {
             mDishRecView = getView().findViewById( R.id.dishEntityRVId );
             mDishRecView.setOnActionHeaderListener( this );
-            mDishRecView.initialize( mDishEntityAdapter, R.id.entityImgId, 150, 204, 16 );
+            mDishRecView.initialize( mDishEntityAdapter, R.id.entityImgId, REC_VIEW_CARD_HEIGHT
+                                        , HEADER_EXPAND_MARGIN_TOP, HEADER_COLLAPSE_MARGIN_TOP );
         }
         mDishRecView.getAdapter().notifyDataSetChanged();
     }
@@ -116,7 +134,7 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
         if ( mDishEntityAdapter == null ) {
             fillDishAdapter( mCompanyDish.getMenuEntities() );
         }
-        mDishEntityAdapter.setOnItemClickListener( this );
+        mDishEntityAdapter.setOnItemClickListener( null );
         mDishEntityAdapter.notifyDataSetChanged();
     }
 
@@ -168,7 +186,30 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
 
     @Override
     public void onApplySearch( String query ) {
-
+        if ( query == null && mSearchMade ) {
+            fillDishAdapter( mCompanyDish.getMenuEntities() );
+            mDishRecView.getAdapter().notifyDataSetChanged();
+            mDishEntityAdapter.notifyDataSetChanged();
+            mSearchMade = false;
+            AppUtils.hideKeyboardFrom( getActivity(), getView() );
+            return;
+        } else if ( query == null && !mSearchMade ) {
+            return;
+        }
+        if ( query.length() < 3 ) {
+            return;
+        }
+        mDishEntityAdapter.deleteAllItem();
+        int idx = 0;
+        for ( MenuEntityModel entity : mCompanyDish.getMenuEntities() ) {
+            if ( entity.getDisplayName().toUpperCase().indexOf( query.toUpperCase() ) > -1 ) {
+                mDishEntityAdapter.addItem( entity, idx );
+                idx++;
+            }
+        }
+        mSearchMade = true;
+        mDishRecView.getAdapter().notifyDataSetChanged();
+        mDishEntityAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -183,47 +224,52 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
 
     @Override
     public void onRemoveHeaderAction() {
-        Animation slideUp = AnimationUtils.loadAnimation( getActivity(), R.anim.slide_up );
-        Animation fadeIn = AnimationUtils.loadAnimation( getActivity(), R.anim.fade_in );
+        TranslateAnimation slideUp = new TranslateAnimation( 0,0,0,
+                            -ConvertUtils.convertDpToPixel( HEADER_COLLAPSE_ANIMATION_MARGIN ) );
+        slideUp.setDuration( HEADER_ANIMATION_DURATION );
         slideUp.setAnimationListener( new Animation.AnimationListener() {
             @Override
             public void onAnimationStart( Animation animation ) {
-                mExpandLine.setVisibility( View.VISIBLE );
+                mDishRecView.setAnimateHeader( true );
             }
 
             @Override
             public void onAnimationEnd( Animation animation ) {
                 mHeaderContainer.setVisibility( View.GONE );
-
+                mSmallFilterBtn.startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.fade_in ) );
+                mExpandLine.setVisibility( View.VISIBLE );
+                mDishRecView.setAnimateHeader( false );
             }
 
             @Override
             public void onAnimationRepeat( Animation animation ) {}
         } );
         mHeaderContainer.startAnimation( slideUp );
-        mExpandLine.startAnimation( fadeIn );
-
     }
 
     @Override
     public void onRestoreHeaderAction() {
-        Animation slideDown = AnimationUtils.loadAnimation( getActivity(), R.anim.slide_down );
-        Animation fadeOut = AnimationUtils.loadAnimation( getActivity(), R.anim.fade_out );
+        TranslateAnimation slideDown = new TranslateAnimation( 0,0,
+                            -ConvertUtils.convertDpToPixel( HEADER_COLLAPSE_ANIMATION_MARGIN ), 0 );
+        slideDown.setDuration( HEADER_ANIMATION_DURATION );
         slideDown.setAnimationListener( new Animation.AnimationListener() {
             @Override
             public void onAnimationStart( Animation animation ) {
                 mHeaderContainer.setVisibility( View.VISIBLE );
+                mSmallFilterBtn.startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.fade_out ) );
+                mExpandLine.setVisibility( View.GONE );
+                mDishRecView.setAnimateHeader( true );
             }
 
             @Override
             public void onAnimationEnd( Animation animation ) {
-                mExpandLine.setVisibility( View.GONE );
+                mDishRecView.setAnimateHeader( false );
             }
 
             @Override
             public void onAnimationRepeat( Animation animation ) {}
         } );
         mHeaderContainer.startAnimation( slideDown );
-        mExpandLine.startAnimation( fadeOut );
     }
+
 }

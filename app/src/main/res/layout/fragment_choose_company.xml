@@ -40,7 +40,7 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <com.edanyma.recyclerview.SaturationRecyclerView
+    <com.edanyma.recyclerview.StickyRecyclerView
         android:id="@+id/companyRVId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
