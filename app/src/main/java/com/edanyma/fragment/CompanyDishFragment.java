@@ -3,8 +3,10 @@ package com.edanyma.fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import com.edanyma.activity.CompanyDishActivity;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.CompanyInfoModel;
 import com.edanyma.model.MenuEntityModel;
+import com.edanyma.owncomponent.DishEntityCard;
 import com.edanyma.owncomponent.OwnSearchView;
 import com.edanyma.recyclerview.DishEntityAdapter;
 import com.edanyma.recyclerview.StickyRecyclerView;
@@ -59,6 +62,10 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
     private boolean mSearchMade;
     private CompanyInfoModel mCompanyDish;
 
+    private int mSelectedDishId;
+    private View mSelectedView;
+    private boolean mCardClick;
+
     public CompanyDishFragment() {
     }
 
@@ -83,6 +90,7 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
         super.onActivityCreated( savedInstanceState );
         mCompanyDish = ( ( CompanyDishActivity ) getActivity() ).getCompanyDish();
         mSearchMade = false;
+        mCardClick = false;
         TextView companyTitle = getView().findViewById( R.id.companyDishTitleId );
         ImageView companyLogo = getView().findViewById( R.id.companyDishLogoId );
         PicassoClient.downloadImage( getActivity(), GlobalManager.getInstance().getBootstrapModel()
@@ -126,6 +134,20 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
             mDishRecView.setOnActionHeaderListener( this );
             mDishRecView.initialize( mDishEntityAdapter, R.id.entityImgId, REC_VIEW_CARD_HEIGHT
                                         , HEADER_EXPAND_MARGIN_TOP, HEADER_COLLAPSE_MARGIN_TOP );
+            mDishRecView.addOnScrollListener( new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged( RecyclerView recyclerView, int newState ) {}
+
+                @Override
+                public void onScrolled( RecyclerView recyclerView, int dx, int dy ) {
+                    if( AppConstants.FAKE_ID != mSelectedDishId ){
+                        onItemClick( mSelectedDishId, mSelectedView );
+                    }
+                    super.onScrolled( recyclerView, dx, dy );
+
+                }
+            } );
+            mSelectedDishId = AppConstants.FAKE_ID;
         }
         mDishRecView.getAdapter().notifyDataSetChanged();
     }
@@ -134,7 +156,7 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
         if ( mDishEntityAdapter == null ) {
             fillDishAdapter( mCompanyDish.getMenuEntities() );
         }
-        mDishEntityAdapter.setOnItemClickListener( null );
+        mDishEntityAdapter.setOnItemClickListener( this );
         mDishEntityAdapter.notifyDataSetChanged();
     }
 
@@ -218,8 +240,31 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
     }
 
     @Override
-    public void onItemClick( int position, View v ) {
-
+    public void onItemClick( int position, View view ) {
+        if( mCardClick ){
+            return;
+        }
+        if ( view instanceof DishEntityCard ){
+            mCardClick = true;
+            if ( AppConstants.FAKE_ID == mSelectedDishId ){
+                mSelectedDishId = ((DishEntityCard) view).getDishEntityId();
+                mDishRecView.changeSaturation( mSelectedDishId, true );
+                mSelectedDishId = ((DishEntityCard) view).getDishEntityId();
+                mSelectedView = view;
+            } else {
+                mDishRecView.changeSaturation( mSelectedDishId, false );
+                mSelectedDishId = AppConstants.FAKE_ID;
+                mSelectedView = null;
+            }
+            ((DishEntityCard) view).dishCardClick( mSelectedDishId );
+        }
+        new Handler(  ).postDelayed( new Runnable() {
+            @Override
+            public void run() {
+                mCardClick = false;
+                mDishEntityAdapter.notifyDataSetChanged();
+            }
+        }, 300 );
     }
 
     @Override

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dishCardMainContainerId"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="190dp">
 
     <FrameLayout
         android:id="@+id/dishCardCollapsedId"
@@ -111,8 +111,7 @@
             android:layout_width="148dp"
             android:layout_height="142dp"
             android:layout_gravity="left|top"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="4dp"
+            android:layout_marginTop="24dp"
             card_view:cardCornerRadius="8dp"
             card_view:cardElevation="7dp">
 
@@ -120,34 +119,43 @@
                 android:id="@+id/expandedImgId"
                 android:layout_width="148dp"
                 android:layout_height="142dp" />
+
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="4dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="0dp"
             android:layout_marginRight="6dp"
             android:layout_marginBottom="8dp"
             card_view:cardCornerRadius="8dp"
-            card_view:cardElevation="6dp">
+            card_view:cardElevation="4dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/expandedTitleTextId"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="152dp"
+                android:background="@drawable/border_debug_blue"
+                android:layout_height="132dp"
+                android:layout_marginLeft="162dp"
                 android:layout_marginTop="28dp"
                 android:layout_marginRight="8dp"
+                android:ellipsize="end"
+                android:maxLines="8"
+
                 android:textColor="@color/primaryTextColor"
                 android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/expandedTextId"
+                android:layout_below="@+id/expandedTitleTextId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="56dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginRight="8dp"
                 android:ellipsize="end"
                 android:maxLines="4"
@@ -189,9 +197,10 @@
                 android:paddingBottom="4dp"
                 android:textColor="@color/blueNeon"
                 android:textSize="14dp" />
+            </RelativeLayout>
 
         </android.support.v7.widget.CardView>
 
     </FrameLayout>
 
-</LinearLayout>
+</FrameLayout>

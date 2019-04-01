@@ -8,11 +8,13 @@ import android.graphics.ColorMatrixColorFilter;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.edanyma.AppConstants;
+import com.edanyma.owncomponent.DishEntityCard;
 import com.edanyma.recyclerview.manager.StickyLayoutManager;
 import com.edanyma.utils.ConvertUtils;
 
@@ -62,16 +64,7 @@ public class StickyRecyclerView extends RecyclerView {
         mFirstScrool = true;
         mHeaderAction = AppConstants.HEADER_ACTION_RESTORE;
         mScrollValue = 0;
-        this.addOnScrollListener( new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged( RecyclerView recyclerView, int newState ) {}
 
-            @Override
-            public void onScrolled( RecyclerView recyclerView, int dx, int dy ) {
-               super.onScrolled( recyclerView, dx, dy );
-//               changeSaturation();
-            }
-        } );
     }
 
     public void removeHeaderAction(){
@@ -110,7 +103,7 @@ public class StickyRecyclerView extends RecyclerView {
         mLayoutManager.setScroll( 0 );
     }
 
-    private void changeSaturation() {
+    public void changeSaturation( int dishId, boolean toGray ) {
         final List<View> displayViews = new LinkedList<>( );
         final StickyRecyclerView mThis = this;
         int notNull = 0;
@@ -123,7 +116,9 @@ public class StickyRecyclerView extends RecyclerView {
         if ( notNull > 0 ) {
             for ( int i = 0; i < notNull; i++ ) {
                 final ImageView imageView = displayViews.get( i ).findViewById( mImgViewId );
-                if (  i > notNull-2 ) {
+                int currentDishId = (( DishEntityCard ) displayViews.get( i )).getDishEntityId();
+                Log.i(TAG,"DishId = "+ dishId+", repId: "+currentDishId );
+                if (  toGray && dishId != currentDishId ) {
                     imageView.setColorFilter( mGrayFilter );
                 } else {
                     imageView.setColorFilter( null );

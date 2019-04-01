@@ -1,5 +1,7 @@
 package com.edanyma.owncomponent;
 
+import android.animation.IntEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
@@ -9,20 +11,23 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
-import com.edanyma.utils.AppUtils;
+import com.edanyma.model.MenuEntityModel;
 import com.edanyma.utils.ConvertUtils;
 import com.edanyma.utils.PicassoClient;
 
-public class DishEntityCard extends LinearLayout implements View.OnClickListener {
+public class DishEntityCard extends FrameLayout{
+
+    private static final String TAG = "DishEntityCard";
 
     private static final int DISH_IMAGE_WIDTH = (int) ConvertUtils.convertDpToPixel( 148 );
     private static final int DISH_IMAGE_HEIGHT = (int) ConvertUtils.convertDpToPixel( 142 );
+    private static final int COLLAPSED_HEIGHT = (int) ConvertUtils.convertDpToPixel( 190 );
+    private static final int EXPANDED_HEIGHT = (int) ConvertUtils.convertDpToPixel( 250 );
 
 
     private ImageView mEntityImage;
@@ -32,9 +37,12 @@ public class DishEntityCard extends LinearLayout implements View.OnClickListener
     private TextView mEntitySize;
     private FrameLayout mDishCardCollapsed;
     private FrameLayout mDishCardExpanded;
+    private FrameLayout mDishContainer;
 
+    private MenuEntityModel mDishEntity;
 
-    private String mThumpImgUri;
+    private boolean mFirstLoadImg;
+
 
     public DishEntityCard( Context context ) {
         super( context );
@@ -49,7 +57,8 @@ public class DishEntityCard extends LinearLayout implements View.OnClickListener
     }
 
     private void initialize(){
-
+        mFirstLoadImg = true;
+        mDishContainer = findViewById( R.id.dishCardMainContainerId );
         mEntityImage = findViewById( R.id.entityImgId );
         mEntityTitle = findViewById( R.id.entityTitleTextId );
         mEntityDesc = findViewById( R.id.entityDescTextId );
@@ -62,34 +71,60 @@ public class DishEntityCard extends LinearLayout implements View.OnClickListener
         mEntityDesc.setTypeface( AppConstants.ROBOTO_CONDENCED);
         mEntitySize.setTypeface( AppConstants.ROBOTO_CONDENCED);
         mEntityPrice.setTypeface( AppConstants.OFFICE, Typeface.BOLD);
-        mDishCardExpanded.setOnClickListener( this );
-        mDishCardCollapsed.setOnClickListener( this );
     }
 
-//    private void animateDishCard( int start, int end, final int cardLeftMargin, final boolean isNeedCallback ){
-//        final LinearLayout.LayoutParams layoutParams = ( LinearLayout.LayoutParams ) mDishCard.getLayoutParams();
-//        ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), start, end );
-//        valAnimator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
-//            @Override
-//            public void onAnimationUpdate( ValueAnimator animator ) {
-//                int val = ( Integer ) animator.getAnimatedValue();
-//                layoutParams.height = val;
-//                mDishCard.setLayoutParams( layoutParams );
-//                if(  isNeedCallback && val == 0 ){
-//                    layoutParams.leftMargin = cardLeftMargin;
-//                    dishCardClick();
-//                }
-//            }
-//        } );
-//        valAnimator.setDuration( 150 );
-//        valAnimator.start();
-//    }
+    private void animateContainer( final View view, final int start, final int end ){
+        final FrameLayout.LayoutParams layoutParams = ( FrameLayout.LayoutParams ) view.getLayoutParams();
+        ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), start, end );
+        valAnimator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate( ValueAnimator animator ) {
+                int val = ( Integer ) animator.getAnimatedValue();
+                layoutParams.height = val;
+                view.setLayoutParams( layoutParams );
+            }
+        } );
+        valAnimator.setDuration( 300 );
+        valAnimator.start();
+    }
 
+    private void animateDishCard( boolean expand ){
+        final View collapsedView = expand ? mDishCardCollapsed : mDishCardExpanded;
+        final View expandedVew = expand ?  mDishCardExpanded : mDishCardCollapsed;
+        collapsedView.setElevation( 8 );
+        expandedVew.setElevation( 10 );
+        final int start = expand ? COLLAPSED_HEIGHT : EXPANDED_HEIGHT;
+        final int end = expand ? EXPANDED_HEIGHT : COLLAPSED_HEIGHT;
+
+        Animation fadeOut = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.fade_out );
+        final Animation fadeIn = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.fade_in );
+
+        fadeOut.setAnimationListener( new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart( Animation animation ) {}
+
+            @Override
+            public void onAnimationEnd( Animation animation ) {
+                collapsedView.setVisibility( View.GONE );
+            }
+
+            @Override
+            public void onAnimationRepeat( Animation animation ) {}
+        } );
+        collapsedView.startAnimation( fadeOut );
+        expandedVew.setVisibility( View.VISIBLE );
+        expandedVew.startAnimation( fadeIn );
+        animateContainer( mDishContainer, start, end );
+
+    }
+
+    public ImageView getEntityImage() {
+        return mEntityImage;
+    }
 
     public void setEntityImage( String uri ) {
         PicassoClient.downloadImage( EdaNymaApp.getAppContext(), uri, this.mEntityImage,
                                                                DISH_IMAGE_WIDTH, DISH_IMAGE_HEIGHT);
-        mThumpImgUri = uri;
     }
 
 
@@ -123,34 +158,35 @@ public class DishEntityCard extends LinearLayout implements View.OnClickListener
         textView.setText( value );
     }
 
-    @Override
-    public void onClick( View view ) {
-        if ( view.getId() == R.id.dishCardCollapsedId ) {
-            Animation scale = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.scale_up );
-            scale.setAnimationListener( new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart( Animation animation ) {
 
-                }
-
-                @Override
-                public void onAnimationEnd( Animation animation ) {
-                    mDishCardCollapsed.setVisibility( View.GONE );
-                }
-
-                @Override
-                public void onAnimationRepeat( Animation animation ) {
-
-                }
-            } );
-            mDishCardExpanded.startAnimation( scale );
+    public void dishCardClick( int dishId ) {
+        if( getDishEntityId() != dishId ){
+            return;
         }
-        mDishCardExpanded.setVisibility( View.VISIBLE );
-        PicassoClient.downloadImage( EdaNymaApp.getAppContext(), mThumpImgUri,
-                (ImageView) findViewById( R.id.expandedImgId ),
-                DISH_IMAGE_WIDTH, DISH_IMAGE_HEIGHT);
-//        else {
-//            AppUtils.transitionAnimation( mDishCardExpanded, mDishCardCollapsed );
-//        }
+        if ( View.VISIBLE == mDishCardCollapsed.getVisibility()  ) {
+            animateDishCard( true );
+        } else {
+            animateDishCard( false );
+        }
+
+        if ( mFirstLoadImg ){
+            ((ImageView) findViewById( R.id.expandedImgId )).setImageDrawable( mEntityImage.getDrawable() );
+            mFirstLoadImg = false;
+        }
+    }
+
+    public void setDishEntity( MenuEntityModel dishEntity ) {
+        this.mDishEntity = dishEntity;
+        this.setEntityImage( dishEntity.getImageUrl() );
+        this.setEntityTitle( dishEntity.getDisplayName() );
+        this.setEntityDesc( dishEntity.getDescription() );
+        this.setEntityPrice( dishEntity.getPriceOne() );
+        this.setEntitySize( dishEntity.getSizeOne() != null ?
+                dishEntity.getSizeOne() : dishEntity.getWeightOne() );
+
+    }
+
+    public int getDishEntityId(){
+        return Integer.valueOf( this.mDishEntity.getId() );
     }
 }

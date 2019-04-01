@@ -30,12 +30,8 @@ public class DishEntityAdapter extends CommonBaseAdapter< MenuEntityModel > {
     @Override
     public void onBindViewHolder( final BaseDataObjectHolder h, final int position ) {
         DishEntityAdapter.DishEntityObjectHolder holder = ( DishEntityAdapter.DishEntityObjectHolder ) h;
-        holder.dishEntityCard.setEntityImage( mItemList.get( position ).getImageUrl() );
-        holder.dishEntityCard.setEntityTitle( mItemList.get( position ).getDisplayName() );
-        holder.dishEntityCard.setEntityDesc( mItemList.get( position ).getDescription() );
-        holder.dishEntityCard.setEntityPrice( mItemList.get( position ).getPriceOne() );
-        holder.dishEntityCard.setEntitySize( mItemList.get( position ).getSizeOne() != null ?
-                mItemList.get( position ).getSizeOne() : mItemList.get( position ).getWeightOne() );
+        holder.dishEntityCard.setDishEntity( mItemList.get( position ) );
+        holder.dishEntityCard.getEntityImage().setColorFilter( null );
     }
 
 
@@ -46,6 +42,7 @@ public class DishEntityAdapter extends CommonBaseAdapter< MenuEntityModel > {
         public DishEntityObjectHolder( final View itemView ) {
             super( itemView );
             dishEntityCard = itemView.findViewById( R.id.dishEntityCardId );
+            dishEntityCard.setOnClickListener( this );
         }
     }
 }
