@@ -10,17 +10,20 @@ import android.view.View;
 import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.fragment.CompanyDishFragment;
+import com.edanyma.fragment.DishInfoFragment;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyInfoModel;
 import com.edanyma.model.CompanyModel;
+import com.edanyma.model.MenuEntityModel;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class CompanyDishActivity extends BaseActivity {
+public class CompanyDishActivity extends BaseActivity implements CompanyDishFragment.OnDishInfoListener,
+                                                        DishInfoFragment.OnAddToBasketListener{
 
     private final String TAG = "CompanyDishActivity";
 
@@ -63,6 +66,16 @@ public class CompanyDishActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
+    }
+
+    @Override
+    public void onMoreDishInfo( String companyName, MenuEntityModel dishEntity ) {
+        addReplaceFragment( DishInfoFragment.newInstance( companyName, dishEntity ) );
+    }
+
+    @Override
+    public void onAddToBasket( MenuEntityModel dishEntity ) {
+
     }
 
 

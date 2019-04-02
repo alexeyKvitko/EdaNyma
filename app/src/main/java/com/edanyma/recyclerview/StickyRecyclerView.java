@@ -8,7 +8,6 @@ import android.graphics.ColorMatrixColorFilter;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -29,8 +28,6 @@ public class StickyRecyclerView extends RecyclerView {
     private ColorMatrixColorFilter mGrayFilter;
     private int mImgViewId;
     private int mHeaderAction;
-    private boolean mFirstScrool;
-    private int mScrollValue;
     private float mOpenMarginTop;
     private float mCloseMarginTop;
     private boolean mAnimateHeader;
@@ -61,9 +58,7 @@ public class StickyRecyclerView extends RecyclerView {
         this.setLayoutManager( mLayoutManager );
         this.setAdapter( adapter );
         this.setHasFixedSize( false );
-        mFirstScrool = true;
         mHeaderAction = AppConstants.HEADER_ACTION_RESTORE;
-        mScrollValue = 0;
 
     }
 
@@ -104,6 +99,7 @@ public class StickyRecyclerView extends RecyclerView {
     }
 
     public void changeSaturation( int dishId, boolean toGray ) {
+
         final List<View> displayViews = new LinkedList<>( );
         final StickyRecyclerView mThis = this;
         int notNull = 0;
@@ -117,7 +113,6 @@ public class StickyRecyclerView extends RecyclerView {
             for ( int i = 0; i < notNull; i++ ) {
                 final ImageView imageView = displayViews.get( i ).findViewById( mImgViewId );
                 int currentDishId = (( DishEntityCard ) displayViews.get( i )).getDishEntityId();
-                Log.i(TAG,"DishId = "+ dishId+", repId: "+currentDishId );
                 if (  toGray && dishId != currentDishId ) {
                     imageView.setColorFilter( mGrayFilter );
                 } else {
@@ -125,6 +120,25 @@ public class StickyRecyclerView extends RecyclerView {
                 }
             }
         }
+    }
+
+    public void scrollToTop( final int position, int viewTop ){
+        int offset =  (int) mCloseMarginTop;
+        if ( AppConstants.HEADER_ACTION_RESTORE == mHeaderAction ){
+            removeHeaderAction();
+        }
+        ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), viewTop, offset );
+        valAnimator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate( ValueAnimator animator ) {
+                int val = ( Integer ) animator.getAnimatedValue();
+                mLayoutManager.scrollToPositionWithOffset( position, val );
+            }
+        } );
+        valAnimator.setDuration( 300 );
+        valAnimator.start();
+
+
     }
 
     public void setOnActionHeaderListener(OnActionHeaderListener listener){

@@ -3,7 +3,7 @@ package com.edanyma.recyclerview.manager;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
+import android.util.Log;
 
 import com.edanyma.recyclerview.StickyRecyclerView;
 
@@ -15,18 +15,6 @@ public class StickyLayoutManager extends LinearLayoutManager {
     private int mMinHeight;
     private int mScroll;
 
-    public StickyLayoutManager( Context context ) {
-        super( context );
-    }
-
-    public StickyLayoutManager( Context context, int orientation, boolean reverseLayout ) {
-        super( context, orientation, reverseLayout );
-    }
-
-    public StickyLayoutManager( Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes ) {
-        super( context, attrs, defStyleAttr, defStyleRes );
-    }
-
 
     public StickyLayoutManager( Context context, RecyclerView parent, int mMinHeight ) {
         super( context, VERTICAL, false );
@@ -34,9 +22,10 @@ public class StickyLayoutManager extends LinearLayoutManager {
         this.mMinHeight = mMinHeight;
     }
 
+
     @Override
     public int scrollVerticallyBy( int dy, RecyclerView.Recycler recycler, RecyclerView.State state ) {
-        if ( getItemCount() == 0 || dy == 0 || ((StickyRecyclerView) mParent).isAnimateHeader() ) {
+        if ( getItemCount() == 0 || dy == 0 || ( ( StickyRecyclerView ) mParent ).isAnimateHeader() ) {
             return 0;
         }
         if ( dy > 0 && mScroll == 0 ) {
@@ -60,4 +49,5 @@ public class StickyLayoutManager extends LinearLayoutManager {
     public void setScroll( int mScroll ) {
         this.mScroll = mScroll;
     }
+
 }

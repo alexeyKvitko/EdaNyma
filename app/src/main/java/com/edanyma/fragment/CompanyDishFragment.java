@@ -3,10 +3,10 @@ package com.edanyma.fragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +27,7 @@ import com.edanyma.model.CompanyInfoModel;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.owncomponent.DishEntityCard;
 import com.edanyma.owncomponent.OwnSearchView;
+import com.edanyma.pixelshot.PixelShot;
 import com.edanyma.recyclerview.DishEntityAdapter;
 import com.edanyma.recyclerview.StickyRecyclerView;
 import com.edanyma.utils.AppUtils;
@@ -38,10 +39,12 @@ import java.util.List;
 
 
 public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSearchViewListener,
-        DishEntityAdapter.CardClickListener,
-        StickyRecyclerView.OnActionHeaderListener {
+        DishEntityAdapter.CardClickListener, StickyRecyclerView.OnActionHeaderListener,
+        PixelShot.PixelShotListener {
 
     private static final String TAG = "CompanyDishFragment";
+
+    private OnDishInfoListener mListener;
 
     private static final int REC_VIEW_CARD_HEIGHT = 150;
     private static final int HEADER_EXPAND_MARGIN_TOP = 212;
@@ -199,11 +202,18 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
     @Override
     public void onAttach( Context context ) {
         super.onAttach( context );
+        if ( context instanceof OnDishInfoListener ) {
+            mListener = ( OnDishInfoListener ) context;
+        } else {
+            throw new RuntimeException( context.toString()
+                    + " must implement OnDishInfoListener" );
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        mListener = null;
     }
 
     @Override
@@ -241,30 +251,34 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
 
     @Override
     public void onItemClick( int position, View view ) {
-        if( mCardClick ){
-            return;
-        }
+//        if( mCardClick ){
+//            return;
+//        }
         if ( view instanceof DishEntityCard ){
-            mCardClick = true;
-            if ( AppConstants.FAKE_ID == mSelectedDishId ){
-                mSelectedDishId = ((DishEntityCard) view).getDishEntityId();
-                mDishRecView.changeSaturation( mSelectedDishId, true );
-                mSelectedDishId = ((DishEntityCard) view).getDishEntityId();
-                mSelectedView = view;
-            } else {
-                mDishRecView.changeSaturation( mSelectedDishId, false );
-                mSelectedDishId = AppConstants.FAKE_ID;
-                mSelectedView = null;
-            }
-            ((DishEntityCard) view).dishCardClick( mSelectedDishId );
+            DishEntityCard entityCard = ( DishEntityCard ) view;
+            PixelShot.of( getActivity().findViewById( R.id.dishContainerId ) ).setResultListener(this).save();
+            mListener.onMoreDishInfo( mCompanyDish.getCompanyModel().getDisplayName(), entityCard.getDishEntity()  );
+//            mCardClick = true;
+//            if ( AppConstants.FAKE_ID == mSelectedDishId ){
+//                mDishRecView.scrollToTop( position, entityCard.getTop() );
+//                mSelectedDishId = entityCard.getDishEntityId();
+//                mDishRecView.changeSaturation( mSelectedDishId, true );
+//                mSelectedView = entityCard;
+//                entityCard.dishCardClick( mSelectedDishId );
+//            } else if( mSelectedDishId == entityCard.getDishEntityId() ){
+//                mDishRecView.changeSaturation( mSelectedDishId, false );
+//                ((DishEntityCard) view).dishCardClick( mSelectedDishId );
+//                mSelectedDishId = AppConstants.FAKE_ID;
+//                mSelectedView = null;
+//            }
+
         }
-        new Handler(  ).postDelayed( new Runnable() {
-            @Override
-            public void run() {
-                mCardClick = false;
-                mDishEntityAdapter.notifyDataSetChanged();
-            }
-        }, 300 );
+//        new Handler(  ).postDelayed( new Runnable() {
+//            @Override
+//            public void run() {
+//                mCardClick = false;
+//            }
+//        }, 350 );
     }
 
     @Override
@@ -315,6 +329,20 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
             public void onAnimationRepeat( Animation animation ) {}
         } );
         mHeaderContainer.startAnimation( slideDown );
+    }
+
+    @Override
+    public void onPixelShotSuccess( String path ) {
+        Log.i(TAG, "SnapShot SUCCESS");
+    }
+
+    @Override
+    public void onPixelShotFailed() {
+        Log.e(TAG, "SnapShot FAILED");
+    }
+
+    public interface OnDishInfoListener {
+        void onMoreDishInfo(String companyName, MenuEntityModel dishEntity );
     }
 
 }

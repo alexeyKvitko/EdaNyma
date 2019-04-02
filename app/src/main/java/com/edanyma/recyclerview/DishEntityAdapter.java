@@ -31,7 +31,6 @@ public class DishEntityAdapter extends CommonBaseAdapter< MenuEntityModel > {
     public void onBindViewHolder( final BaseDataObjectHolder h, final int position ) {
         DishEntityAdapter.DishEntityObjectHolder holder = ( DishEntityAdapter.DishEntityObjectHolder ) h;
         holder.dishEntityCard.setDishEntity( mItemList.get( position ) );
-        holder.dishEntityCard.getEntityImage().setColorFilter( null );
     }
 
 
