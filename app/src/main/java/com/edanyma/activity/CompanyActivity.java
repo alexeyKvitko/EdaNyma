@@ -9,7 +9,7 @@ import android.widget.ImageButton;
 import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.fragment.ChooseCompanyFragment;
-import com.edanyma.fragment.FilterFragment;
+import com.edanyma.fragment.FilterCompanyFragment;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.FilterModel;
@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CompanyActivity extends BaseActivity implements ChooseCompanyFragment.OnCompanyChosenListener,
-                                                            FilterFragment.OnApplyFilterListener{
+                                                            FilterCompanyFragment.OnApplyFilterListener{
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -71,7 +71,7 @@ public class CompanyActivity extends BaseActivity implements ChooseCompanyFragme
 
     @Override
     public void onFilterClick() {
-        addReplaceFragment( FilterFragment.newInstance( ) );
+        addReplaceFragment( FilterCompanyFragment.newInstance( ) );
     }
 
     @Override

@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
@@ -33,7 +34,8 @@ public abstract class BaseActivity extends AppCompatActivity
         OnNavigationItemSelectedListener{
 
     protected TextView mDeliveryTV;
-    protected LinearLayout mBottomNavigation;
+    protected LinearLayout mFooter;
+    protected RelativeLayout mHeader;
     protected DrawerLayout mDrawer;
     protected ImageButton mNavigationButton;
     protected ArrayList<View> mMenuItems = new ArrayList<>();
@@ -43,6 +45,8 @@ public abstract class BaseActivity extends AppCompatActivity
 
     public void initBaseActivity( ActivityState activityState ){
         mCurrentState = activityState;
+        mHeader = findViewById( R.id.mainHeaderId );
+        mFooter = findViewById( R.id.bottomNavigationId );
         mDeliveryTV = this.findViewById( R.id.deliveryCityId );
         mDeliveryTV.setTypeface( AppConstants.ROBOTO_CONDENCED );
         mDrawer = findViewById( R.id.drawer_layout );
@@ -68,9 +72,9 @@ public abstract class BaseActivity extends AppCompatActivity
 
             }
         } );
-        mBottomNavigation = findViewById( R.id.bottomNavigationId );
+
         for( int i=0; i<5; i++){
-            mBottomNavigation.getChildAt(i).setOnClickListener( this );
+            mFooter.getChildAt(i).setOnClickListener( this );
         }
 
         mNavigationView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -188,8 +192,8 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     private void unselectBottomNavigation(){
-        for(int i=0; i < mBottomNavigation.getChildCount(); i++){
-            mBottomNavigation.getChildAt( i ).setSelected( false );
+        for( int i = 0; i < mFooter.getChildCount(); i++){
+            mFooter.getChildAt( i ).setSelected( false );
         }
     }
 
@@ -212,5 +216,13 @@ public abstract class BaseActivity extends AppCompatActivity
 
     public ActivityState getCurrentState() {
         return mCurrentState;
+    }
+
+    public LinearLayout getFooter() {
+        return mFooter;
+    }
+
+    public RelativeLayout getHeader() {
+        return mHeader;
     }
 }

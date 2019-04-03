@@ -23,6 +23,8 @@ public class GlobalManager {
     private static String userToken;
     private static OurClientModel client;
     private static FilterModel companyFilter;
+    private static int dishEntityPosition;
+    private static int dishTop;
 
     private GlobalManager() {
     }
@@ -123,5 +125,21 @@ public class GlobalManager {
 
     public static void setCompanyFilter( FilterModel companyFilter ) {
         GlobalManager.companyFilter = companyFilter;
+    }
+
+    public static int getDishEntityPosition() {
+        return dishEntityPosition;
+    }
+
+    public static void setDishEntityPosition( int dishEntityPosition ) {
+        GlobalManager.dishEntityPosition = dishEntityPosition;
+    }
+
+    public static int getDishTop() {
+        return dishTop;
+    }
+
+    public static void setDishTop( int dishTop ) {
+        GlobalManager.dishTop = dishTop;
     }
 }

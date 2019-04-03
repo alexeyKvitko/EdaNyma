@@ -99,7 +99,7 @@ public class FilterSelect extends LinearLayout implements FilterButton.OnFilterB
         showFilters( mDefButtonCount );
     }
 
-    public void showFilters( int buttonCount ) {
+    public void showFilters( int buttonCount) {
         FlexboxLayout buttonContainer = findViewById( R.id.filterButtonsContainerId );
         buttonContainer.removeAllViewsInLayout();
         for ( int i = 0; i < buttonCount; i++ ) {
@@ -108,9 +108,13 @@ public class FilterSelect extends LinearLayout implements FilterButton.OnFilterB
             filterButton.setOnFilterButtonClickListener( this );
             buttonContainer.addView( filterButton );
         }
+        int showAllId = R.string.show_all_kitchen;
+        if ( AppConstants.CLOSE_DISH_FILTER_BUTTON == mDefButtonCount ){
+            showAllId = R.string.show_all_dish;
+        }
         if ( !mHideShowAll ) {
             if ( buttonCount > 0 && ( buttonCount < mFilters.size() ) ) {
-                mShowAll.setText( EdaNymaApp.getAppContext().getResources().getString( R.string.show_all ) );
+                mShowAll.setText( EdaNymaApp.getAppContext().getResources().getString( showAllId ) );
             } else {
                 mShowAll.setText( EdaNymaApp.getAppContext().getResources().getString( R.string.hide_all ) );
             }

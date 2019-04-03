@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,13 +36,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSearchViewListener,
+public class CompanyDishFragment extends BaseFragment implements OwnSearchView.OwnSearchViewListener,
         DishEntityAdapter.CardClickListener, StickyRecyclerView.OnActionHeaderListener,
         PixelShot.PixelShotListener {
 
     private static final String TAG = "CompanyDishFragment";
 
-    private OnDishInfoListener mListener;
+    private OnDishActionListener mListener;
 
     private static final int REC_VIEW_CARD_HEIGHT = 150;
     private static final int HEADER_EXPAND_MARGIN_TOP = 212;
@@ -65,9 +63,8 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
     private boolean mSearchMade;
     private CompanyInfoModel mCompanyDish;
 
-    private int mSelectedDishId;
-    private View mSelectedView;
-    private boolean mCardClick;
+    private MenuEntityModel mDishEntity;
+
 
     public CompanyDishFragment() {
     }
@@ -93,37 +90,28 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
         super.onActivityCreated( savedInstanceState );
         mCompanyDish = ( ( CompanyDishActivity ) getActivity() ).getCompanyDish();
         mSearchMade = false;
-        mCardClick = false;
-        TextView companyTitle = getView().findViewById( R.id.companyDishTitleId );
-        ImageView companyLogo = getView().findViewById( R.id.companyDishLogoId );
+        initTextView( R.id.companyDishTitleId, AppConstants.B52,
+                                                   mCompanyDish.getCompanyModel().getDisplayName() );
         PicassoClient.downloadImage( getActivity(), GlobalManager.getInstance().getBootstrapModel()
                 .getStaticUrl() + String.format( AppConstants.STATIC_COMPANY_LOGO,
-                mCompanyDish.getCompanyModel().getThumb() ), companyLogo );
-        companyTitle.setTypeface( AppConstants.B52 );
-        companyTitle.setText( mCompanyDish.getCompanyModel().getDisplayName() );
+                mCompanyDish.getCompanyModel().getThumb() ), (ImageView) getView().findViewById( R.id.companyDishLogoId ) );
 
-        TextView companyReview = getView().findViewById( R.id.reviewCountId );
-        companyReview.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        companyReview.setText( mCompanyDish.getCompanyModel().getCommentCount() );
+        initTextView( R.id.reviewCountId , AppConstants.ROBOTO_CONDENCED ,
+                                                mCompanyDish.getCompanyModel().getCommentCount() );
+        initTextView( R.id.minDeliPriceId, AppConstants.ROBOTO_CONDENCED ,
+                        "от " + mCompanyDish.getCompanyModel().getDelivery().toString() + " р." );
 
-        TextView companyDeliPrice = getView().findViewById( R.id.minDeliPriceId );
-        companyDeliPrice.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        companyDeliPrice.setText( "от " + mCompanyDish.getCompanyModel().getDelivery().toString() + " р." );
-
-        TextView companyDeliTime = getView().findViewById( R.id.deliTimeId );
-        companyDeliTime.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        companyDeliTime.setText( "от " + mCompanyDish.getCompanyModel().getDeliveryTimeMin().toString() + " мин." );
+        initTextView( R.id.deliTimeId , AppConstants.ROBOTO_CONDENCED ,
+                "от " + mCompanyDish.getCompanyModel().getDeliveryTimeMin().toString() + " мин." );
 
         ((OwnSearchView) getView().findViewById( R.id.searchDishId ))
                                                             .setOnApplySearchListener( this );
 
-        mSelectedDish = getView().findViewById( R.id.selectedDishTitleId );
-        mSelectedDish.setTypeface( AppConstants.ROBOTO_CONDENCED, Typeface.BOLD );
-        mSelectedDish.setText( "Все Блюда от " + mCompanyDish.getCompanyModel().getDisplayName() );
+        mSelectedDish = initTextView(  R.id.selectedDishTitleId , AppConstants.ROBOTO_CONDENCED, Typeface.BOLD ,
+                            "Все Блюда от " + mCompanyDish.getCompanyModel().getDisplayName() );
 
-        mSelectedDishTop = getView().findViewById( R.id.selectedDishTopId );
-        mSelectedDishTop.setTypeface( AppConstants.ROBOTO_CONDENCED, Typeface.BOLD );
-        mSelectedDishTop.setText( "Все Блюда от " + mCompanyDish.getCompanyModel().getDisplayName() );
+        mSelectedDishTop = initTextView(  R.id.selectedDishTopId , AppConstants.ROBOTO_CONDENCED, Typeface.BOLD ,
+                        "Все Блюда от " + mCompanyDish.getCompanyModel().getDisplayName() );
 
         mHeaderContainer = getView().findViewById( R.id.companyDishHeaderId );
         mExpandLine = getView().findViewById( R.id.expandLineId );
@@ -137,22 +125,13 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
             mDishRecView.setOnActionHeaderListener( this );
             mDishRecView.initialize( mDishEntityAdapter, R.id.entityImgId, REC_VIEW_CARD_HEIGHT
                                         , HEADER_EXPAND_MARGIN_TOP, HEADER_COLLAPSE_MARGIN_TOP );
-            mDishRecView.addOnScrollListener( new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged( RecyclerView recyclerView, int newState ) {}
-
-                @Override
-                public void onScrolled( RecyclerView recyclerView, int dx, int dy ) {
-                    if( AppConstants.FAKE_ID != mSelectedDishId ){
-                        onItemClick( mSelectedDishId, mSelectedView );
-                    }
-                    super.onScrolled( recyclerView, dx, dy );
-
-                }
-            } );
-            mSelectedDishId = AppConstants.FAKE_ID;
+            mDishEntity = null;
         }
         mDishRecView.getAdapter().notifyDataSetChanged();
+        if ( AppConstants.FAKE_ID != GlobalManager.getInstance().getDishEntityPosition() ){
+            mDishRecView.scrollToTop( GlobalManager.getInstance().getDishEntityPosition(),
+                                                        GlobalManager.getInstance().getDishTop() );
+        }
     }
 
     private void initAdapter() {
@@ -202,11 +181,11 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
     @Override
     public void onAttach( Context context ) {
         super.onAttach( context );
-        if ( context instanceof OnDishInfoListener ) {
-            mListener = ( OnDishInfoListener ) context;
+        if ( context instanceof OnDishActionListener ) {
+            mListener = ( OnDishActionListener ) context;
         } else {
             throw new RuntimeException( context.toString()
-                    + " must implement OnDishInfoListener" );
+                    + " must implement OnDishActionListener" );
         }
     }
 
@@ -246,39 +225,19 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
 
     @Override
     public void onFilterButtonClick() {
-
+        GlobalManager.getInstance().setDishTop( AppConstants.FAKE_ID );
+        PixelShot.of( getActivity().findViewById( R.id.dishContainerId ) ).setResultListener( this ).save();
     }
 
     @Override
-    public void onItemClick( int position, View view ) {
-//        if( mCardClick ){
-//            return;
-//        }
+    public void onItemClick( final int position, View view ) {
         if ( view instanceof DishEntityCard ){
-            DishEntityCard entityCard = ( DishEntityCard ) view;
-            PixelShot.of( getActivity().findViewById( R.id.dishContainerId ) ).setResultListener(this).save();
-            mListener.onMoreDishInfo( mCompanyDish.getCompanyModel().getDisplayName(), entityCard.getDishEntity()  );
-//            mCardClick = true;
-//            if ( AppConstants.FAKE_ID == mSelectedDishId ){
-//                mDishRecView.scrollToTop( position, entityCard.getTop() );
-//                mSelectedDishId = entityCard.getDishEntityId();
-//                mDishRecView.changeSaturation( mSelectedDishId, true );
-//                mSelectedView = entityCard;
-//                entityCard.dishCardClick( mSelectedDishId );
-//            } else if( mSelectedDishId == entityCard.getDishEntityId() ){
-//                mDishRecView.changeSaturation( mSelectedDishId, false );
-//                ((DishEntityCard) view).dishCardClick( mSelectedDishId );
-//                mSelectedDishId = AppConstants.FAKE_ID;
-//                mSelectedView = null;
-//            }
-
+            mDishEntity = (( DishEntityCard ) view).getDishEntity();
+            AppUtils.bounceAnimation( view.findViewById( R.id.entityImgId ) );
+            GlobalManager.getInstance().setDishEntityPosition( position );
+            GlobalManager.getInstance().setDishTop( view.getTop() );
+            PixelShot.of( getActivity().findViewById( R.id.dishContainerId ) ).setResultListener( this ).save();
         }
-//        new Handler(  ).postDelayed( new Runnable() {
-//            @Override
-//            public void run() {
-//                mCardClick = false;
-//            }
-//        }, 350 );
     }
 
     @Override
@@ -333,7 +292,11 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
 
     @Override
     public void onPixelShotSuccess( String path ) {
-        Log.i(TAG, "SnapShot SUCCESS");
+        if ( AppConstants.FAKE_ID != GlobalManager.getInstance().getDishEntityPosition() ){
+            mListener.onMoreDishInfo( mCompanyDish.getCompanyModel().getDisplayName(), mDishEntity );
+        } else {
+            mListener.onFilterDishSelect();
+        }
     }
 
     @Override
@@ -341,8 +304,9 @@ public class CompanyDishFragment extends Fragment implements OwnSearchView.OwnSe
         Log.e(TAG, "SnapShot FAILED");
     }
 
-    public interface OnDishInfoListener {
+    public interface OnDishActionListener {
         void onMoreDishInfo(String companyName, MenuEntityModel dishEntity );
+        void onFilterDishSelect();
     }
 
 }

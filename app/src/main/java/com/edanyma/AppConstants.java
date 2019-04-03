@@ -15,11 +15,17 @@ public class AppConstants {
 
     public static final String DEFAULT_USER = "guest";
     public static final String DEFAULT_PASSWORD = "1111";
+    public static final String PICTURE_DIR = "yummyeat";
+    public static final String FILENAME_DISH = "dishinfo";
+    public static final String EXTENSION_JPG = ".jpg";
+    public static final String EXTENSION_PNG = ".png";
+    public static final String EXTENSION_NOMEDIA = ".nomedia";
 
     public static final String AUTH_BEARER = "Bearer ";
 
     public static final int HEADER_ACTION_REMOVE = -1;
     public static final int HEADER_ACTION_RESTORE = 1;
+
 
     public static final String ASTERISKS= "*";
     public static final String CLOSE= "CLOSE";

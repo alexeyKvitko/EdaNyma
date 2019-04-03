@@ -1,7 +1,6 @@
 package com.edanyma.fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,7 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class FilterFragment extends Fragment {
+public class FilterCompanyFragment extends Fragment {
 
 
     private OnApplyFilterListener mListener;
@@ -35,11 +34,11 @@ public class FilterFragment extends Fragment {
     private FilterSelect mPayFilter;
     private FilterSelect mExtraFilter;
 
-    public FilterFragment() {
+    public FilterCompanyFragment() {
     }
 
-    public static FilterFragment newInstance() {
-        FilterFragment fragment = new FilterFragment();
+    public static FilterCompanyFragment newInstance() {
+        FilterCompanyFragment fragment = new FilterCompanyFragment();
         return fragment;
     }
 

@@ -67,7 +67,8 @@
     <string name="filter_additional">Долнительно</string>
     <string name="filter_title">Фильтр</string>
     <string name="apply_filter">Применить Фильтр</string>
-    <string name="show_all">Больше</string>
+    <string name="show_all_dish">Показать Все Блюда</string>
+    <string name="show_all_kitchen">Показать Все Кухни</string>
     <string name="hide_all">Скрыть Все</string>
     <string name="clear_filter">Очистить</string>
     <string name="filter_by_label">Отобрано по</string>
@@ -76,5 +77,6 @@
     <string name="find_dish_hint">Найти блюдо</string>
     <string name="buy_entity">Купить</string>
     <string name="add_to_basket">В Корзину</string>
+    <string name="back_label">НАЗАД</string>
 
 </resources>

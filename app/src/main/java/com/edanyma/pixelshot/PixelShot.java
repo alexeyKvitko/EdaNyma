@@ -15,6 +15,7 @@ import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
 
+import com.edanyma.AppConstants;
 import com.edanyma.utils.AppUtils;
 
 import java.io.BufferedOutputStream;
@@ -23,16 +24,19 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 
+import static com.edanyma.AppConstants.EXTENSION_JPG;
+import static com.edanyma.AppConstants.EXTENSION_PNG;
+import static com.edanyma.AppConstants.EXTENSION_NOMEDIA;
+
+
 public class PixelShot {
 
     private static final String TAG = PixelShot.class.getSimpleName();
-    private static final String EXTENSION_JPG = ".jpg";
-    private static final String EXTENSION_PNG = ".png";
-    private static final String EXTENSION_NOMEDIA = ".nomedia";
+
     private static final int JPG_MAX_QUALITY = 100;
 
-    private String path = Environment.DIRECTORY_PICTURES;
-    private String filename = String.valueOf(System.currentTimeMillis());
+    private String path = AppConstants.PICTURE_DIR;
+    private String filename = AppConstants.FILENAME_DISH;
     private String fileExtension = EXTENSION_JPG;
     private int jpgQuality = JPG_MAX_QUALITY;
 

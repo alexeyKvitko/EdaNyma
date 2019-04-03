@@ -1,15 +1,235 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/filterContainerId"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dishInfoContainerId"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparentToastBackground"
-    android:layout_marginTop="@dimen/fragment_margin_top"
-    android:layout_marginBottom="@dimen/fragment_margin_bottom">
-    <TextView
-        android:layout_width="wrap_content"
+    android:background="@color/transparentToastBackground">
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardDishInfoImgId"
+        android:layout_width="184dp"
+        android:layout_height="176dp"
+        android:layout_gravity="right|top"
+        android:layout_marginRight="16dp"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardElevation="8dp">
+        <ImageView
+            android:id="@+id/dishInfoImgId"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"/>
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Test"/>
+        android:layout_marginTop="54dp"
+        card_view:cardCornerRadius="8dp"
+        card_view:cardElevation="6dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp">
+            <TextView
+                android:id="@+id/dishInfoCompanyId"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_restaurant_blue_18dp"
+                android:drawablePadding="4dp"
+                android:layout_marginTop="16dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="@color/grayTextColor"
+                android:textSize="15dp"/>
 
-</RelativeLayout>
+
+            <TextView
+                android:id="@+id/dishInfoKitchenId"
+                android:layout_width="140dp"
+                android:layout_marginTop="24dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_room_service_outline_blue_18dp"
+                android:drawablePadding="4dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="@color/grayTextColor"
+                android:textSize="15dp"/>
+
+            <TextView
+                android:id="@+id/dishInfoCategoryId"
+                android:drawableLeft="@drawable/ic_fastfood_blue_18dp"
+                android:drawablePadding="4dp"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="@color/grayTextColor"
+                android:textSize="15dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="146dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/dishInfoTitleTextId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="22dp" />
+            <TextView
+                android:id="@+id/dishInfoDescId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/tealColor"
+                android:textSize="14dp" />
+
+            <FrameLayout
+                android:id="@+id/wspContainerId"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_margin="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <LinearLayout style="@style/wspContainer"
+                        android:id="@+id/wspLayoutOneId">
+
+                        <TextView
+                            android:id="@+id/dishSizeOneId"
+                            style="@style/wspText"/>
+
+                        <TextView
+                            android:id="@+id/dishWeightOneId"
+                            style="@style/wspText" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/wspContainer"
+                        android:id="@+id/wspLayoutTwoId">
+
+                        <TextView
+                            android:id="@+id/dishSizeTwoId"
+                            style="@style/wspText" />
+
+                        <TextView
+                            android:id="@+id/dishWeightTwoId"
+                            style="@style/wspText" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/wspContainer"
+                        android:id="@+id/wspLayoutThreeId">
+
+                        <TextView
+                            android:id="@+id/dishSizeThreeId"
+                            style="@style/wspText" />
+
+                        <TextView
+                            android:id="@+id/dishWeightThreeId"
+                            style="@style/wspText" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/wspContainer"
+                        android:id="@+id/wspLayoutFourId">
+
+                        <TextView
+                            android:id="@+id/dishSizeFourId"
+                            style="@style/wspText" />
+
+                        <TextView
+                            android:id="@+id/dishWeightFourId"
+                            style="@style/wspText" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/wspButtonId"
+                    android:layout_width="73dp"
+                    android:layout_height="42dp"
+                    android:background="@drawable/border_neon_r18"
+                    android:orientation="horizontal">
+                </LinearLayout>
+
+            </FrameLayout>
+            <LinearLayout
+                android:id="@+id/dishBasketId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="8dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="left|center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_marginLeft="12dp"
+                        android:id="@+id/dishPriceTextId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_currency_rub_black_18dp"
+                        android:textColor="@color/blueNeon"
+                        android:textSize="22dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=".00"
+                        android:textColor="@color/blueNeon"
+                        android:textSize="16dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right">
+                    <Button
+                        android:id="@+id/addToBasketButtonId"
+                        android:elevation="6dp"
+                        android:background="@drawable/button_neon"
+                        android:textColor="@android:color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="18dp"
+                        android:text="@string/add_to_basket"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="@color/grayTextColor"/>
+
+            <TextView
+                android:id="@+id/dishInfоBackId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/blueNeon"
+                android:text="@string/back_label"
+                android:layout_marginBottom="16dp"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>

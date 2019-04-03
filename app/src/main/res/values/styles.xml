@@ -122,18 +122,19 @@
     <style name="wspText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:textSize">12dp</item>
-        <item name="android:textColor">@color/tealColor</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
     </style>
 
     <style name="wspContainer">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">2dp</item>
-        <item name="android:paddingBottom">2dp</item>
-        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:gravity">center</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/border_disable_r18</item>
         <item name="android:orientation">vertical</item>
     </style>
 

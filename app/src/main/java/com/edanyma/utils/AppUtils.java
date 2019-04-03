@@ -38,6 +38,7 @@ public abstract class AppUtils {
         return Environment.MEDIA_MOUNTED.equals( Environment.getExternalStorageState() );
     }
 
+
     public static String declension( String sourceVal ) {
         int count = Integer.valueOf( sourceVal );
         String countSuffix = " заведени";
