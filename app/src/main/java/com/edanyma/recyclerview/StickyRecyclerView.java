@@ -122,23 +122,11 @@ public class StickyRecyclerView extends RecyclerView {
         }
     }
 
-    public void scrollToTop( final int position, int viewTop ){
-        int offset =  (int) mCloseMarginTop;
+    public void scrollToTop( final int position ){
         if ( AppConstants.HEADER_ACTION_RESTORE == mHeaderAction ){
             removeHeaderAction();
         }
-        ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), viewTop, offset );
-        valAnimator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate( ValueAnimator animator ) {
-                int val = ( Integer ) animator.getAnimatedValue();
-                mLayoutManager.scrollToPositionWithOffset( position, val );
-            }
-        } );
-        valAnimator.setDuration( 300 );
-        valAnimator.start();
-
-
+        mLayoutManager.scrollToPosition( position );
     }
 
     public void setOnActionHeaderListener(OnActionHeaderListener listener){

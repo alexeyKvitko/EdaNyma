@@ -5,9 +5,9 @@ import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.model.BootstrapModel;
 import com.edanyma.model.CompanyModel;
+import com.edanyma.model.FilterDishModel;
 import com.edanyma.model.FilterModel;
 import com.edanyma.model.HomeMenuModel;
-import com.edanyma.model.MenuCategoryModel;
 import com.edanyma.model.OurClientModel;
 
 import java.util.LinkedList;
@@ -23,8 +23,8 @@ public class GlobalManager {
     private static String userToken;
     private static OurClientModel client;
     private static FilterModel companyFilter;
+    private static FilterDishModel dishFilter;
     private static int dishEntityPosition;
-    private static int dishTop;
 
     private GlobalManager() {
     }
@@ -135,11 +135,11 @@ public class GlobalManager {
         GlobalManager.dishEntityPosition = dishEntityPosition;
     }
 
-    public static int getDishTop() {
-        return dishTop;
+    public static FilterDishModel getDishFilter() {
+        return dishFilter;
     }
 
-    public static void setDishTop( int dishTop ) {
-        GlobalManager.dishTop = dishTop;
+    public static void setDishFilter( FilterDishModel dishFilter ) {
+        GlobalManager.dishFilter = dishFilter;
     }
 }

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,8 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
-import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
+import com.edanyma.activity.BaseActivity;
 import com.edanyma.activity.CompanyDishActivity;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.CompanyInfoModel;
@@ -58,7 +57,6 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
     private DishEntityAdapter mDishEntityAdapter;
     private RelativeLayout mHeaderContainer;
     private LinearLayout mExpandLine;
-    private ImageView mSmallFilterBtn;
 
     private boolean mSearchMade;
     private CompanyInfoModel mCompanyDish;
@@ -88,7 +86,7 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
-        mCompanyDish = ( ( CompanyDishActivity ) getActivity() ).getCompanyDish();
+        mCompanyDish = ( ( CompanyDishActivity ) getActivity() ).getCompanyInfo();
         mSearchMade = false;
         initTextView( R.id.companyDishTitleId, AppConstants.B52,
                                                    mCompanyDish.getCompanyModel().getDisplayName() );
@@ -106,17 +104,17 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
 
         ((OwnSearchView) getView().findViewById( R.id.searchDishId ))
                                                             .setOnApplySearchListener( this );
-
+        String dishTitle = getActivity().getResources().getString( R.string.all_dishes_label);
+        if ( GlobalManager.getInstance().getDishFilter() != null ){
+            dishTitle = GlobalManager.getInstance().getDishFilter().getDishName()+" от ";
+        }
         mSelectedDish = initTextView(  R.id.selectedDishTitleId , AppConstants.ROBOTO_CONDENCED, Typeface.BOLD ,
-                            "Все Блюда от " + mCompanyDish.getCompanyModel().getDisplayName() );
-
+                            dishTitle + mCompanyDish.getCompanyModel().getDisplayName() );
         mSelectedDishTop = initTextView(  R.id.selectedDishTopId , AppConstants.ROBOTO_CONDENCED, Typeface.BOLD ,
-                        "Все Блюда от " + mCompanyDish.getCompanyModel().getDisplayName() );
+                        dishTitle + mCompanyDish.getCompanyModel().getDisplayName() );
 
         mHeaderContainer = getView().findViewById( R.id.companyDishHeaderId );
         mExpandLine = getView().findViewById( R.id.expandLineId );
-        mSmallFilterBtn = getView().findViewById( R.id.filterSmallBtnId );
-
     }
 
     private void initRecView() {
@@ -129,8 +127,9 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
         }
         mDishRecView.getAdapter().notifyDataSetChanged();
         if ( AppConstants.FAKE_ID != GlobalManager.getInstance().getDishEntityPosition() ){
-            mDishRecView.scrollToTop( GlobalManager.getInstance().getDishEntityPosition(),
-                                                        GlobalManager.getInstance().getDishTop() );
+            mDishRecView.scrollToTop( GlobalManager.getInstance().getDishEntityPosition() );
+                    GlobalManager.getInstance().setDishEntityPosition( AppConstants.FAKE_ID );
+
         }
     }
 
@@ -150,12 +149,26 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
         }
         int idx = 0;
         for ( MenuEntityModel entity : entities ) {
-            boolean filtered = true;
+            boolean filtered = isFilterCondition( entity );
             if ( filtered ) {
                 mDishEntityAdapter.addItem( entity, idx );
                 idx++;
             }
         }
+    }
+
+    private boolean isFilterCondition( MenuEntityModel menuEntityModel ){
+        if ( GlobalManager.getInstance().getDishFilter() == null ){
+            return true;
+        }
+        boolean result = false;
+        if ( GlobalManager.getInstance().getDishFilter()
+                                        .getKitchenId().equals( menuEntityModel.getTypeId() )
+                && GlobalManager.getInstance().getDishFilter()
+                                            .getDishId().equals( menuEntityModel.getCategoryId() ) ){
+            result = true;
+        }
+        return result;
     }
 
 
@@ -181,6 +194,16 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
     @Override
     public void onAttach( Context context ) {
         super.onAttach( context );
+        ( ( BaseActivity ) getActivity() ).getHeader().findViewById( R.id.navButtonId ).setVisibility( View.GONE );
+        View filterNavBtn = ( ( BaseActivity ) getActivity() ).getHeader()
+                                                    .findViewById( R.id.dishFilterNavButtonId );
+        filterNavBtn.setVisibility( View.VISIBLE );
+        filterNavBtn.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick( View view ) {
+                onFilterButtonClick();
+            }
+        } );
         if ( context instanceof OnDishActionListener ) {
             mListener = ( OnDishActionListener ) context;
         } else {
@@ -192,6 +215,8 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
     @Override
     public void onDetach() {
         super.onDetach();
+        ( ( BaseActivity ) getActivity() ).getHeader().findViewById( R.id.navButtonId ).setVisibility( View.VISIBLE );
+        ( ( BaseActivity ) getActivity() ).getHeader().findViewById( R.id.dishFilterNavButtonId ).setVisibility( View.GONE );
         mListener = null;
     }
 
@@ -225,7 +250,6 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
 
     @Override
     public void onFilterButtonClick() {
-        GlobalManager.getInstance().setDishTop( AppConstants.FAKE_ID );
         PixelShot.of( getActivity().findViewById( R.id.dishContainerId ) ).setResultListener( this ).save();
     }
 
@@ -235,7 +259,6 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
             mDishEntity = (( DishEntityCard ) view).getDishEntity();
             AppUtils.bounceAnimation( view.findViewById( R.id.entityImgId ) );
             GlobalManager.getInstance().setDishEntityPosition( position );
-            GlobalManager.getInstance().setDishTop( view.getTop() );
             PixelShot.of( getActivity().findViewById( R.id.dishContainerId ) ).setResultListener( this ).save();
         }
     }
@@ -254,7 +277,6 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
             @Override
             public void onAnimationEnd( Animation animation ) {
                 mHeaderContainer.setVisibility( View.GONE );
-                mSmallFilterBtn.startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.fade_in ) );
                 mExpandLine.setVisibility( View.VISIBLE );
                 mDishRecView.setAnimateHeader( false );
             }
@@ -274,9 +296,8 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
             @Override
             public void onAnimationStart( Animation animation ) {
                 mHeaderContainer.setVisibility( View.VISIBLE );
-                mSmallFilterBtn.startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.fade_out ) );
                 mExpandLine.setVisibility( View.GONE );
-                mDishRecView.setAnimateHeader( true );
+               mDishRecView.setAnimateHeader( true );
             }
 
             @Override

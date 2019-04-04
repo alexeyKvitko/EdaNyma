@@ -1,13 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/filterDishContainerId"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blueNeon">
     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="478dp"
+        android:layout_marginLeft="210dp"
+        android:layout_marginTop="81dp"
+        android:background="@drawable/border_neon_18"/>
+    <RelativeLayout
         android:id = "@+id/decorLayoutId"
+        android:layout_width="360dp"
+        android:layout_height="640dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="-24dp"/>
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Test Test Test"/>
+        app:srcCompat="@drawable/filter_back_btn"/>
+    <ScrollView
+        android:layout_width="205dp"
+        android:layout_marginTop="48dp"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/filterCompanyMenuId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/companyMenuTitleId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22dp"
+                android:textColor="@color/white"
+                android:text="@string/company_menu_title"/>
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

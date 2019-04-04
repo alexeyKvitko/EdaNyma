@@ -78,5 +78,7 @@
     <string name="buy_entity">Купить</string>
     <string name="add_to_basket">В Корзину</string>
     <string name="back_label">НАЗАД</string>
+    <string name="company_menu_title">МЕНЮ ЗАВЕДЕНИЯ</string>
+    <string name="all_dishes_label">Все Блюда от</string>
 
 </resources>

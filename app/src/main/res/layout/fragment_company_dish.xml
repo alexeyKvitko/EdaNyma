@@ -21,12 +21,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1"/>
-        <ImageView
-            android:id="@+id/filterSmallBtnId"
-            android:layout_marginRight="8dp"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            app:srcCompat="@drawable/outline_tune_black_18"/>
+       />
 
     </LinearLayout>
 

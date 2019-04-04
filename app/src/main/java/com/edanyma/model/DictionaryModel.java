@@ -3,9 +3,11 @@ package com.edanyma.model;
 import org.pojomatic.Pojomatic;
 import org.pojomatic.annotations.AutoProperty;
 
+import java.io.Serializable;
+
 
 @AutoProperty
-public class DictionaryModel {
+public class DictionaryModel implements Serializable {
 
     private String id;
     private String name;

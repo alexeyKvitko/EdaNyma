@@ -3,7 +3,6 @@ package com.edanyma.activity;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -17,11 +16,10 @@ import com.edanyma.fragment.FilterDishFragment;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyInfoModel;
+import com.edanyma.model.CompanyMenu;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
-
-import java.io.File;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -32,7 +30,7 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
     private final String TAG = "CompanyDishActivity";
 
     private String mCompanyId;
-    private CompanyInfoModel mCompanyDish;
+    private CompanyInfoModel mCompanyInfo;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -49,9 +47,11 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
     }
 
 
-    protected void addReplaceFragment( Fragment newFragment ) {
+    protected void addReplaceFragment( Fragment newFragment, boolean withAnimation ) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations( R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out );
+        if ( withAnimation ){
+          fragmentTransaction.setCustomAnimations( R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out );
+        }
         if ( getSupportFragmentManager().getFragments().size() == 0 ) {
             fragmentTransaction.add( R.id.dishFragmentContainerId, newFragment );
         } else {
@@ -62,39 +62,32 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
     }
 
 
-    public CompanyInfoModel getCompanyDish() {
-        return mCompanyDish;
+    public CompanyInfoModel getCompanyInfo() {
+        return mCompanyInfo;
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
+       Fragment fragment = getSupportFragmentManager().findFragmentById( R.id.dishFragmentContainerId );
+
+       super.onBackPressed();
+       overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
     }
 
-    private String getSnapshotPath(){
-        File directory = new File( Environment.getExternalStorageDirectory(), AppConstants.PICTURE_DIR );
-        if ( !directory.exists() ) {
-            return null;
-        }
-        File file = new File( directory, AppConstants.FILENAME_DISH + AppConstants.EXTENSION_JPG );
-     return file.getAbsolutePath();
-    }
 
     @Override
     public void onMoreDishInfo( String companyName, MenuEntityModel dishEntity ) {
         getHeader().setVisibility( View.GONE );
         getFooter().setVisibility( View.GONE );
-        findViewById( R.id.dishContainerId ).setBackground( Drawable.createFromPath( getSnapshotPath() ) );
-        addReplaceFragment( DishInfoFragment.newInstance( companyName, dishEntity ) );
+        findViewById( R.id.dishContainerId ).setBackground( Drawable.createFromPath( AppUtils.getSnapshotPath() ) );
+        addReplaceFragment( DishInfoFragment.newInstance( companyName, dishEntity ), true );
     }
 
     @Override
     public void onFilterDishSelect() {
         getHeader().setVisibility( View.GONE );
         getFooter().setVisibility( View.GONE );
-        findViewById( R.id.dishContainerId ).setBackground( Drawable.createFromPath( getSnapshotPath() ) );
-        addReplaceFragment(  FilterDishFragment.newInstance() );
+        addReplaceFragment(  FilterDishFragment.newInstance( new CompanyMenu( mCompanyInfo.getMenuTypes() ) ), false );
     }
 
     @Override
@@ -104,7 +97,7 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
 
     @Override
     public void onApplyDishFiler() {
-
+        addReplaceFragment(  CompanyDishFragment.newInstance( ), true );
     }
 
 
@@ -123,7 +116,7 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
                                 + GlobalManager.getInstance().getUserToken(), mCompanyId );
                 Response< CompanyInfoModel > responseCompanyDish = companyDishCall.execute();
                 if ( responseCompanyDish.body() != null ) {
-                    mCompanyDish = responseCompanyDish.body();
+                    mCompanyInfo = responseCompanyDish.body();
                 }
             } catch ( Exception e ) {
                 Log.e( TAG, e.getMessage() );
@@ -138,7 +131,8 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
             AppUtils.transitionAnimation( findViewById( R.id.pleaseWaitContainerId ),
                     findViewById( R.id.dishContainerId ) );
             GlobalManager.getInstance().setDishEntityPosition( AppConstants.FAKE_ID );
-            addReplaceFragment( CompanyDishFragment.newInstance() );
+            GlobalManager.getInstance().setDishFilter( null );
+            addReplaceFragment( CompanyDishFragment.newInstance(), true );
         }
     }
 

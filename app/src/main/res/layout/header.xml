@@ -18,6 +18,16 @@
         android:layout_marginLeft="16dp"
         android:layout_alignParentLeft="true"
         app:srcCompat="@drawable/ic_menu_black_18dp"/>
+    <ImageButton
+        android:id="@+id/dishFilterNavButtonId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:padding="8dp"
+        android:background="@android:color/transparent"
+        android:layout_marginLeft="16dp"
+        android:layout_alignParentLeft="true"
+        app:srcCompat="@drawable/outline_tune_black_18"/>
     <TextView
         style="@style/deliveryCityStyle"
         android:gravity="center"

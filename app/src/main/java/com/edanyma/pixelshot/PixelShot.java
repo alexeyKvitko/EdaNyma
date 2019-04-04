@@ -34,11 +34,12 @@ public class PixelShot {
     private static final String TAG = PixelShot.class.getSimpleName();
 
     private static final int JPG_MAX_QUALITY = 100;
+    private static final int JPG_MID_QUALITY = 80;
 
     private String path = AppConstants.PICTURE_DIR;
     private String filename = AppConstants.FILENAME_DISH;
     private String fileExtension = EXTENSION_JPG;
-    private int jpgQuality = JPG_MAX_QUALITY;
+    private int jpgQuality = JPG_MID_QUALITY;
 
     private PixelShotListener listener;
     private View view;
@@ -155,7 +156,8 @@ public class PixelShot {
     }
 
 
-    static class BitmapSaver extends AsyncTask<Void, Void, Void> implements MediaScannerConnection.OnScanCompletedListener {
+    static class BitmapSaver extends AsyncTask<Void, Void, Boolean> {
+//            implements MediaScannerConnection.OnScanCompletedListener {
 
         private final WeakReference<Context> weakContext;
         private Handler handler = new Handler( Looper.getMainLooper());
@@ -177,24 +179,25 @@ public class PixelShot {
             this.listener = listener;
         }
 
-        private void cancelTask() {
-            cancel(true);
-            if (listener != null) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.onPixelShotFailed();
-                    }
-                });
-            }
-        }
+//        private void cancelTask() {
+//            cancel(true);
+//            if (listener != null) {
+//                handler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        listener.onPixelShotFailed();
+//                    }
+//                });
+//            }
+//        }
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Boolean doInBackground(Void... voids) {
+            boolean result = true;
             File directory = new File(Environment.getExternalStorageDirectory(), path);
             if (!directory.exists() && !directory.mkdirs()) {
-                cancelTask();
-                return null;
+//                cancelTask();
+                return false;
             }
 
             file = new File(directory, filename + fileExtension);
@@ -209,37 +212,43 @@ public class PixelShot {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                cancelTask();
+                result = false;
+//                cancelTask();
             }
 
             bitmap.recycle();
             bitmap = null;
-            return null;
+            return result;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            MediaScannerConnection.scanFile(weakContext.get(), new String[]{file.getPath()}, null, this);
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute( result );
+//            MediaScannerConnection.scanFile(weakContext.get(), new String[]{file.getPath()}, null, this);
             weakContext.clear();
-        }
-
-        @Override
-        public void onScanCompleted(final String path, final Uri uri) {
-            if (listener != null) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (uri != null) {
-                            Log.i(TAG, "Saved image to path: " + path);
-                            Log.i(TAG, "Saved image to URI: " + uri);
-                            listener.onPixelShotSuccess(path);
-                        } else {
-                            listener.onPixelShotFailed();
-                        }
-                    }
-                });
+            if( result ){
+                listener.onPixelShotSuccess(path);
+            } else {
+                listener.onPixelShotFailed();
             }
         }
+
+//        @Override
+//        public void onScanCompleted(final String path, final Uri uri) {
+//            if (listener != null) {
+//                handler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (uri != null) {
+//                            Log.i(TAG, "Saved image to path: " + path);
+//                            Log.i(TAG, "Saved image to URI: " + uri);
+//                            listener.onPixelShotSuccess(path);
+//                        } else {
+//                            listener.onPixelShotFailed();
+//                        }
+//                    }
+//                });
+//            }
+//        }
     }
 }

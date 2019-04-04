@@ -21,6 +21,7 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 
+import java.io.File;
 import java.util.regex.Pattern;
 
 public abstract class AppUtils {
@@ -170,5 +171,10 @@ public abstract class AppUtils {
 
     public static boolean nullOrEmpty( String value ) {
         return value == null || ( value != null && value.trim().length() == 0 );
+    }
+
+    public static String getSnapshotPath(){
+        return Environment.getExternalStorageDirectory()+File.separator+AppConstants.PICTURE_DIR
+                    +File.separator+AppConstants.FILENAME_DISH + AppConstants.EXTENSION_JPG;
     }
 }
