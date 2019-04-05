@@ -48,7 +48,6 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
     private static final int MENU_CATEGORY_PADDING_RIGHT = (int) ConvertUtils.convertDpToPixel( 8 );
     private static final int MENU_CATEGORY_PADDING_TOP = (int) ConvertUtils.convertDpToPixel( 4 );
     private static final int MENU_CATEGORY_PADDING_BOTTOM = (int) ConvertUtils.convertDpToPixel( 6 );
-    private static final int MENU_CATEGORY_LEFT_MARGIN = (int) ConvertUtils.convertDpToPixel( 16 );
 
     private static final float DECOR_CORNER_RADIUS = ConvertUtils.convertDpToPixel( 18 );
     private static final float DECOR_LEFT_MARGIN = ConvertUtils.convertDpToPixel( 230 );
@@ -97,7 +96,13 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
         initTextView( R.id.companyMenuTitleId, AppConstants.B52 );
         fillCompanyMenu();
         animateDecorLayout( decorLayout );
-
+        getView().findViewById( R.id.filterBackBtnId ).setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick( View view ) {
+                AppUtils.clickAnimation( view );
+                getActivity().onBackPressed();
+            }
+        } );
     }
 
     private void fillCompanyMenu() {
@@ -136,32 +141,9 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
         } );
         valAnimator.setDuration( 300 );
         valAnimator.start();
-
     }
 
-    private void restoreDecorLayout( final RelativeLayout decorLayout ) {
-        final FrameLayout.LayoutParams layoutParams = ( FrameLayout.LayoutParams ) decorLayout.getLayoutParams();
-        ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), ( int ) DECOR_LEFT_MARGIN, 0 );
-        valAnimator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate( ValueAnimator animator ) {
-                float val = ( ( Integer ) animator.getAnimatedValue() ).floatValue();
-                int margin = ( int ) ( val * MARGIN_RATIO );
-                layoutParams.leftMargin = ( int ) val;
-                layoutParams.width = ( int ) ( DECOR_WIDTH + HORIZONTAL_RATIO * val );
-                layoutParams.height = ( int ) ( DECOR_HEIGHT + VERTICAL_RATIO * val );
-                layoutParams.topMargin = margin;
-                layoutParams.bottomMargin = margin;
-                decorLayout.setLayoutParams( layoutParams );
-                if(  layoutParams.topMargin == 0 ){
-                    getActivity().onBackPressed();
-                }
-            }
-        } );
-        valAnimator.setDuration( 300 );
-        valAnimator.start();
 
-    }
 
     public void applyDishFilter() {
         if ( mListener != null ) {
@@ -227,6 +209,8 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
         return dishView;
     }
 
+
+
     @Override
     public void onClick( View view ) {
         if ( view instanceof MenuTextView ){
@@ -237,7 +221,7 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
             new Handler(  ).postDelayed( new Runnable() {
                 @Override
                 public void run() {
-                    restoreDecorLayout( (RelativeLayout) getView().findViewById( R.id.decorLayoutId ) );
+                    getActivity().onBackPressed();
                 }
             }, 100 );
 

@@ -20,6 +20,7 @@ public class AppConstants {
     public static final String EXTENSION_JPG = ".jpg";
     public static final String EXTENSION_PNG = ".png";
     public static final String EXTENSION_NOMEDIA = ".nomedia";
+    public static final String FAST_MENU = "fast_menu";
 
     public static final String AUTH_BEARER = "Bearer ";
 

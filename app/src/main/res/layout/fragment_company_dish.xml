@@ -21,8 +21,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1"/>
-       />
-
     </LinearLayout>
 
         <RelativeLayout
@@ -53,6 +51,7 @@
                     android:textSize="24dp" />
 
                 <ImageView
+                    android:id="@+id/companyInfoIconId"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_gravity="top"

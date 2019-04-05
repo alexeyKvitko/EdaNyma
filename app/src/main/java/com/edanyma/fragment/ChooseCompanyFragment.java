@@ -19,6 +19,7 @@ import com.edanyma.R;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.CompanyLight;
 import com.edanyma.model.CompanyModel;
+import com.edanyma.model.FilterDishModel;
 import com.edanyma.model.FilterModel;
 import com.edanyma.owncomponent.OwnSearchView;
 import com.edanyma.recyclerview.CompanyAdapter;
@@ -315,6 +316,16 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
         new Handler( ).postDelayed( new Runnable() {
             @Override
             public void run() {
+                if ( mCategoryIds != null ){
+                    StringBuilder categoryIds = new StringBuilder(  );
+                    for ( Integer categoryId : mCategoryIds ){
+                        categoryIds.append( categoryId).append(",");
+                    }
+                    categoryIds.deleteCharAt( categoryIds.length()-1 );
+                    GlobalManager.getInstance().setDishFilter( new FilterDishModel( AppConstants.FAST_MENU, categoryIds.toString(), mInitFilterParam ) );
+                } else {
+                    GlobalManager.getInstance().setDishFilter( null );
+                }
                 onCompanyChoose( mCompanyAdapter.getItem( position ) );
             }
         }, 300 );

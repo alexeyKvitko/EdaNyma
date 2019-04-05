@@ -80,6 +80,19 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="blueNeonMatchLabel">
+        <item name="android:textSize">14dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:background">@drawable/bkg_white_r12</item>
+        <item name="android:textColor">@color/blueNeon</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
     <style name="companyTitleText">
         <item name="android:textSize">22dp</item>
         <item name="android:textColor">@color/colorAccent</item>
@@ -90,6 +103,13 @@
     <style name="cityTitleText">
         <item name="android:textSize">20dp</item>
         <item name="android:textColor">@color/splashTextColor</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="emptyStar">
+        <item name="android:layout_marginRight">2dp</item>
+        <item name="srcCompat">@drawable/ic_empty_star_18dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>

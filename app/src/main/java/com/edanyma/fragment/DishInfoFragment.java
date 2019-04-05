@@ -41,7 +41,8 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
 
     private OnAddToBasketListener mListener;
 
-    public DishInfoFragment() {}
+    public DishInfoFragment() {
+    }
 
     public static DishInfoFragment newInstance( String companyName, MenuEntityModel dishEntity ) {
         DishInfoFragment fragment = new DishInfoFragment();
@@ -64,11 +65,11 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState ) {
-            return inflater.inflate( R.layout.fragment_dish_info, container, false );
+        return inflater.inflate( R.layout.fragment_dish_info, container, false );
     }
 
 
-    public void onAddToBasketPressed( ) {
+    public void onAddToBasketPressed() {
         if ( mListener != null ) {
             mListener.onAddToBasket( mDishEntity );
         }
@@ -80,37 +81,37 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
         mAllWspNull = false;
         mWspBtnMargin = 0;
         PicassoClient.downloadImage( EdaNymaApp.getAppContext(), mDishEntity.getImageUrl()
-                , ( ImageView )getView().findViewById( R.id.dishInfoImgId )
-                                                            , DISH_IMAGE_WIDTH, DISH_IMAGE_HEIGHT );
-        initTextView(  R.id.dishInfoCompanyId , AppConstants.OFFICE , mCompanyName );
-        String kitchen =  null;
+                , ( ImageView ) getView().findViewById( R.id.dishInfoImgId )
+                , DISH_IMAGE_WIDTH, DISH_IMAGE_HEIGHT );
+        initTextView( R.id.dishInfoCompanyId, AppConstants.OFFICE, mCompanyName );
+        String kitchen = null;
         String category = null;
-        for( MenuTypeModel menuType : GlobalManager.getInstance().getBootstrapModel().getDeliveryMenu().getMenuTypes() ){
-            if( mDishEntity.getTypeId().equals( menuType.getId() ) ){
+        for ( MenuTypeModel menuType : GlobalManager.getInstance().getBootstrapModel().getDeliveryMenu().getMenuTypes() ) {
+            if ( mDishEntity.getTypeId().equals( menuType.getId() ) ) {
                 kitchen = menuType.getDisplayName();
                 break;
             }
         }
-        for( MenuCategoryModel menuCategory : GlobalManager.getInstance().getBootstrapModel().getDeliveryMenu().getMenuCategories() ){
-            if( mDishEntity.getCategoryId().equals( menuCategory.getId() ) ){
+        for ( MenuCategoryModel menuCategory : GlobalManager.getInstance().getBootstrapModel().getDeliveryMenu().getMenuCategories() ) {
+            if ( mDishEntity.getCategoryId().equals( menuCategory.getId() ) ) {
                 category = menuCategory.getDisplayName();
                 break;
             }
         }
-        if( kitchen != null ){
-            initTextView(  R.id.dishInfoKitchenId , AppConstants.OFFICE , kitchen );
+        if ( kitchen != null ) {
+            initTextView( R.id.dishInfoKitchenId, AppConstants.OFFICE, kitchen );
         } else {
             getView().findViewById( R.id.dishInfoKitchenId ).setVisibility( View.GONE );
         }
-        if( category != null ){
-            initTextView(  R.id.dishInfoCategoryId , AppConstants.OFFICE , category );
+        if ( category != null ) {
+            initTextView( R.id.dishInfoCategoryId, AppConstants.OFFICE, category );
         } else {
             getView().findViewById( R.id.dishInfoCategoryId ).setVisibility( View.GONE );
         }
 
-        initTextView(  R.id.dishInfoTitleTextId , AppConstants.B52 , mDishEntity.getDisplayName() );
-        initTextView(  R.id.dishInfoDescId , AppConstants.ROBOTO_CONDENCED , mDishEntity.getDescription() );
-        mDishPrice = initTextView( R.id.dishPriceTextId, AppConstants.ROBOTO_CONDENCED, Typeface.BOLD, mDishEntity.getPriceOne()  );
+        initTextView( R.id.dishInfoTitleTextId, AppConstants.B52, mDishEntity.getDisplayName() );
+        initTextView( R.id.dishInfoDescId, AppConstants.ROBOTO_CONDENCED, mDishEntity.getDescription() );
+        mDishPrice = initTextView( R.id.dishPriceTextId, AppConstants.ROBOTO_CONDENCED, Typeface.BOLD, mDishEntity.getPriceOne() );
         checkForNullWsp();
         setWsp( R.id.wspLayoutOneId, R.id.dishSizeOneId, R.id.dishWeightOneId,
                 mDishEntity.getSizeOne(), mDishEntity.getWeightOne() );
@@ -121,13 +122,11 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
         setWsp( R.id.wspLayoutFourId, R.id.dishSizeFourId, R.id.dishWeightFourId,
                 mDishEntity.getSizeFour(), mDishEntity.getWeightFour() );
         setWspTextColor( R.id.dishSizeOneId, R.id.dishWeightOneId, R.color.blueNeon );
-        initTextView( R.id.dishInfоBackId, AppConstants.ROBOTO_CONDENCED ).setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
-                AppUtils.clickAnimation( view );
-                getActivity().onBackPressed();
-            }
-        } );
+        initTextView( R.id.dishInfоBackId, AppConstants.ROBOTO_CONDENCED ).setOnClickListener( this );
+
+        getView().findViewById( R.id.dishInfoCardId ).setOnClickListener( this );
+        getView().findViewById( R.id.dishInfoContainerId ).setOnClickListener( this );
+
 
     }
 
@@ -136,7 +135,7 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
             getView().findViewById( layoutId ).setVisibility( View.INVISIBLE );
             return;
         }
-        TextView sizeView = initTextView(  sizeId, AppConstants.ROBOTO_CONDENCED, sizeValue );
+        TextView sizeView = initTextView( sizeId, AppConstants.ROBOTO_CONDENCED, sizeValue );
         if ( !AppUtils.nullOrEmpty( sizeValue ) ) {
             sizeView.setVisibility( View.VISIBLE );
         } else {
@@ -221,11 +220,11 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        (( BaseActivity) getActivity()).getHeader().setVisibility( View.VISIBLE );
-        (( BaseActivity) getActivity()).getFooter().setVisibility( View.VISIBLE );
+        ( ( BaseActivity ) getActivity() ).getHeader().setVisibility( View.VISIBLE );
+        ( ( BaseActivity ) getActivity() ).getFooter().setVisibility( View.VISIBLE );
         getActivity().findViewById( R.id.dishContainerId )
-                            .setBackground( EdaNymaApp.getAppContext().getResources()
-                                                .getDrawable( R.drawable.main_background_light ) );
+                .setBackground( EdaNymaApp.getAppContext().getResources()
+                        .getDrawable( R.drawable.main_background_light ) );
     }
 
     @Override
@@ -251,6 +250,15 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
                 newWspBtnMargin = ( int ) ConvertUtils.convertDpToPixel( 243 );
                 animateWspButtonContainer( mWspBtnMargin, newWspBtnMargin, mDishEntity.getPriceFour()
                         , R.id.dishSizeFourId, R.id.dishWeightFourId );
+                break;
+            case R.id.dishInfоBackId:
+                AppUtils.clickAnimation( view );
+                getActivity().onBackPressed();
+                break;
+            case R.id.dishInfoContainerId:
+                getActivity().onBackPressed();
+                break;
+            default:
                 break;
         }
     }

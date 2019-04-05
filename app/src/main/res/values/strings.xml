@@ -79,6 +79,9 @@
     <string name="add_to_basket">В Корзину</string>
     <string name="back_label">НАЗАД</string>
     <string name="company_menu_title">МЕНЮ ЗАВЕДЕНИЯ</string>
-    <string name="all_dishes_label">Все Блюда от</string>
+    <string name="all_dishes_label">Все Блюда от </string>
+    <string name="all_review_btn">Все Отзывы</string>
+    <string name="delivery_house">Часы Доставки</string>
+    <string name="add_favorite_error">Добавление заведений в список избранного доступно только зарегистрированным пользователям</string>
 
 </resources>
