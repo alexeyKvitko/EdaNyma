@@ -3,6 +3,8 @@ package com.edanyma.model;
 import org.pojomatic.Pojomatic;
 import org.pojomatic.annotations.AutoProperty;
 
+import java.util.List;
+
 @AutoProperty
 public class OurClientModel {
 
@@ -14,6 +16,7 @@ public class OurClientModel {
     private String uuid;
     private Integer bonus;
     private String additionalMessage;
+    private List<FavoriteCompanyModel> favoriteCompanies;
 
     public Integer getId() {
         return id;
@@ -77,6 +80,14 @@ public class OurClientModel {
 
     public void setAdditionalMessage( String additionalMessage ) {
         this.additionalMessage = additionalMessage;
+    }
+
+    public List< FavoriteCompanyModel > getFavoriteCompanies() {
+        return favoriteCompanies;
+    }
+
+    public void setFavoriteCompanies( List< FavoriteCompanyModel > favoriteCompanies ) {
+        this.favoriteCompanies = favoriteCompanies;
     }
 
     @Override public boolean equals( Object o) {

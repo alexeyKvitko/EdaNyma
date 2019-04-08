@@ -19,6 +19,7 @@ import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.model.HomeMenuModel;
+import com.edanyma.owncomponent.ModalMessage;
 import com.edanyma.recyclerview.CompanyActionAdapter;
 import com.edanyma.recyclerview.HomeMenuAdapter;
 import com.edanyma.recyclerview.manager.VegaLayoutManager;
@@ -221,16 +222,6 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         mTimer = new Handler();
         mSliderJob = new SliderJob();
         mTimer.postDelayed( mSliderJob, 1000 );
-        if ( GlobalManager.getInstance().getClient() != null
-                && GlobalManager.getInstance().getClient().getUuid() != null ) {
-            findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.person_navigation ) );
-            ( ( TextView ) mNavigationView.getHeaderView( 0 ).findViewById( R.id.drawerLoginId ) )
-                    .setText( getResources().getString( R.string.personal_area ) );
-        } else {
-            findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.login_navigation ) );
-            ( ( TextView ) mNavigationView.getHeaderView( 0 ).findViewById( R.id.drawerLoginId ) )
-                    .setText( getResources().getString( R.string.action_login ) );
-        }
         initAdapter();
     }
 
@@ -305,14 +296,15 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         String homeMenuCount = ( ( TextView ) view.findViewById( R.id.dishCountTextId ) ).getText().toString();
         if ( !AppConstants.ALL_DISHES.equals( homeMenuTag ) ) {
             if ( Integer.valueOf( homeMenuCount.substring( 0,1 ) ).equals( 0 ) ){
-                AppUtils.showToastWithAnimation( findViewById( R.id.toastLayoutId ), "Сообщение", "В Вашем городе еще нет выбранных заведений" );
+                ModalMessage.show( this, "Сообщение", "В Вашем городе еще нет выбранных заведений"  );
+
             } else{
                 Map< String, String > params = new HashMap<>();
                 params.put( AppConstants.COMPANY_FILTER, homeMenuTag );
                 startNewActivity( CompanyActivity.class, params );
             }
         } else {
-            AppUtils.showToastWithAnimation( findViewById( R.id.toastLayoutId ), "Сообщение", "Этот раздел в разработке ..." );
+            ModalMessage.show( this, "Сообщение", "Этот раздел в разработке ..." );
         }
     }
 

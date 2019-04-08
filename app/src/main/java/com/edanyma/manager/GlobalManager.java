@@ -25,6 +25,7 @@ public class GlobalManager {
     private static FilterModel companyFilter;
     private static FilterDishModel dishFilter;
     private static int dishEntityPosition;
+    private static boolean actionConfirmed;
 
     private GlobalManager() {
     }
@@ -141,5 +142,17 @@ public class GlobalManager {
 
     public static void setDishFilter( FilterDishModel dishFilter ) {
         GlobalManager.dishFilter = dishFilter;
+    }
+
+    public static boolean isActionConfirmed() {
+        return actionConfirmed;
+    }
+
+    public static void setActionConfirmed( boolean actionConfirmed ) {
+        GlobalManager.actionConfirmed = actionConfirmed;
+    }
+
+    public static boolean isSignedIn() {
+        return client != null && client.getUuid() != null;
     }
 }

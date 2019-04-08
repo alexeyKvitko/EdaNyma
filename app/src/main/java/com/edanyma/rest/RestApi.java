@@ -4,6 +4,7 @@ import com.edanyma.model.ApiResponse;
 import com.edanyma.model.AuthToken;
 import com.edanyma.model.BootstrapModel;
 import com.edanyma.model.CompanyInfoModel;
+import com.edanyma.model.FavoriteCompanyModel;
 import com.edanyma.model.LoginUser;
 import com.edanyma.model.OurClientModel;
 
@@ -44,6 +45,14 @@ public interface RestApi {
     @POST(API_CLIENT+"validateAndSendEmail")
     Call< ApiResponse<String> > validateAndSendEmail( @Header("Authorization") String authorization,
                                 @Body OurClientModel ourClientModel  );
+
+    @POST(API_CLIENT+"addToFavorite")
+    Call< ApiResponse > addToFavorite( @Header("Authorization") String authorization,
+                                                @Body FavoriteCompanyModel favoriteCompanyModel  );
+
+    @POST(API_CLIENT+"removeFromFavorite")
+    Call< ApiResponse > removeFromFavorite( @Header("Authorization") String authorization,
+                                       @Body FavoriteCompanyModel favoriteCompanyModel  );
 
 
 }

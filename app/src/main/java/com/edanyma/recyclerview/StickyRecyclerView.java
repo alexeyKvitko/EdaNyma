@@ -84,7 +84,7 @@ public class StickyRecyclerView extends RecyclerView {
                 mThis.setLayoutParams( layoutParams );
             }
         } );
-        valAnimator.setDuration( 600 );
+        valAnimator.setDuration( 300 );
         valAnimator.start();
     }
 

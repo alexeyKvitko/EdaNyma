@@ -32,6 +32,10 @@ public class AppConstants {
     public static final String CLOSE= "CLOSE";
     public static final String OPEN= "OPEN";
 
+    public static final String SIGN_IN= "SIGN_IN";
+    public static final String SIGN_UP= "SIGN_UP";
+    public static final String SIGN_TYPE = "signType";
+
     public static final int FAKE_ID= -1;
 
     public static final String STATIC_COMPANY= "companies/%s.jpg";
@@ -55,6 +59,9 @@ public class AppConstants {
     public static final int BANNER_LEFT = 0;
     public static final int BANNER_CENTER = 540;
     public static final int BANNER_END = 984;
+
+    public static final int HTTP_OK = 200;
+    public static final int HTTP_NOT_FOUND = 404;
 
     public static final String PREV_NAV_STATE = "prev_nav_state";
     public static final String COMPANY_FILTER = "companyFiler";

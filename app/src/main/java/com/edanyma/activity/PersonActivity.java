@@ -14,9 +14,12 @@ import com.edanyma.fragment.SignInFragment;
 import com.edanyma.fragment.SignUpFragment;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
+import com.edanyma.utils.AppUtils;
 
 public class PersonActivity extends BaseActivity implements SignInFragment.OnSignInListener,
         SignUpFragment.OnSignUpListener, PersonalAreaFragment.OnPersonalAreaActionListener {
+
+    private String mSign;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -25,7 +28,12 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
         initBaseActivity( new ActivityState( AppConstants.LOGIN_BOTTOM_INDEX ) );
         if(  GlobalManager.getClient() == null ){
             findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.login_navigation ) );
-            addReplaceFragment( SignInFragment.newInstance() );
+            mSign = this.getIntent().getStringExtra( AppConstants.SIGN_TYPE );
+            if( mSign == null || AppConstants.SIGN_IN.equals( mSign ) ){
+                addReplaceFragment( SignInFragment.newInstance() );
+            } else {
+                addReplaceFragment( SignUpFragment.newInstance( AppConstants.NEW_CLIENT ) );
+            }
         } else {
             findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.person_navigation ) );
             addReplaceFragment( PersonalAreaFragment.newInstance() );
@@ -47,7 +55,13 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
 
     @Override
     public void onSignInAction() {
-        NavUtils.navigateUpFromSameTask( this );
+        if ( mSign != null ){
+            changeClientStatus();
+            GlobalManager.getInstance().setActionConfirmed( true );
+            onBackPressed();
+        } else {
+            NavUtils.navigateUpFromSameTask( this );
+        }
     }
 
     @Override

@@ -22,11 +22,15 @@ import com.edanyma.model.MenuEntityModel;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
 public class CompanyDishActivity extends BaseActivity implements CompanyDishFragment.OnDishActionListener,
-        DishInfoFragment.OnAddToBasketListener, FilterDishFragment.OnApplyDishFilterListener {
+        DishInfoFragment.OnAddToBasketListener, FilterDishFragment.OnApplyDishFilterListener,
+        CompanyInfoFragment.OnSignActionListener {
 
     private final String TAG = "CompanyDishActivity";
 
@@ -69,8 +73,6 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
 
     @Override
     public void onBackPressed() {
-        Fragment fragment = getSupportFragmentManager().findFragmentById( R.id.dishFragmentContainerId );
-
         super.onBackPressed();
         overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
     }
@@ -89,7 +91,7 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
         getHeader().setVisibility( View.GONE );
         getFooter().setVisibility( View.GONE );
         findViewById( R.id.dishContainerId ).setBackground( Drawable.createFromPath( AppUtils.getSnapshotPath() ) );
-        addReplaceFragment( CompanyInfoFragment.newInstance( mCompanyInfo.getCompanyModel() ), true );
+        addReplaceFragment( CompanyInfoFragment.newInstance( mCompanyInfo.getCompanyModel() ), false );
     }
 
     @Override
@@ -107,6 +109,13 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
     @Override
     public void onApplyDishFiler() {
         addReplaceFragment( CompanyDishFragment.newInstance(), true );
+    }
+
+    @Override
+    public void onSignAction( String sign ) {
+        Map< String, String > params = new HashMap<>();
+        params.put( AppConstants.SIGN_TYPE, sign );
+        startNewActivity( PersonActivity.class, params );
     }
 
 
@@ -143,6 +152,5 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
             addReplaceFragment( CompanyDishFragment.newInstance(), true );
         }
     }
-
 
 }

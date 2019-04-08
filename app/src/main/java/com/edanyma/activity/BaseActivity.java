@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -37,6 +38,7 @@ public abstract class BaseActivity extends AppCompatActivity
     protected LinearLayout mFooter;
     protected RelativeLayout mHeader;
     protected DrawerLayout mDrawer;
+//    protected FrameLayout mFullScreen;
     protected ImageButton mNavigationButton;
     protected ArrayList<View> mMenuItems = new ArrayList<>();
     protected NavigationView mNavigationView;
@@ -50,6 +52,7 @@ public abstract class BaseActivity extends AppCompatActivity
         mDeliveryTV = this.findViewById( R.id.deliveryCityId );
         mDeliveryTV.setTypeface( AppConstants.ROBOTO_CONDENCED );
         mDrawer = findViewById( R.id.drawer_layout );
+//        mFullScreen = findViewById( R.id.fullScreenId );
         mNavigationButton = findViewById( R.id.navButtonId );
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, null, R.string.navigation_drawer_open, R.string.navigation_drawer_close );
@@ -197,9 +200,23 @@ public abstract class BaseActivity extends AppCompatActivity
         }
     }
 
+    protected void changeClientStatus(){
+        if ( GlobalManager.getInstance().getClient() != null
+                && GlobalManager.getInstance().getClient().getUuid() != null ) {
+            findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.person_navigation ) );
+            ( ( TextView ) mNavigationView.getHeaderView( 0 ).findViewById( R.id.drawerLoginId ) )
+                    .setText( getResources().getString( R.string.personal_area ) );
+        } else {
+            findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.login_navigation ) );
+            ( ( TextView ) mNavigationView.getHeaderView( 0 ).findViewById( R.id.drawerLoginId ) )
+                    .setText( getResources().getString( R.string.action_login ) );
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        changeClientStatus();
         mDeliveryTV.setText( GlobalManager.getInstance().getBootstrapModel() != null ?
                 GlobalManager.getInstance().getBootstrapModel().getDeliveryCity():
                 getResources().getString( R.string.not_available));
@@ -224,5 +241,9 @@ public abstract class BaseActivity extends AppCompatActivity
 
     public RelativeLayout getHeader() {
         return mHeader;
+    }
+
+    public DrawerLayout getDrawer() {
+        return mDrawer;
     }
 }

@@ -83,5 +83,7 @@
     <string name="all_review_btn">Все Отзывы</string>
     <string name="delivery_house">Часы Доставки</string>
     <string name="add_favorite_error">Добавление заведений в список избранного доступно только зарегистрированным пользователям</string>
+    <string name="added_to_favorite">Добавлено в Избранное</string>
+    <string name="removed_from_favorite">Удалено из Избранного</string>
 
 </resources>

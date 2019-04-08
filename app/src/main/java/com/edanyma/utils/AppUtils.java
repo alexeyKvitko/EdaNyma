@@ -102,37 +102,6 @@ public abstract class AppUtils {
         targetView.startAnimation( fadeIn );
     }
 
-    public static void showToastWithAnimation( final View toastView, String titleMsg, String bodyMsg ) {
-        TextView toastTitle = toastView.findViewById( R.id.toastTitleId );
-        TextView toastText = toastView.findViewById( R.id.toastTextId );
-        toastTitle.setTypeface( AppConstants.B52 );
-        toastTitle.setText( titleMsg );
-        toastText.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        toastText.setText( bodyMsg );
-        toastView.startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.fade_in ) );
-        toastView.setVisibility( View.VISIBLE );
-        ( new Handler() ).postDelayed( new Runnable() {
-            @Override
-            public void run() {
-                Animation fadeOut = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.fade_out );
-                fadeOut.setAnimationListener( new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart( Animation animation ) {
-                    }
-
-                    @Override
-                    public void onAnimationEnd( Animation animation ) {
-                        toastView.setVisibility( View.GONE );
-                    }
-
-                    @Override
-                    public void onAnimationRepeat( Animation animation ) {
-                    }
-                } );
-                toastView.startAnimation( fadeOut );
-            }
-        }, 2000 );
-    }
 
     public static void clickAnimation( final View view ) {
         if ( Build.VERSION.SDK_INT >= 26 ) {
