@@ -88,10 +88,14 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
         super.onActivityCreated( savedInstanceState );
         mCompanyDish = ( ( CompanyDishActivity ) getActivity() ).getCompanyInfo();
         mSearchMade = false;
+
         TextView companyTitle = initTextView( R.id.companyDishTitleId, AppConstants.B52,
                 mCompanyDish.getCompanyModel().getDisplayName() );
         companyTitle.setOnClickListener( this );
         getView().findViewById( R.id.companyInfoIconId ).setOnClickListener( this );
+        int favVisibility = GlobalManager.getInstance().isFavorite( Integer.valueOf( mCompanyDish.getCompanyModel().getId()) )
+                                                        ? View.VISIBLE : View.GONE;
+        getView().findViewById( R.id.companyFavIconId ).setVisibility( favVisibility );
         PicassoClient.downloadImage( getActivity(), GlobalManager.getInstance().getBootstrapModel()
                 .getStaticUrl() + String.format( AppConstants.STATIC_COMPANY_LOGO,
                 mCompanyDish.getCompanyModel().getThumb() ), ( ImageView ) getView().findViewById( R.id.companyDishLogoId ) );
@@ -122,7 +126,8 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
 
         mExpandLine = getView().findViewById( R.id.expandLineId );
         mExpandLine.setOnClickListener( this );
-    }
+
+            }
 
     private void initRecView() {
         if ( mDishRecView == null ) {

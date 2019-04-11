@@ -1,11 +1,14 @@
 package com.edanyma.recyclerview;
 
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.model.HomeMenuModel;
 import com.edanyma.owncomponent.MainCardItem;
@@ -16,6 +19,7 @@ import java.util.ArrayList;
 public class HomeMenuAdapter extends CommonBaseAdapter< HomeMenuModel > {
 
     private static final String CLASS_TAG = "HomeMenuAdapter";
+
 
     public HomeMenuAdapter(ArrayList< HomeMenuModel > mItemList ) {
         super( mItemList );
@@ -37,6 +41,7 @@ public class HomeMenuAdapter extends CommonBaseAdapter< HomeMenuModel > {
         homeMenuCardHolder.leftMenuImage.setImageDrawable( mItemList.get( position).getLeftMenuImg());
         homeMenuCardHolder.leftMenuTitle.setText( mItemList.get( position).getLeftMenuName() );
         homeMenuCardHolder.leftMenuCount.setText( AppUtils.declension( mItemList.get( position).getLeftMenuCount() ) );
+
 
         homeMenuCardHolder.rightMenuImage.setImageDrawable( mItemList.get( position).getRightMenuImg());
         homeMenuCardHolder.rightMenuTitle.setText( mItemList.get( position).getRightMenuName() );

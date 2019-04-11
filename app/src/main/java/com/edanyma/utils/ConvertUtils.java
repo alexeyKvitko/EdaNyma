@@ -21,6 +21,7 @@ public abstract class ConvertUtils {
         company.setDeliveryTimeMin( "~" + companyModel.getDeliveryTimeMin() + "мин." );
         company.setDayoffWork( companyModel.getDayoffWork() );
         company.setWeekdayWork( companyModel.getWeekdayWork() );
+        company.setFavorite( companyModel.isFavorite() );
         return company;
     }
 

@@ -157,6 +157,9 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
                     }
                 }
             }
+            if( AppConstants.DISH_FAVOITES.equals( mInitFilterParam ) ){
+                filtered = GlobalManager.isFavorite( Integer.valueOf(companyModel.getId()) );
+            }
             if ( mCompanyFilter != null ) {
                 filtered = applyCompanyFilter( companyModel );
             }

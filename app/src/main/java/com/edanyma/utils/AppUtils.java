@@ -20,8 +20,11 @@ import android.widget.TextView;
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
+import com.edanyma.model.FavoriteCompanyModel;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public abstract class AppUtils {
@@ -101,7 +104,6 @@ public abstract class AppUtils {
         sourceView.startAnimation( fadeOut );
         targetView.startAnimation( fadeIn );
     }
-
 
     public static void clickAnimation( final View view ) {
         if ( Build.VERSION.SDK_INT >= 26 ) {

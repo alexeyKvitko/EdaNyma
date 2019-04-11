@@ -302,9 +302,9 @@ public class CompanyInfoFragment extends BaseFragment implements View.OnClickLis
                         if ( getActivity().getResources().getString( R.string.added_to_favorite ).equals( favAction ) ){
                             mFavoriteCompany = favoriteCompanyModel;
                             mFavoriteCompany.setId( Integer.valueOf( response.getMessage() ) );
-                            GlobalManager.getInstance().getClient().getFavoriteCompanies().add( mFavoriteCompany );
+                            GlobalManager.getInstance().addToFavorites( mFavoriteCompany );
                         } else {
-                            GlobalManager.getInstance().getClient().getFavoriteCompanies().remove( mFavoriteCompany );
+                            GlobalManager.getInstance().removeFromFavorites( mFavoriteCompany.getCompanyId() );
                             mFavoriteCompany = null;
                         }
                     } else {

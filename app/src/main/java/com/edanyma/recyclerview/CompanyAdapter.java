@@ -39,7 +39,8 @@ public class CompanyAdapter extends CommonBaseAdapter< CompanyLight > {
         CompanyAdapter.CompanyDataObjectHolder holder = ( CompanyAdapter.CompanyDataObjectHolder ) h;
         PicassoClient.downloadImage( EdaNymaApp.getAppContext(),
                 mItemList.get( position ).getThumbUrl(),holder.companyImg );
-
+        int favVisibility = mItemList.get( position ).isFavorite() ? View.VISIBLE : View.GONE;
+        holder.companyFavoriteImg.setVisibility( favVisibility );
         holder.сompanyTitle.setText( mItemList.get( position ).getDisplayName() );
         holder.сompanyDeliCash.setText( mItemList.get( position ).getDelivery() );
         holder.сompanyStar.setText( mItemList.get( position ).getCommentCount() );
@@ -53,6 +54,7 @@ public class CompanyAdapter extends CommonBaseAdapter< CompanyLight > {
 
         private FrameLayout companyCard;
         public ImageView companyImg;
+        public ImageView companyFavoriteImg;
         public TextView сompanyTitle;
         public TextView сompanyDeliCash;
         public TextView сompanyStar;
@@ -64,6 +66,7 @@ public class CompanyAdapter extends CommonBaseAdapter< CompanyLight > {
             super(itemView);
             companyCard = itemView.findViewById( R.id.companyCardId );
             companyImg = itemView.findViewById( R.id.companyImgId );
+            companyFavoriteImg = itemView.findViewById( R.id.companyFavoriteId );
 
             сompanyTitle = itemView.findViewById( R.id.cardCompanyTitleId );
             сompanyDeliCash = itemView.findViewById( R.id.cardCompanyDeliCashId );

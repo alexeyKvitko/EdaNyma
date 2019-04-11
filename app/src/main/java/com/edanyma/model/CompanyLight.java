@@ -14,6 +14,7 @@ public class CompanyLight {
     private String deliveryTimeMin;
     private String weekdayWork;
     private String dayoffWork;
+    private boolean isFavorite;
 
     public String getId() {
         return id;
@@ -77,6 +78,14 @@ public class CompanyLight {
 
     public void setDayoffWork( String dayoffWork ) {
         this.dayoffWork = dayoffWork;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite( boolean favorite ) {
+        isFavorite = favorite;
     }
 
     @Override public boolean equals( Object o) {

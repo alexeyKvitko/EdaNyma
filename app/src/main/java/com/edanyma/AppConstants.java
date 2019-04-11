@@ -1,5 +1,7 @@
 package com.edanyma;
 
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Typeface;
 
 import java.util.LinkedHashMap;
@@ -12,6 +14,7 @@ public class AppConstants {
     public static final Typeface B52 = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/B52.otf");
     public static final Typeface SANDORA = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/sandora.ttf");
     public static final Typeface OFFICE = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/office.ttf");
+
 
     public static final String DEFAULT_USER = "guest";
     public static final String DEFAULT_PASSWORD = "1111";

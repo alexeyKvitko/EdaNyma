@@ -31,6 +31,7 @@ public class CompanyModel implements Serializable {
     private String dayoffStart;
     private String dayoffEnd;
     private String foodPoint;
+    private boolean isFavorite;
     private String action;
     private String weekdayWork;
     private String dayoffWork;
@@ -268,6 +269,14 @@ public class CompanyModel implements Serializable {
 
     public void setMenuCategoiesIds( String menuCategoiesIds ) {
         this.menuCategoiesIds = menuCategoiesIds;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite( boolean favorite ) {
+        isFavorite = favorite;
     }
 
     @Override public boolean equals( Object o) {

@@ -5,6 +5,7 @@ import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.model.BootstrapModel;
 import com.edanyma.model.CompanyModel;
+import com.edanyma.model.FavoriteCompanyModel;
 import com.edanyma.model.FilterDishModel;
 import com.edanyma.model.FilterModel;
 import com.edanyma.model.HomeMenuModel;
@@ -114,6 +115,15 @@ public class GlobalManager {
 
     public static void setClient( OurClientModel client ) {
         GlobalManager.client = client;
+        setFavoriteSignToCompany( AppConstants.FAKE_ID, false );
+        for( FavoriteCompanyModel favoriteCompany : client.getFavoriteCompanies() ){
+            for( CompanyModel company : bootstrapModel.getCompanies() ){
+                if( favoriteCompany.getCompanyId().toString().equals( company.getId() ) ){
+                    company.setFavorite( true );
+                }
+            }
+        }
+        setHomeMenuCount( AppConstants.DISH_FAVOITES, client.getFavoriteCompanies().size()+"" );
     }
 
     public static List< HomeMenuModel > getHomeMenus() {
@@ -152,7 +162,45 @@ public class GlobalManager {
         GlobalManager.actionConfirmed = actionConfirmed;
     }
 
+    public static void addToFavorites( FavoriteCompanyModel favorite ){
+        client.getFavoriteCompanies().add( favorite );
+        setFavoriteSignToCompany( favorite.getCompanyId(), true );
+        setHomeMenuCount( AppConstants.DISH_FAVOITES, client.getFavoriteCompanies().size()+"" );
+    }
+
+    public static void removeFromFavorites( Integer companyId ){
+        List<FavoriteCompanyModel> newList = new LinkedList<>(  );
+        for( FavoriteCompanyModel favorite : client.getFavoriteCompanies() ){
+            if( !favorite.getCompanyId().equals( companyId ) ){
+                newList.add(  favorite  );
+            }
+        }
+        setFavoriteSignToCompany( companyId, false );
+        client.setFavoriteCompanies( newList );
+        setHomeMenuCount( AppConstants.DISH_FAVOITES, client.getFavoriteCompanies().size()+"" );
+    }
+
+    public static boolean isFavorite( Integer companyId ){
+        for( FavoriteCompanyModel favorite : client.getFavoriteCompanies() ){
+            if( favorite.getCompanyId().equals( companyId ) ){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean isSignedIn() {
         return client != null && client.getUuid() != null;
+    }
+
+    private static void setFavoriteSignToCompany( Integer companyId, boolean status ){
+        for( CompanyModel company : bootstrapModel.getCompanies() ){
+            if ( AppConstants.FAKE_ID == companyId ){
+                company.setFavorite( false );
+            }
+            if( companyId.toString().equals( company.getId() ) ){
+                company.setFavorite( status );
+            }
+        }
     }
 }
