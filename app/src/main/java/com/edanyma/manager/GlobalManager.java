@@ -181,6 +181,9 @@ public class GlobalManager {
     }
 
     public static boolean isFavorite( Integer companyId ){
+        if( !isSignedIn() ){
+            return false;
+        }
         for( FavoriteCompanyModel favorite : client.getFavoriteCompanies() ){
             if( favorite.getCompanyId().equals( companyId ) ){
                 return true;
