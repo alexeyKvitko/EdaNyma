@@ -38,7 +38,7 @@ public class ActivityState implements Serializable {
             case AppConstants.LOGIN_BOTTOM_INDEX:
                 this.drawerMenuIndex = AppConstants.LOGIN_DRAWER_INDEX;
                 this.selectedBottomId = R.id.navigation_login;
-                this.selectedDrawerId =  R.id.drawerLoginId;
+//                this.selectedDrawerId =  R.id.drawerLoginId;
                 break;
 
         }

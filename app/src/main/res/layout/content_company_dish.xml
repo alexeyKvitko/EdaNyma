@@ -2,19 +2,19 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/eatMenuContainerId"
+    android:id="@+id/dishContainerId"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_background_light"
     android:fitsSystemWindows="true"
-    tools:context="com.edanyma.activity.DishActivity">
+    tools:context="com.edanyma.activity.CompanyDishActivity">
 
     <include layout="@layout/header" />
     <include layout="@layout/footer" />
     <include layout="@layout/please_wait" />
 
     <RelativeLayout
-        android:id="@+id/eatMenuFragmentContainerId"
+        android:id="@+id/dishFragmentContainerId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="@+id/mainHeaderId"

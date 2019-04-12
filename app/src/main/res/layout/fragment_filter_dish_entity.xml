@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/filter_back_btn"/>
     <ScrollView
+        android:id="@+id/filterDishScrollId"
         android:layout_width="205dp"
         android:layout_marginTop="48dp"
         android:layout_height="match_parent">

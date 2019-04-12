@@ -17,6 +17,7 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.activity.BaseActivity;
+import com.edanyma.activity.DishActivity;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.MenuCategoryModel;
 import com.edanyma.model.MenuEntityModel;
@@ -222,7 +223,9 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
         mListener = null;
         ( ( BaseActivity ) getActivity() ).getHeader().setVisibility( View.VISIBLE );
         ( ( BaseActivity ) getActivity() ).getFooter().setVisibility( View.VISIBLE );
-        getActivity().findViewById( R.id.dishContainerId )
+        int containerId = getActivity() instanceof DishActivity ? R.id.eatMenuContainerId :
+                                                                            R.id.dishContainerId;
+        getActivity().findViewById( containerId )
                 .setBackground( EdaNymaApp.getAppContext().getResources()
                         .getDrawable( R.drawable.main_background_light ) );
     }

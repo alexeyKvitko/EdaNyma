@@ -31,17 +31,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class BaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
-        OnNavigationItemSelectedListener{
+        implements View.OnClickListener{
 
     protected TextView mDeliveryTV;
     protected LinearLayout mFooter;
     protected RelativeLayout mHeader;
-    protected DrawerLayout mDrawer;
-//    protected FrameLayout mFullScreen;
-    protected ImageButton mNavigationButton;
-    protected ArrayList<View> mMenuItems = new ArrayList<>();
-    protected NavigationView mNavigationView;
+    protected FrameLayout mDrawer;
 
     private ActivityState mCurrentState;
 
@@ -52,99 +47,37 @@ public abstract class BaseActivity extends AppCompatActivity
         mDeliveryTV = this.findViewById( R.id.deliveryCityId );
         mDeliveryTV.setTypeface( AppConstants.ROBOTO_CONDENCED );
         mDrawer = findViewById( R.id.drawer_layout );
-//        mFullScreen = findViewById( R.id.fullScreenId );
-        mNavigationButton = findViewById( R.id.navButtonId );
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawer, null, R.string.navigation_drawer_open, R.string.navigation_drawer_close );
-        mDrawer.addDrawerListener( toggle );
-        toggle.syncState();
-        mNavigationView = findViewById( R.id.nav_view );
-        mNavigationView.setNavigationItemSelectedListener( this );
-        mNavigationView.getHeaderView(0).findViewById( R.id.drawerLoginId ).setOnClickListener( this );
-        final Animation rotate = AnimationUtils.loadAnimation( this, R.anim.icon_rotation );
-        mNavigationButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
-                mNavigationButton.startAnimation( rotate );
-                new Handler().postDelayed( new Runnable() {
-                    @Override
-                    public void run() {
-                        mDrawer.openDrawer( GravityCompat.START );
-                    }
-                }, 100);
-
-            }
-        } );
 
         for( int i=0; i<5; i++){
             mFooter.getChildAt(i).setOnClickListener( this );
         }
-
-        mNavigationView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                mNavigationView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
-                    final MenuItem item = mNavigationView.getMenu().getItem( i );
-                    mNavigationView.findViewsWithText(mMenuItems, item.getTitle(), View.FIND_VIEWS_WITH_TEXT);
-                }
-                for (final View menuItem : mMenuItems) {
-                    TextView tv = (TextView) menuItem;
-                    tv.setTypeface( AppConstants.ROBOTO_CONDENCED);
-                    tv.setTextColor( getResources().getColor(R.color.tealColor) );
-                }
-            }
-        });
         findViewById( R.id.navButtonCityId ).setOnClickListener( this );
     }
 
     @Override
     public void onBackPressed() {
-        if ( mDrawer.isDrawerOpen( GravityCompat.START ) ) {
-            mDrawer.closeDrawer( GravityCompat.START );
-        } else {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
 
-    @Override
-    public boolean onNavigationItemSelected( MenuItem item ) {
-        int selId = item.getItemId();
-        if( mCurrentState.getSelectedBottomId() == selId ||
-                mCurrentState.getSelectedDrawerId() == selId ){
-            return false;
-        }
-        closeDrawer();
-        switch ( selId ) {
-            case R.id.nav_all_company:
-                startNewActivity( CompanyActivity.class );
-                break;
-            case R.id.nav_home:
-                startNewActivity( MainActivity.class );
-                break;
 
-        }
-        return true;
-    }
 
     @Override
     public void onClick( View view ) {
         if( mCurrentState.getSelectedDrawerId() == view.getId() ){
             return;
         }
-        closeDrawer();
         unselectBottomNavigation();
         if( view instanceof ImageButton ){
             view.setSelected( true );
         }
         switch ( view.getId() ){
-            case R.id.drawerLoginId:
-                startNewActivity( PersonActivity.class );
-                break;
             case R.id.navigation_company:
                 Map< String, String > params = new HashMap<>();
                 params.put( AppConstants.COMPANY_FILTER, AppConstants.ALL_COMPANIES );
                 startNewActivity( CompanyActivity.class, params );
+                break;
+            case R.id.navigation_dish:
+                startNewActivity( DishActivity.class );
                 break;
             case R.id.navigation_home:
                 startNewActivity( MainActivity.class );
@@ -160,16 +93,7 @@ public abstract class BaseActivity extends AppCompatActivity
         }
     }
 
-    private void closeDrawer(){
-        if ( mDrawer.isDrawerOpen( GravityCompat.START  ) ){
-            new Handler().postDelayed( new Runnable() {
-                @Override
-                public void run() {
-                    mDrawer.closeDrawer( GravityCompat.START );
-                }
-            }, 600);
-        }
-    }
+
 
     protected void startNewActivity( Class<?> newClass){
         startNewActivity( newClass, null );
@@ -204,12 +128,8 @@ public abstract class BaseActivity extends AppCompatActivity
         if ( GlobalManager.getInstance().getClient() != null
                 && GlobalManager.getInstance().getClient().getUuid() != null ) {
             findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.person_navigation ) );
-            ( ( TextView ) mNavigationView.getHeaderView( 0 ).findViewById( R.id.drawerLoginId ) )
-                    .setText( getResources().getString( R.string.personal_area ) );
         } else {
             findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.login_navigation ) );
-            ( ( TextView ) mNavigationView.getHeaderView( 0 ).findViewById( R.id.drawerLoginId ) )
-                    .setText( getResources().getString( R.string.action_login ) );
         }
     }
 
@@ -222,13 +142,6 @@ public abstract class BaseActivity extends AppCompatActivity
                 getResources().getString( R.string.not_available));
         unselectBottomNavigation();
         findViewById( mCurrentState.getSelectedBottomId() ).setSelected( true );
-        if( AppConstants.FAKE_ID != mCurrentState.getDrawerMenuIndex()){
-            mNavigationView.getMenu().getItem( mCurrentState.getDrawerMenuIndex() ).setChecked( true );
-        } else {
-             mNavigationView.getHeaderView(0)
-                     .findViewById( R.id.drawerLoginId )
-                            .setBackgroundColor( getResources().getColor(R.color.transpGrayTextColor) );
-        }
     }
 
     public ActivityState getCurrentState() {
@@ -243,7 +156,7 @@ public abstract class BaseActivity extends AppCompatActivity
         return mHeader;
     }
 
-    public DrawerLayout getDrawer() {
+    public FrameLayout getDrawer() {
         return mDrawer;
     }
 }

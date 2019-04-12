@@ -27,6 +27,7 @@ public class GlobalManager {
     private static FilterDishModel dishFilter;
     private static int dishEntityPosition;
     private static boolean actionConfirmed;
+    private static boolean animationInProgess;
 
     private GlobalManager() {
     }
@@ -116,14 +117,19 @@ public class GlobalManager {
     public static void setClient( OurClientModel client ) {
         GlobalManager.client = client;
         setFavoriteSignToCompany( AppConstants.FAKE_ID, false );
-        for( FavoriteCompanyModel favoriteCompany : client.getFavoriteCompanies() ){
-            for( CompanyModel company : bootstrapModel.getCompanies() ){
-                if( favoriteCompany.getCompanyId().toString().equals( company.getId() ) ){
-                    company.setFavorite( true );
+        if ( client != null ){
+            for( FavoriteCompanyModel favoriteCompany : client.getFavoriteCompanies() ){
+                for( CompanyModel company : bootstrapModel.getCompanies() ){
+                    if( favoriteCompany.getCompanyId().toString().equals( company.getId() ) ){
+                        company.setFavorite( true );
+                    }
                 }
             }
+            setHomeMenuCount( AppConstants.DISH_FAVOITES, client.getFavoriteCompanies().size()+"" );
+        } else {
+            setHomeMenuCount( AppConstants.DISH_FAVOITES, "0" );
         }
-        setHomeMenuCount( AppConstants.DISH_FAVOITES, client.getFavoriteCompanies().size()+"" );
+
     }
 
     public static List< HomeMenuModel > getHomeMenus() {
@@ -205,5 +211,13 @@ public class GlobalManager {
                 company.setFavorite( status );
             }
         }
+    }
+
+    public static boolean isAnimationInProgess() {
+        return animationInProgess;
+    }
+
+    public static void setAnimationInProgess( boolean animationInProgess ) {
+        GlobalManager.animationInProgess = animationInProgess;
     }
 }

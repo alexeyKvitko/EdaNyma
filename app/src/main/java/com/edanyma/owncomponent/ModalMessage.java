@@ -19,7 +19,7 @@ import com.edanyma.activity.BaseActivity;
 public class ModalMessage extends RelativeLayout {
 
     private RelativeLayout mModalMessage;
-    private DrawerLayout mContainer;
+    private FrameLayout mContainer;
     private TextView mMessageTitle;
     private TextView mMessageText;
 

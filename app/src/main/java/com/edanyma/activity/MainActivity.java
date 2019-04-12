@@ -1,8 +1,10 @@
 package com.edanyma.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,11 +17,13 @@ import android.widget.TextView;
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
+import com.edanyma.fragment.ProfileFragment;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.model.HomeMenuModel;
 import com.edanyma.owncomponent.ModalMessage;
+import com.edanyma.pixelshot.PixelShot;
 import com.edanyma.recyclerview.CompanyActionAdapter;
 import com.edanyma.recyclerview.HomeMenuAdapter;
 import com.edanyma.recyclerview.manager.VegaLayoutManager;
@@ -31,7 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardClickListener {
+public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardClickListener,
+        ProfileFragment.OnProfileFrafmentListener, PixelShot.PixelShotListener {
 
     private final String TAG = "MainActivity";
 
@@ -49,6 +54,8 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
     private Handler mTimer;
     private SliderJob mSliderJob;
     private Context mContext;
+    private ImageView mProfileBtn;
+    private ProfileFragment mProfileFragment;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -60,6 +67,16 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
 
     private void initMainLayout() {
         initBaseActivity( new ActivityState( AppConstants.HOME_BOTTOM_INDEX ) );
+        final MainActivity me = this;
+        mProfileBtn = findViewById( R.id.navButtonId );
+        mProfileBtn.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick( View view ) {
+                Animation rotate = AnimationUtils.loadAnimation( me, R.anim.icon_rotation );
+                view.startAnimation( rotate );
+                PixelShot.of( findViewById( R.id.contentMainLayoutId ) ).setResultListener( me ).save();
+            }
+        } );
         mContext = this;
         List< CompanyActionModel > companyActionModels = GlobalManager.getInstance().getBootstrapModel()
                 .getCompanyActions();
@@ -70,7 +87,6 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
 
 
     private void initRecyclerView() {
-
         if ( mActionRecView == null ) {
             mActionRecView = findViewById( R.id.companyActionRVId );
             mHorizontalLayoutManager = new LinearLayoutManager( this, LinearLayoutManager.HORIZONTAL, false );
@@ -225,7 +241,7 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         initAdapter();
     }
 
-    private void initAdapter(){
+    private void initAdapter() {
         if ( mHomeMenuAdapter == null ) {
             mHomeMenuAdapter = new HomeMenuAdapter( new ArrayList< HomeMenuModel >() );
         }
@@ -294,18 +310,61 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
     public void onItemClick( int position, View view ) {
         String homeMenuTag = ( ( TextView ) view.findViewById( R.id.dishTitleTextId ) ).getText().toString();
         String homeMenuCount = ( ( TextView ) view.findViewById( R.id.dishCountTextId ) ).getText().toString();
-        if ( !AppConstants.ALL_DISHES.equals( homeMenuTag ) ) {
-            if ( Integer.valueOf( homeMenuCount.substring( 0,1 ) ).equals( 0 ) ){
-                ModalMessage.show( this, "Сообщение", "В Вашем городе еще нет выбранных заведений"  );
-
-            } else{
+        if ( Integer.valueOf( homeMenuCount.substring( 0, 1 ) ).equals( 0 ) ) {
+            ModalMessage.show( this, "Сообщение", "В Вашем городе еще нет выбранных заведений" );
+        } else {
+            if ( !AppConstants.ALL_DISHES.equals( homeMenuTag ) ) {
                 Map< String, String > params = new HashMap<>();
                 params.put( AppConstants.COMPANY_FILTER, homeMenuTag );
                 startNewActivity( CompanyActivity.class, params );
+            } else {
+                startNewActivity( DishActivity.class );
             }
-        } else {
-            ModalMessage.show( this, "Сообщение", "Этот раздел в разработке ..." );
+
         }
+    }
+
+    private void showProfileFragment() {
+        findViewById( R.id.profileFragmentContainerId ).setVisibility( View.VISIBLE );
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations( R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out );
+        mProfileFragment = ProfileFragment.newInstance();
+        fragmentTransaction.add( R.id.profileFragmentContainerId, mProfileFragment );
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if ( getSupportFragmentManager().getFragments().size() > 0 ) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.remove( mProfileFragment );
+            fragmentTransaction.commit();
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onProfileFragmentSignIn() {
+        startNewActivity( PersonActivity.class );
+    }
+
+    @Override
+    public void onProfileFragmentSignUp() {
+        Map< String, String > params = new HashMap<>();
+        params.put( AppConstants.SIGN_TYPE, AppConstants.SIGN_UP );
+        startNewActivity( PersonActivity.class, params );
+    }
+
+
+    @Override
+    public void onPixelShotSuccess( String path ) {
+        showProfileFragment();
+    }
+
+    @Override
+    public void onPixelShotFailed() {
+
     }
 
     private class SliderJob implements Runnable {

@@ -4,6 +4,8 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Typeface;
 
+import com.edanyma.utils.ConvertUtils;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -29,6 +31,15 @@ public class AppConstants {
 
     public static final int HEADER_ACTION_REMOVE = -1;
     public static final int HEADER_ACTION_RESTORE = 1;
+    public static final int SUSHI_SET_ID = 9;
+
+    public static final float DECOR_CORNER_RADIUS = ConvertUtils.convertDpToPixel( 18 );
+    public static final float DECOR_LEFT_MARGIN = ConvertUtils.convertDpToPixel( 230 );
+    public static final float DECOR_HEIGHT = ( ( float ) EdaNymaApp.getAppContext().getResources().getDisplayMetrics().heightPixels -  ConvertUtils.convertDpToPixel( 24 ));
+    public static final float DECOR_WIDTH = ( ( float ) EdaNymaApp.getAppContext().getResources().getDisplayMetrics().widthPixels );
+    public static final float HORIZONTAL_RATIO = ( DECOR_WIDTH - ConvertUtils.convertDpToPixel( 287 ) ) / DECOR_LEFT_MARGIN;
+    public static final float VERTICAL_RATIO = ( DECOR_HEIGHT - ConvertUtils.convertDpToPixel( 510 ) ) / DECOR_LEFT_MARGIN;
+    public static final float MARGIN_RATIO = ConvertUtils.convertDpToPixel( 65 ) / DECOR_LEFT_MARGIN;
 
 
     public static final String ASTERISKS= "*";

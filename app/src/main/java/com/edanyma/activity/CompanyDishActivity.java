@@ -40,7 +40,7 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_dish );
+        setContentView( R.layout.activity_company_dish );
         initialize();
     }
 

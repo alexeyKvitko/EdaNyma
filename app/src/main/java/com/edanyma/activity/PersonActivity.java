@@ -26,7 +26,7 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_person );
         initBaseActivity( new ActivityState( AppConstants.LOGIN_BOTTOM_INDEX ) );
-        if(  GlobalManager.getClient() == null ){
+        if(  !GlobalManager.getInstance().isSignedIn() ){
             findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.login_navigation ) );
             mSign = this.getIntent().getStringExtra( AppConstants.SIGN_TYPE );
             if( mSign == null || AppConstants.SIGN_IN.equals( mSign ) ){

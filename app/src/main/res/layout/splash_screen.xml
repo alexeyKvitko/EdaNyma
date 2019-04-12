@@ -3,23 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash_1">
+    android:background="@drawable/splash">
 
     <TextView
         android:id="@+id/splashTextOneId"
         style="@style/splashText"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="24dp"
         android:layout_marginTop="40dp"
-        android:text="Крымская " />
+        android:gravity="left"
+        android:layout_marginLeft="48dp"
+        android:text="@string/splash_crimean" />
 
     <TextView
         android:id="@+id/splashTextTwoId"
         style="@style/splashText"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="24dp"
         android:layout_marginTop="378dp"
-        android:text="Cлужба Заказа Еды" />
+        android:gravity="center"
+        android:text="@string/splash_service" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +34,7 @@
             style="@style/splashTextSmall"
             android:drawableLeft="@drawable/ic_emog_good_24dp"
             android:drawablePadding="8dp"
-            android:text="Легко! Удобно! Быстро!" />
+            android:text="@string/splash_desc_one" />
 
         <TextView
             android:id="@+id/splashTextSmallTwoId"
@@ -41,7 +42,7 @@
             android:layout_marginTop="12dp"
             android:drawableLeft="@drawable/ic_emog_easy_24dp"
             android:drawablePadding="8dp"
-            android:text="Оформите Ваш заказ всего в несколько кликов!" />
+            android:text="@string/splash_desc_two" />
 
         <TextView
             android:id="@+id/splashTextSmallThreeId"
@@ -49,7 +50,7 @@
             android:layout_marginTop="12dp"
             android:drawableLeft="@drawable/ic_emog_yummy_24dp"
             android:drawablePadding="8dp"
-            android:text="Проведите уютный вечер дома с лучшими блюдами!" />
+            android:text="@string/splash_desc_three" />
 
     </LinearLayout>
 

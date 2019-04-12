@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/eatMenuBodyId"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/fragment_margin_top"
+    android:layout_marginBottom="@dimen/fragment_margin_bottom"
+    tools:context=".fragment.DishFragment">
+
+    <RelativeLayout
+        android:id="@+id/companyDishHeaderId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.edanyma.owncomponent.OwnSearchView
+            android:id="@+id/searchEatMenuId"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="12dp"
+            app:searchHint="@string/find_dish_hint" />
+
+        <LinearLayout
+            android:id="@+id/selectedEatMenuId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/searchEatMenuId"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/border_bottom">
+
+            <TextView
+                android:id="@+id/selectedEatMenuTitleId"
+                style="@style/blueNeonLabel"
+                android:background="@drawable/border_bottom_neon" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/eatMenuEntityRVId"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="108dp" />
+
+</RelativeLayout>

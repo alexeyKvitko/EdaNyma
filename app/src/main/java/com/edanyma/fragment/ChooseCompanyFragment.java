@@ -315,6 +315,10 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
 
     @Override
     public void onItemClick( final int position, View view ) {
+        if ( GlobalManager.getInstance().isAnimationInProgess() ){
+            return;
+        }
+        GlobalManager.getInstance().setAnimationInProgess( true );
         AppUtils.bounceAnimation( view.findViewById( R.id.companyImgId ) );
         new Handler( ).postDelayed( new Runnable() {
             @Override
@@ -330,6 +334,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
                     GlobalManager.getInstance().setDishFilter( null );
                 }
                 onCompanyChoose( mCompanyAdapter.getItem( position ) );
+                GlobalManager.getInstance().setAnimationInProgess( false );
             }
         }, 300 );
     }

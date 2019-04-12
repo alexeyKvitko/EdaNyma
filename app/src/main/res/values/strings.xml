@@ -85,5 +85,16 @@
     <string name="add_favorite_error">Добавление заведений в список избранного доступно только зарегистрированным пользователям</string>
     <string name="added_to_favorite">Добавлено в Избранное</string>
     <string name="removed_from_favorite">Удалено из Избранного</string>
+    <string name="multiply_order">Групповой Заказ</string>
+    <string name="company_gift">Акции</string>
+    <string name="profile_basket">Корзина</string>
+    <string name="discount">Скидки</string>
+    <string name="my_orders">Мои Заказы</string>
+    <string name="profile_support">Служба Поддержки</string>
+    <string name="splash_crimean">Крымская</string>
+    <string name="splash_service">Cлужба Заказа Еды</string>
+    <string name="splash_desc_one">Легко! Удобно! Быстро!</string>
+    <string name="splash_desc_two">Оформите Ваш заказ всего в несколько кликов!</string>
+    <string name="splash_desc_three">Проведите уютный вечер дома с лучшими блюдами!</string>
 
 </resources>

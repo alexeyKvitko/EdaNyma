@@ -69,6 +69,21 @@ public abstract class AppUtils {
         return " " + count + countSuffix + ending;
     }
 
+    public static String declensionDish( int count ) {
+        String countSuffix = " блюд";
+        String ending = "";
+        int mod = count % 10;
+        if ( count < 10 || count > 15 ) {
+            if ( mod == 1 ) {
+                ending = "о";
+            }
+            if ( mod == 2 || mod == 3 || mod == 4 ) {
+                ending = "a";
+            }
+        }
+        return count + countSuffix + ending;
+    }
+
     public static boolean validateEmail( String email ) {
         Pattern pattern = Pattern.compile( AppConstants.EMAIL_PATTERN );
         return pattern.matcher( email ).matches();
@@ -114,7 +129,17 @@ public abstract class AppUtils {
         }
         Animation bounce = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.short_bounce );
         view.startAnimation( bounce );
+    }
 
+    public static void btnClickAnimation( final View view ) {
+        if ( Build.VERSION.SDK_INT >= 26 ) {
+            ( ( Vibrator ) EdaNymaApp.getAppContext().getSystemService( Context.VIBRATOR_SERVICE ) )
+                    .vibrate( VibrationEffect.createOneShot( 50, 10 ) );
+        } else {
+            ( ( Vibrator ) EdaNymaApp.getAppContext().getSystemService( Context.VIBRATOR_SERVICE ) ).vibrate( 50 );
+        }
+        Animation rotation = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.icon_rotation );
+        view.startAnimation( rotation );
     }
 
     public static void bounceAnimation( final View view ) {

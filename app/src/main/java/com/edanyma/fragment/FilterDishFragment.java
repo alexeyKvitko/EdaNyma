@@ -17,6 +17,7 @@ import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
@@ -34,6 +35,14 @@ import com.edanyma.utils.ConvertUtils;
 
 import java.util.List;
 
+import static com.edanyma.AppConstants.DECOR_CORNER_RADIUS;
+import static com.edanyma.AppConstants.DECOR_HEIGHT;
+import static com.edanyma.AppConstants.DECOR_LEFT_MARGIN;
+import static com.edanyma.AppConstants.DECOR_WIDTH;
+import static com.edanyma.AppConstants.HORIZONTAL_RATIO;
+import static com.edanyma.AppConstants.MARGIN_RATIO;
+import static com.edanyma.AppConstants.VERTICAL_RATIO;
+
 
 public class FilterDishFragment extends BaseFragment implements View.OnClickListener {
 
@@ -49,13 +58,9 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
     private static final int MENU_CATEGORY_PADDING_TOP = (int) ConvertUtils.convertDpToPixel( 4 );
     private static final int MENU_CATEGORY_PADDING_BOTTOM = (int) ConvertUtils.convertDpToPixel( 6 );
 
-    private static final float DECOR_CORNER_RADIUS = ConvertUtils.convertDpToPixel( 18 );
-    private static final float DECOR_LEFT_MARGIN = ConvertUtils.convertDpToPixel( 230 );
-    private static final float DECOR_HEIGHT = ( ( float ) EdaNymaApp.getAppContext().getResources().getDisplayMetrics().heightPixels );
-    private static final float DECOR_WIDTH = ( ( float ) EdaNymaApp.getAppContext().getResources().getDisplayMetrics().widthPixels );
-    private static final float HORIZONTAL_RATIO = ( DECOR_WIDTH - ConvertUtils.convertDpToPixel( 287 ) ) / DECOR_LEFT_MARGIN;
-    private static final float VERTICAL_RATIO = ( DECOR_HEIGHT - ConvertUtils.convertDpToPixel( 510 ) ) / DECOR_LEFT_MARGIN;
-    private static final float MARGIN_RATIO = ConvertUtils.convertDpToPixel( 65 ) / DECOR_LEFT_MARGIN;
+    private ScrollView mScrollView;
+
+
 
 
     private OnApplyDishFilterListener mListener;
@@ -92,15 +97,23 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         final RelativeLayout decorLayout = getView().findViewById( R.id.decorLayoutId );
+        decorLayout.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick( View view ) {
+                backAnimateSnapShotLayout( decorLayout );
+            }
+        } );
         decorLayout.setBackground( Drawable.createFromPath( AppUtils.getSnapshotPath() ) );
         initTextView( R.id.companyMenuTitleId, AppConstants.B52 );
+        mScrollView = getView().findViewById( R.id.filterDishScrollId );
+        mScrollView.setVisibility( View.VISIBLE );
         fillCompanyMenu();
         animateDecorLayout( decorLayout );
         getView().findViewById( R.id.filterBackBtnId ).setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick( View view ) {
-                AppUtils.clickAnimation( view );
-                getActivity().onBackPressed();
+                AppUtils.btnClickAnimation( view );
+                backAnimateSnapShotLayout( decorLayout );
             }
         } );
     }
@@ -139,11 +152,37 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
                 decorLayout.setLayoutParams( layoutParams );
             }
         } );
-        valAnimator.setDuration( 300 );
+        valAnimator.setDuration( 200 );
         valAnimator.start();
     }
 
-
+    private void backAnimateSnapShotLayout( final RelativeLayout snapShotLayout ) {
+        snapShotLayout.setClipToOutline( false );
+        mScrollView.setVisibility( View.GONE );
+        final FrameLayout.LayoutParams layoutParams = ( FrameLayout.LayoutParams ) snapShotLayout.getLayoutParams();
+        final int end = - (int) ConvertUtils.convertDpToPixel( 4 );
+        ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(),( int ) DECOR_LEFT_MARGIN , end );
+        valAnimator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate( ValueAnimator animator ) {
+                float val = ( ( Integer ) animator.getAnimatedValue() ).floatValue();
+                int margin = ( int ) ( val * MARGIN_RATIO );
+                layoutParams.leftMargin = ( int ) val;
+                int width = ( int ) ( DECOR_WIDTH - HORIZONTAL_RATIO * val );
+                int height = ( int ) ( DECOR_HEIGHT - VERTICAL_RATIO * val );
+                layoutParams.width = width > DECOR_WIDTH ? ( int ) DECOR_WIDTH : width;
+                layoutParams.height = height > DECOR_HEIGHT ? (int) DECOR_HEIGHT : height;
+                layoutParams.topMargin = margin;
+                layoutParams.bottomMargin = margin;
+                snapShotLayout.setLayoutParams( layoutParams );
+                if( (int) val == end && getActivity() != null ){
+                    getActivity().onBackPressed();
+                }
+            }
+        } );
+        valAnimator.setDuration( 200 );
+        valAnimator.start();
+    }
 
     public void applyDishFilter() {
         if ( mListener != null ) {
@@ -221,12 +260,14 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
             new Handler(  ).postDelayed( new Runnable() {
                 @Override
                 public void run() {
-                    getActivity().onBackPressed();
+                    backAnimateSnapShotLayout( ( RelativeLayout ) getView().findViewById( R.id.decorLayoutId ) );
                 }
             }, 100 );
 
         }
     }
+
+
 
     public interface OnApplyDishFilterListener {
         void onApplyDishFiler();

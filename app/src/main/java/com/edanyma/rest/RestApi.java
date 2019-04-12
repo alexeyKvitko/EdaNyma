@@ -4,6 +4,7 @@ import com.edanyma.model.ApiResponse;
 import com.edanyma.model.AuthToken;
 import com.edanyma.model.BootstrapModel;
 import com.edanyma.model.CompanyInfoModel;
+import com.edanyma.model.Dishes;
 import com.edanyma.model.FavoriteCompanyModel;
 import com.edanyma.model.LoginUser;
 import com.edanyma.model.OurClientModel;
@@ -33,6 +34,11 @@ public interface RestApi {
     @GET(API_COMPANY+"{id}")
     Call< CompanyInfoModel > getCompanyDishes( @Header("Authorization") String authorization,
                                                  @Path("id") String id );
+
+    @GET(API_COMPANY+"dishes/{deliveryCity}/{categoryId}")
+    Call< ApiResponse<Dishes> > getDishes( @Header("Authorization") String authorization,
+                                             @Path("deliveryCity") String deliveryCity,
+                                             @Path("categoryId") int categoryId );
 
     @POST(API_CLIENT+"registerMobileClient")
     Call< ApiResponse<OurClientModel> > signUp( @Header("Authorization") String authorization,
