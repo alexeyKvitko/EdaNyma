@@ -103,7 +103,7 @@ public abstract class AppUtils {
         fadeIn.setAnimationListener( new Animation.AnimationListener() {
             @Override
             public void onAnimationStart( Animation animation ) {
-                targetView.setVisibility( View.VISIBLE );
+
             }
 
             @Override
@@ -115,7 +115,7 @@ public abstract class AppUtils {
             public void onAnimationRepeat( Animation animation ) {
             }
         } );
-
+        targetView.setVisibility( View.VISIBLE );
         sourceView.startAnimation( fadeOut );
         targetView.startAnimation( fadeIn );
     }

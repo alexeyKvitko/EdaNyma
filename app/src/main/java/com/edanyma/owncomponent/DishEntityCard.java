@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ public class DishEntityCard extends FrameLayout {
     private TextView mEntityDesc;
     private TextView mEntityPrice;
     private TextView mEntitySize;
+    private TextView mEntityCompanyName;
 
     private MenuEntityModel mDishEntity;
 
@@ -49,7 +51,10 @@ public class DishEntityCard extends FrameLayout {
         mEntityDesc = findViewById( R.id.entityDescTextId );
         mEntityPrice = findViewById( R.id.entityPriceTextId );
         mEntitySize = findViewById( R.id.entitySizeId );
+        mEntityCompanyName =  findViewById( R.id.entityCompanyNameId );
+        mEntityCompanyName.setVisibility( View.GONE );
 
+        mEntityCompanyName.setTypeface( AppConstants.B52 );
         mEntityTitle.setTypeface( AppConstants.B52 );
         mEntityDesc.setTypeface( AppConstants.ROBOTO_CONDENCED );
         mEntitySize.setTypeface( AppConstants.ROBOTO_CONDENCED );
@@ -63,6 +68,11 @@ public class DishEntityCard extends FrameLayout {
 
     public void setEntityTitle( String title ) {
         this.mEntityTitle.setText( title );
+    }
+
+    public void setCompanyName( String companyName ) {
+        this.mEntityCompanyName.setText( companyName );
+        this.mEntityCompanyName.setVisibility( View.VISIBLE );
     }
 
     public void setEntityDesc( String desc ) {
@@ -82,6 +92,9 @@ public class DishEntityCard extends FrameLayout {
     public void setDishEntity( MenuEntityModel dishEntity ) {
         this.mDishEntity = dishEntity;
         this.setEntityImage( dishEntity.getImageUrl() );
+        if( dishEntity.getCompanyName() != null ){
+            this.setCompanyName( dishEntity.getCompanyName() );
+        }
         this.setEntityTitle( dishEntity.getDisplayName() );
         this.setEntityDesc( dishEntity.getDescription() );
         this.setEntityPrice( dishEntity.getPriceOne() );

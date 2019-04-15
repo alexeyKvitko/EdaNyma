@@ -60,6 +60,7 @@
     <string name="city_place">Доставка по Городу</string>
     <string name="not_available">Not Avilable</string>
     <string name="all_company_label">Все заведения</string>
+    <string name="filter_company_label">Заведения</string>
 
     <string name="filter_dish">Блюда</string>
     <string name="filter_kitchen">Кухни</string>
@@ -68,8 +69,11 @@
     <string name="filter_title">Фильтр</string>
     <string name="apply_filter">Применить Фильтр</string>
     <string name="show_all_dish">Показать Все Блюда</string>
+    <string name="show_all_company">Показать Все Заведения</string>
     <string name="show_all_kitchen">Показать Все Кухни</string>
     <string name="hide_all">Скрыть Все</string>
+    <string name="hide_all_dishes">Скрыть Блюда</string>
+    <string name="hide_all_company">Скрыть Заведения</string>
     <string name="clear_filter">Очистить</string>
     <string name="filter_by_label">Отобрано по</string>
     <string name="title_activity_dish">DishActivity</string>

@@ -13,7 +13,7 @@ import com.edanyma.R;
 import com.edanyma.fragment.CompanyDishFragment;
 import com.edanyma.fragment.CompanyInfoFragment;
 import com.edanyma.fragment.DishInfoFragment;
-import com.edanyma.fragment.FilterDishFragment;
+import com.edanyma.fragment.FilterCompanyDishFragment;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyInfoModel;
@@ -29,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class CompanyDishActivity extends BaseActivity implements CompanyDishFragment.OnDishActionListener,
-        DishInfoFragment.OnAddToBasketListener, FilterDishFragment.OnApplyDishFilterListener,
+        DishInfoFragment.OnAddToBasketListener, FilterCompanyDishFragment.OnApplyDishFilterListener,
         CompanyInfoFragment.OnSignActionListener {
 
     private final String TAG = "CompanyDishActivity";
@@ -98,7 +98,7 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
     public void onFilterDishSelect() {
         getHeader().setVisibility( View.GONE );
         getFooter().setVisibility( View.GONE );
-        addReplaceFragment( FilterDishFragment.newInstance( new CompanyMenu( mCompanyInfo.getMenuTypes() ) ), false );
+        addReplaceFragment( FilterCompanyDishFragment.newInstance( new CompanyMenu( mCompanyInfo.getMenuTypes() ) ), false );
     }
 
     @Override

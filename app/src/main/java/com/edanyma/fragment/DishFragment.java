@@ -17,7 +17,6 @@ import com.edanyma.R;
 import com.edanyma.activity.BaseActivity;
 import com.edanyma.activity.DishActivity;
 import com.edanyma.manager.GlobalManager;
-import com.edanyma.model.MenuCategoryModel;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.owncomponent.DishEntityCard;
 import com.edanyma.owncomponent.OwnSearchView;
@@ -26,7 +25,6 @@ import com.edanyma.recyclerview.DishEntityAdapter;
 import com.edanyma.utils.AppUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearchViewListener,
@@ -42,6 +40,7 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
 
     private boolean mSearchMade;
     private List<MenuEntityModel> mDishes;
+    private boolean mFirstEnter;
 
     private MenuEntityModel mDishEntity;
 
@@ -57,6 +56,7 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
     @Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+        mFirstEnter = true;
     }
 
     @Override
@@ -69,15 +69,10 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         mDishes = ( ( DishActivity ) getActivity() ).getDishes();
+        String dishTitle = ( ( DishActivity ) getActivity() ).getDishTitle();
         mSearchMade = false;
        ( ( OwnSearchView ) getView().findViewById( R.id.searchEatMenuId ) ) .setOnApplySearchListener( this );
-        String dishTitle = "";
-        for( MenuCategoryModel menuCategory : GlobalManager.getBootstrapModel().getDeliveryMenu().getMenuCategories() ){
-            if( AppConstants.SUSHI_SET_ID == Integer.valueOf( menuCategory.getId() ).intValue() ){
-                dishTitle = menuCategory.getDisplayName();
-                break;
-            }
-        }
+
 //        if ( GlobalManager.getInstance().getDishFilter() != null ) {
 //            dishTitle = GlobalManager.getInstance().getDishFilter().getDishName() + " от";
 //        }
@@ -85,7 +80,6 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
         mSelectedDish = initTextView( R.id.selectedEatMenuTitleId, AppConstants.ROBOTO_CONDENCED, Typeface.BOLD,
                 dishTitle + " " + AppUtils.declensionDish( mDishes.size() ) );
         mSelectedDish.setOnClickListener( this );
-
     }
 
     private void initRecView() {
@@ -108,6 +102,7 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
         }
         mDishEntityAdapter.setOnItemClickListener( this );
         mDishEntityAdapter.notifyDataSetChanged();
+        getActivity().findViewById( R.id.eatMenuFragmentContainerId ).setVisibility( View.VISIBLE );
     }
 
     private void fillDishAdapter( List< MenuEntityModel > entities ) {
@@ -118,43 +113,20 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
         }
         int idx = 0;
         for ( MenuEntityModel entity : entities ) {
-            boolean filtered = isFilterCondition( entity );
-            if ( filtered ) {
-                mDishEntityAdapter.addItem( entity, idx );
-                idx++;
-            }
+           mDishEntityAdapter.addItem( entity, idx );
         }
+        AppUtils.transitionAnimation( getActivity().findViewById( R.id.pleaseWaitContainerId ),
+                getActivity().findViewById( R.id.eatMenuContainerId ) );
     }
-
-    private boolean isFilterCondition( MenuEntityModel menuEntityModel ) {
-        if ( GlobalManager.getInstance().getDishFilter() == null ) {
-            return true;
-        }
-        boolean result = false;
-        if ( AppConstants.FAST_MENU.equals( GlobalManager.getInstance().getDishFilter().getKitchenId() ) ) {
-            String[] categoryIds = GlobalManager.getInstance().getDishFilter().getDishId().split( "," );
-            if ( Arrays.asList( categoryIds ).contains( menuEntityModel.getCategoryId() ) ) {
-                result = true;
-            }
-        } else {
-            if ( GlobalManager.getInstance().getDishFilter()
-                    .getKitchenId().equals( menuEntityModel.getTypeId() )
-                    && GlobalManager.getInstance().getDishFilter()
-                    .getDishId().equals( menuEntityModel.getCategoryId() ) ) {
-                result = true;
-            }
-        }
-
-        return result;
-    }
-
 
 
     @Override
     public void onResume() {
         super.onResume();
-        initAdapter();
-        initRecView();
+        if ( mFirstEnter ){
+            initAdapter();
+            initRecView();
+        }
     }
 
     @Override
@@ -193,6 +165,7 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
     @Override
     public void onDetach() {
         super.onDetach();
+        getActivity().findViewById( R.id.eatMenuFragmentContainerId ).setVisibility( View.GONE );
         ( ( BaseActivity ) getActivity() ).getHeader().findViewById( R.id.navButtonId ).setVisibility( View.VISIBLE );
         ( ( BaseActivity ) getActivity() ).getHeader().findViewById( R.id.dishFilterNavButtonId ).setVisibility( View.GONE );
         mListener = null;
@@ -228,7 +201,8 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
 
     @Override
     public void onFilterButtonClick() {
-        PixelShot.of( getActivity().findViewById( R.id.dishContainerId ) ).setResultListener( this ).save();
+        mFirstEnter = false;
+        PixelShot.of( getActivity().findViewById( R.id.eatMenuContainerId ) ).setResultListener( this ).save();
     }
 
     @Override
@@ -272,7 +246,6 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
 
     public interface OnDishActionListener {
         void onMoreDishInfo( String companyName, MenuEntityModel dishEntity );
-
 
         void onFilterDishSelect();
     }

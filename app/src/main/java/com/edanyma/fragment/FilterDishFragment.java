@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,16 +23,13 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.activity.BaseActivity;
+import com.edanyma.activity.DishActivity;
 import com.edanyma.manager.GlobalManager;
-import com.edanyma.model.CompanyMenu;
-import com.edanyma.model.FilterDishModel;
+import com.edanyma.model.CompanyModel;
 import com.edanyma.model.MenuCategoryModel;
-import com.edanyma.model.MenuTypeModel;
 import com.edanyma.owncomponent.MenuTextView;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
-
-import java.util.List;
 
 import static com.edanyma.AppConstants.DECOR_CORNER_RADIUS;
 import static com.edanyma.AppConstants.DECOR_HEIGHT;
@@ -43,73 +39,78 @@ import static com.edanyma.AppConstants.HORIZONTAL_RATIO;
 import static com.edanyma.AppConstants.MARGIN_RATIO;
 import static com.edanyma.AppConstants.VERTICAL_RATIO;
 
-
 public class FilterDishFragment extends BaseFragment implements View.OnClickListener {
 
-    private static final String TAG = "FilterDishFragment";
+    private static final String TAG = "FilterCompanyDishFragment";
 
-    private static final String COMPANY_MENU_PARAM = "company_menu";
-
-    private static final int MENU_TYPE_TOP_MARGIN = (int) ConvertUtils.convertDpToPixel( 16 );
-    private static final int MENU_TYPE_BOTTOM_MARGIN = (int) ConvertUtils.convertDpToPixel( 8 );
-
-    private static final int MENU_CATEGORY_PADDING_LEFT = (int) ConvertUtils.convertDpToPixel( 12 );
-    private static final int MENU_CATEGORY_PADDING_RIGHT = (int) ConvertUtils.convertDpToPixel( 8 );
-    private static final int MENU_CATEGORY_PADDING_TOP = (int) ConvertUtils.convertDpToPixel( 4 );
-    private static final int MENU_CATEGORY_PADDING_BOTTOM = (int) ConvertUtils.convertDpToPixel( 6 );
+    private static final int MENU_CATEGORY_PADDING_LEFT = ( int ) ConvertUtils.convertDpToPixel( 12 );
+    private static final int MENU_CATEGORY_PADDING_RIGHT = ( int ) ConvertUtils.convertDpToPixel( 8 );
+    private static final int MENU_CATEGORY_PADDING_TOP = ( int ) ConvertUtils.convertDpToPixel( 4 );
+    private static final int MENU_CATEGORY_PADDING_BOTTOM = ( int ) ConvertUtils.convertDpToPixel( 6 );
+    private static final int MENU_EXPAND = 1;
+    private static final int MENU_CLOSED = 0;
+    private static final int MENU_CLOSED_DISHES = 6;
+    private static final int MENU_CLOSED_COMPANIES = 6;
 
     private ScrollView mScrollView;
+    private Integer mSelectedDishId;
+    private Integer mSelectedCompanyId;
+    private TextView mShowAllDishes;
+    private TextView mShowAllCompany;
+    private int mDishMenuState = MENU_CLOSED;
+    private int mCompanyMenuState = MENU_CLOSED;
 
 
-
-
-    private OnApplyDishFilterListener mListener;
-
-    private List< MenuTypeModel > mCompanyMenus;
 
     public FilterDishFragment() {
     }
 
-    public static FilterDishFragment newInstance( CompanyMenu companyMenu ) {
+    public static FilterDishFragment newInstance() {
         FilterDishFragment fragment = new FilterDishFragment();
-        Bundle args = new Bundle();
-        args.putSerializable( COMPANY_MENU_PARAM, companyMenu );
-        fragment.setArguments( args );
         return fragment;
     }
 
     @Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
-        if ( getArguments() != null ) {
-            CompanyMenu menu = ( CompanyMenu ) getArguments().getSerializable( COMPANY_MENU_PARAM );
-            mCompanyMenus = menu.getCompanyMenus();
-        }
     }
 
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState ) {
-        return inflater.inflate( R.layout.fragment_filter_dish_entity, container, false );
+        return inflater.inflate( R.layout.fragment_filter_dish, container, false );
     }
 
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
-        final RelativeLayout decorLayout = getView().findViewById( R.id.decorLayoutId );
+        final RelativeLayout decorLayout = getView().findViewById( R.id.snapShotDishLayoutId );
         decorLayout.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick( View view ) {
                 backAnimateSnapShotLayout( decorLayout );
             }
         } );
+        mSelectedDishId = ( ( DishActivity ) getActivity() ).getSelectedDishId();
+        mSelectedCompanyId = ( ( DishActivity ) getActivity() ).getSelectedCompanyId();
+        fillDishFilter();
         decorLayout.setBackground( Drawable.createFromPath( AppUtils.getSnapshotPath() ) );
-        initTextView( R.id.companyMenuTitleId, AppConstants.B52 );
-        mScrollView = getView().findViewById( R.id.filterDishScrollId );
+        initTextView( R.id.filterAllDishesTitleId, AppConstants.B52 );
+        initTextView( R.id.filterAllDishesTextId, AppConstants.ROBOTO_BLACK );
+        initTextView( R.id.filterCompanyTextId, AppConstants.ROBOTO_BLACK );
+
+        mShowAllDishes = initTextView( R.id.filterBtnShowAllDishesId, AppConstants.ROBOTO_CONDENCED,
+                EdaNymaApp.getAppContext().getResources().getString( R.string.show_all_dish ) );
+        mShowAllDishes.setOnClickListener( this );
+
+        mShowAllCompany = initTextView( R.id.filterBtnShowAllCompanyId, AppConstants.ROBOTO_CONDENCED,
+                EdaNymaApp.getAppContext().getResources().getString( R.string.show_all_company ) );
+        mShowAllCompany.setOnClickListener( this );
+
+        mScrollView = getView().findViewById( R.id.filterAllDishesScrollId );
         mScrollView.setVisibility( View.VISIBLE );
-        fillCompanyMenu();
         animateDecorLayout( decorLayout );
-        getView().findViewById( R.id.filterBackBtnId ).setOnClickListener( new View.OnClickListener() {
+        getView().findViewById( R.id.filterAllDishesBackBtnId ).setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick( View view ) {
                 AppUtils.btnClickAnimation( view );
@@ -118,14 +119,20 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
         } );
     }
 
-    private void fillCompanyMenu() {
-        LinearLayout companyMenuLayout = getView().findViewById( R.id.filterCompanyMenuId );
-        for ( MenuTypeModel menuType : mCompanyMenus ) {
-            companyMenuLayout.addView( createKitchenMenu( menuType.getDisplayName() ) );
-            for( MenuCategoryModel menuCategory : menuType.getMenuCategories() ){
-                companyMenuLayout.addView( createDishMenu( menuType.getId(), menuCategory.getId(),
-                                                                menuCategory.getDisplayName() ) );
-            }
+    private void fillDishFilter() {
+        LinearLayout dishesListLayout = getView().findViewById( R.id.filterDishesListId );
+        LinearLayout companyListLayout = getView().findViewById( R.id.filterCompanyListId );
+        int idx = 0;
+        for ( MenuCategoryModel menuCategory : GlobalManager.getInstance().getBootstrapModel().getDeliveryMenu().getMenuCategories() ) {
+            int visibility = idx < MENU_CLOSED_DISHES ? View.VISIBLE : View.GONE;
+            dishesListLayout.addView( createDishMenu( null, menuCategory.getId(), menuCategory.getDisplayName(), visibility ) );
+            idx++;
+        }
+        idx = 0;
+        for ( CompanyModel company : GlobalManager.getInstance().getBootstrapModel().getCompanies() ) {
+            int visibility = idx < MENU_CLOSED_COMPANIES ? View.VISIBLE : View.GONE;
+            companyListLayout.addView( createDishMenu( company.getId(), null, company.getDisplayName(), visibility ) );
+            idx++;
         }
     }
 
@@ -160,8 +167,8 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
         snapShotLayout.setClipToOutline( false );
         mScrollView.setVisibility( View.GONE );
         final FrameLayout.LayoutParams layoutParams = ( FrameLayout.LayoutParams ) snapShotLayout.getLayoutParams();
-        final int end = - (int) ConvertUtils.convertDpToPixel( 4 );
-        ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(),( int ) DECOR_LEFT_MARGIN , end );
+        final int end = -( int ) ConvertUtils.convertDpToPixel( 4 );
+        ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), ( int ) DECOR_LEFT_MARGIN, end );
         valAnimator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate( ValueAnimator animator ) {
@@ -171,11 +178,11 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
                 int width = ( int ) ( DECOR_WIDTH - HORIZONTAL_RATIO * val );
                 int height = ( int ) ( DECOR_HEIGHT - VERTICAL_RATIO * val );
                 layoutParams.width = width > DECOR_WIDTH ? ( int ) DECOR_WIDTH : width;
-                layoutParams.height = height > DECOR_HEIGHT ? (int) DECOR_HEIGHT : height;
+                layoutParams.height = height > DECOR_HEIGHT ? ( int ) DECOR_HEIGHT : height;
                 layoutParams.topMargin = margin;
                 layoutParams.bottomMargin = margin;
                 snapShotLayout.setLayoutParams( layoutParams );
-                if( (int) val == end && getActivity() != null ){
+                if ( ( int ) val == end && getActivity() != null ) {
                     getActivity().onBackPressed();
                 }
             }
@@ -184,92 +191,115 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
         valAnimator.start();
     }
 
-    public void applyDishFilter() {
-        if ( mListener != null ) {
-            mListener.onApplyDishFiler();
+
+    private TextView createDishMenu( String menuCompanyId, String menuCategoryId, String dish, int visibility ) {
+        MenuTextView dishView = new MenuTextView( getActivity() );
+        dishView.setVisibility( visibility );
+        dishView.setTypeface( AppConstants.ROBOTO_CONDENCED );
+        dishView.setTextColor( getActivity().getResources().getColor( R.color.darkWhite ) );
+        dishView.setPadding( MENU_CATEGORY_PADDING_LEFT, MENU_CATEGORY_PADDING_TOP,
+                MENU_CATEGORY_PADDING_RIGHT, MENU_CATEGORY_PADDING_BOTTOM );
+        dishView.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 16 );
+
+        if ( menuCategoryId != null && Integer.valueOf( menuCategoryId ).equals( mSelectedDishId ) ) {
+            dishView.setBackground( getActivity().getResources().getDrawable( R.drawable.border_light_blue_r18 ) );
+        }
+        if ( menuCompanyId != null && Integer.valueOf( menuCompanyId ).equals( mSelectedCompanyId ) ) {
+            dishView.setBackground( getActivity().getResources().getDrawable( R.drawable.border_light_blue_r18 ) );
+        }
+        dishView.setText( dish );
+        dishView.setMenuCategoryId( menuCategoryId );
+        dishView.setMenuCompanyId( menuCompanyId );
+        dishView.setOnClickListener( this );
+        return dishView;
+    }
+
+
+    private void showAllDishes() {
+        LinearLayout dishesListLayout = getView().findViewById( R.id.filterDishesListId );
+        if ( MENU_CLOSED == mDishMenuState ) {
+            for ( int idx = 0; idx < dishesListLayout.getChildCount(); idx++ ) {
+                dishesListLayout.getChildAt( idx ).setVisibility( View.VISIBLE );
+            }
+            mShowAllDishes.setText( EdaNymaApp.getAppContext().getResources().getString( R.string.hide_all_dishes ) );
+            mDishMenuState = MENU_EXPAND;
+        } else {
+            for ( int idx = 0; idx < dishesListLayout.getChildCount(); idx++ ) {
+                int visibility = idx < MENU_CLOSED_DISHES ? View.VISIBLE : View.GONE;
+                dishesListLayout.getChildAt( idx ).setVisibility( visibility );
+            }
+            mShowAllDishes.setText( EdaNymaApp.getAppContext().getResources().getString( R.string.show_all_dish ) );
+            mDishMenuState = MENU_CLOSED;
+        }
+    }
+
+    private void showAllCompany() {
+        LinearLayout companyListLayout = getView().findViewById( R.id.filterCompanyListId );
+        if ( MENU_CLOSED == mCompanyMenuState ) {
+            for ( int idx = 0; idx < companyListLayout.getChildCount(); idx++ ) {
+                companyListLayout.getChildAt( idx ).setVisibility( View.VISIBLE );
+            }
+            mShowAllCompany.setText( EdaNymaApp.getAppContext().getResources().getString( R.string.hide_all_company ) );
+            mCompanyMenuState = MENU_EXPAND;
+        } else {
+            for ( int idx = 0; idx < companyListLayout.getChildCount(); idx++ ) {
+                int visibility = idx < MENU_CLOSED_COMPANIES ? View.VISIBLE : View.GONE;
+                companyListLayout.getChildAt( idx ).setVisibility( visibility );
+            }
+            mShowAllCompany.setText( EdaNymaApp.getAppContext().getResources().getString( R.string.show_all_company ) );
+            mCompanyMenuState = MENU_CLOSED;
         }
     }
 
     @Override
     public void onAttach( Context context ) {
         super.onAttach( context );
-        if ( context instanceof OnApplyDishFilterListener ) {
-            mListener = ( OnApplyDishFilterListener ) context;
-        } else {
-            throw new RuntimeException( context.toString()
-                    + " must implement OnApplyDishFilterListener" );
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
         ( ( BaseActivity ) getActivity() ).getHeader().setVisibility( View.VISIBLE );
         ( ( BaseActivity ) getActivity() ).getFooter().setVisibility( View.VISIBLE );
-        getActivity().findViewById( R.id.dishContainerId )
-                .setBackground( EdaNymaApp.getAppContext().getResources()
-                        .getDrawable( R.drawable.main_background_light ) );
+//        getActivity().findViewById( R.id.eatMenuContainerId )
+//                .setBackground( EdaNymaApp.getAppContext().getResources()
+//                        .getDrawable( R.drawable.main_background_light ) );
     }
-
-    private TextView createKitchenMenu( String kitchen ) {
-        TextView kitchenView = new TextView( getActivity() );
-        kitchenView.setTypeface( AppConstants.ROBOTO_BLACK );
-        kitchenView.setTextColor( getActivity().getResources().getColor( R.color.lightGrayColor ) );
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT );
-        params.setMargins( 0, MENU_TYPE_TOP_MARGIN, 0, MENU_TYPE_BOTTOM_MARGIN );
-        kitchenView.setLayoutParams( params );
-        kitchenView.setCompoundDrawables( EdaNymaApp.getAppContext().getResources().getDrawable( R.drawable.ic_room_service_outline_white_18dp ),
-                null, null, null );
-        kitchenView.setGravity( Gravity.LEFT );
-        kitchenView.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 18 );
-        kitchenView.setText( kitchen );
-        return kitchenView;
-    }
-
-    private TextView createDishMenu( String menuTypeId, String menuCategoryId, String dish ) {
-        MenuTextView dishView = new MenuTextView( getActivity() );
-        dishView.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        dishView.setTextColor( getActivity().getResources().getColor( R.color.white ) );
-        dishView.setPadding( MENU_CATEGORY_PADDING_LEFT, MENU_CATEGORY_PADDING_TOP,
-                MENU_CATEGORY_PADDING_RIGHT, MENU_CATEGORY_PADDING_BOTTOM );
-        dishView.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 16 );
-
-        if ( GlobalManager.getInstance().getDishFilter() != null
-                && GlobalManager.getInstance().getDishFilter().getKitchenId().equals( menuTypeId )
-                        && GlobalManager.getInstance().getDishFilter().getDishId().equals( menuCategoryId ) ){
-            dishView.setBackground( getActivity().getResources().getDrawable( R.drawable.border_light_blue_r18 ) );
-        }
-        dishView.setText( dish );
-        dishView.setMenuCategoryId(  menuCategoryId );
-        dishView.setMenuTypeId( menuTypeId );
-        dishView.setOnClickListener( this );
-        return dishView;
-    }
-
 
 
     @Override
     public void onClick( View view ) {
-        if ( view instanceof MenuTextView ){
-            AppUtils.clickAnimation( view );
-            MenuTextView menuTextView =  (MenuTextView ) view;
-            GlobalManager.getInstance().setDishFilter( new FilterDishModel( menuTextView.getMenuTypeId(),
-                    menuTextView.getMenuCategoryId(),  menuTextView.getText().toString() ) );
-            new Handler(  ).postDelayed( new Runnable() {
-                @Override
-                public void run() {
-                    backAnimateSnapShotLayout( ( RelativeLayout ) getView().findViewById( R.id.decorLayoutId ) );
+        AppUtils.clickAnimation( view );
+        switch ( view.getId() ) {
+            case R.id.filterBtnShowAllDishesId:
+                showAllDishes();
+                break;
+            case R.id.filterBtnShowAllCompanyId:
+                showAllCompany();
+                break;
+            default:
+                if ( view instanceof MenuTextView ) {
+                    AppUtils.clickAnimation( view );
+                    MenuTextView menuTextView =  (MenuTextView ) view;
+                    if( menuTextView.getMenuCompanyId() != null ){
+                        ((DishActivity)getActivity()).setSelectedCompanyId( Integer.valueOf( menuTextView.getMenuCompanyId() ) );
+                    }
+                    if ( menuTextView.getMenuCategoryId() != null ){
+                        ((DishActivity)getActivity()).setSelectedDishId( Integer.valueOf( menuTextView.getMenuCategoryId() ) );
+                    }
+
+                    new Handler(  ).postDelayed( new Runnable() {
+                        @Override
+                        public void run() {
+                            backAnimateSnapShotLayout( ( RelativeLayout ) getView().findViewById( R.id.snapShotDishLayoutId ) );
+                        }
+                    }, 100 );
                 }
-            }, 100 );
+                break;
 
         }
     }
 
 
 
-    public interface OnApplyDishFilterListener {
-        void onApplyDishFiler();
-    }
 }

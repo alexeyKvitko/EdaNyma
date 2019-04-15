@@ -9,6 +9,7 @@ public class MenuTextView extends TextView {
 
     private String mMenuTypeId;
     private String mMenuCategoryId;
+    private String mMenuCompanyId;
 
     public MenuTextView( Context context ) {
         super( context );
@@ -28,5 +29,13 @@ public class MenuTextView extends TextView {
 
     public void setMenuCategoryId( String menuCategoryId ) {
         this.mMenuCategoryId = menuCategoryId;
+    }
+
+    public String getMenuCompanyId() {
+        return mMenuCompanyId;
+    }
+
+    public void setMenuCompanyId( String mMenuCompanyId ) {
+        this.mMenuCompanyId = mMenuCompanyId;
     }
 }

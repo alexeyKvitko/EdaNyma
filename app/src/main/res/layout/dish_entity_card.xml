@@ -24,6 +24,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp" />
+            <TextView
+                android:id="@+id/entityCompanyNameId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center_horizontal"
+                android:background="@color/white"
+                android:padding="4dp"
+                android:textColor="@color/blueNeon"
+                android:textSize="12dp"
+                android:visibility="gone"
+                android:singleLine="true"
+                android:ellipsize="end"/>
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView

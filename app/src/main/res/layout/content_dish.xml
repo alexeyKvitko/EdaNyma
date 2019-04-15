@@ -11,15 +11,15 @@
 
     <include layout="@layout/header" />
     <include layout="@layout/footer" />
-    <include layout="@layout/please_wait" />
+    <include layout="@layout/please_wait"/>
 
     <RelativeLayout
         android:id="@+id/eatMenuFragmentContainerId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainHeaderId"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/mainHeaderId">
     </RelativeLayout>
+
 
 
     <View
