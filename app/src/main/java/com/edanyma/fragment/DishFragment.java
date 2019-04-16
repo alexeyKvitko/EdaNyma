@@ -2,7 +2,9 @@ package com.edanyma.fragment;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,15 +19,23 @@ import com.edanyma.R;
 import com.edanyma.activity.BaseActivity;
 import com.edanyma.activity.DishActivity;
 import com.edanyma.manager.GlobalManager;
+import com.edanyma.model.ApiResponse;
+import com.edanyma.model.CompanyModel;
+import com.edanyma.model.Dishes;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.owncomponent.DishEntityCard;
 import com.edanyma.owncomponent.OwnSearchView;
 import com.edanyma.pixelshot.PixelShot;
 import com.edanyma.recyclerview.DishEntityAdapter;
+import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearchViewListener,
         DishEntityAdapter.CardClickListener, PixelShot.PixelShotListener, View.OnClickListener {
@@ -39,10 +49,12 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
     private DishEntityAdapter mDishEntityAdapter;
 
     private boolean mSearchMade;
-    private List<MenuEntityModel> mDishes;
-    private boolean mFirstEnter;
+    private List< MenuEntityModel > mDishes;
 
     private MenuEntityModel mDishEntity;
+    private Integer mSelectedDishId;
+    private Integer mSelectedCompanyId;
+    private String mSelectedCompanyName;
 
 
     public DishFragment() {
@@ -56,7 +68,6 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
     @Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
-        mFirstEnter = true;
     }
 
     @Override
@@ -68,32 +79,21 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
-        mDishes = ( ( DishActivity ) getActivity() ).getDishes();
-        String dishTitle = ( ( DishActivity ) getActivity() ).getDishTitle();
         mSearchMade = false;
-       ( ( OwnSearchView ) getView().findViewById( R.id.searchEatMenuId ) ) .setOnApplySearchListener( this );
-
-//        if ( GlobalManager.getInstance().getDishFilter() != null ) {
-//            dishTitle = GlobalManager.getInstance().getDishFilter().getDishName() + " от";
-//        }
-
-        mSelectedDish = initTextView( R.id.selectedEatMenuTitleId, AppConstants.ROBOTO_CONDENCED, Typeface.BOLD,
-                dishTitle + " " + AppUtils.declensionDish( mDishes.size() ) );
+        ( ( OwnSearchView ) getActivity().findViewById( R.id.searchEatMenuId ) ).setOnApplySearchListener( this );
+        mSelectedDish = initTextView( R.id.selectedEatMenuTitleId, AppConstants.ROBOTO_CONDENCED, Typeface.BOLD, null );
         mSelectedDish.setOnClickListener( this );
     }
 
     private void initRecView() {
         if ( mDishRecView == null ) {
-            mDishRecView = getView().findViewById( R.id.eatMenuEntityRVId );
+            mDishRecView = getActivity().findViewById( R.id.eatMenuEntityRVId );
             mDishRecView.setLayoutManager( new LinearLayoutManager( getContext(), RecyclerView.VERTICAL, false ) );
             mDishRecView.setAdapter( mDishEntityAdapter );
             mDishRecView.setHasFixedSize( false );
             mDishEntity = null;
         }
         mDishRecView.getAdapter().notifyDataSetChanged();
-        if ( AppConstants.FAKE_ID != GlobalManager.getInstance().getDishEntityPosition() ) {
-            GlobalManager.getInstance().setDishEntityPosition( AppConstants.FAKE_ID );
-        }
     }
 
     private void initAdapter() {
@@ -102,7 +102,6 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
         }
         mDishEntityAdapter.setOnItemClickListener( this );
         mDishEntityAdapter.notifyDataSetChanged();
-        getActivity().findViewById( R.id.eatMenuFragmentContainerId ).setVisibility( View.VISIBLE );
     }
 
     private void fillDishAdapter( List< MenuEntityModel > entities ) {
@@ -113,21 +112,36 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
         }
         int idx = 0;
         for ( MenuEntityModel entity : entities ) {
-           mDishEntityAdapter.addItem( entity, idx );
+            mDishEntityAdapter.addItem( entity, idx );
         }
-        AppUtils.transitionAnimation( getActivity().findViewById( R.id.pleaseWaitContainerId ),
-                getActivity().findViewById( R.id.eatMenuContainerId ) );
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        if ( mFirstEnter ){
-            initAdapter();
-            initRecView();
+        boolean needRefresh = false;
+        mSelectedCompanyId = ( ( DishActivity ) getActivity() ).getSelectedCompanyId();
+        mSelectedDishId = ( ( DishActivity ) getActivity() ).getSelectedDishId();
+        Integer prevCompanyId = ( ( DishActivity ) getActivity() ).getPrevCompanyId();
+        Integer prevDishId = ( ( DishActivity ) getActivity() ).getPrevDishId();
+        if ( mSelectedCompanyId != prevCompanyId ) {
+            needRefresh = true;
+            ( ( DishActivity ) getActivity() ).setPrevCompanyId( mSelectedCompanyId );
+
+        }
+        if ( mSelectedDishId != prevDishId ) {
+            needRefresh = true;
+            ( ( DishActivity ) getActivity() ).setPrevDishId( mSelectedDishId );
+        }
+        if ( needRefresh ) {
+            mSelectedCompanyName = null;
+            new FetchDishes().execute();
+        } else {
+            afterDishesLoaded();
         }
     }
+
 
     @Override
     public void onPause() {
@@ -165,7 +179,6 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
     @Override
     public void onDetach() {
         super.onDetach();
-        getActivity().findViewById( R.id.eatMenuFragmentContainerId ).setVisibility( View.GONE );
         ( ( BaseActivity ) getActivity() ).getHeader().findViewById( R.id.navButtonId ).setVisibility( View.VISIBLE );
         ( ( BaseActivity ) getActivity() ).getHeader().findViewById( R.id.dishFilterNavButtonId ).setVisibility( View.GONE );
         mListener = null;
@@ -178,7 +191,7 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
             mDishRecView.getAdapter().notifyDataSetChanged();
             mDishEntityAdapter.notifyDataSetChanged();
             mSearchMade = false;
-            AppUtils.hideKeyboardFrom( getActivity(), getView() );
+            AppUtils.hideKeyboardFrom( getActivity(), getActivity().findViewById( R.id.eatMenuBodyId ) );
             return;
         } else if ( query == null && !mSearchMade ) {
             return;
@@ -201,7 +214,6 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
 
     @Override
     public void onFilterButtonClick() {
-        mFirstEnter = false;
         PixelShot.of( getActivity().findViewById( R.id.eatMenuContainerId ) ).setResultListener( this ).save();
     }
 
@@ -241,6 +253,31 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
             default:
                 break;
         }
+    }
+
+    private void afterDishesLoaded() {
+        if ( mDishes == null ) {
+            mDishes = ( ( DishActivity ) getActivity() ).getDishes();
+        }
+        String dishTitle = ( ( DishActivity ) getActivity() ).getDishTitle() + " " + AppUtils.declensionDish( mDishes.size() );
+        if ( mSelectedCompanyName != null ) {
+            dishTitle = dishTitle + ", от " + mSelectedCompanyName;
+        }
+        mSelectedDish.setText( dishTitle );
+        initAdapter();
+        AppUtils.transitionAnimation( getActivity().findViewById( R.id.dishWaitContainerId ),
+                getActivity().findViewById( R.id.eatMenuEntityRVId ) );
+        new Handler().postDelayed( new Runnable() {
+            @Override
+            public void run() {
+                initRecView();
+                if ( AppConstants.FAKE_ID != GlobalManager.getInstance().getDishEntityPosition() ) {
+                    mDishRecView.scrollToPosition( GlobalManager.getInstance().getDishEntityPosition() );
+                }
+                GlobalManager.getInstance().setDishEntityPosition( AppConstants.FAKE_ID );
+            }
+        }, 200 );
+
 
     }
 
@@ -248,6 +285,57 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
         void onMoreDishInfo( String companyName, MenuEntityModel dishEntity );
 
         void onFilterDishSelect();
+    }
+
+
+    private class FetchDishes extends AsyncTask< Void, Void, Void > {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground( Void... arg0 ) {
+            try {
+                Call< ApiResponse< Dishes > > dishesCall = RestController.getInstance()
+                        .getApi().getDishes( AppConstants.AUTH_BEARER
+                                        + GlobalManager.getInstance().getUserToken(), GlobalManager.getInstance().getBootstrapModel().getDeliveryCity(),
+                                mSelectedDishId );
+                Response< ApiResponse< Dishes > > responseDishes = dishesCall.execute();
+                if ( responseDishes.body() != null ) {
+                    ApiResponse< Dishes > apiResponse = responseDishes.body();
+                    mDishes = new LinkedList<>();
+                    for ( MenuEntityModel menuEntity : apiResponse.getResult().getDishes() ) {
+                        if ( mSelectedCompanyId == null ||
+                                ( mSelectedCompanyId != null &&
+                                        mSelectedCompanyId.equals( Integer.valueOf( menuEntity.getCompanyId() ) ) ) ) {
+                            for ( CompanyModel company : GlobalManager.getBootstrapModel().getCompanies() ) {
+                                if ( mSelectedCompanyId == null && menuEntity.getCompanyId().equals( company.getId() ) ) {
+                                    menuEntity.setCompanyName( company.getDisplayName() );
+                                    break;
+                                } else if ( mSelectedCompanyId != null && menuEntity.getCompanyId().equals( company.getId() ) ) {
+                                    mSelectedCompanyName = company.getDisplayName();
+                                }
+                            }
+                            mDishes.add( menuEntity );
+                        }
+                    }
+                    ( ( DishActivity ) getActivity() ).setDishes( mDishes );
+                }
+            } catch ( Exception e ) {
+                Log.e( TAG, e.getMessage() );
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute( Void result ) {
+            super.onPostExecute( result );
+            afterDishesLoaded();
+        }
     }
 
 }

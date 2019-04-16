@@ -11,7 +11,7 @@
 
     <include layout="@layout/header" />
     <include layout="@layout/footer" />
-    <include layout="@layout/please_wait"/>
+
 
     <RelativeLayout
         android:id="@+id/eatMenuFragmentContainerId"

@@ -52,6 +52,8 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
     private static final int MENU_CLOSED_DISHES = 6;
     private static final int MENU_CLOSED_COMPANIES = 6;
 
+    private OnDishFilterActionListener mListener;
+
     private ScrollView mScrollView;
     private Integer mSelectedDishId;
     private Integer mSelectedCompanyId;
@@ -88,7 +90,7 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
         decorLayout.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick( View view ) {
-                backAnimateSnapShotLayout( decorLayout );
+                backAnimateSnapShotLayout( decorLayout, false );
             }
         } );
         mSelectedDishId = ( ( DishActivity ) getActivity() ).getSelectedDishId();
@@ -114,7 +116,7 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
             @Override
             public void onClick( View view ) {
                 AppUtils.btnClickAnimation( view );
-                backAnimateSnapShotLayout( decorLayout );
+                backAnimateSnapShotLayout( decorLayout, false );
             }
         } );
     }
@@ -163,7 +165,7 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
         valAnimator.start();
     }
 
-    private void backAnimateSnapShotLayout( final RelativeLayout snapShotLayout ) {
+    private void backAnimateSnapShotLayout( final RelativeLayout snapShotLayout, final boolean isAction ) {
         snapShotLayout.setClipToOutline( false );
         mScrollView.setVisibility( View.GONE );
         final FrameLayout.LayoutParams layoutParams = ( FrameLayout.LayoutParams ) snapShotLayout.getLayoutParams();
@@ -183,7 +185,11 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
                 layoutParams.bottomMargin = margin;
                 snapShotLayout.setLayoutParams( layoutParams );
                 if ( ( int ) val == end && getActivity() != null ) {
-                    getActivity().onBackPressed();
+                    if ( isAction ){
+                        mListener.onDishFilterAction();
+                    } else {
+                        getActivity().onBackPressed();
+                    }
                 }
             }
         } );
@@ -254,18 +260,25 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onAttach( Context context ) {
         super.onAttach( context );
+        if ( context instanceof OnDishFilterActionListener ) {
+            mListener = ( OnDishFilterActionListener ) context;
+        } else {
+            throw new RuntimeException( context.toString()
+                    + " must implement OnDishFilterActionListener" );
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        ( ( BaseActivity ) getActivity() ).getHeader().setVisibility( View.VISIBLE );
-        ( ( BaseActivity ) getActivity() ).getFooter().setVisibility( View.VISIBLE );
-//        getActivity().findViewById( R.id.eatMenuContainerId )
-//                .setBackground( EdaNymaApp.getAppContext().getResources()
-//                        .getDrawable( R.drawable.main_background_light ) );
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        ( ( BaseActivity ) getActivity() ).getHeader().setVisibility( View.VISIBLE );
+        ( ( BaseActivity ) getActivity() ).getFooter().setVisibility( View.VISIBLE );
+    }
 
     @Override
     public void onClick( View view ) {
@@ -287,19 +300,15 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
                     if ( menuTextView.getMenuCategoryId() != null ){
                         ((DishActivity)getActivity()).setSelectedDishId( Integer.valueOf( menuTextView.getMenuCategoryId() ) );
                     }
-
-                    new Handler(  ).postDelayed( new Runnable() {
-                        @Override
-                        public void run() {
-                            backAnimateSnapShotLayout( ( RelativeLayout ) getView().findViewById( R.id.snapShotDishLayoutId ) );
-                        }
-                    }, 100 );
+                    backAnimateSnapShotLayout( ( RelativeLayout ) getView().findViewById( R.id.snapShotDishLayoutId ), true );
                 }
                 break;
 
         }
     }
 
-
+    public interface OnDishFilterActionListener {
+        void onDishFilterAction( );
+    }
 
 }

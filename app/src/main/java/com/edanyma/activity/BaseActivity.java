@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -31,16 +33,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class BaseActivity extends AppCompatActivity
-        implements View.OnClickListener{
+        implements View.OnClickListener {
 
     protected TextView mDeliveryTV;
     protected LinearLayout mFooter;
     protected RelativeLayout mHeader;
     protected FrameLayout mDrawer;
 
+    private static boolean FINISH_ACTIVITY = false;
+
     private ActivityState mCurrentState;
 
-    public void initBaseActivity( ActivityState activityState ){
+    public void initBaseActivity( ActivityState activityState ) {
         mCurrentState = activityState;
         mHeader = findViewById( R.id.mainHeaderId );
         mFooter = findViewById( R.id.bottomNavigationId );
@@ -48,29 +52,46 @@ public abstract class BaseActivity extends AppCompatActivity
         mDeliveryTV.setTypeface( AppConstants.ROBOTO_CONDENCED );
         mDrawer = findViewById( R.id.drawer_layout );
 
-        for( int i=0; i<5; i++){
-            mFooter.getChildAt(i).setOnClickListener( this );
+        for ( int i = 0; i < 5; i++ ) {
+            mFooter.getChildAt( i ).setOnClickListener( this );
         }
         findViewById( R.id.navButtonCityId ).setOnClickListener( this );
     }
 
     @Override
     public void onBackPressed() {
+        if ( FINISH_ACTIVITY ) {
+            mDrawer.setVisibility( View.GONE );
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            for( Fragment removedFragment : getSupportFragmentManager().getFragments() ){
+                    fragmentTransaction.remove( removedFragment );
+            }
+            getSupportFragmentManager().popBackStackImmediate();
+            fragmentTransaction.commit();
+            this.finish();
+            System.exit( 0 );
+        }
+        FINISH_ACTIVITY = true;
+        new Handler().postDelayed( new Runnable() {
+            @Override
+            public void run() {
+                FINISH_ACTIVITY = false;
+            }
+        }, 1000 );
         super.onBackPressed();
     }
 
 
-
     @Override
     public void onClick( View view ) {
-        if( mCurrentState.getSelectedDrawerId() == view.getId() ){
+        if ( mCurrentState.getSelectedDrawerId() == view.getId() ) {
             return;
         }
         unselectBottomNavigation();
-        if( view instanceof ImageButton ){
+        if ( view instanceof ImageButton ) {
             view.setSelected( true );
         }
-        switch ( view.getId() ){
+        switch ( view.getId() ) {
             case R.id.navigation_company:
                 Map< String, String > params = new HashMap<>();
                 params.put( AppConstants.COMPANY_FILTER, AppConstants.ALL_COMPANIES );
@@ -94,18 +115,17 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
 
-
-    protected void startNewActivity( Class<?> newClass){
+    protected void startNewActivity( Class< ? > newClass ) {
         startNewActivity( newClass, null );
     }
 
-    protected void startNewActivity( Class<?> newClass, Map<String,String> params){
+    protected void startNewActivity( Class< ? > newClass, Map< String, String > params ) {
         Intent intent = new Intent( EdaNymaApp.getAppContext(), newClass );
         intent.addFlags( Intent.FLAG_ACTIVITY_NO_ANIMATION );
         intent.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
         intent.putExtra( AppConstants.PREV_NAV_STATE, mCurrentState.getBottomMenuIndex() );
-        if( params != null ){
-            for( String key : params.keySet() ){
+        if ( params != null ) {
+            for ( String key : params.keySet() ) {
                 intent.putExtra( key, params.get( key ) );
             }
         }
@@ -113,18 +133,18 @@ public abstract class BaseActivity extends AppCompatActivity
         overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
     }
 
-    private void startCityActivity( View view ){
+    private void startCityActivity( View view ) {
         AppUtils.clickAnimation( view );
         startNewActivity( CityActivity.class );
     }
 
-    private void unselectBottomNavigation(){
-        for( int i = 0; i < mFooter.getChildCount(); i++){
+    private void unselectBottomNavigation() {
+        for ( int i = 0; i < mFooter.getChildCount(); i++ ) {
             mFooter.getChildAt( i ).setSelected( false );
         }
     }
 
-    protected void changeClientStatus(){
+    protected void changeClientStatus() {
         if ( GlobalManager.getInstance().getClient() != null
                 && GlobalManager.getInstance().getClient().getUuid() != null ) {
             findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.person_navigation ) );
@@ -138,8 +158,8 @@ public abstract class BaseActivity extends AppCompatActivity
         super.onResume();
         changeClientStatus();
         mDeliveryTV.setText( GlobalManager.getInstance().getBootstrapModel() != null ?
-                GlobalManager.getInstance().getBootstrapModel().getDeliveryCity():
-                getResources().getString( R.string.not_available));
+                GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() :
+                getResources().getString( R.string.not_available ) );
         unselectBottomNavigation();
         findViewById( mCurrentState.getSelectedBottomId() ).setSelected( true );
     }

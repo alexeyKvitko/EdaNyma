@@ -50,6 +50,11 @@ public class AppConstants {
     public static final String SIGN_UP= "SIGN_UP";
     public static final String SIGN_TYPE = "signType";
 
+    public static final String SEL_TYPE_ONE = "ONE";
+    public static final String SEL_TYPE_TWO = "TWO";
+    public static final String SEL_TYPE_THREE = "THREE";
+    public static final String SEL_TYPE_FOUR = "FOUR";
+
     public static final int FAKE_ID= -1;
 
     public static final String STATIC_COMPANY= "companies/%s.jpg";

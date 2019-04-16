@@ -11,7 +11,8 @@
     <color name="iconGrayColor">#646a72</color>
     <color name="transpGrayTextColor">#DDCECECE</color>
     <color name="disableButtonColor">#EEEFEE</color>
-    <color name="lightGrayColor">#F5F5F5</color>
+    <color name="lightGrayColorOne">#F5F5F5</color>
+    <color name="lightGrayColor">#F3F5F9</color>
     <color name="transparentToastBackground">#90000000</color>
     <color name="transparentBlack">#00000000</color>
     <color name="tealColor">#3B6A75</color>

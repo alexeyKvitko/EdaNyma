@@ -1,12 +1,9 @@
 package com.edanyma.activity;
 
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 
 import com.edanyma.AppConstants;
@@ -16,29 +13,23 @@ import com.edanyma.fragment.DishInfoFragment;
 import com.edanyma.fragment.FilterDishFragment;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
-import com.edanyma.model.ApiResponse;
-import com.edanyma.model.CompanyModel;
-import com.edanyma.model.Dishes;
 import com.edanyma.model.MenuCategoryModel;
 import com.edanyma.model.MenuEntityModel;
-import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 
-import java.util.LinkedList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Response;
-
 public class DishActivity extends BaseActivity implements DishFragment.OnDishActionListener,
-        DishInfoFragment.OnAddToBasketListener {
+        DishInfoFragment.OnAddToBasketListener, FilterDishFragment.OnDishFilterActionListener {
 
     private final String TAG = "DishActivity";
 
-    private List< MenuEntityModel > mDishes;
     private String mDishTitle;
     private Integer mSelectedDishId;
     private Integer mSelectedCompanyId;
+    private Integer mPrevCompanyId;
+    private Integer mPrevDishId;
+    private List< MenuEntityModel > mDishes;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -48,11 +39,12 @@ public class DishActivity extends BaseActivity implements DishFragment.OnDishAct
     }
 
     private void initialize() {
-//        findViewById( R.id.pleaseWaitContainerId ).setVisibility( View.VISIBLE );
         initBaseActivity( new ActivityState( AppConstants.DISH_BOTTOM_INDEX ) );
         GlobalManager.getInstance().setDishFilter( null );
         mSelectedCompanyId = null;
         mSelectedDishId = AppConstants.SUSHI_SET_ID;
+        mPrevCompanyId = null;
+        mPrevDishId = null;
         applyAllDishesFiler();
     }
 
@@ -66,15 +58,15 @@ public class DishActivity extends BaseActivity implements DishFragment.OnDishAct
             fragmentTransaction.add( R.id.eatMenuFragmentContainerId, newFragment );
         } else {
             fragmentTransaction.replace( R.id.eatMenuFragmentContainerId, newFragment );
+        }
+        if ( newFragment instanceof FilterDishFragment ) {
+            System.out.println( "Filter" );
+        } else {
             fragmentTransaction.addToBackStack( null );
         }
         fragmentTransaction.commit();
     }
 
-
-    public List< MenuEntityModel > getDishes() {
-        return mDishes;
-    }
 
     @Override
     public void onMoreDishInfo( String companyName, MenuEntityModel dishEntity ) {
@@ -103,9 +95,8 @@ public class DishActivity extends BaseActivity implements DishFragment.OnDishAct
                 break;
             }
         }
-        new FetchDishes().execute();
-        AppUtils.transitionAnimation( findViewById( R.id.eatMenuContainerId )
-                , findViewById( R.id.pleaseWaitContainerId ) );
+        addReplaceFragment( DishFragment.newInstance().newInstance(), true );
+
     }
 
 
@@ -124,6 +115,7 @@ public class DishActivity extends BaseActivity implements DishFragment.OnDishAct
 
     public void setSelectedDishId( Integer mSelectedDishId ) {
         this.mSelectedDishId = mSelectedDishId;
+        this.mSelectedCompanyId = null;
     }
 
 
@@ -133,64 +125,60 @@ public class DishActivity extends BaseActivity implements DishFragment.OnDishAct
 
     @Override
     public void onBackPressed() {
-        if ( getSupportFragmentManager().getFragments().size() > 0 &&
-                getSupportFragmentManager().getFragments().get( 0 ) instanceof FilterDishFragment ) {
-            applyAllDishesFiler();
+        if ( getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().getFragments().size() == 1 ) {
+            Fragment fragment = getSupportFragmentManager().getFragments().get( 0 );
+            if ( fragment instanceof DishFragment ) {
+                int backStackEntry = getSupportFragmentManager().getBackStackEntryCount();
+                for ( int i = 0; i < backStackEntry; i++ ) {
+                    getSupportFragmentManager().popBackStackImmediate();
+                }
+            } else if ( fragment instanceof FilterDishFragment ) {
+                onDishFilterAction();
+                return;
+            }
         }
         super.onBackPressed();
     }
 
-    private class FetchDishes extends AsyncTask< Void, Void, Void > {
+    @Override
+    public void onDishFilterAction() {
+        clearStack();
+        applyAllDishesFiler();
+    }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground( Void... arg0 ) {
-            try {
-                Call< ApiResponse< Dishes > > dishesCall = RestController.getInstance()
-                        .getApi().getDishes( AppConstants.AUTH_BEARER
-                                        + GlobalManager.getInstance().getUserToken(), GlobalManager.getInstance().getBootstrapModel().getDeliveryCity(),
-                                mSelectedDishId );
-                Response< ApiResponse< Dishes > > responseDishes = dishesCall.execute();
-                if ( responseDishes.body() != null ) {
-                    ApiResponse< Dishes > apiResponse = responseDishes.body();
-                    mDishes = new LinkedList<>();
-                    for ( MenuEntityModel menuEntity : apiResponse.getResult().getDishes() ) {
-                        if ( mSelectedCompanyId == null ||
-                                ( mSelectedCompanyId != null &&
-                                        mSelectedCompanyId.equals( Integer.valueOf( menuEntity.getCompanyId() ) ) ) ) {
-                            for ( CompanyModel company : GlobalManager.getBootstrapModel().getCompanies() ) {
-                                if ( menuEntity.getCompanyId().equals( company.getId() ) ) {
-                                    menuEntity.setCompanyName( company.getDisplayName() );
-                                    break;
-                                }
-                            }
-                            mDishes.add( menuEntity );
-                        }
-                    }
+    private void clearStack() {
+        if ( getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().getFragments().size() > 0 ) {
+            for ( int i = 0; i < getSupportFragmentManager().getFragments().size(); i++ ) {
+                Fragment mFragment = getSupportFragmentManager().getFragments().get( i );
+                if ( mFragment != null && mFragment instanceof FilterDishFragment ) {
+                    getSupportFragmentManager().beginTransaction().remove( mFragment ).commit();
+                    getSupportFragmentManager().executePendingTransactions();
                 }
-            } catch ( Exception e ) {
-                Log.e( TAG, e.getMessage() );
-                e.printStackTrace();
             }
-            return null;
         }
+    }
 
+    public Integer getPrevCompanyId() {
+        return mPrevCompanyId;
+    }
 
-        @Override
-        protected void onPostExecute( Void result ) {
-            super.onPostExecute( result );
-            GlobalManager.getInstance().setDishEntityPosition( AppConstants.FAKE_ID );
-            new Handler().postDelayed( new Runnable() {
-                @Override
-                public void run() {
-                    addReplaceFragment( DishFragment.newInstance(), true );
-                }
-            }, 400 );
+    public void setPrevCompanyId( Integer mPrevCompanyId ) {
+        this.mPrevCompanyId = mPrevCompanyId;
+    }
 
-        }
+    public Integer getPrevDishId() {
+        return mPrevDishId;
+    }
+
+    public void setPrevDishId( Integer mPrevDishId ) {
+        this.mPrevDishId = mPrevDishId;
+    }
+
+    public List< MenuEntityModel > getDishes() {
+        return mDishes;
+    }
+
+    public void setDishes( List< MenuEntityModel > mDishes ) {
+        this.mDishes = mDishes;
     }
 }

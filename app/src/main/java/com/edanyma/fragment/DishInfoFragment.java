@@ -6,9 +6,12 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +21,7 @@ import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.activity.BaseActivity;
 import com.edanyma.activity.DishActivity;
+import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.MenuCategoryModel;
 import com.edanyma.model.MenuEntityModel;
@@ -36,8 +40,13 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
     private String mCompanyName;
     private MenuEntityModel mDishEntity;
     private TextView mDishPrice;
+    private TextView mDishCountText;
+    private TextView mDishSumText;
+
+    private Integer mSelPrice;
 
     private int mWspBtnMargin;
+    private Integer mDishCount;
     private boolean mAllWspNull;
 
     private OnAddToBasketListener mListener;
@@ -81,6 +90,7 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
         super.onActivityCreated( savedInstanceState );
         mAllWspNull = false;
         mWspBtnMargin = 0;
+        mDishCount = 1;
         PicassoClient.downloadImage( EdaNymaApp.getAppContext(), mDishEntity.getImageUrl()
                 , ( ImageView ) getView().findViewById( R.id.dishInfoImgId )
                 , DISH_IMAGE_WIDTH, DISH_IMAGE_HEIGHT );
@@ -127,8 +137,16 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
 
         getView().findViewById( R.id.dishInfoCardId ).setOnClickListener( this );
         getView().findViewById( R.id.dishInfoContainerId ).setOnClickListener( this );
+        getView().findViewById( R.id.addDishCountId ).setOnClickListener( this );
+        getView().findViewById( R.id.removeDishCountId ).setOnClickListener( this );
+        getView().findViewById( R.id.addToBasketButtonId ).setOnClickListener( this );
 
 
+        mDishCountText = initTextView( R.id.dishCountTextId, AppConstants.OFFICE, Typeface.BOLD, null );
+        mDishSumText = initTextView( R.id.dishSumId, AppConstants.ROBOTO_CONDENCED );
+        mSelPrice = Integer.valueOf( mDishEntity.getPriceOne() );
+        mDishEntity.setWspType( AppConstants.SEL_TYPE_ONE );
+        setDishPrice();
     }
 
     private void setWsp( int layoutId, int sizeId, int weightId, String sizeValue, String weightValue ) {
@@ -165,6 +183,7 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
         if ( start == end ) {
             return;
         }
+        mSelPrice = Integer.valueOf( price );
         final View wspButton = getView().findViewById( R.id.wspButtonId );
         final FrameLayout.LayoutParams layoutParams = ( FrameLayout.LayoutParams ) wspButton.getLayoutParams();
         ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), start, end );
@@ -189,6 +208,7 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
         } );
         valAnimator.setDuration( 300 );
         valAnimator.start();
+        setDishPrice();
     }
 
     private void checkForNullWsp() {
@@ -230,27 +250,37 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
                         .getDrawable( R.drawable.main_background_light ) );
     }
 
+    private void setDishPrice(){
+        String dishSum = "x "+mDishCount+" = "+String.valueOf(mDishCount*mSelPrice)+".00 руб.";
+        mDishCountText.setText( mDishCount.toString() );
+        mDishSumText.setText( dishSum );
+    }
+
     @Override
     public void onClick( View view ) {
         int newWspBtnMargin = 0;
         switch ( view.getId() ) {
             case R.id.wspLayoutOneId:
                 newWspBtnMargin = 0;
+                mDishEntity.setWspType( AppConstants.SEL_TYPE_ONE );
                 animateWspButtonContainer( mWspBtnMargin, newWspBtnMargin, mDishEntity.getPriceOne()
                         , R.id.dishSizeOneId, R.id.dishWeightOneId );
                 break;
             case R.id.wspLayoutTwoId:
                 newWspBtnMargin = ( int ) ConvertUtils.convertDpToPixel( 81 );
+                mDishEntity.setWspType( AppConstants.SEL_TYPE_TWO );
                 animateWspButtonContainer( mWspBtnMargin, newWspBtnMargin, mDishEntity.getPriceTwo()
                         , R.id.dishSizeTwoId, R.id.dishWeightTwoId );
                 break;
             case R.id.wspLayoutThreeId:
                 newWspBtnMargin = ( int ) ConvertUtils.convertDpToPixel( 162 );
+                mDishEntity.setWspType( AppConstants.SEL_TYPE_THREE );
                 animateWspButtonContainer( mWspBtnMargin, newWspBtnMargin, mDishEntity.getPriceThree()
                         , R.id.dishSizeThreeId, R.id.dishWeightThreeId );
                 break;
             case R.id.wspLayoutFourId:
                 newWspBtnMargin = ( int ) ConvertUtils.convertDpToPixel( 243 );
+                mDishEntity.setWspType( AppConstants.SEL_TYPE_FOUR );
                 animateWspButtonContainer( mWspBtnMargin, newWspBtnMargin, mDishEntity.getPriceFour()
                         , R.id.dishSizeFourId, R.id.dishWeightFourId );
                 break;
@@ -261,9 +291,49 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
             case R.id.dishInfoContainerId:
                 getActivity().onBackPressed();
                 break;
+            case R.id.addDishCountId:
+                AppUtils.clickAnimation( view );
+                mDishCount++;
+                setDishPrice();
+                break;
+            case R.id.removeDishCountId:
+                AppUtils.clickAnimation( view );
+                mDishCount--;
+                mDishCount = mDishCount < 1 ? 1 : mDishCount;
+                setDishPrice();
+                break;
+            case R.id.addToBasketButtonId:
+                AppUtils.clickAnimation( view );
+                addDishToBasket();
+                break;
             default:
                 break;
         }
+    }
+
+    private void addDishToBasket(){
+        BasketOrderManager.getInstance().addEntityToBasket( mDishEntity, mDishCount );
+        final CardView dishImage = getView().findViewById( R.id.cardDishInfoImgId );
+        final CardView dishInfo = getView().findViewById( R.id.dishInfoCardId );
+        Animation scaleDown = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.scale_down );
+        scaleDown.setAnimationListener( new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart( Animation animation ) {}
+
+            @Override
+            public void onAnimationEnd( Animation animation ) {
+                getActivity().onBackPressed();
+                dishImage.setVisibility( View.GONE );
+                dishInfo.setVisibility( View.GONE );
+            }
+
+            @Override
+            public void onAnimationRepeat( Animation animation ) {}
+        } );
+        dishImage.startAnimation( scaleDown );
+        dishInfo.startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),
+                                                                                R.anim.fade_out ) );
+
     }
 
 
