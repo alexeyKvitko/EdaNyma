@@ -1,6 +1,11 @@
 package com.edanyma.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.support.design.widget.NavigationView;
@@ -24,16 +29,24 @@ import android.widget.TextView;
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
+import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
+import com.edanyma.owncomponent.ModalMessage;
+import com.edanyma.pixelshot.PixelShot;
 import com.edanyma.utils.AppUtils;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class BaseActivity extends AppCompatActivity
-        implements View.OnClickListener {
+        implements View.OnClickListener,PixelShot.PixelShotListener {
+
+    private IntentFilter mIntentFilter;
+    private BasketMessageReceiver mBasketMessageReceiver;
 
     protected TextView mDeliveryTV;
     protected LinearLayout mFooter;
@@ -43,19 +56,24 @@ public abstract class BaseActivity extends AppCompatActivity
     private static boolean FINISH_ACTIVITY = false;
 
     private ActivityState mCurrentState;
+    private Integer mBasketPrice;
+    private boolean mShowBasket;
 
     public void initBaseActivity( ActivityState activityState ) {
+        mIntentFilter =  new IntentFilter( AppConstants.BASKET_CONTENT_CHANGE );
+        mBasketMessageReceiver =  new BasketMessageReceiver();
         mCurrentState = activityState;
         mHeader = findViewById( R.id.mainHeaderId );
         mFooter = findViewById( R.id.bottomNavigationId );
         mDeliveryTV = this.findViewById( R.id.deliveryCityId );
         mDeliveryTV.setTypeface( AppConstants.ROBOTO_CONDENCED );
         mDrawer = findViewById( R.id.drawer_layout );
-
         for ( int i = 0; i < 5; i++ ) {
             mFooter.getChildAt( i ).setOnClickListener( this );
         }
         findViewById( R.id.navButtonCityId ).setOnClickListener( this );
+        findViewById( R.id.navigation_basket ).setOnClickListener( this );
+        showBasketPrice();
     }
 
     @Override
@@ -63,8 +81,8 @@ public abstract class BaseActivity extends AppCompatActivity
         if ( FINISH_ACTIVITY ) {
             mDrawer.setVisibility( View.GONE );
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            for( Fragment removedFragment : getSupportFragmentManager().getFragments() ){
-                    fragmentTransaction.remove( removedFragment );
+            for ( Fragment removedFragment : getSupportFragmentManager().getFragments() ) {
+                fragmentTransaction.remove( removedFragment );
             }
             getSupportFragmentManager().popBackStackImmediate();
             fragmentTransaction.commit();
@@ -106,6 +124,9 @@ public abstract class BaseActivity extends AppCompatActivity
             case R.id.navigation_login:
                 startNewActivity( PersonActivity.class );
                 break;
+            case R.id.navigation_basket:
+                startBasketActivity( view );
+                break;
             case R.id.navButtonCityId:
                 startCityActivity( view );
                 break;
@@ -130,7 +151,25 @@ public abstract class BaseActivity extends AppCompatActivity
             }
         }
         startActivity( intent );
-        overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
+//        overridePendingTransition( R.anim.act_fade_in, R.anim.act_fade_out );
+    }
+
+    private void startBasketActivity( View view ){
+        if ( BasketOrderManager.getInstance().getBasketPrice() == 0 ){
+            ModalMessage.show( this, getString( R.string.empty_basket_msg),
+                                    new String[]{  getString( R.string.splash_desc_two )
+                                    ,getString( R.string.splash_desc_three )}, 3000 );
+            view.setSelected( false );
+            return;
+        }
+       View snapView = null;
+       if ( this instanceof MainActivity ){
+           snapView = findViewById( R.id.contentMainLayoutId );
+       } else {
+           snapView = mDrawer.getChildAt( 0 );
+       }
+       mShowBasket = true;
+       PixelShot.of( snapView ).setResultListener( this ).save();
     }
 
     private void startCityActivity( View view ) {
@@ -156,12 +195,19 @@ public abstract class BaseActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        registerReceiver( mBasketMessageReceiver, mIntentFilter );
         changeClientStatus();
         mDeliveryTV.setText( GlobalManager.getInstance().getBootstrapModel() != null ?
                 GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() :
                 getResources().getString( R.string.not_available ) );
         unselectBottomNavigation();
         findViewById( mCurrentState.getSelectedBottomId() ).setSelected( true );
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver( mBasketMessageReceiver );
     }
 
     public ActivityState getCurrentState() {
@@ -178,5 +224,40 @@ public abstract class BaseActivity extends AppCompatActivity
 
     public FrameLayout getDrawer() {
         return mDrawer;
+    }
+
+    private void showBasketPrice() {
+        mBasketPrice = BasketOrderManager.getInstance().getBasketPrice();
+        int visibility = mBasketPrice > 0 ? View.VISIBLE : View.GONE;
+        TextView basketPriceText = mFooter.findViewById( R.id.basketPriceTextId );
+        basketPriceText.setVisibility( visibility );
+        basketPriceText.setTypeface( AppConstants.OFFICE, Typeface.BOLD );
+        basketPriceText.setText( mBasketPrice.toString() + ".00 руб" );
+    }
+
+
+    class BasketMessageReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive( Context context, Intent intent ) {
+            boolean showBasketBrice = intent.getBooleanExtra( AppConstants.BASKET_PRICE_SHOW, false );
+            if ( showBasketBrice ) {
+                showBasketPrice();
+            }
+        }
+    }
+
+    @Override
+    public void onPixelShotSuccess( String path ) {
+        if ( mShowBasket ){
+            startNewActivity( BasketActivity.class );
+            mShowBasket = false;
+        } else if ( this instanceof MainActivity ){
+            ((MainActivity) this).showProfileFragment();
+        }
+    }
+
+    @Override
+    public void onPixelShotFailed() {
+
     }
 }

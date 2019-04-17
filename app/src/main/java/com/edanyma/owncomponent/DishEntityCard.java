@@ -24,6 +24,7 @@ public class DishEntityCard extends FrameLayout {
     private static final int DISH_IMAGE_HEIGHT = ( int ) ConvertUtils.convertDpToPixel( 142 );
 
     private ImageView mEntityImage;
+    private ImageView mInBasketImage;
     private TextView mEntityTitle;
     private TextView mEntityDesc;
     private TextView mEntityPrice;
@@ -51,6 +52,7 @@ public class DishEntityCard extends FrameLayout {
         mEntityDesc = findViewById( R.id.entityDescTextId );
         mEntityPrice = findViewById( R.id.entityPriceTextId );
         mEntitySize = findViewById( R.id.entitySizeId );
+        mInBasketImage = findViewById( R.id.dishInBasketId );
         mEntityCompanyName =  findViewById( R.id.entityCompanyNameId );
         mEntityCompanyName.setVisibility( View.GONE );
 
@@ -59,6 +61,7 @@ public class DishEntityCard extends FrameLayout {
         mEntityDesc.setTypeface( AppConstants.ROBOTO_CONDENCED );
         mEntitySize.setTypeface( AppConstants.ROBOTO_CONDENCED );
         mEntityPrice.setTypeface( AppConstants.OFFICE, Typeface.BOLD );
+
     }
 
     public void setEntityImage( String uri ) {
@@ -100,6 +103,7 @@ public class DishEntityCard extends FrameLayout {
         this.setEntityPrice( dishEntity.getPriceOne() );
         this.setEntitySize( dishEntity.getSizeOne() != null ?
                 dishEntity.getSizeOne() : dishEntity.getWeightOne() );
+        mInBasketImage.setVisibility( dishEntity.getCount() > 0 ? View.VISIBLE : View.GONE );
     }
 
     public int getDishEntityId() {

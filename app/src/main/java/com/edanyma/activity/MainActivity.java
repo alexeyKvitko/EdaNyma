@@ -1,6 +1,5 @@
 package com.edanyma.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,7 +26,6 @@ import com.edanyma.pixelshot.PixelShot;
 import com.edanyma.recyclerview.CompanyActionAdapter;
 import com.edanyma.recyclerview.HomeMenuAdapter;
 import com.edanyma.recyclerview.manager.VegaLayoutManager;
-import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.PicassoClient;
 
 import java.util.ArrayList;
@@ -311,7 +309,7 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         String homeMenuTag = ( ( TextView ) view.findViewById( R.id.dishTitleTextId ) ).getText().toString();
         String homeMenuCount = ( ( TextView ) view.findViewById( R.id.dishCountTextId ) ).getText().toString();
         if ( Integer.valueOf( homeMenuCount.substring( 0, 1 ) ).equals( 0 ) ) {
-            ModalMessage.show( this, "Сообщение", "В Вашем городе еще нет выбранных заведений" );
+            ModalMessage.show( this, "Сообщение", new String[]{"В Вашем городе еще нет выбранных заведений"} );
         } else {
             if ( !AppConstants.ALL_DISHES.equals( homeMenuTag ) ) {
                 Map< String, String > params = new HashMap<>();
@@ -324,7 +322,7 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         }
     }
 
-    private void showProfileFragment() {
+    public void showProfileFragment() {
         findViewById( R.id.profileFragmentContainerId ).setVisibility( View.VISIBLE );
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations( R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out );
@@ -356,16 +354,6 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         startNewActivity( PersonActivity.class, params );
     }
 
-
-    @Override
-    public void onPixelShotSuccess( String path ) {
-        showProfileFragment();
-    }
-
-    @Override
-    public void onPixelShotFailed() {
-
-    }
 
     private class SliderJob implements Runnable {
         @Override

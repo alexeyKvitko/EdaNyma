@@ -19,6 +19,7 @@ import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.activity.BaseActivity;
 import com.edanyma.activity.CompanyDishActivity;
+import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.CompanyInfoModel;
 import com.edanyma.model.MenuEntityModel;
@@ -163,6 +164,7 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
         for ( MenuEntityModel entity : entities ) {
             boolean filtered = isFilterCondition( entity );
             if ( filtered ) {
+                entity.setCount( BasketOrderManager.getInstance().getEntityCountInBasket( entity.getId() ) );
                 mDishEntityAdapter.addItem( entity, idx );
                 idx++;
             }

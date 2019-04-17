@@ -1,12 +1,17 @@
 package com.edanyma.manager;
 
+import android.content.Intent;
+
 import com.edanyma.AppConstants;
+import com.edanyma.EdaNymaApp;
 import com.edanyma.model.MenuEntityModel;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class BasketOrderManager {
+
+    public static final String BASKET_CONTENT = "com.edanyma.manager.BASKET_CONTENT_MODIFY";
 
     private static final BasketOrderManager BASKET_MANAGER = new BasketOrderManager();
 
@@ -27,7 +32,7 @@ public class BasketOrderManager {
         for ( MenuEntityModel entity : customerBasket ) {
             if ( entity.getId().equals( menuEntity.getId() ) &&
                     entity.getWspType().equals( menuEntity.getWspType() ) ) {
-                entity.setCount( entity.getCount() + count );
+                entity.setCount( count );
                 exist = true;
             }
         }
@@ -35,14 +40,30 @@ public class BasketOrderManager {
             menuEntity.setCount( count );
             customerBasket.add( menuEntity );
         }
+        sendMessageToActivity();
     }
 
     public static Integer getBasketPrice() {
         Integer entityPrice = 0;
-        for ( MenuEntityModel menuEntity : customerBasket ) {
-            entityPrice += calculatePrice( menuEntity );
+        if ( customerBasket != null && customerBasket.size() > 0 ){
+            for ( MenuEntityModel menuEntity : customerBasket ) {
+                entityPrice += calculatePrice( menuEntity );
+            }
         }
         return entityPrice;
+    }
+
+    public static Integer getEntityCountInBasket( String entityId ){
+        Integer entityCount = 0;
+        if ( customerBasket != null && customerBasket.size() > 0 ){
+            for ( MenuEntityModel menuEntity : customerBasket ) {
+                if ( menuEntity.getId().equals( entityId ) ){
+                    entityCount = menuEntity.getCount();
+                    break;
+                }
+            }
+        }
+        return entityCount;
     }
 
     public static void clearBasket() {
@@ -68,6 +89,12 @@ public class BasketOrderManager {
                 break;
         }
         return calc;
+    }
+
+    private static void sendMessageToActivity(){
+        Intent intent = new Intent( AppConstants.BASKET_CONTENT_CHANGE );
+        intent.putExtra( AppConstants.BASKET_PRICE_SHOW, true );
+        EdaNymaApp.getAppContext().sendBroadcast( intent );
     }
 
     public static List<MenuEntityModel> getBasket() {

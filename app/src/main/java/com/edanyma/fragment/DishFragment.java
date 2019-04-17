@@ -18,6 +18,7 @@ import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.activity.BaseActivity;
 import com.edanyma.activity.DishActivity;
+import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.CompanyModel;
@@ -112,6 +113,7 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
         }
         int idx = 0;
         for ( MenuEntityModel entity : entities ) {
+            entity.setCount( BasketOrderManager.getInstance().getEntityCountInBasket( entity.getId() ) );
             mDishEntityAdapter.addItem( entity, idx );
         }
     }

@@ -324,7 +324,7 @@ public class CompanyInfoFragment extends BaseFragment implements View.OnClickLis
         @Override
         protected void onPostExecute( String result ) {
             super.onPostExecute( result );
-            ModalMessage.show( getActivity(), "Сообщение", result );
+            ModalMessage.show( getActivity(), "Сообщение", new String[] {result} );
             changeFavoriteIcon();
         }
     }

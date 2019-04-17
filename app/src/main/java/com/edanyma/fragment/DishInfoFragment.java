@@ -90,7 +90,8 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
         super.onActivityCreated( savedInstanceState );
         mAllWspNull = false;
         mWspBtnMargin = 0;
-        mDishCount = 1;
+        mDishCount = BasketOrderManager.getInstance().getEntityCountInBasket( mDishEntity.getId() );
+        mDishCount = mDishCount == 0 ? 1 : mDishCount;
         PicassoClient.downloadImage( EdaNymaApp.getAppContext(), mDishEntity.getImageUrl()
                 , ( ImageView ) getView().findViewById( R.id.dishInfoImgId )
                 , DISH_IMAGE_WIDTH, DISH_IMAGE_HEIGHT );

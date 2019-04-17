@@ -25,10 +25,24 @@
             android:id="@+id/navigation_home"
             android:background="@drawable/home_navigation"/>
 
-        <ImageButton
-            style="@style/bottomNavButon"
-            android:id="@+id/navigation_basket"
-            android:background="@drawable/basket_navigation"/>
+        <FrameLayout
+            android:layout_width="72dp"
+            android:layout_height="48dp">
+                <ImageButton
+                    style="@style/bottomNavButon"
+                    android:id="@+id/navigation_basket"
+                    android:background="@drawable/basket_navigation"/>
+                <TextView
+                    android:id="@+id/basketPriceTextId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"
+                    android:paddingLeft="10dp"
+                    android:layout_marginBottom="4dp"
+                    android:textSize="10dp"
+                    android:layout_gravity="bottom|center_horizontal"/>
+        </FrameLayout>
+
 
         <ImageButton
             style="@style/bottomNavButon"
