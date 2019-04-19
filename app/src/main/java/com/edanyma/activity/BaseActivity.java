@@ -22,6 +22,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -52,6 +53,12 @@ public abstract class BaseActivity extends AppCompatActivity
     protected LinearLayout mFooter;
     protected RelativeLayout mHeader;
     protected FrameLayout mDrawer;
+    protected static TextView mBasketPriceText;
+    protected static ImageButton mCompanyBtn;
+    protected static ImageButton mDishBtn;
+    protected static ImageButton mHomeBtn;
+    protected static ImageButton mBasketBtn;
+    protected static ImageButton mProfileBtn;
 
     private static boolean FINISH_ACTIVITY = false;
 
@@ -68,12 +75,19 @@ public abstract class BaseActivity extends AppCompatActivity
         mDeliveryTV = this.findViewById( R.id.deliveryCityId );
         mDeliveryTV.setTypeface( AppConstants.ROBOTO_CONDENCED );
         mDrawer = findViewById( R.id.drawer_layout );
-        for ( int i = 0; i < 5; i++ ) {
-            mFooter.getChildAt( i ).setOnClickListener( this );
-        }
         findViewById( R.id.navButtonCityId ).setOnClickListener( this );
-        findViewById( R.id.navigation_basket ).setOnClickListener( this );
-        showBasketPrice();
+        mCompanyBtn = findViewById( R.id.navigation_company );
+        mDishBtn = findViewById( R.id.navigation_dish );
+        mHomeBtn = findViewById( R.id.navigation_home );
+        mBasketBtn = findViewById( R.id.navigation_basket );
+        mProfileBtn = findViewById( R.id.navigation_login );
+        mCompanyBtn.setOnClickListener( this );
+        mDishBtn.setOnClickListener( this );
+        mHomeBtn.setOnClickListener( this );
+        mBasketBtn.setOnClickListener( this );
+        mProfileBtn.setOnClickListener( this );
+        mBasketPriceText = findViewById( R.id.basketPriceTextId );
+        mBasketPriceText.setTypeface( AppConstants.OFFICE, Typeface.BOLD );
     }
 
     @Override
@@ -102,12 +116,8 @@ public abstract class BaseActivity extends AppCompatActivity
 
     @Override
     public void onClick( View view ) {
-        if ( mCurrentState.getSelectedDrawerId() == view.getId() ) {
+        if ( mCurrentState.getSelectedBottomId() == view.getId() ) {
             return;
-        }
-        unselectBottomNavigation();
-        if ( view instanceof ImageButton ) {
-            view.setSelected( true );
         }
         switch ( view.getId() ) {
             case R.id.navigation_company:
@@ -159,7 +169,6 @@ public abstract class BaseActivity extends AppCompatActivity
             ModalMessage.show( this, getString( R.string.empty_basket_msg),
                                     new String[]{  getString( R.string.splash_desc_two )
                                     ,getString( R.string.splash_desc_three )}, 3000 );
-            view.setSelected( false );
             return;
         }
        View snapView = null;
@@ -177,11 +186,6 @@ public abstract class BaseActivity extends AppCompatActivity
         startNewActivity( CityActivity.class );
     }
 
-    private void unselectBottomNavigation() {
-        for ( int i = 0; i < mFooter.getChildCount(); i++ ) {
-            mFooter.getChildAt( i ).setSelected( false );
-        }
-    }
 
     protected void changeClientStatus() {
         if ( GlobalManager.getInstance().getClient() != null
@@ -195,12 +199,13 @@ public abstract class BaseActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        showBasketPrice();
         registerReceiver( mBasketMessageReceiver, mIntentFilter );
         changeClientStatus();
         mDeliveryTV.setText( GlobalManager.getInstance().getBootstrapModel() != null ?
                 GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() :
                 getResources().getString( R.string.not_available ) );
-        unselectBottomNavigation();
+        unSelectAllBtn();
         findViewById( mCurrentState.getSelectedBottomId() ).setSelected( true );
     }
 
@@ -226,13 +231,47 @@ public abstract class BaseActivity extends AppCompatActivity
         return mDrawer;
     }
 
-    private void showBasketPrice() {
+    public void showBasketPrice() {
         mBasketPrice = BasketOrderManager.getInstance().getBasketPrice();
         int visibility = mBasketPrice > 0 ? View.VISIBLE : View.GONE;
-        TextView basketPriceText = mFooter.findViewById( R.id.basketPriceTextId );
-        basketPriceText.setVisibility( visibility );
-        basketPriceText.setTypeface( AppConstants.OFFICE, Typeface.BOLD );
-        basketPriceText.setText( mBasketPrice.toString() + ".00 руб" );
+        mBasketPriceText.setVisibility( visibility );
+        String price = mBasketPrice == 0 ? null : mBasketPrice.toString() + ".00 руб";
+        mBasketPriceText.setText( price );
+        ((TextView )this.getFooter().findViewById( R.id.basketPriceTextId )).setText( price );
+    }
+
+    public void changeStatusCompanyBtn( boolean status ){
+        unSelectAllBtn();
+        mCompanyBtn.setSelected( status );
+    }
+
+    public void changeStatusDishBtn( boolean status ){
+        unSelectAllBtn();
+        mDishBtn.setSelected( status );
+    }
+
+    public void changeStatusHomeBtn( boolean status ){
+        unSelectAllBtn();
+        mHomeBtn.setSelected( status );
+    }
+
+    public void changeStatusBasketBtn( boolean status ){
+        unSelectAllBtn();
+        mBasketBtn.setSelected( status );
+    }
+
+    public void changeStatusProfileBtn( boolean status ){
+        unSelectAllBtn();
+        mBasketBtn.setSelected( status );
+    }
+
+
+    private void unSelectAllBtn(){
+        mCompanyBtn.setSelected( false );
+        mDishBtn.setSelected( false );
+        mHomeBtn.setSelected( false );
+        mBasketBtn.setSelected( false );
+        mProfileBtn.setSelected( false );
     }
 
 

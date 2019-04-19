@@ -5,13 +5,13 @@ import android.content.Intent;
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.model.MenuEntityModel;
+import com.edanyma.utils.ConvertUtils;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class BasketOrderManager {
 
-    public static final String BASKET_CONTENT = "com.edanyma.manager.BASKET_CONTENT_MODIFY";
 
     private static final BasketOrderManager BASKET_MANAGER = new BasketOrderManager();
 
@@ -34,12 +34,25 @@ public class BasketOrderManager {
                     entity.getWspType().equals( menuEntity.getWspType() ) ) {
                 entity.setCount( count );
                 exist = true;
+                break;
             }
         }
         if ( !exist ) {
-            menuEntity.setCount( count );
-            customerBasket.add( menuEntity );
+            MenuEntityModel basketEntity = ConvertUtils.cloneMenuEntity( menuEntity );
+            basketEntity.setCount( count );
+            customerBasket.add( basketEntity );
         }
+        sendMessageToActivity();
+    }
+
+    public static void removeEntityFromBasket( MenuEntityModel removeEntity ){
+        List<MenuEntityModel> newBasket = new LinkedList<>( );
+        for( MenuEntityModel entity : customerBasket){
+            if( !removeEntity.getId().equals( entity.getId() ) ){
+                newBasket.add( entity );
+            }
+        }
+        customerBasket = newBasket;
         sendMessageToActivity();
     }
 

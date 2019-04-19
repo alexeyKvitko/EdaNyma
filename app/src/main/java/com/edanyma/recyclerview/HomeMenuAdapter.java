@@ -1,14 +1,11 @@
 package com.edanyma.recyclerview;
 
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.model.HomeMenuModel;
 import com.edanyma.owncomponent.MainCardItem;

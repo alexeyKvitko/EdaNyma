@@ -57,12 +57,13 @@ public class ModalMessage extends RelativeLayout {
         mMessageTitle.setText( title );
         for( String text : texts ){
             TextView textView = new TextView( mActivity );
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.CENTER_HORIZONTAL;
             params.topMargin = (int) ConvertUtils.convertDpToPixel( 8 );
             params.leftMargin = (int) ConvertUtils.convertDpToPixel( 6 );
             params.rightMargin = (int) ConvertUtils.convertDpToPixel( 6 );
             textView.setLayoutParams(params);
+            textView.setGravity( Gravity.CENTER_HORIZONTAL );
             textView.setTypeface( AppConstants.ROBOTO_CONDENCED );
             textView.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 14 );
             textView.setTextColor( mActivity.getResources().getColor( R.color.grayTextColor ) );

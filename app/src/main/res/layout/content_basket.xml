@@ -17,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/fragment_margin_bottom"
-        android:background="@color/transparentToastBackground"
         app:layout_constraintTop_toBottomOf="@+id/mainHeaderId">
     </RelativeLayout>
 

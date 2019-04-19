@@ -54,6 +54,12 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        changeStatusProfileBtn( true );
+    }
+
+    @Override
     public void onSignInAction() {
         if ( mSign != null ){
             changeClientStatus();

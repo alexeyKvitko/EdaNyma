@@ -15,6 +15,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+    buildToolsVersion = '28.0.3'
 //    dataBinding {
 //        enabled = true
 //    }
@@ -30,8 +35,7 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'org.pojomatic:pojomatic:2.0.1'
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:+'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-//    implementation 'com.stone.vega.library:VegaLayoutManager:1.0.6'
 }

@@ -80,5 +80,9 @@ public class CompanyActivity extends BaseActivity implements ChooseCompanyFragme
         addReplaceFragment( ChooseCompanyFragment.newInstance( AppConstants.CUSTOM_FILTER ) );
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        changeStatusCompanyBtn( true );
+    }
 }

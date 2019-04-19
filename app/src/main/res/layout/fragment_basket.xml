@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/basketFragmentId"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    tools:context=".fragment.BasketFragment">
+    android:background="@android:color/transparent">
+    <RelativeLayout
+        android:id="@+id/shadowBasketLayoutId"
+        android:background="@color/transparentToastBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></RelativeLayout>
     <android.support.v7.widget.CardView
         android:id="@+id/basketBodyId"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_gravity="bottom"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="-12dp"
         card_view:cardCornerRadius="12dp"
@@ -33,7 +36,7 @@
                     android:layout_weight="1"
                     android:gravity="left"
                     android:textColor="@color/splashTextColor"
-                    android:textSize="18dp"
+                    android:textSize="22dp"
                     android:text="@string/nav_menu_basket"/>
                 <TextView
                     android:id="@+id/checkOutTitleId"
@@ -50,9 +53,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/grayTextColor"/>
-
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/basketRVId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
+
+
 
     </android.support.v7.widget.CardView>
 
-</RelativeLayout>
+</FrameLayout>

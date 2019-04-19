@@ -7,6 +7,7 @@ import com.edanyma.EdaNymaApp;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.CompanyLight;
 import com.edanyma.model.CompanyModel;
+import com.edanyma.model.MenuEntityModel;
 
 public abstract class ConvertUtils {
 
@@ -23,6 +24,34 @@ public abstract class ConvertUtils {
         company.setWeekdayWork( companyModel.getWeekdayWork() );
         company.setFavorite( companyModel.isFavorite() );
         return company;
+    }
+    
+    public static MenuEntityModel cloneMenuEntity( MenuEntityModel source ){
+        MenuEntityModel target = new MenuEntityModel();
+        target.setId( source.getId() );
+        target.setCompanyId( source.getCompanyId() );
+        target.setCompanyName( source.getCompanyName() );
+        target.setTypeId( source.getTypeId() );
+        target.setCategoryId( source.getCategoryId() );
+        target.setName( source.getName() );
+        target.setDisplayName( source.getDisplayName() );
+        target.setDescription( source.getDescription() );
+        target.setImageUrl( source.getImageUrl() );
+        target.setWeightOne( source.getWeightOne() );
+        target.setSizeOne( source.getSizeOne() );
+        target.setPriceOne( source.getPriceOne() );
+        target.setWeightTwo( source.getWeightTwo() );
+        target.setSizeTwo( source.getSizeTwo() );
+        target.setPriceTwo( source.getPriceTwo() );
+        target.setWeightThree( source.getWeightThree() );
+        target.setSizeThree( source.getSizeThree() );
+        target.setPriceThree( source.getPriceThree() );
+        target.setWeightFour( source.getWeightFour() );
+        target.setSizeFour( source.getSizeFour() );
+        target.setPriceFour( source.getPriceFour() );
+        target.setStatus( source.getStatus() );
+        target.setWspType( source.getWspType() );
+        return target;
     }
 
     public static float convertDpToPixel( float dp ){

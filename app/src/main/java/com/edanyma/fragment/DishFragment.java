@@ -144,7 +144,6 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
         }
     }
 
-
     @Override
     public void onPause() {
         super.onPause();

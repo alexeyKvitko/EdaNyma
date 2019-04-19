@@ -227,6 +227,7 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
     @Override
     protected void onResume() {
         super.onResume();
+        changeStatusHomeBtn( true );
         mPrevScrollState = AppConstants.FAKE_ID;
         mCurrentSlide = 0;
         changeSlideIcon( mCurrentSlide );

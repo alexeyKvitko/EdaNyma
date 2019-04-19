@@ -101,6 +101,7 @@
     <string name="splash_desc_two">Оформите Ваш заказ всего в несколько кликов!</string>
     <string name="splash_desc_three">Проведите уютный вечер дома с лучшими блюдами!</string>
     <string name="empty_basket_msg">Ваша корзина пуста</string>
-    <string name="check_out">Оформить заказ</string>
+    <string name="check_out">Оформить Заказ</string>
+    <string name="check_out_title">Ваш Заказ</string>
 
 </resources>

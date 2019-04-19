@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dishInfoContainerId"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparentToastBackground"
     tools:context=".fragment.DishInfoFragment">
+
     <android.support.v7.widget.CardView
         android:id="@+id/cardDishInfoImgId"
         android:layout_width="184dp"
@@ -17,12 +18,14 @@
         android:layout_marginRight="16dp"
         card_view:cardCornerRadius="8dp"
         card_view:cardElevation="8dp">
+
         <ImageView
             android:id="@+id/dishInfoImgId"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="4dp"/>
+            android:layout_margin="4dp" />
     </android.support.v7.widget.CardView>
+
     <android.support.v7.widget.CardView
         android:id="@+id/dishInfoCardId"
         android:layout_width="match_parent"
@@ -30,61 +33,66 @@
         android:layout_marginTop="62dp"
         card_view:cardCornerRadius="8dp"
         card_view:cardElevation="6dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="16dp">
+            android:layout_marginLeft="16dp"
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/dishInfoCompanyId"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:drawableLeft="@drawable/ic_restaurant_blue_18dp"
                 android:drawablePadding="4dp"
-                android:layout_marginTop="16dp"
-                android:maxLines="2"
                 android:ellipsize="end"
+                android:maxLines="2"
                 android:textColor="@color/grayTextColor"
-                android:textSize="15dp"/>
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/dishInfoKitchenId"
                 android:layout_width="140dp"
-                android:layout_marginTop="24dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:drawableLeft="@drawable/ic_room_service_outline_blue_18dp"
                 android:drawablePadding="4dp"
-                android:maxLines="2"
                 android:ellipsize="end"
+                android:maxLines="2"
                 android:textColor="@color/grayTextColor"
-                android:textSize="15dp"/>
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/dishInfoCategoryId"
-                android:drawableLeft="@drawable/ic_fastfood_blue_18dp"
-                android:drawablePadding="4dp"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:maxLines="2"
+                android:drawableLeft="@drawable/ic_fastfood_blue_18dp"
+                android:drawablePadding="4dp"
                 android:ellipsize="end"
+                android:maxLines="2"
                 android:textColor="@color/grayTextColor"
-                android:textSize="15dp"/>
+                android:textSize="15dp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="146dp"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/dishInfoTitleTextId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
+                android:gravity="center_horizontal"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="22dp" />
+
             <TextView
                 android:id="@+id/dishInfoDescId"
                 android:layout_width="wrap_content"
@@ -105,20 +113,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
-                    <LinearLayout style="@style/wspContainer"
-                        android:id="@+id/wspLayoutOneId">
+
+                    <LinearLayout
+                        android:id="@+id/wspLayoutOneId"
+                        style="@style/wspContainer">
 
                         <TextView
                             android:id="@+id/dishSizeOneId"
-                            style="@style/wspText"/>
+                            style="@style/wspText" />
 
                         <TextView
                             android:id="@+id/dishWeightOneId"
                             style="@style/wspText" />
                     </LinearLayout>
 
-                    <LinearLayout style="@style/wspContainer"
-                        android:id="@+id/wspLayoutTwoId">
+                    <LinearLayout
+                        android:id="@+id/wspLayoutTwoId"
+                        style="@style/wspContainer">
 
                         <TextView
                             android:id="@+id/dishSizeTwoId"
@@ -129,8 +140,9 @@
                             style="@style/wspText" />
                     </LinearLayout>
 
-                    <LinearLayout style="@style/wspContainer"
-                        android:id="@+id/wspLayoutThreeId">
+                    <LinearLayout
+                        android:id="@+id/wspLayoutThreeId"
+                        style="@style/wspContainer">
 
                         <TextView
                             android:id="@+id/dishSizeThreeId"
@@ -141,8 +153,9 @@
                             style="@style/wspText" />
                     </LinearLayout>
 
-                    <LinearLayout style="@style/wspContainer"
-                        android:id="@+id/wspLayoutFourId">
+                    <LinearLayout
+                        android:id="@+id/wspLayoutFourId"
+                        style="@style/wspContainer">
 
                         <TextView
                             android:id="@+id/dishSizeFourId"
@@ -159,16 +172,16 @@
                     android:layout_width="73dp"
                     android:layout_height="42dp"
                     android:background="@drawable/border_neon_r18"
-                    android:orientation="horizontal">
-                </LinearLayout>
+                    android:orientation="horizontal"></LinearLayout>
 
             </FrameLayout>
+
             <LinearLayout
                 android:id="@+id/dishBasketId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -179,10 +192,10 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_marginLeft="12dp"
                         android:id="@+id/dishPriceTextId"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
                         android:drawableLeft="@drawable/ic_currency_rub_black_18dp"
                         android:textColor="@color/blueNeon"
                         android:textSize="22dp" />
@@ -194,40 +207,46 @@
                         android:textColor="@color/blueNeon"
                         android:textSize="16dp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical">
+
                     <LinearLayout
                         android:layout_width="84dp"
                         android:layout_height="24dp"
-                        android:background="@drawable/border_disable_r18"
                         android:layout_marginLeft="8dp"
+                        android:background="@drawable/border_disable_r18"
                         android:orientation="horizontal">
+
                         <LinearLayout
                             android:id="@+id/removeDishCountId"
                             style="@style/entityCount">
+
                             <ImageView
-                                android:layout_height="18dp"
                                 android:layout_width="18dp"
+                                android:layout_height="18dp"
                                 android:layout_gravity="center"
-                                app:srcCompat="@drawable/ic_minus_blue_18dp"/>
+                                app:srcCompat="@drawable/ic_minus_blue_18dp" />
                         </LinearLayout>
 
                         <TextView
                             android:id="@+id/dishCountTextId"
                             style="@style/entityCount"
-                            android:textSize="18dp"
-                            android:text="1"/>
+                            android:text="1"
+                            android:textSize="18dp" />
+
                         <LinearLayout
                             android:id="@+id/addDishCountId"
                             style="@style/entityCount">
+
                             <ImageView
-                                android:layout_height="18dp"
                                 android:layout_width="18dp"
+                                android:layout_height="18dp"
                                 android:layout_gravity="center"
-                                app:srcCompat="@drawable/ic_plus_blue_18dp"/>
+                                app:srcCompat="@drawable/ic_plus_blue_18dp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -237,39 +256,42 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right">
+
                     <Button
                         android:id="@+id/addToBasketButtonId"
-                        android:elevation="6dp"
-                        android:background="@drawable/button_neon"
-                        android:textColor="@android:color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/button_neon"
+                        android:elevation="6dp"
                         android:paddingHorizontal="18dp"
-                        android:text="@string/add_to_basket"/>
+                        android:text="@string/add_to_basket"
+                        android:textColor="@android:color/white" />
                 </LinearLayout>
             </LinearLayout>
+
             <TextView
                 android:id="@+id/dishSumId"
                 style="@style/grayTextSmall"
-                android:layout_marginLeft="24dp"/>
+                android:layout_marginLeft="24dp" />
+
             <View
                 android:layout_width="match_parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="16dp"
-                android:background="@color/grayTextColor"/>
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/grayTextColor" />
 
             <TextView
                 android:id="@+id/dishInfоBackId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:textColor="@color/blueNeon"
-                android:text="@string/back_label"
                 android:layout_marginBottom="16dp"
+                android:gravity="center_horizontal"
+                android:text="@string/back_label"
+                android:textColor="@color/blueNeon"
                 android:textSize="14dp" />
 
         </LinearLayout>

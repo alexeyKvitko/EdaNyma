@@ -158,6 +158,12 @@ public class DishActivity extends BaseActivity implements DishFragment.OnDishAct
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        changeStatusDishBtn( true );
+    }
+
     public Integer getPrevCompanyId() {
         return mPrevCompanyId;
     }

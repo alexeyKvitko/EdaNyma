@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/checkOutEntityContainerId"
+    android:layout_width="match_parent"
+    android:layout_height="124dp">
+
+    <FrameLayout
+        android:id="@+id/checkOutCollapsedId"
+        android:layout_width="match_parent"
+        android:layout_height="124dp"
+        android:elevation="3dp">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="88dp"
+            android:layout_height="86dp"
+            android:layout_gravity="left|center_vertical"
+            card_view:cardCornerRadius="8dp"
+            card_view:cardElevation="7dp">
+
+            <ImageView
+                android:id="@+id/checkOutEntityImgId"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="8dp"
+            card_view:cardCornerRadius="8dp"
+            card_view:cardElevation="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/checkOutTitleTextId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="62dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="8dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="18dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="62dp"
+                    android:layout_marginTop="12dp">
+                <TextView
+                    android:id="@+id/checkOutWspId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:textColor="@color/grayTextColor"
+                    android:textSize="14dp" />
+                    <LinearLayout
+                        android:layout_width="84dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/border_disable_r18"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/removeDishCountId"
+                            style="@style/entityCount">
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_gravity="center"
+                                app:srcCompat="@drawable/ic_minus_blue_18dp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/dishCountTextId"
+                            style="@style/entityCount"
+                            android:text="1"
+                            android:textSize="18dp" />
+
+                        <LinearLayout
+                            android:id="@+id/addDishCountId"
+                            style="@style/entityCount">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_gravity="center"
+                                app:srcCompat="@drawable/ic_plus_blue_18dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/checkOutPriceTextId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_currency_rub_teal_18dp"
+                        android:textColor="@color/tealColor"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=".00"
+                        android:textColor="@color/tealColor"
+                        android:textSize="12dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+    </FrameLayout>
+
+</FrameLayout>

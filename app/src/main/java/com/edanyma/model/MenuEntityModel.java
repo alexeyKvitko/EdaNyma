@@ -1,6 +1,8 @@
 package com.edanyma.model;
 
 
+import com.edanyma.AppConstants;
+
 import org.pojomatic.Pojomatic;
 import org.pojomatic.annotations.AutoProperty;
 
@@ -224,6 +226,27 @@ public class MenuEntityModel implements Serializable {
 
     public void setWspType( String wspType ) {
         this.wspType = wspType;
+    }
+
+    public Integer getActualPrice(){
+        Integer price = 0;
+        if( this.wspType != null ){
+            switch ( this.wspType ){
+                case AppConstants.SEL_TYPE_ONE :
+                    price = Integer.valueOf( this.priceOne );
+                    break;
+                case AppConstants.SEL_TYPE_TWO :
+                    price = Integer.valueOf( this.priceTwo );
+                    break;
+                case AppConstants.SEL_TYPE_THREE :
+                    price = Integer.valueOf( this.priceThree );
+                    break;
+                case AppConstants.SEL_TYPE_FOUR :
+                    price = Integer.valueOf( this.priceFour );
+                    break;
+            }
+        }
+        return price;
     }
 
     @Override public boolean equals( Object o) {
