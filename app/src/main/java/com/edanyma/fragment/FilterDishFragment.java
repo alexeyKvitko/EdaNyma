@@ -86,11 +86,8 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         final RelativeLayout decorLayout = getView().findViewById( R.id.snapShotDishLayoutId );
-        decorLayout.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
+        decorLayout.setOnClickListener( ( View view ) -> {
                 backAnimateSnapShotLayout( decorLayout, false );
-            }
         } );
         mSelectedDishId = ( ( DishActivity ) getActivity() ).getSelectedDishId();
         mSelectedCompanyId = ( ( DishActivity ) getActivity() ).getSelectedCompanyId();
@@ -111,12 +108,9 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
         mScrollView = getView().findViewById( R.id.filterAllDishesScrollId );
         mScrollView.setVisibility( View.VISIBLE );
         animateDecorLayout( decorLayout );
-        getView().findViewById( R.id.filterAllDishesBackBtnId ).setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
+        getView().findViewById( R.id.filterAllDishesBackBtnId ).setOnClickListener( (View view) -> {
                 AppUtils.btnClickAnimation( view );
                 backAnimateSnapShotLayout( decorLayout, false );
-            }
         } );
     }
 

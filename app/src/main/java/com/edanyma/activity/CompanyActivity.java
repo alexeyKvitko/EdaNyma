@@ -31,12 +31,9 @@ public class CompanyActivity extends BaseActivity implements ChooseCompanyFragme
     private void initialize(){
         initBaseActivity( new ActivityState( AppConstants.COMPANY_BOTTOM_INDEX ) );
         ( ( ImageButton ) findViewById( R.id.navButtonId ) ).setImageDrawable( getResources().getDrawable( R.drawable.ic_chevron_left_black_24dp ) );
-        findViewById( R.id.navButtonId ).setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
+        findViewById( R.id.navButtonId ).setOnClickListener( (View view) -> {
                 AppUtils.clickAnimation( view );
                 onBackPressed();
-            }
         } );
         addReplaceFragment( ChooseCompanyFragment.newInstance(
                 this.getIntent().getStringExtra( AppConstants.COMPANY_FILTER ) ) );

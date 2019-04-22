@@ -163,11 +163,8 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
         View filterNavBtn = ( ( BaseActivity ) getActivity() ).getHeader()
                 .findViewById( R.id.dishFilterNavButtonId );
         filterNavBtn.setVisibility( View.VISIBLE );
-        filterNavBtn.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
+        filterNavBtn.setOnClickListener( (View view) -> {
                 onFilterButtonClick();
-            }
         } );
         if ( context instanceof OnDishActionListener ) {
             mListener = ( OnDishActionListener ) context;

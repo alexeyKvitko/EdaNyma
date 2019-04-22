@@ -57,12 +57,9 @@ public class CityActivity extends BaseActivity implements CityAdapter.CardClickL
         initBaseActivity( new ActivityState( this.getIntent().getIntExtra( AppConstants.PREV_NAV_STATE, AppConstants.FAKE_ID ) ) );
         ( ( TextView ) findViewById( R.id.cityTitleId ) ).setTypeface( AppConstants.B52 );
         ( ( ImageButton ) findViewById( R.id.navButtonId ) ).setImageDrawable( getResources().getDrawable( R.drawable.ic_chevron_left_black_24dp ) );
-        findViewById( R.id.navButtonId ).setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
+        findViewById( R.id.navButtonId ).setOnClickListener( (View view) -> {
                 AppUtils.clickAnimation( view );
                 onBackPressed();
-            }
         } );
     }
 

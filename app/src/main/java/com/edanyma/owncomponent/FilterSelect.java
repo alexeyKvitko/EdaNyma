@@ -55,11 +55,8 @@ public class FilterSelect extends LinearLayout implements FilterButton.OnFilterB
         mTitleTextView = this.findViewById( id );
         mTitleTextView.setText( titleText );
         mTitleTextView.setTypeface( AppConstants.ROBOTO_BLACK );
-        mTitleTextView.setOnClickListener( new OnClickListener() {
-            @Override
-            public void onClick( View view ) {
-                expandFilter( view );
-            }
+        mTitleTextView.setOnClickListener( ( View view ) -> {
+            expandFilter( view );
         } );
     }
 
@@ -88,18 +85,15 @@ public class FilterSelect extends LinearLayout implements FilterButton.OnFilterB
             mShowAll.setVisibility( View.GONE );
         } else {
             mShowAll.setVisibility( View.VISIBLE );
-            mShowAll.setOnClickListener( new OnClickListener() {
-                                             @Override
-                                             public void onClick( View view ) {
-                                                 expandFilter( view );
-                                             }
-                                         }
+            mShowAll.setOnClickListener( ( View view ) -> {
+                        expandFilter( view );
+                    }
             );
         }
         showFilters( mDefButtonCount );
     }
 
-    public void showFilters( int buttonCount) {
+    public void showFilters( int buttonCount ) {
         FlexboxLayout buttonContainer = findViewById( R.id.filterButtonsContainerId );
         buttonContainer.removeAllViewsInLayout();
         for ( int i = 0; i < buttonCount; i++ ) {
@@ -109,7 +103,7 @@ public class FilterSelect extends LinearLayout implements FilterButton.OnFilterB
             buttonContainer.addView( filterButton );
         }
         int showAllId = R.string.show_all_kitchen;
-        if ( AppConstants.CLOSE_DISH_FILTER_BUTTON == mDefButtonCount ){
+        if ( AppConstants.CLOSE_DISH_FILTER_BUTTON == mDefButtonCount ) {
             showAllId = R.string.show_all_dish;
         }
         if ( !mHideShowAll ) {
@@ -136,7 +130,7 @@ public class FilterSelect extends LinearLayout implements FilterButton.OnFilterB
         this.mSelectedIds = new LinkedList<>();
         mFilterState = AppConstants.CLOSE;
         showFilters( mDefButtonCount );
-        mTitleTextView.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.ic_menu_down_black_18dp , 0 );
+        mTitleTextView.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.ic_menu_down_black_18dp, 0 );
     }
 
     @Override

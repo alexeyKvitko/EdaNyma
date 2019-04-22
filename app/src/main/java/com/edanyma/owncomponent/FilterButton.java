@@ -22,33 +22,30 @@ public class FilterButton extends LinearLayout {
 
     public FilterButton( Context context ) {
         super( context );
-        inflate(context, R.layout.filter_button, this);
+        inflate( context, R.layout.filter_button, this );
     }
 
-    public void setOnFilterButtonClickListener(OnFilterButtonClickListener listener ){
+    public void setOnFilterButtonClickListener( OnFilterButtonClickListener listener ) {
         mListener = listener;
     }
 
-    public void setFilterButton( final DictionaryModel filterButton, boolean selected ){
-        final TextView buttonTextView =  this.findViewById( R.id.filterButtonId );
+    public void setFilterButton( final DictionaryModel filterButton, boolean selected ) {
+        final TextView buttonTextView = this.findViewById( R.id.filterButtonId );
         mDefBackground = buttonTextView.getBackground();
         mFilterButton = filterButton;
         mButtonSelect = false;
         buttonTextView.setText( mFilterButton.getDisplayName() );
         buttonTextView.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        buttonTextView.setOnClickListener( new OnClickListener() {
-            @Override
-            public void onClick( View view ) {
-                AppUtils.clickAnimation( view );
-                mButtonSelect = !mButtonSelect;
-                int backgroundId =  mButtonSelect ? R.drawable.border_neon_radius
-                                                                : R.drawable.border_disable_radius;
-                buttonTextView.setBackground( EdaNymaApp.getAppContext()
-                                                    .getResources().getDrawable( backgroundId ) );
-                mListener.onFilterButtonClick( filterButton.getId() );
-            }
+        buttonTextView.setOnClickListener( ( View view ) -> {
+            AppUtils.clickAnimation( view );
+            mButtonSelect = !mButtonSelect;
+            int backgroundId = mButtonSelect ? R.drawable.border_neon_radius
+                    : R.drawable.border_disable_radius;
+            buttonTextView.setBackground( EdaNymaApp.getAppContext()
+                    .getResources().getDrawable( backgroundId ) );
+            mListener.onFilterButtonClick( filterButton.getId() );
         } );
-        if( selected ){
+        if ( selected ) {
             mButtonSelect = true;
             buttonTextView.setBackground( EdaNymaApp.getAppContext()
                     .getResources().getDrawable( R.drawable.border_neon_radius ) );

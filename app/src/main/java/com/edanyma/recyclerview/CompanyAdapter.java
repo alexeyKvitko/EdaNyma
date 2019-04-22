@@ -82,13 +82,10 @@ public class CompanyAdapter extends CommonBaseAdapter< CompanyLight > {
             сompanyWork.setTypeface( AppConstants.ROBOTO_CONDENCED, Typeface.BOLD );
             сompanyWorkWeekend.setTypeface( AppConstants.ROBOTO_CONDENCED, Typeface.BOLD );
 
-            companyCard.setOnClickListener( new View.OnClickListener() {
-                @Override
-                public void onClick( View view ) {
+            companyCard.setOnClickListener( (View view) -> {
                     itemView.findViewById( R.id.cardCompanyImgId ).startAnimation(
                             AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.bounce) );
                     CompanyDataObjectHolder.super.onClick( view );
-                }
             } );
         }
     }

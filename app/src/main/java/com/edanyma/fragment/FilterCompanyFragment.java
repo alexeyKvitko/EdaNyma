@@ -71,20 +71,14 @@ public class FilterCompanyFragment extends Fragment {
 
         final TextView clearFilter = getView().findViewById( R.id.clearFilterButtonId );
         clearFilter.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        clearFilter.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
+        clearFilter.setOnClickListener( (View view) -> {
                 clearFilters( view );
-            }
         } );
 
         Button applyButton =  getView().findViewById( R.id.applyFilterButtonId );
         applyButton.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        applyButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
+        applyButton.setOnClickListener( (View view) -> {
                 applyFilters();
-            }
         } );
 
         addCategoriesFilter( false );

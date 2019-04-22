@@ -54,11 +54,8 @@ public class CompanyActionAdapter extends CommonBaseAdapter< CompanyActionModel 
             actionImage = itemView.findViewById( R.id.actionImageId );
             actionCompany = itemView.findViewById( R.id.actionCompanyId );
             actionCompany.setTypeface( AppConstants.B52 );
-            actionCard.setOnClickListener( new View.OnClickListener() {
-                @Override
-                public void onClick( View view ) {
+            actionCard.setOnClickListener( (View view) -> {
                     actionCard.startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.bounce) );
-                }
             } );
         }
     }

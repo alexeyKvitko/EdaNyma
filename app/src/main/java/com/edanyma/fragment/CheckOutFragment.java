@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.manager.BasketOrderManager;
+import com.edanyma.model.MenuEntityModel;
 import com.edanyma.owncomponent.CheckOutEntity;
 
 
-public class CheckOutFragment extends BaseFragment implements View.OnClickListener {
+public class CheckOutFragment extends BaseFragment implements View.OnClickListener,
+    CheckOutEntity.OnRemoveFromBasketListener{
 
     private OnCheckOutFragmentListener mListener;
 
@@ -37,6 +39,7 @@ public class CheckOutFragment extends BaseFragment implements View.OnClickListen
         getView().findViewById( R.id.checkOutBackBtnId ).setOnClickListener( this );
         CheckOutEntity checkOutEntity = getView().findViewById( R.id.checkOutEntityId );
         checkOutEntity.setDishEntity( BasketOrderManager.getInstance().getBasket().get(0) );
+        checkOutEntity.setOnRemoveFromBasketListener( this );
     }
 
     @Override
@@ -75,6 +78,11 @@ public class CheckOutFragment extends BaseFragment implements View.OnClickListen
                 getActivity().onBackPressed();
                 break;
         }
+    }
+
+    @Override
+    public void onRemoveFromBasket( MenuEntityModel dishEntity ) {
+        BasketOrderManager.removeEntityFromBasket( dishEntity );
     }
 
 

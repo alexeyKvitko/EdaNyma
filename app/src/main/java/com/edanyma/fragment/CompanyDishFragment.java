@@ -94,8 +94,8 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
                 mCompanyDish.getCompanyModel().getDisplayName() );
         companyTitle.setOnClickListener( this );
         getView().findViewById( R.id.companyInfoIconId ).setOnClickListener( this );
-        int favVisibility = GlobalManager.getInstance().isFavorite( Integer.valueOf( mCompanyDish.getCompanyModel().getId()) )
-                                                        ? View.VISIBLE : View.GONE;
+        int favVisibility = GlobalManager.getInstance().isFavorite( Integer.valueOf( mCompanyDish.getCompanyModel().getId() ) )
+                ? View.VISIBLE : View.GONE;
         getView().findViewById( R.id.companyFavIconId ).setVisibility( favVisibility );
         PicassoClient.downloadImage( getActivity(), GlobalManager.getInstance().getBootstrapModel()
                 .getStaticUrl() + String.format( AppConstants.STATIC_COMPANY_LOGO,
@@ -128,7 +128,7 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
         mExpandLine = getView().findViewById( R.id.expandLineId );
         mExpandLine.setOnClickListener( this );
 
-            }
+    }
 
     private void initRecView() {
         if ( mDishRecView == null ) {
@@ -224,11 +224,8 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
         View filterNavBtn = ( ( BaseActivity ) getActivity() ).getHeader()
                 .findViewById( R.id.dishFilterNavButtonId );
         filterNavBtn.setVisibility( View.VISIBLE );
-        filterNavBtn.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
-                onFilterButtonClick();
-            }
+        filterNavBtn.setOnClickListener( ( View view ) -> {
+            onFilterButtonClick();
         } );
         if ( context instanceof OnDishActionListener ) {
             mListener = ( OnDishActionListener ) context;

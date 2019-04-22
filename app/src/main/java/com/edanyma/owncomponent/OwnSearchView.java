@@ -49,33 +49,31 @@ public class OwnSearchView extends LinearLayout {
         mListener = listener;
     }
 
-    private void initialize(String queryHint) {
+    private void initialize( String queryHint ) {
         mSearchInput = this.findViewById( R.id.searchInputId );
         mSearchInput.setQueryHint( queryHint );
         EditText searchEditText = mSearchInput.findViewById( android.support.v7.appcompat.R.id.search_src_text );
         searchEditText.setTypeface( AppConstants.ROBOTO_CONDENCED );
         searchEditText.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 14 );
         searchEditText.setTextColor( EdaNymaApp.getAppContext().getResources().getColor( R.color.splashTextColor ) );
-        findViewById( R.id.ownFilterId ).setOnClickListener( new OnClickListener() {
-            @Override
-            public void onClick( View view ) {
-                AppUtils.clickAnimation( view );
-                if ( mListener != null ) {
-                    mListener.onFilterButtonClick();
-                }
+        findViewById( R.id.ownFilterId ).setOnClickListener( ( View view ) -> {
+            AppUtils.clickAnimation( view );
+            if ( mListener != null ) {
+                mListener.onFilterButtonClick();
             }
         } );
         mSearchInput.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit( String query ) {
-                if( mListener != null ){
+                if ( mListener != null ) {
                     mListener.onApplySearch( query );
                 }
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange( String newText ) {
-                if( newText == null || newText.length() == 0 ){
+                if ( newText == null || newText.length() == 0 ) {
                     mListener.onApplySearch( null );
                 }
                 return false;
@@ -86,6 +84,7 @@ public class OwnSearchView extends LinearLayout {
 
     public interface OwnSearchViewListener {
         void onApplySearch( String query );
+
         void onFilterButtonClick();
     }
 

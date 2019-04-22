@@ -62,11 +62,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         super.onActivityCreated( savedInstanceState );
         final RelativeLayout snapshotLayout = getView().findViewById( R.id.snapShotLayoutId );
         snapshotLayout.setBackground( Drawable.createFromPath( AppUtils.getSnapshotPath() ) );
-        snapshotLayout.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
+        snapshotLayout.setOnClickListener( (View view) -> {
                 backAnimateSnapShotLayout( snapshotLayout );
-            }
         } );
         TextView signIn = initTextView( R.id.profileSignInId, AppConstants.ROBOTO_CONDENCED );
         signIn.setOnClickListener( this );
@@ -83,12 +80,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
         animateSnapShotLayout( snapshotLayout );
         setMainContainerVisibility( View.GONE );
-        getView().findViewById( R.id.profileBackBtnId ).setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
+        getView().findViewById( R.id.profileBackBtnId ).setOnClickListener( (View view) -> {
                 AppUtils.clickAnimation( view );
                 backAnimateSnapShotLayout( snapshotLayout );
-            }
         } );
         if( GlobalManager.getInstance().isSignedIn() ){
             swithVisibilityOnSignIn( View.GONE , View.VISIBLE );

@@ -54,11 +54,8 @@ public class PersonalAreaFragment extends Fragment {
         ( ( TextView ) getView().findViewById( R.id.personalMenuBonusId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
         final TextView signOut = getView().findViewById( R.id.signOutId );
         signOut.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        signOut.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
+        signOut.setOnClickListener( (View view) -> {
                 signOutClick( view );
-            }
         } );
 
         TextView avatarAuth = getView().findViewById( R.id.avatarAuthId );

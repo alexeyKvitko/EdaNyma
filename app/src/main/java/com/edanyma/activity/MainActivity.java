@@ -67,13 +67,10 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         initBaseActivity( new ActivityState( AppConstants.HOME_BOTTOM_INDEX ) );
         final MainActivity me = this;
         mProfileBtn = findViewById( R.id.navButtonId );
-        mProfileBtn.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick( View view ) {
+        mProfileBtn.setOnClickListener( (View view) -> {
                 Animation rotate = AnimationUtils.loadAnimation( me, R.anim.icon_rotation );
                 view.startAnimation( rotate );
                 PixelShot.of( findViewById( R.id.contentMainLayoutId ) ).setResultListener( me ).save();
-            }
         } );
         mContext = this;
         List< CompanyActionModel > companyActionModels = GlobalManager.getInstance().getBootstrapModel()
