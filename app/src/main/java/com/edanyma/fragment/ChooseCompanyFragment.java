@@ -268,7 +268,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
             mListener = ( OnCompanyChosenListener ) context;
         } else {
             throw new RuntimeException( context.toString()
-                    + " must implement OnFragmentInteractionListener" );
+                    + " must implement OnChooseAddressOnMap" );
         }
     }
 

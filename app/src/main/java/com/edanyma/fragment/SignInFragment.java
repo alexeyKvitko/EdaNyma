@@ -1,16 +1,11 @@
 package com.edanyma.fragment;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.NavUtils;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 
-public class SignInFragment extends Fragment implements View.OnClickListener {
+public class SignInFragment extends BaseFragment implements View.OnClickListener {
 
     private final String TAG = "SignInFragment";
 
@@ -66,9 +61,9 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
-        ( ( TextView ) getView().findViewById( R.id.loginTitleId ) ).setTypeface( AppConstants.B52 );
-        ( ( TextView ) getView().findViewById( R.id.otherLoginId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
-        ( ( TextView ) getView().findViewById( R.id.notSignUpId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.loginTitleId, AppConstants.B52  );
+        initTextView( R.id.otherLoginId, AppConstants.ROBOTO_CONDENCED  );
+        initTextView( R.id.notSignUpId, AppConstants.ROBOTO_CONDENCED  );
         ( (TextInputLayout)getView().findViewById( R.id.loginTextLayoutId )).setTypeface( AppConstants.ROBOTO_CONDENCED );
         ( (TextInputLayout)getView().findViewById( R.id.passwordTextLayoutId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
 
@@ -76,12 +71,8 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         signButton.setTypeface( AppConstants.SANDORA );
         signButton.setOnClickListener( this );
 
-        TextView forgotPassword = getView().findViewById( R.id.forgotPasswordId );
-        forgotPassword.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        forgotPassword.setOnClickListener( this );
-
-        mSignUpView = getView().findViewById( R.id.signUpId );
-        mSignUpView.setTypeface( AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.forgotPasswordId, AppConstants.ROBOTO_CONDENCED ).setOnClickListener( this );
+        mSignUpView = initTextView(  R.id.signUpId , AppConstants.ROBOTO_CONDENCED );
         mSignUpView.setOnClickListener( this );
 
 

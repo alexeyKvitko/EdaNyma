@@ -1,20 +1,17 @@
 package com.edanyma.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatEditText;
 import android.telephony.SmsManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -30,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 
-public class SignUpFragment extends Fragment implements View.OnClickListener, View.OnFocusChangeListener, View.OnKeyListener {
+public class SignUpFragment extends BaseFragment implements View.OnClickListener, View.OnFocusChangeListener, View.OnKeyListener {
 
     private final String TAG = "SignUpFragment";
 
@@ -95,16 +92,16 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
-        ( ( TextView ) getView().findViewById( R.id.signUpTitleId ) ).setTypeface( AppConstants.B52 );
-        ( ( TextView ) getView().findViewById( R.id.confirmCodeTitleId ) ).setTypeface( AppConstants.B52 );
-        ( ( TextInputLayout ) getView().findViewById( R.id.signUpTextLayoutId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
-        ( ( TextInputLayout ) getView().findViewById( R.id.signUpPasswordLayoutId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
-        ( ( TextInputLayout ) getView().findViewById( R.id.signUpConfirmLayoutId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
-        ( ( TextView ) getView().findViewById( R.id.otherSignInId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
-        ( ( TextView ) getView().findViewById( R.id.sendConfirmCode ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
-        ( ( TextView ) getView().findViewById( R.id.resendCodeLabelId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
-        ( ( TextView ) getView().findViewById( R.id.successTopId ) ).setTypeface( AppConstants.B52 );
-        ( ( TextView ) getView().findViewById( R.id.successBottomId ) ).setTypeface( AppConstants.B52 );
+        initTextView( R.id.signUpTitleId , AppConstants.B52 );
+        initTextView( R.id.confirmCodeTitleId , AppConstants.B52 );
+        initTextInputLayout( R.id.signUpTextLayoutId , AppConstants.ROBOTO_CONDENCED );
+        initTextInputLayout( R.id.signUpPasswordLayoutId, AppConstants.ROBOTO_CONDENCED );
+        initTextInputLayout( R.id.signUpConfirmLayoutId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.otherSignInId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.sendConfirmCode, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.resendCodeLabelId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.successTopId, AppConstants.B52 );
+        initTextView( R.id.successBottomId, AppConstants.B52 );
         getView().findViewById( R.id.resendCodeLabelId ).setOnClickListener( this );
 
         mPasswordErrorView = getView().findViewById( R.id.confirmErrorFieldId );
@@ -122,17 +119,16 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Vi
         mSignInView.setOnClickListener( this );
 
 
-        mSignUpAuth = getView().findViewById( R.id.signUpAuthId );
-        mPassword = getView().findViewById( R.id.signUpPasswordId );
-        mConfirmPassword = getView().findViewById( R.id.signUpConfirmId );
-        mSignUpAuth.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        mPassword.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        mConfirmPassword.setTypeface( AppConstants.ROBOTO_CONDENCED );
+        mSignUpAuth = initEditText( R.id.signUpAuthId, AppConstants.ROBOTO_CONDENCED );
+        mPassword = initEditText( R.id.signUpPasswordId, AppConstants.ROBOTO_CONDENCED );
+        mConfirmPassword = initEditText( R.id.signUpConfirmId, AppConstants.ROBOTO_CONDENCED );
 
-        mDigitOne = getView().findViewById( R.id.confirmDigitOneId );
-        mDigitTwo = getView().findViewById( R.id.confirmDigitTwoId );
-        mDigitThree = getView().findViewById( R.id.confirmDigitThreeId );
-        mDigitFour = getView().findViewById( R.id.confirmDigitFourId );
+
+
+        mDigitOne = initEditText( R.id.confirmDigitOneId );
+        mDigitTwo = initEditText( R.id.confirmDigitTwoId );
+        mDigitThree = initEditText( R.id.confirmDigitThreeId );
+        mDigitFour = initEditText( R.id.confirmDigitFourId );
 
         mDigitOne.setOnFocusChangeListener( this );
         mDigitOne.setOnKeyListener( this );

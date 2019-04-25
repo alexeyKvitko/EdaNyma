@@ -26,6 +26,7 @@
     <string name="login_title">Вход</string>
     <string name="fogot_password">Забыли пароль ?</string>
     <string name="prompt_email"><font size="14">Ваш телефон или e-mail</font></string>
+    <string name="prompt_phone"><font size="14">Ваш телефон</font></string>
     <string name="prompt_password"><font size="14">Введите пароль</font></string>
     <string name="confirm_password"><font size="14">Подтвердите пароль</font></string>
     <string name="new_password"><font size="14">Новый пароль</font></string>
@@ -61,6 +62,7 @@
     <string name="not_available">Not Avilable</string>
     <string name="all_company_label">Все заведения</string>
     <string name="filter_company_label">Заведения</string>
+    <string name="prompt_name">Ваше имя</string>
 
     <string name="filter_dish">Блюда</string>
     <string name="filter_kitchen">Кухни</string>
@@ -103,5 +105,7 @@
     <string name="empty_basket_msg">Ваша корзина пуста</string>
     <string name="check_out">Оформить Заказ</string>
     <string name="check_out_title">Ваш Заказ</string>
+    <string name="contact_info_title">Контактная информация</string>
+    <string name="delivery_address">Адрес Доставки</string>
 
 </resources>

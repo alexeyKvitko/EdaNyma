@@ -1,40 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/checkOutFragmentId"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_background_light">
+
     <ImageView
         android:id="@+id/checkOutBackBtnId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|left"
-        app:srcCompat="@drawable/filter_back_black_btn"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="48dp"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/checkOutLabelId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/splashTextColor"
-            android:layout_marginLeft="12dp"
-            android:textSize="24dp"
-            android:text="@string/check_out"/>
+        app:srcCompat="@drawable/filter_back_black_btn" />
 
-        <com.edanyma.owncomponent.CheckOutEntity
-            android:id="@+id/checkOutEntityId"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginRight="16dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/checkOutLabelId"
+                    style="@style/splashText"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="12dp"
+                    android:text="@string/check_out_title" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginRight="12dp"
+                    android:layout_weight="1"
+                    android:gravity="right|bottom"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/checkOutCommonSumId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_currency_rub_black_18dp"
+                        android:textColor="@color/blueNeon"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=".00"
+                        android:textColor="@color/blueNeon"
+                        android:textSize="16dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/checkOutDishContainerId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="@color/grayTextColor"/>
+
+            <TextView
+                android:id="@+id/contactInfoTitleId"
+                style="@style/splashText"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/contact_info_title"
+                android:textSize="24dp" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/checkOutPersonTextLayoutId"
+                style="@style/AppInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:hint="@string/prompt_name"
+                app:errorEnabled="false"
+                app:errorTextAppearance="@style/errorText">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/checkOutPersonId"
+                    style="@style/AppEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/editTextTheme" />
+
+                <TextView
+                    android:id="@+id/checkOutPersonErrorId"
+                    style="@style/errorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/error_required_field"
+                    android:visibility="gone" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/checkOutPhoneLayoutId"
+                style="@style/AppInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:hint="@string/prompt_phone"
+                app:errorEnabled="false"
+                app:errorTextAppearance="@style/errorText">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/checkOutPhoneId"
+                    style="@style/AppEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789+"
+                    android:inputType="phone"
+                    android:theme="@style/editTextTheme" />
+
+                <TextView
+                    android:id="@+id/checkOutPhoneErrorId"
+                    style="@style/errorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/error_required_field"
+                    android:visibility="gone" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/deliveryAddressTitleId"
+                style="@style/splashText"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/delivery_address"
+                android:textSize="24dp" />
+
+          <android.support.design.widget.TextInputLayout
+            android:id="@+id/checkOutCityTextLayoutId"
+            style="@style/AppInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"></com.edanyma.owncomponent.CheckOutEntity>
-    </LinearLayout>
+            android:layout_marginHorizontal="6dp"
+            android:hint="Город"
+            app:errorEnabled="false"
+            app:errorTextAppearance="@style/errorText">
 
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/checkOutCityId"
+                style="@style/AppEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/editTextTheme" />
+
+            <TextView
+                android:id="@+id/checkOutCityErrorId"
+                style="@style/errorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/error_required_field"
+                android:visibility="gone" />
+        </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/checkOutStreeTextLayoutId"
+                style="@style/AppInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:hint="Улица"
+                app:errorEnabled="false"
+                app:errorTextAppearance="@style/errorText">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/checkOutStreetId"
+                    style="@style/AppEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/editTextTheme" />
+
+                <TextView
+                    android:id="@+id/checkOutStreetErrorId"
+                    style="@style/errorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/error_required_field"
+                    android:visibility="gone" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/checkOutHouseTextLayoutId"
+                style="@style/AppInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:layout_marginBottom="24dp"
+                android:hint="Дом"
+                app:errorEnabled="false"
+                app:errorTextAppearance="@style/errorText">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/checkOutHouseId"
+                    style="@style/AppEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/editTextTheme" />
+
+                <TextView
+                    android:id="@+id/checkOutHouseErrorId"
+                    style="@style/errorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/error_required_field"
+                    android:visibility="gone" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
 
 
 </FrameLayout>

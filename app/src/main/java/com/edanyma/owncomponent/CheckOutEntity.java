@@ -36,8 +36,14 @@ public class CheckOutEntity extends FrameLayout implements View.OnClickListener 
     private TextView mEntityPrice;
     private TextView mEntityCount;
     private TextView mEntitySum;
+    private CompanyTotalView mCompanyTotal;
 
     private MenuEntityModel mDishEntity;
+    private boolean mTrashOpen;
+
+    private Integer mPrevSum;
+    private Integer mCurrentSum;
+
 
     public CheckOutEntity( Context context ) {
         super( context );
@@ -69,28 +75,32 @@ public class CheckOutEntity extends FrameLayout implements View.OnClickListener 
 
         findViewById( R.id.removeDishCountId ).setOnClickListener( this );
         findViewById( R.id.addDishCountId ).setOnClickListener( this );
+        findViewById( R.id.checkOutCardId ).setOnClickListener( this );
 
         findViewById( R.id.checkOutRemoveDishId ).setOnClickListener(
-                (View view) -> {
+                ( View view ) -> {
                     if ( mListener != null ) {
                         AppUtils.clickAnimation( view );
                         mListener.onRemoveFromBasket( mDishEntity );
                     }
                 }
         );
+        mTrashOpen = false;
     }
 
-    public void setOnRemoveFromBasketListener( OnRemoveFromBasketListener listener ){
+    public void setOnRemoveFromBasketListener( OnRemoveFromBasketListener listener ) {
         mListener = listener;
     }
 
-    public void setDishEntity( MenuEntityModel dishEntity ) {
+    public void setDishEntity( MenuEntityModel dishEntity, CompanyTotalView companyTotal ) {
         this.mDishEntity = dishEntity;
+        this.mCompanyTotal = companyTotal;
         this.setEntityImage( dishEntity.getImageUrl() );
         this.setEntityTitle( dishEntity.getDisplayName() );
         this.setEntityWSP();
         this.setEntityPrice( dishEntity.getActualPrice() );
         this.setEntityCount( dishEntity.getCount() );
+        this.mCurrentSum = mDishEntity.getActualPrice() * mDishEntity.getCount();
         this.setEntitySum();
     }
 
@@ -99,8 +109,14 @@ public class CheckOutEntity extends FrameLayout implements View.OnClickListener 
     }
 
     public void setEntitySum() {
-        Integer sum = mDishEntity.getActualPrice() * mDishEntity.getCount();
-        this.mEntitySum.setText( sum.toString() );
+        mPrevSum = mCurrentSum;
+        mCurrentSum = mDishEntity.getActualPrice() * mDishEntity.getCount();
+        this.mEntitySum.setText( mCurrentSum.toString() );
+        int delta = mCurrentSum - mPrevSum;
+        this.mCompanyTotal.changeCompanyTotal( delta );
+        if ( mListener != null ){
+            mListener.onChangeEntityCount( delta );
+        }
     }
 
     public void setEntityCount( Integer count ) {
@@ -165,20 +181,29 @@ public class CheckOutEntity extends FrameLayout implements View.OnClickListener 
 
     @Override
     public void onClick( View view ) {
-        AppUtils.clickAnimation( view );
         Integer count = mDishEntity.getCount();
         switch ( view.getId() ) {
             case R.id.removeDishCountId:
+                AppUtils.clickAnimation( view );
                 count--;
-                if ( count == 0 ) {
+                if ( count == 0 && !mTrashOpen ) {
                     showTrashIcon( 0, TRASH_MAX_MARGIN );
+                    mTrashOpen = true;
                 }
                 count = count < 1 ? 1 : count;
                 break;
             case R.id.addDishCountId:
+                AppUtils.clickAnimation( view );
                 count++;
-                if ( count == 2 ) {
+                if ( count == 2 && mTrashOpen ) {
                     showTrashIcon( TRASH_MAX_MARGIN, 0 );
+                    mTrashOpen = false;
+                }
+                break;
+            case R.id.checkOutCardId :
+                if( mTrashOpen ){
+                    showTrashIcon( TRASH_MAX_MARGIN, 0 );
+                    mTrashOpen = false;
                 }
                 break;
         }
@@ -192,5 +217,6 @@ public class CheckOutEntity extends FrameLayout implements View.OnClickListener 
 
     public interface OnRemoveFromBasketListener {
         void onRemoveFromBasket( MenuEntityModel dishEntity );
+        void onChangeEntityCount( Integer delta );
     }
 }

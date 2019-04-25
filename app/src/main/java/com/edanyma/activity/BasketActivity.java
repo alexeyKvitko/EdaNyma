@@ -1,6 +1,7 @@
 package com.edanyma.activity;
 
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,11 +11,13 @@ import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.fragment.BasketFragment;
 import com.edanyma.fragment.CheckOutFragment;
+import com.edanyma.fragment.MapFragment;
+import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.utils.AppUtils;
 
 public class BasketActivity extends BaseActivity implements BasketFragment.OnBasketCheckOutListener,
-                                                CheckOutFragment.OnCheckOutFragmentListener{
+                                                CheckOutFragment.OnCheckOutFragmentListener,MapFragment.OnChooseAddressOnMap{
 
     private final String TAG = "BasketActivity";
 
@@ -53,14 +56,30 @@ public class BasketActivity extends BaseActivity implements BasketFragment.OnBas
     }
 
     @Override
+    public void onBackPressed() {
+        if( BasketOrderManager.getInstance().getBasket().size() == 0 ){
+            int backStackEntry = getSupportFragmentManager().getBackStackEntryCount();
+            for ( int i = 0; i < backStackEntry; i++ ) {
+                getSupportFragmentManager().popBackStackImmediate();
+            }
+        }
+        super.onBackPressed();
+    }
+
+    @Override
     public void onBasketCheckOut() {
         getHeader().setVisibility( View.GONE );
         getFooter().setVisibility( View.GONE );
-        addReplaceFragment( CheckOutFragment.newInstance(), true );
+        addReplaceFragment( MapFragment.newInstance(), true );
     }
 
     @Override
     public void onCheckOut() {
+
+    }
+
+    @Override
+    public void onChooseAddress( Uri uri ) {
 
     }
 }

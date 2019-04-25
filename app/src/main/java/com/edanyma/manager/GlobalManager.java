@@ -28,6 +28,8 @@ public class GlobalManager {
     private static int dishEntityPosition;
     private static boolean actionConfirmed;
     private static boolean animationInProgess;
+    private static Double mLatitude;
+    private static Double mLongitude;
 
     private GlobalManager() {
     }
@@ -94,7 +96,7 @@ public class GlobalManager {
                         break;
                     }
                 }
-                if( foundItem ){
+                if ( foundItem ) {
                     break;
                 }
             }
@@ -117,15 +119,15 @@ public class GlobalManager {
     public static void setClient( OurClientModel client ) {
         GlobalManager.client = client;
         setFavoriteSignToCompany( AppConstants.FAKE_ID, false );
-        if ( client != null ){
-            for( FavoriteCompanyModel favoriteCompany : client.getFavoriteCompanies() ){
-                for( CompanyModel company : bootstrapModel.getCompanies() ){
-                    if( favoriteCompany.getCompanyId().toString().equals( company.getId() ) ){
+        if ( client != null ) {
+            for ( FavoriteCompanyModel favoriteCompany : client.getFavoriteCompanies() ) {
+                for ( CompanyModel company : bootstrapModel.getCompanies() ) {
+                    if ( favoriteCompany.getCompanyId().toString().equals( company.getId() ) ) {
                         company.setFavorite( true );
                     }
                 }
             }
-            setHomeMenuCount( AppConstants.DISH_FAVOITES, client.getFavoriteCompanies().size()+"" );
+            setHomeMenuCount( AppConstants.DISH_FAVOITES, client.getFavoriteCompanies().size() + "" );
         } else {
             setHomeMenuCount( AppConstants.DISH_FAVOITES, "0" );
         }
@@ -168,30 +170,30 @@ public class GlobalManager {
         GlobalManager.actionConfirmed = actionConfirmed;
     }
 
-    public static void addToFavorites( FavoriteCompanyModel favorite ){
+    public static void addToFavorites( FavoriteCompanyModel favorite ) {
         client.getFavoriteCompanies().add( favorite );
         setFavoriteSignToCompany( favorite.getCompanyId(), true );
-        setHomeMenuCount( AppConstants.DISH_FAVOITES, client.getFavoriteCompanies().size()+"" );
+        setHomeMenuCount( AppConstants.DISH_FAVOITES, client.getFavoriteCompanies().size() + "" );
     }
 
-    public static void removeFromFavorites( Integer companyId ){
-        List<FavoriteCompanyModel> newList = new LinkedList<>(  );
-        for( FavoriteCompanyModel favorite : client.getFavoriteCompanies() ){
-            if( !favorite.getCompanyId().equals( companyId ) ){
-                newList.add(  favorite  );
+    public static void removeFromFavorites( Integer companyId ) {
+        List< FavoriteCompanyModel > newList = new LinkedList<>();
+        for ( FavoriteCompanyModel favorite : client.getFavoriteCompanies() ) {
+            if ( !favorite.getCompanyId().equals( companyId ) ) {
+                newList.add( favorite );
             }
         }
         setFavoriteSignToCompany( companyId, false );
         client.setFavoriteCompanies( newList );
-        setHomeMenuCount( AppConstants.DISH_FAVOITES, client.getFavoriteCompanies().size()+"" );
+        setHomeMenuCount( AppConstants.DISH_FAVOITES, client.getFavoriteCompanies().size() + "" );
     }
 
-    public static boolean isFavorite( Integer companyId ){
-        if( !isSignedIn() ){
+    public static boolean isFavorite( Integer companyId ) {
+        if ( !isSignedIn() ) {
             return false;
         }
-        for( FavoriteCompanyModel favorite : client.getFavoriteCompanies() ){
-            if( favorite.getCompanyId().equals( companyId ) ){
+        for ( FavoriteCompanyModel favorite : client.getFavoriteCompanies() ) {
+            if ( favorite.getCompanyId().equals( companyId ) ) {
                 return true;
             }
         }
@@ -202,12 +204,12 @@ public class GlobalManager {
         return client != null && client.getUuid() != null;
     }
 
-    private static void setFavoriteSignToCompany( Integer companyId, boolean status ){
-        for( CompanyModel company : bootstrapModel.getCompanies() ){
-            if ( AppConstants.FAKE_ID == companyId ){
+    private static void setFavoriteSignToCompany( Integer companyId, boolean status ) {
+        for ( CompanyModel company : bootstrapModel.getCompanies() ) {
+            if ( AppConstants.FAKE_ID == companyId ) {
                 company.setFavorite( false );
             }
-            if( companyId.toString().equals( company.getId() ) ){
+            if ( companyId.toString().equals( company.getId() ) ) {
                 company.setFavorite( status );
             }
         }
@@ -219,5 +221,32 @@ public class GlobalManager {
 
     public static void setAnimationInProgess( boolean animationInProgess ) {
         GlobalManager.animationInProgess = animationInProgess;
+    }
+
+    public static CompanyModel getCompanyById( String companyId ) {
+        CompanyModel companyModel = null;
+        for (CompanyModel company : getBootstrapModel().getCompanies() ){
+            if( companyId.equals( company.getId() ) ){
+                companyModel = company;
+                break;
+            }
+        }
+        return companyModel;
+    }
+
+    public static Double getLatitude() {
+        return mLatitude;
+    }
+
+    public static void setLatitude( Double mLatitude ) {
+        GlobalManager.mLatitude = mLatitude;
+    }
+
+    public static Double getLongitude() {
+        return mLongitude;
+    }
+
+    public static void setLongitude( Double mLongitude ) {
+        GlobalManager.mLongitude = mLongitude;
     }
 }
