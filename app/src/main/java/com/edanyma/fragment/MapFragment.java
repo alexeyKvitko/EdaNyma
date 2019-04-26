@@ -17,6 +17,7 @@ import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.mapview.MapView;
+import com.yandex.runtime.image.ImageProvider;
 
 
 public class MapFragment extends Fragment {
@@ -50,9 +51,11 @@ public class MapFragment extends Fragment {
         super.onActivityCreated( savedInstanceState );
         mMapView = ( MapView ) getView().findViewById( R.id.mapview );
         mMapView.getMap().move(
-                new CameraPosition( TARGET_LOCATION, 14.0f, 0.0f, 0.0f ),
-                new Animation( Animation.Type.SMOOTH, 5 ),
+                new CameraPosition( TARGET_LOCATION, 18.0f, 0.0f, 0.0f ),
+                new Animation( Animation.Type.LINEAR, 1 ),
                 null );
+        ImageProvider marker =  ImageProvider.fromResource( getActivity(),  R.drawable.ic_map_color_24dp );
+        mMapView.getMap().getMapObjects().addPlacemark( TARGET_LOCATION, marker );
     }
 
     @Override
