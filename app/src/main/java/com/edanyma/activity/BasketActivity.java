@@ -11,13 +11,13 @@ import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.fragment.BasketFragment;
 import com.edanyma.fragment.CheckOutFragment;
-import com.edanyma.fragment.MapFragment;
+import com.edanyma.fragment.OwnMapFragment;
 import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.utils.AppUtils;
 
 public class BasketActivity extends BaseActivity implements BasketFragment.OnBasketCheckOutListener,
-                                                CheckOutFragment.OnCheckOutFragmentListener,MapFragment.OnChooseAddressOnMap{
+                                                CheckOutFragment.OnCheckOutFragmentListener, OwnMapFragment.OnChooseAddressOnMap{
 
     private final String TAG = "BasketActivity";
 
@@ -70,7 +70,7 @@ public class BasketActivity extends BaseActivity implements BasketFragment.OnBas
     public void onBasketCheckOut() {
         getHeader().setVisibility( View.GONE );
         getFooter().setVisibility( View.GONE );
-        addReplaceFragment( MapFragment.newInstance(), true );
+        addReplaceFragment( OwnMapFragment.newInstance(), true );
     }
 
     @Override

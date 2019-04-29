@@ -164,8 +164,8 @@ public class SplashActivity extends Activity {
                     Response< BootstrapModel > responseBootstrap = bootstrapCall.execute();
                     if ( responseBootstrap.body() != null ) {
                         GlobalManager.getInstance().setBootstrapModel( responseBootstrap.body() );
-                        GlobalManager.setLatitude( Double.valueOf( mLatitude ) );
-                        GlobalManager.setLongitude( Double.valueOf( mLongitude ) );
+                        GlobalManager.getInstance().getClientLocation().setLatitude( Double.valueOf( mLatitude ) );
+                        GlobalManager.getClientLocation().setLongitude( Double.valueOf( mLongitude ) );
                         if ( GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() == null ) {
                             mBootstrapSuccess = false;
                         }

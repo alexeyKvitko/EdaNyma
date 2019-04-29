@@ -9,18 +9,25 @@ import com.edanyma.model.FavoriteCompanyModel;
 import com.edanyma.model.LoginUser;
 import com.edanyma.model.OurClientModel;
 
+import org.json.JSONObject;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RestApi {
 
     final String API_COMPANY = "api/company/";
 
     final String API_CLIENT= "api/client/";
+
+    final String API_GEOCODE = "https://geocode-maps.yandex.ru/1.x/";
+    final String API_KEY = "32b33c62-4d72-47a7-92a3-25aedf11e968";
+    final String FORMAT_JSON = "json";
 
     @POST("token/generate-token")
     Call< ApiResponse< AuthToken > > register( @Body LoginUser loginUser);
@@ -60,5 +67,9 @@ public interface RestApi {
     Call< ApiResponse > removeFromFavorite( @Header("Authorization") String authorization,
                                        @Body FavoriteCompanyModel favoriteCompanyModel  );
 
+    @GET(API_GEOCODE)
+    Call< Object > getLocationAddress( @Query("apikey") String apikey,
+                                           @Query("format") String format,
+                                           @Query("geocode") String geocode);
 
 }

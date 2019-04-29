@@ -16,6 +16,10 @@
         android:name="android.hardware.location.gps"
         android:required="true" />
 
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
     <application
         android:name=".EdaNymaApp"
         android:allowBackup="true"
@@ -54,6 +58,15 @@
             android:name=".activity.PersonActivity"
             android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAHg6Sh4XGNRuaVnunaO1oHv3msOwVzwqM" />
+
     </application>
 
 </manifest>

@@ -173,4 +173,6 @@ public abstract class AppUtils {
         return Environment.getExternalStorageDirectory()+File.separator+AppConstants.PICTURE_DIR
                     +File.separator+AppConstants.FILENAME_DISH + AppConstants.EXTENSION_JPG;
     }
+
+
 }

@@ -37,9 +37,6 @@ public class CheckOutFragment extends BaseFragment implements View.OnClickListen
     private AppCompatEditText mCheckOutPerson;
     private AppCompatEditText mCheckOutPhone;
 
-    private AppCompatEditText mCheckOutCity;
-    private AppCompatEditText mCheckOutStreet;
-    private AppCompatEditText mCheckOutHouse;
 
     private TextView mCheckOutCommonTotal;
 
@@ -76,10 +73,6 @@ public class CheckOutFragment extends BaseFragment implements View.OnClickListen
         mCheckOutPerson = initEditText( R.id.checkOutPersonId , AppConstants.ROBOTO_CONDENCED );
         mCheckOutPhone = initEditText( R.id.checkOutPhoneId , AppConstants.ROBOTO_CONDENCED );
         mCheckOutPhone.addTextChangedListener( new PhoneNumberFormattingTextWatcher() );
-
-        mCheckOutCity = initEditText( R.id.checkOutCityId , AppConstants.ROBOTO_CONDENCED );
-        mCheckOutStreet = initEditText( R.id.checkOutStreetId , AppConstants.ROBOTO_CONDENCED );
-        mCheckOutHouse = initEditText( R.id.checkOutHouseId , AppConstants.ROBOTO_CONDENCED );
 
         getView().findViewById( R.id.checkOutBackBtnId ).setOnClickListener( this );
         mDishContainer = getView().findViewById( R.id.checkOutDishContainerId );

@@ -112,13 +112,13 @@ public abstract class BaseActivity extends AppCompatActivity
                 fragmentTransaction.remove( removedFragment );
             }
             fragmentTransaction.commit();
-            ActivityManager activityManager = ( ActivityManager ) EdaNymaApp.getAppContext()
-                    .getSystemService( EdaNymaApp.getAppContext().ACTIVITY_SERVICE );
-            List< ActivityManager.RunningTaskInfo > runningTaskInfoList = activityManager.getRunningTasks( 10 );
-            Iterator< ActivityManager.RunningTaskInfo > itr = runningTaskInfoList.iterator();
-            while ( itr.hasNext() ) {
-                ActivityCompat.finishAffinity( this );
-            }
+//            ActivityManager activityManager = ( ActivityManager ) EdaNymaApp.getAppContext()
+//                    .getSystemService( EdaNymaApp.getAppContext().ACTIVITY_SERVICE );
+//            List< ActivityManager.RunningTaskInfo > runningTaskInfoList = activityManager.getRunningTasks( 10 );
+//            Iterator< ActivityManager.RunningTaskInfo > itr = runningTaskInfoList.iterator();
+//            while ( itr.hasNext() ) {
+//                ActivityCompat.finishAffinity( this );
+//            }
             System.exit( 0 );
 
         }
