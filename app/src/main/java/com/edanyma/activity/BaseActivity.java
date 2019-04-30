@@ -97,7 +97,6 @@ public abstract class BaseActivity extends AppCompatActivity
         mProfileBtn.setOnClickListener( this );
         mBasketPriceText = findViewById( R.id.basketPriceTextId );
         mBasketPriceText.setTypeface( AppConstants.OFFICE, Typeface.BOLD );
-        mFastClickCount = 0;
     }
 
     @Override
@@ -126,11 +125,12 @@ public abstract class BaseActivity extends AppCompatActivity
         new Handler().postDelayed( new Runnable() {
             @Override
             public void run() {
+                FINISH_ACTIVITY = false;
                 mFastClickCount = 0;
             }
-        }, 1500 );
+        }, 500 );
         if ( mFastClickCount == 1 ) {
-            Toast.makeText( EdaNymaApp.getAppContext(), "Нажмите еще раз для выхода", Toast.LENGTH_SHORT );
+            Toast.makeText( this, "Нажмите еще раз для выхода", Toast.LENGTH_SHORT );
             FINISH_ACTIVITY = true;
             new Handler().postDelayed( new Runnable() {
                 @Override
@@ -138,7 +138,7 @@ public abstract class BaseActivity extends AppCompatActivity
                     FINISH_ACTIVITY = false;
                     mFastClickCount = 0;
                 }
-            }, 2000 );
+            }, 500 );
         }
         super.onBackPressed();
     }
@@ -229,6 +229,8 @@ public abstract class BaseActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        FINISH_ACTIVITY = false;
+        mFastClickCount = 0;
         showBasketPrice();
         registerReceiver( mBasketMessageReceiver, mIntentFilter );
         changeClientStatus();

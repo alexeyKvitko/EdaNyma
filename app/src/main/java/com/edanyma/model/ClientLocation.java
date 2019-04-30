@@ -10,8 +10,6 @@ public class ClientLocation implements Serializable {
     private String entrance;
     private String floor;
     private String intercom;
-    private String flat;
-    private String comment;
     private Double latitude;
     private Double longitude;
 
@@ -61,22 +59,6 @@ public class ClientLocation implements Serializable {
 
     public void setIntercom( String intercom ) {
         this.intercom = intercom;
-    }
-
-    public String getFlat() {
-        return flat;
-    }
-
-    public void setFlat( String flat ) {
-        this.flat = flat;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment( String comment ) {
-        this.comment = comment;
     }
 
     public Double getLatitude() {

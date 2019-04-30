@@ -21,11 +21,14 @@ import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.AuthToken;
 import com.edanyma.model.BootstrapModel;
+import com.edanyma.model.ClientLocation;
 import com.edanyma.model.DictionaryModel;
 import com.edanyma.model.LoginUser;
 import com.edanyma.receiver.SingleShotLocationProvider;
+import com.edanyma.rest.RestApi;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
+import com.edanyma.utils.GeoUtils;
 import com.edanyma.utils.PicassoClient;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -124,6 +127,7 @@ public class SplashActivity extends Activity {
                         mLatitude = String.valueOf( location.latitude );
                         mLongitude = String.valueOf( location.longitude );
                         new FetchBootstrapData().execute();
+                        new FetchClientLocation().execute();
                     }
                 } );
     }
@@ -137,6 +141,20 @@ public class SplashActivity extends Activity {
                 finish();
             }
         }, SPLASH_TIME_OUT );
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if ( !mPermissionGranted ) {
+            Toast.makeText( this, "Error: required permissions not granted!", Toast.LENGTH_SHORT ).show();
+            return;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
 
@@ -196,18 +214,40 @@ public class SplashActivity extends Activity {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if ( !mPermissionGranted ) {
-            Toast.makeText( this, "Error: required permissions not granted!", Toast.LENGTH_SHORT ).show();
-            return;
+    private class FetchClientLocation extends AsyncTask< Void, Void, Void > {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground( Void... arg0 ) {
+            try {
+                String geocode = mLongitude+","+mLatitude;
+                Call< Object > locationCall = RestController.getInstance()
+                        .getApi().getLocationAddress( RestApi.API_KEY, RestApi.FORMAT_JSON, geocode );
+                Response< Object > locationResponse = locationCall.execute();
+                if ( locationResponse.body() != null ) {
+                    String source = locationResponse.body().toString();
+                    ClientLocation clientLocation =  GlobalManager.getInstance().getClientLocation();
+                    clientLocation.setCity( GeoUtils.getValueFromGeocoder( source, GeoUtils.CITY_KEY ) );
+                    clientLocation.setStreet( GeoUtils.getValueFromGeocoder( source, GeoUtils.STREET_KEY ) );
+                    clientLocation.setHouse( GeoUtils.getValueFromGeocoder( source, GeoUtils.HOUSE_KEY ) );
+                }
+            } catch ( Exception e ) {
+                Log.e( TAG, e.getMessage() );
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute( Void result ) {
+            super.onPostExecute( result );
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
+
 
 }

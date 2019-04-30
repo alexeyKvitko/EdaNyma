@@ -146,7 +146,7 @@ public class DishActivity extends BaseActivity implements DishFragment.OnDishAct
         applyAllDishesFiler();
     }
 
-    private void clearStack() {
+    protected void clearStack() {
         if ( getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().getFragments().size() > 0 ) {
             for ( int i = 0; i < getSupportFragmentManager().getFragments().size(); i++ ) {
                 Fragment mFragment = getSupportFragmentManager().getFragments().get( i );

@@ -11,9 +11,12 @@ import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.fragment.BasketFragment;
 import com.edanyma.fragment.CheckOutFragment;
+import com.edanyma.fragment.DishFragment;
+import com.edanyma.fragment.FilterDishFragment;
 import com.edanyma.fragment.OwnMapFragment;
 import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.model.ActivityState;
+import com.edanyma.owncomponent.CheckOutEntity;
 import com.edanyma.utils.AppUtils;
 
 public class BasketActivity extends BaseActivity implements BasketFragment.OnBasketCheckOutListener,
@@ -58,19 +61,29 @@ public class BasketActivity extends BaseActivity implements BasketFragment.OnBas
     @Override
     public void onBackPressed() {
         if( BasketOrderManager.getInstance().getBasket().size() == 0 ){
-            int backStackEntry = getSupportFragmentManager().getBackStackEntryCount();
-            for ( int i = 0; i < backStackEntry; i++ ) {
-                getSupportFragmentManager().popBackStackImmediate();
-            }
+            clearBackStack();
         }
+//        if ( getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().getFragments().size() == 1 ) {
+//            Fragment fragment = getSupportFragmentManager().getFragments().get( 0 );
+//            if ( fragment instanceof CheckOutFragment ) {
+//                clearBackStack();
+//            }
+//        }
         super.onBackPressed();
+    }
+
+    protected void clearBackStack(){
+        int backStackEntry = getSupportFragmentManager().getBackStackEntryCount();
+        for ( int i = 0; i < backStackEntry; i++ ) {
+            getSupportFragmentManager().popBackStackImmediate();
+        }
     }
 
     @Override
     public void onBasketCheckOut() {
         getHeader().setVisibility( View.GONE );
         getFooter().setVisibility( View.GONE );
-        addReplaceFragment( OwnMapFragment.newInstance(), true );
+        addReplaceFragment( CheckOutFragment.newInstance(), true );
     }
 
     @Override
@@ -79,7 +92,12 @@ public class BasketActivity extends BaseActivity implements BasketFragment.OnBas
     }
 
     @Override
-    public void onChooseAddress( Uri uri ) {
+    public void onChooseAddress() {
+        onBasketCheckOut();
+    }
 
+    @Override
+    public void onShowMapClick() {
+        addReplaceFragment( OwnMapFragment.newInstance(), true );
     }
 }

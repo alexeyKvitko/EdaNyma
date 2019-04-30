@@ -27,6 +27,7 @@
     <string name="fogot_password">Забыли пароль ?</string>
     <string name="prompt_email"><font size="14">Ваш телефон или e-mail</font></string>
     <string name="prompt_phone"><font size="14">Ваш телефон</font></string>
+    <string name="prompt_comment"><font size="14">Ваш комментарий</font></string>
     <string name="prompt_password"><font size="14">Введите пароль</font></string>
     <string name="confirm_password"><font size="14">Подтвердите пароль</font></string>
     <string name="new_password"><font size="14">Новый пароль</font></string>
@@ -109,5 +110,13 @@
     <string name="contact_info_title">Контактная информация</string>
     <string name="delivery_address">Адрес Доставки</string>
     <string name="additional_address">Подъезд, этаж и т.д.</string>
+    <string name="city_label">Город</string>
+    <string name="street_label">Улица</string>
+    <string name="house_label">Дом</string>
+    <string name="entrace_label">Подъезд</string>
+    <string name="intercom_label">Домофон</string>
+    <string name="floor_label">Этаж</string>
+    <string name="not_available_yet">Пока Недоступно</string>
+    <string name="check_out_btn">Заказать</string>
 
 </resources>

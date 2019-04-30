@@ -234,6 +234,10 @@ public class GlobalManager {
         return companyModel;
     }
 
+    public static void setClientLocation( ClientLocation mClientLocation ) {
+        GlobalManager.mClientLocation = mClientLocation;
+    }
+
     public static ClientLocation getClientLocation() {
         if( mClientLocation == null ){
             mClientLocation = new ClientLocation();

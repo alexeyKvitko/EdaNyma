@@ -9,12 +9,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
@@ -42,8 +41,8 @@ import retrofit2.Response;
 
 public class OwnMapFragment extends BaseFragment implements OnMapReadyCallback {
 
-    private static final int COLLAPSE_HEIGHT = (int) ConvertUtils.convertDpToPixel( 194 );
-    private static final int EXPAND_HEIGHT = (int) ConvertUtils.convertDpToPixel( 246 );
+    private static final int COLLAPSE_HEIGHT = (int) ConvertUtils.convertDpToPixel( 102 );
+    private static final int EXPAND_HEIGHT = (int) ConvertUtils.convertDpToPixel( 152 );
 
 
     private static final String TAG = "OwnMapFragment";
@@ -57,8 +56,12 @@ public class OwnMapFragment extends BaseFragment implements OnMapReadyCallback {
     private AppCompatEditText mCityEdit;
     private AppCompatEditText mStreetEdit;
     private AppCompatEditText mHouseEdit;
+    private AppCompatEditText mEntranceEdit;
+    private AppCompatEditText mIntercomEdit;
+    private AppCompatEditText mFloorEdit;
+
     private TextView mAdditionalAddress;
-    private CardView mAddressContainer;
+    private LinearLayout mAddressContainer;
 
     private boolean mExpanded;
 
@@ -96,7 +99,12 @@ public class OwnMapFragment extends BaseFragment implements OnMapReadyCallback {
         mCityEdit.setEnabled( false );
         mStreetEdit = initEditText( R.id.checkOutStreetId , AppConstants.ROBOTO_CONDENCED );
         mHouseEdit = initEditText( R.id.checkOutHouseId , AppConstants.ROBOTO_CONDENCED );
-
+        mIntercomEdit = initEditText( R.id.checkOutIntercomId , AppConstants.ROBOTO_CONDENCED );
+        mEntranceEdit = initEditText( R.id.checkOutEntranceId , AppConstants.ROBOTO_CONDENCED );
+        mFloorEdit = initEditText( R.id.checkOutFloorId , AppConstants.ROBOTO_CONDENCED );
+        getView().findViewById( R.id.chooseAddressId ).setOnClickListener( (View v ) ->{
+            onChooseAddress();
+        } );
         mAdditionalAddress = initTextView( R.id.additionalAddressId, AppConstants.ROBOTO_CONDENCED );
         mAdditionalAddress.setOnClickListener( ( View v ) -> {
             if ( mExpanded ){
@@ -109,7 +117,7 @@ public class OwnMapFragment extends BaseFragment implements OnMapReadyCallback {
 
         } );
 
-        mAddressContainer = getView().findViewById( R.id.basketBodyId );
+        mAddressContainer = getView().findViewById( R.id.addressBodyId );
         mAddressContainer.setOnClickListener( null );
         mMapView = getView().findViewById( R.id.map );
         if ( mMapView != null ) {
@@ -126,27 +134,34 @@ public class OwnMapFragment extends BaseFragment implements OnMapReadyCallback {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed( Uri uri ) {
+    public void onChooseAddress() {
         if ( mListener != null ) {
-            mListener.onChooseAddress( uri );
+            mLocation.setCity( mCityEdit.getText().toString() );
+            mLocation.setStreet( mStreetEdit.getText().toString() );
+            mLocation.setHouse( mHouseEdit.getText().toString() );
+            mLocation.setEntrance( mEntranceEdit.getText().toString() );
+            mLocation.setIntercom( mIntercomEdit.getText().toString() );
+            mLocation.setFloor( mFloorEdit.getText().toString() );
+            GlobalManager.getInstance().setClientLocation( mLocation );
+            getActivity().onBackPressed();
         }
     }
 
     private void onAdditionalAddressClick( int start, int end, final int visibility, final String text ){
         AppUtils.clickAnimation( mAdditionalAddress );
+        getView().findViewById( R.id.additionalAddressLayoutId ).setVisibility( visibility );
         mExpanded = !mExpanded;
-        final FrameLayout.LayoutParams layoutParams = ( FrameLayout.LayoutParams ) mAddressContainer.getLayoutParams();
+        final LinearLayout.LayoutParams layoutParams = ( LinearLayout.LayoutParams ) mAddressContainer.getLayoutParams();
         ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), start, end );
         valAnimator.addUpdateListener( ( ValueAnimator animator ) -> {
                 int val = ( Integer ) animator.getAnimatedValue();
                 layoutParams.height = val;
                 if ( val == end ) {
-                    getView().findViewById( R.id.additionalAddressLayoutId ).setVisibility( visibility );
                     mAdditionalAddress.setText( text );
                 }
                 mAddressContainer.setLayoutParams( layoutParams );
         } );
-        valAnimator.setDuration( 150 );
+        valAnimator.setDuration( 200 );
         valAnimator.start();
     }
 
@@ -171,7 +186,15 @@ public class OwnMapFragment extends BaseFragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady( GoogleMap googleMap ) {
-        new FetchCurrentLocation().execute(  );
+        if ( GlobalManager.getInstance().getClientLocation().getStreet() != null ){
+            mLocation.setCity( GlobalManager.getInstance().getClientLocation().getCity() );
+            mLocation.setStreet( GlobalManager.getInstance().getClientLocation().getStreet() );
+            mLocation.setHouse( GlobalManager.getInstance().getClientLocation().getHouse() );
+            setDeliveryAddress();
+        } else {
+            new FetchCurrentLocation().execute(  );
+        }
+
         MapsInitializer.initialize( getContext() );
         mGoogleMap = googleMap;
         mGoogleMap.setMapType( GoogleMap.MAP_TYPE_NORMAL );
@@ -195,9 +218,17 @@ public class OwnMapFragment extends BaseFragment implements OnMapReadyCallback {
         mGoogleMap.moveCamera( CameraUpdateFactory.newCameraPosition( cameraPosition ) );
     }
 
+    private void setDeliveryAddress(){
+        mCityEdit.setText( mLocation.getCity() );
+        mStreetEdit.setText( mLocation.getStreet() );
+        mHouseEdit.setText( mLocation.getHouse() );
+        AppUtils.transitionAnimation( getView().findViewById( R.id.pleaseWaitContainerId) ,
+                getView().findViewById( R.id.addressContainerId ) );
+    }
+
     public interface OnChooseAddressOnMap {
         // TODO: Update argument type and name
-        void onChooseAddress( Uri uri );
+        void onChooseAddress();
     }
 
     private class FetchCurrentLocation extends AsyncTask< Void, Void, Void > {
@@ -230,11 +261,7 @@ public class OwnMapFragment extends BaseFragment implements OnMapReadyCallback {
         @Override
         protected void onPostExecute( Void result ) {
             super.onPostExecute( result );
-            mCityEdit.setText( mLocation.getCity() );
-            mStreetEdit.setText( mLocation.getStreet() );
-            mHouseEdit.setText( mLocation.getHouse() );
-            AppUtils.transitionAnimation( getView().findViewById( R.id.pleaseWaitContainerId) ,
-                                    getView().findViewById( R.id.addressContainerId ) );
+            setDeliveryAddress();
         }
     }
 }

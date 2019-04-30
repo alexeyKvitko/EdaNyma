@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatEditText;
 import android.widget.TextView;
 
+import com.edanyma.EdaNymaApp;
+
 public class BaseFragment extends Fragment {
 
 
@@ -73,7 +75,6 @@ public class BaseFragment extends Fragment {
     protected TextInputLayout initTextInputLayout( int textLayoutId ){
         return initTextInputLayout( textLayoutId , null );
     }
-
 
 
 }
