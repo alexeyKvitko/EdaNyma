@@ -26,7 +26,7 @@
     <string name="login_title">Вход</string>
     <string name="fogot_password">Забыли пароль ?</string>
     <string name="prompt_email"><font size="14">Ваш телефон или e-mail</font></string>
-    <string name="prompt_phone"><font size="14">Ваш телефон</font></string>
+    <string name="prompt_phone"><font size="14">Ваш телефон ( 10 цифр, без +7 )</font></string>
     <string name="prompt_comment"><font size="14">Ваш комментарий</font></string>
     <string name="prompt_password"><font size="14">Введите пароль</font></string>
     <string name="confirm_password"><font size="14">Подтвердите пароль</font></string>

@@ -72,4 +72,8 @@ public interface RestApi {
                                            @Query("format") String format,
                                            @Query("geocode") String geocode);
 
+    @GET(API_CLIENT+"sendSmsCode/{phone}")
+    Call< ApiResponse > sendSmsCode( @Header("Authorization") String authorization,
+                                           @Path("phone") String phone );
+
 }

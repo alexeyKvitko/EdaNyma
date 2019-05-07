@@ -7,8 +7,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatEditText;
-import android.telephony.SmsManager;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 
-public class SignUpFragment extends BaseFragment implements View.OnClickListener, View.OnFocusChangeListener, View.OnKeyListener {
+public class SignUpFragment extends ConfirmFragment implements View.OnClickListener {
 
     private final String TAG = "SignUpFragment";
 
@@ -42,25 +40,13 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     private AppCompatEditText mConfirmPassword;
 
 
-    private AppCompatEditText mDigitOne;
-    private AppCompatEditText mDigitTwo;
-    private AppCompatEditText mDigitThree;
-    private AppCompatEditText mDigitFour;
-
     private TextView mPasswordErrorView;
     private TextView mSignInView;
 
-    private TextView mResendCodeValue;
-
-    private String mConfirmationCode;
 
     private OurClientModel mClientModel;
 
-    private int mSecondLeft;
 
-    private Handler mCountdown;
-
-    private Runnable mCountdownJob;
 
     public SignUpFragment() {
     }
@@ -86,12 +72,13 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     public View onCreateView( LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState ) {
 
-        return inflater.inflate( R.layout.fragment_sign_out, container, false );
+        return inflater.inflate( R.layout.fragment_sign_up, container, false );
     }
 
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
+        initConfirmFragment();
         initTextView( R.id.signUpTitleId , AppConstants.B52 );
         initTextView( R.id.confirmCodeTitleId , AppConstants.B52 );
         initTextInputLayout( R.id.signUpTextLayoutId , AppConstants.ROBOTO_CONDENCED );
@@ -123,27 +110,6 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         mPassword = initEditText( R.id.signUpPasswordId, AppConstants.ROBOTO_CONDENCED );
         mConfirmPassword = initEditText( R.id.signUpConfirmId, AppConstants.ROBOTO_CONDENCED );
 
-
-
-        mDigitOne = initEditText( R.id.confirmDigitOneId );
-        mDigitTwo = initEditText( R.id.confirmDigitTwoId );
-        mDigitThree = initEditText( R.id.confirmDigitThreeId );
-        mDigitFour = initEditText( R.id.confirmDigitFourId );
-
-        mDigitOne.setOnFocusChangeListener( this );
-        mDigitOne.setOnKeyListener( this );
-
-        mDigitTwo.setOnFocusChangeListener( this );
-        mDigitTwo.setOnKeyListener( this );
-
-        mDigitThree.setOnFocusChangeListener( this );
-        mDigitThree.setOnKeyListener( this );
-
-        mDigitFour.setOnFocusChangeListener( this );
-        mDigitFour.setOnKeyListener( this );
-
-        mResendCodeValue = getView().findViewById( R.id.resendCodeValueId );
-        mResendCodeValue.setTypeface( AppConstants.ROBOTO_CONDENCED );
         getActivity().findViewById( R.id.navButtonId ).setOnClickListener( this );
 
         if( AppConstants.FORGOT_PASSWORD.equals( getArguments().getString( IS_NEW_OR_FORGOT_PARAM ) ) ){
@@ -164,28 +130,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                                     .setHint( getResources().getString( R.string.new_password ) );
     }
 
-    private void startCountdown() {
-        mSecondLeft = 90;
-        mCountdown = new Handler();
-        mCountdownJob = new Runnable() {
-            @Override
-            public void run() {
-                mResendCodeValue.setText( mSecondLeft + "" );
-                if ( mSecondLeft == 70 ) {
-                    getView().findViewById( R.id.resendCodeLabelId ).setVisibility( View.VISIBLE );
-                }
-                if ( mSecondLeft == 0 ) {
-                    mCountdown.removeCallbacks( this );
-                    AppUtils.transitionAnimation( getView().findViewById( R.id.confirmCodeContainerId ),
-                            getView().findViewById( R.id.signUpContailnerId ) );
-                    return;
-                }
-                mSecondLeft--;
-                mCountdown.postDelayed( this, 1000 );
-            }
-        };
-        mCountdown.postDelayed( mCountdownJob, 1000 );
-    }
+
 
 
     @Override
@@ -231,9 +176,6 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        if ( mCountdown != null && mCountdownJob != null ){
-            mCountdown.removeCallbacks( mCountdownJob );
-        }
     }
 
 
@@ -263,21 +205,9 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void confirmEmailPhone() {
-        String confirmCode = mDigitOne.getText().toString()
-                + mDigitTwo.getText().toString()
-                + mDigitThree.getText().toString()
-                + mDigitFour.getText().toString();
-        if ( !mConfirmationCode.equals( confirmCode ) ) {
-            getView().findViewById( R.id.confirmCodeErrorId ).setVisibility( View.VISIBLE );
-            ( new Handler() ).postDelayed( new Runnable() {
-                @Override
-                public void run() {
-                    getView().findViewById( R.id.confirmCodeErrorId ).setVisibility( View.GONE );
-                }
-            }, 10000 );
-            return;
+        if ( checkEnteredCode() ){
+            new SignUpFragment.ClientSignUp().execute( mClientModel );
         }
-        new SignUpFragment.ClientSignUp().execute( mClientModel );
     }
 
     private void signUpViaEmailPhone() {
@@ -355,36 +285,6 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
-    @Override
-    public void onFocusChange( View view, boolean isFocused ) {
-        if ( isFocused
-                && AppConstants.ASTERISKS.equals( ( ( AppCompatEditText ) view ).getText().toString() ) ) {
-            ( ( AppCompatEditText ) view ).setText( "" );
-        }
-    }
-
-    @Override
-    public boolean onKey( View view, int i, KeyEvent keyEvent ) {
-        if ( i != 67 && KeyEvent.ACTION_DOWN == keyEvent.getAction()) {
-            switch ( view.getId()  ) {
-                case R.id.confirmDigitOneId:
-                    mDigitTwo.requestFocus();
-                    break;
-                case R.id.confirmDigitTwoId:
-                    mDigitThree.requestFocus();
-                    break;
-                case R.id.confirmDigitThreeId:
-                    mDigitFour.requestFocus();
-                    break;
-                case R.id.confirmDigitFourId:
-                    mDigitOne.requestFocus();
-                    break;
-                default:
-                    break;
-            }
-        }
-        return false;
-    }
 
     public interface OnSignUpListener {
         void onSignUpAction();
@@ -455,12 +355,12 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                 Response< ApiResponse<String> > responseValidate = validateCall.execute();
                 if ( responseValidate.body() != null ) {
                     if ( responseValidate.body().getStatus() == 200 ) {
-                        mConfirmationCode = ( String ) responseValidate.body().getResult();
-                        if ( AppConstants.SEND_PHONE_CODE.equals( mConfirmationCode ) ) {
-                            mConfirmationCode = AppUtils.getRandomBetweenRange( 4000, 9999 ) + "";
-                            SmsManager.getDefault().sendTextMessage( "+7" + mClientModel.getPhone(),
-                                    "ЕдаНяма", "Код регистрации: " + mConfirmationCode, null, null );
-                        }
+//                        mConfirmationCode = ( String ) responseValidate.body().getResult();
+//                        if ( AppConstants.SEND_PHONE_CODE.equals( mConfirmationCode ) ) {
+//                            mConfirmationCode = AppUtils.getRandomBetweenRange( 4000, 9999 ) + "";
+//                            SmsManager.getDefault().sendTextMessage( "+7" + mClientModel.getPhone(),
+//                                    "ЕдаНяма", "Код регистрации: " + mConfirmationCode, null, null );
+//                        }
                     } else {
                         result = responseValidate.body().getMessage();
                     }
