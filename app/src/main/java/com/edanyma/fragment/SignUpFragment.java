@@ -80,16 +80,15 @@ public class SignUpFragment extends ConfirmFragment implements View.OnClickListe
         super.onActivityCreated( savedInstanceState );
         initConfirmFragment();
         initTextView( R.id.signUpTitleId , AppConstants.B52 );
-        initTextView( R.id.confirmCodeTitleId , AppConstants.B52 );
         initTextInputLayout( R.id.signUpTextLayoutId , AppConstants.ROBOTO_CONDENCED );
         initTextInputLayout( R.id.signUpPasswordLayoutId, AppConstants.ROBOTO_CONDENCED );
         initTextInputLayout( R.id.signUpConfirmLayoutId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.otherSignInId, AppConstants.ROBOTO_CONDENCED );
-        initTextView( R.id.sendConfirmCode, AppConstants.ROBOTO_CONDENCED );
-        initTextView( R.id.resendCodeLabelId, AppConstants.ROBOTO_CONDENCED );
+
+
         initTextView( R.id.successTopId, AppConstants.B52 );
         initTextView( R.id.successBottomId, AppConstants.B52 );
-        getView().findViewById( R.id.resendCodeLabelId ).setOnClickListener( this );
+        mResendLabel.setOnClickListener( this );
 
         mPasswordErrorView = getView().findViewById( R.id.confirmErrorFieldId );
 
@@ -97,9 +96,7 @@ public class SignUpFragment extends ConfirmFragment implements View.OnClickListe
         signButton.setTypeface( AppConstants.SANDORA );
         signButton.setOnClickListener( this );
 
-        Button confirmSignUp = getView().findViewById( R.id.confirmCodeButtonId );
-        confirmSignUp.setTypeface( AppConstants.SANDORA );
-        confirmSignUp.setOnClickListener( this );
+        mConfirmCodeBtn.setOnClickListener( this );
 
         mSignInView = getView().findViewById( R.id.signInId );
         mSignInView.setTypeface( AppConstants.ROBOTO_CONDENCED );
@@ -355,7 +352,7 @@ public class SignUpFragment extends ConfirmFragment implements View.OnClickListe
                 Response< ApiResponse<String> > responseValidate = validateCall.execute();
                 if ( responseValidate.body() != null ) {
                     if ( responseValidate.body().getStatus() == 200 ) {
-//                        mConfirmationCode = ( String ) responseValidate.body().getResult();
+                        mConfirmationCode = ( String ) responseValidate.body().getResult();
 //                        if ( AppConstants.SEND_PHONE_CODE.equals( mConfirmationCode ) ) {
 //                            mConfirmationCode = AppUtils.getRandomBetweenRange( 4000, 9999 ) + "";
 //                            SmsManager.getDefault().sendTextMessage( "+7" + mClientModel.getPhone(),
@@ -385,7 +382,7 @@ public class SignUpFragment extends ConfirmFragment implements View.OnClickListe
             } else {
                 AppUtils.transitionAnimation( getView().findViewById( R.id.pleaseWaitContainerId ),
                         getView().findViewById( R.id.confirmCodeContainerId ) );
-                startCountdown();
+                startCountdown( R.id.signUpContailnerId );
             }
         }
     }

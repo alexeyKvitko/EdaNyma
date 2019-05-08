@@ -3,6 +3,7 @@ package com.edanyma.rest;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.AuthToken;
 import com.edanyma.model.BootstrapModel;
+import com.edanyma.model.ClientOrderModel;
 import com.edanyma.model.CompanyInfoModel;
 import com.edanyma.model.Dishes;
 import com.edanyma.model.FavoriteCompanyModel;
@@ -75,5 +76,11 @@ public interface RestApi {
     @GET(API_CLIENT+"sendSmsCode/{phone}")
     Call< ApiResponse > sendSmsCode( @Header("Authorization") String authorization,
                                            @Path("phone") String phone );
+
+
+
+    @POST(API_CLIENT+"createClientOrder")
+    Call< ApiResponse > createClientOrder( @Header("Authorization") String authorization,
+                                       @Body ClientOrderModel clientOrderModel  );
 
 }

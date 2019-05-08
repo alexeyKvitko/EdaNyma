@@ -3,6 +3,7 @@ package com.edanyma.model;
 import org.pojomatic.Pojomatic;
 import org.pojomatic.annotations.AutoProperty;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @AutoProperty
@@ -23,6 +24,10 @@ public class ClientOrderModel {
     private String comment;
     private String payType;
     private List<BasketModel> orders;
+
+    public ClientOrderModel() {
+        this.orders = new LinkedList<>( );
+    }
 
     public Integer getId() {
         return id;

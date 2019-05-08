@@ -1,22 +1,29 @@
 package com.edanyma.fragment;
 
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.R;
+import com.edanyma.receiver.OwnSMSReceiver;
 import com.edanyma.utils.AppUtils;
 
 public class ConfirmFragment extends BaseFragment implements View.OnFocusChangeListener, View.OnKeyListener {
+
 
     protected AppCompatEditText mDigitOne;
     protected AppCompatEditText mDigitTwo;
     protected AppCompatEditText mDigitThree;
     protected AppCompatEditText mDigitFour;
     protected TextView mResendCodeValue;
+    protected TextView mResendLabel;
+
+    protected Button mConfirmCodeBtn;
 
     protected String mConfirmationCode;
 
@@ -28,12 +35,19 @@ public class ConfirmFragment extends BaseFragment implements View.OnFocusChangeL
 
     protected void initConfirmFragment() {
 
+        initTextView( R.id.confirmCodeTitleId , AppConstants.B52 );
+        initTextView( R.id.sendConfirmCode, AppConstants.ROBOTO_CONDENCED );
         mResendCodeValue = initTextView( R.id.resendCodeValueId, AppConstants.ROBOTO_CONDENCED );
 
         mDigitOne = initEditText( R.id.confirmDigitOneId );
         mDigitTwo = initEditText( R.id.confirmDigitTwoId );
         mDigitThree = initEditText( R.id.confirmDigitThreeId );
         mDigitFour = initEditText( R.id.confirmDigitFourId );
+
+        mResendLabel = initTextView( R.id.resendCodeLabelId, AppConstants.ROBOTO_CONDENCED );
+        mConfirmCodeBtn = getView().findViewById( R.id.confirmCodeButtonId );
+        mConfirmCodeBtn.setTypeface( AppConstants.SANDORA );
+
 
         mDigitOne.setOnFocusChangeListener( this );
         mDigitOne.setOnKeyListener( this );
@@ -48,7 +62,7 @@ public class ConfirmFragment extends BaseFragment implements View.OnFocusChangeL
         mDigitFour.setOnKeyListener( this );
     }
 
-    protected void startCountdown() {
+    protected void startCountdown(final int mainContainerId) {
         mSecondLeft = 90;
         mCountdown = new Handler();
         mCountdownJob = new Runnable() {
@@ -61,7 +75,7 @@ public class ConfirmFragment extends BaseFragment implements View.OnFocusChangeL
                 if ( mSecondLeft == 0 ) {
                     mCountdown.removeCallbacks( this );
                     AppUtils.transitionAnimation( getView().findViewById( R.id.confirmCodeContainerId ),
-                            getView().findViewById( R.id.signUpContailnerId ) );
+                            getView().findViewById( mainContainerId ) );
                     return;
                 }
                 mSecondLeft--;
@@ -128,6 +142,7 @@ public class ConfirmFragment extends BaseFragment implements View.OnFocusChangeL
         }
         return false;
     }
+
 
 
 }

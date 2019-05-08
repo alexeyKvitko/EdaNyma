@@ -18,6 +18,7 @@ public class AppConstants {
     public static final Typeface OFFICE = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/office.ttf");
 
     public static final String BASKET_CONTENT_CHANGE = "com.edanyma.BASKET_CONTENT_CHANGE";
+    public static final String SMS_RECIEVER = "android.provider.Telephony.SMS_RECEIVED";
     public static final String BASKET_PRICE_SHOW = "BASKET_PRICE_SHOW";
 
     public static final String DEFAULT_USER = "guest";

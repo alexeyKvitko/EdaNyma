@@ -1,6 +1,7 @@
 package com.edanyma.fragment;
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,9 +24,11 @@ import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.BasketModel;
 import com.edanyma.model.ClientLocation;
+import com.edanyma.model.ClientOrderModel;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.owncomponent.CheckOutEntity;
 import com.edanyma.owncomponent.CompanyTotalView;
+import com.edanyma.receiver.OwnSMSReceiver;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
@@ -38,7 +41,7 @@ import retrofit2.Response;
 
 
 public class CheckOutFragment extends ConfirmFragment implements View.OnClickListener,
-        CheckOutEntity.OnRemoveFromBasketListener, View.OnFocusChangeListener, View.OnKeyListener  {
+        CheckOutEntity.OnRemoveFromBasketListener {
 
     private OnCheckOutFragmentListener mListener;
 
@@ -54,7 +57,7 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
     private TextView mCheckOutAddress;
     private TextView mCheckOutAdditionalAddress;
 
-    private String mConfirmationCode;
+    private ClientOrderModel mClientOrderModel;
 
 
     private Map< String, BasketModel > mFilteredBasket;
@@ -77,6 +80,8 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         initConfirmFragment();
+        mResendLabel.setOnClickListener( this );
+        mConfirmCodeBtn.setOnClickListener( this );
         initTextView( R.id.checkOutLabelId, AppConstants.B52 );
         initTextView( R.id.contactInfoTitleId, AppConstants.B52 );
         initTextView( R.id.deliveryAddressTitleId, AppConstants.B52 );
@@ -103,7 +108,9 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         getView().findViewById( R.id.checkOutBackBtnId ).setOnClickListener( this );
         getView().findViewById( R.id.checkOutMapId ).setOnClickListener( this );
         getView().findViewById( R.id.checkOutSuccessBtnId ).setOnClickListener( this );
+        getView().findViewById( R.id.confirmCodeContainerId ).setOnClickListener( null );
         mDishContainer = getView().findViewById( R.id.checkOutDishContainerId );
+
         setClientInfo();
         setDeliveryAddress();
         fillDishContainer();
@@ -208,6 +215,16 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         return companyTotalView;
     }
 
+    private void clickResendCode( View view ) {
+        AppUtils.clickAnimation( view );
+        new Handler().postDelayed( new Runnable() {
+            @Override
+            public void run() {
+                new ValidateCheckoutCode().execute( mCheckOutPhone.getText().toString() );
+            }
+        }, 300 );
+    }
+
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState ) {
@@ -263,9 +280,37 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
             }, 3000 );
         }
         if( errorMsg == null ){
+            mClientOrderModel = new ClientOrderModel();
+            mClientOrderModel.setNickName( person );
+            if ( GlobalManager.getInstance().isSignedIn() ){
+                mClientOrderModel.setEmail( GlobalManager.getInstance().getClient().getEmail() );
+            }
+            ClientLocation clientLocation = GlobalManager.getInstance().getClientLocation();
+            mClientOrderModel.setPhone( phone );
+            mClientOrderModel.setCity( clientLocation.getCity() );
+            mClientOrderModel.setStreet( clientLocation.getStreet() );
+            mClientOrderModel.setBuilding( clientLocation.getHouse() );
+            //TODO if need
+            mClientOrderModel.setFlat( null );
+            mClientOrderModel.setFloor( clientLocation.getFloor() );
+            mClientOrderModel.setEntry( clientLocation.getEntrance() );
+            mClientOrderModel.setIntercom( clientLocation.getIntercom() );
+            //TODO if need
+            mClientOrderModel.setNeedChange( null);
+            mClientOrderModel.setComment( comment );
+            //TODO if need
+            mClientOrderModel.setPayType( null );
+            for( BasketModel basketModel : mFilteredBasket.values() ){
+                mClientOrderModel.getOrders().add(  basketModel );
+            }
             new ValidateCheckoutCode().execute( phone );
         }
+    }
 
+    private void confirmCheckOutSend(){
+        if ( checkEnteredCode() ){
+            new CreateClientOrder().execute(mClientOrderModel );
+        }
     }
 
     @Override
@@ -289,6 +334,13 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
                     mListener.onShowMapClick();
                 }
                 break;
+            case R.id.resendCodeLabelId:
+                clickResendCode( view );
+                break;
+            case R.id.confirmCodeButtonId:
+                AppUtils.hideKeyboardFrom( getActivity(), view );
+                confirmCheckOutSend();
+                break;
         }
     }
 
@@ -305,39 +357,6 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         mTotalAmount += delta;
         mCheckOutCommonTotal.setText( mTotalAmount.toString() );
     }
-
-    @Override
-    public void onFocusChange( View view, boolean isFocused ) {
-        if ( isFocused
-                && AppConstants.ASTERISKS.equals( ( ( AppCompatEditText ) view ).getText().toString() ) ) {
-            ( ( AppCompatEditText ) view ).setText( "" );
-        }
-    }
-
-    @Override
-    public boolean onKey( View view, int i, KeyEvent keyEvent ) {
-        if ( i != 67 && KeyEvent.ACTION_DOWN == keyEvent.getAction()) {
-            switch ( view.getId()  ) {
-                case R.id.confirmDigitOneId:
-                    mDigitTwo.requestFocus();
-                    break;
-                case R.id.confirmDigitTwoId:
-                    mDigitThree.requestFocus();
-                    break;
-                case R.id.confirmDigitThreeId:
-                    mDigitFour.requestFocus();
-                    break;
-                case R.id.confirmDigitFourId:
-                    mDigitOne.requestFocus();
-                    break;
-                default:
-                    break;
-            }
-        }
-        return false;
-    }
-
-
 
     public interface OnCheckOutFragmentListener {
         // TODO: Update argument type and name
@@ -400,8 +419,49 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
             } else {
                 AppUtils.transitionAnimation( getView().findViewById( R.id.checkOutScrollId ),
                         getView().findViewById( R.id.confirmCodeContainerId ) );
-                startCountdown();
+                startCountdown( R.id.checkOutScrollId );
             }
+        }
+    }
+
+    private class CreateClientOrder extends AsyncTask< ClientOrderModel, Void, String > {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground( ClientOrderModel... clientOrder ) {
+            String result = null;
+            try {
+                Call< ApiResponse> createOrderCall = RestController.getInstance()
+                        .getApi().createClientOrder( AppConstants.AUTH_BEARER
+                                + GlobalManager.getInstance().getUserToken(), clientOrder[ 0 ] );
+
+
+                Response< ApiResponse> responseCreateOrder = createOrderCall.execute();
+                if ( responseCreateOrder.body() != null ) {
+                    if ( responseCreateOrder.body().getStatus() == 200 ) {
+                        result = ( String ) responseCreateOrder.body().getResult();
+//
+                    } else {
+                        result = responseCreateOrder.body().getMessage();
+                    }
+                } else {
+                    result = getResources().getString( R.string.internal_error );
+                }
+            } catch ( Exception e ) {
+                result = getResources().getString( R.string.internal_error );
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute( String result ) {
+            super.onPostExecute( result );
+
         }
     }
 }

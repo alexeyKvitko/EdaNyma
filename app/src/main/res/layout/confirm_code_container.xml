@@ -4,6 +4,7 @@
     android:id="@+id/confirmCodeContainerId"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="16dp"
     android:visibility="gone">
     <TextView
         android:id="@+id/confirmCodeTitleId"
@@ -20,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="32dp"
-        android:text="На ваш email отправлено письмо с кодом подтверждения"/>
+        android:text="@string/sending_confirmation_code"/>
 
     <LinearLayout
         android:id="@+id/digitContainerId"
@@ -93,7 +94,7 @@
     <Button
         android:layout_below="@+id/digitContainerId"
         android:id="@+id/confirmCodeButtonId"
-        android:elevation="6dp"
+        android:elevation="24dp"
         android:background="@drawable/button_neon"
         android:layout_marginTop="36dp"
         android:layout_marginHorizontal="32dp"

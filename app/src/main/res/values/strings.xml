@@ -118,5 +118,6 @@
     <string name="floor_label">Этаж</string>
     <string name="not_available_yet">Пока Недоступно</string>
     <string name="check_out_btn">Заказать</string>
+    <string name="sending_confirmation_code">Вам отправлен код подтверждения</string>
 
 </resources>
