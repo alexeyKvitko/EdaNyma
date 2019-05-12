@@ -17,9 +17,14 @@ public class AppConstants {
     public static final Typeface SANDORA = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/sandora.ttf");
     public static final Typeface OFFICE = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/office.ttf");
 
+    public static final String ORDER_DATE_FORMAT = "dd-MM-yyyy";
+    public static final String ORDER_TIME_FORMAT = "dd-MM-yyyy";
+
     public static final String BASKET_CONTENT_CHANGE = "com.edanyma.BASKET_CONTENT_CHANGE";
+    public static final String SHOW_SMS_CODE = "com.edanyma.SHOW_SMS_CODE";
     public static final String SMS_RECIEVER = "android.provider.Telephony.SMS_RECEIVED";
     public static final String BASKET_PRICE_SHOW = "BASKET_PRICE_SHOW";
+    public static final String SMS_CONFIRM_CODE = "SMS_CONFIRM_CODE";
 
     public static final String DEFAULT_USER = "guest";
     public static final String DEFAULT_PASSWORD = "1111";
@@ -29,6 +34,8 @@ public class AppConstants {
     public static final String EXTENSION_PNG = ".png";
     public static final String EXTENSION_NOMEDIA = ".nomedia";
     public static final String FAST_MENU = "fast_menu";
+
+    public static final String SMS_CODE_MSG = "ЕдаНяма.рф, код подтверждения: ";
 
     public static final String AUTH_BEARER = "Bearer ";
 

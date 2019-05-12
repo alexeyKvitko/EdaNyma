@@ -13,14 +13,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|left"
         app:srcCompat="@drawable/filter_back_black_btn" />
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <include layout="@layout/confirm_code_container" />
+        <include layout="@layout/finish_order_container" />
 
         <ScrollView
             android:id="@+id/checkOutScrollId"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -234,6 +237,6 @@
             </LinearLayout>
 
         </ScrollView>
-    </RelativeLayout>
+    </LinearLayout>
 
 </FrameLayout>

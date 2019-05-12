@@ -1,6 +1,8 @@
 package com.edanyma.fragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -26,6 +28,8 @@ import com.edanyma.model.BasketModel;
 import com.edanyma.model.ClientLocation;
 import com.edanyma.model.ClientOrderModel;
 import com.edanyma.model.MenuEntityModel;
+import com.edanyma.model.OrderStatus;
+import com.edanyma.model.PayType;
 import com.edanyma.owncomponent.CheckOutEntity;
 import com.edanyma.owncomponent.CompanyTotalView;
 import com.edanyma.receiver.OwnSMSReceiver;
@@ -33,6 +37,7 @@ import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,6 +90,11 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         initTextView( R.id.checkOutLabelId, AppConstants.B52 );
         initTextView( R.id.contactInfoTitleId, AppConstants.B52 );
         initTextView( R.id.deliveryAddressTitleId, AppConstants.B52 );
+        initTextView( R.id.finishTitleRowTwoId, AppConstants.B52 );
+        initTextView( R.id.finishTitleRowOneId, AppConstants.B52 );
+        initTextView( R.id.finishTitleRowThreeId, AppConstants.OFFICE );
+        initTextView( R.id.finishOrderNumberId, AppConstants.OFFICE );
+        initTextView( R.id.finishOrderNuberDescId, AppConstants.ROBOTO_CONDENCED );
         initTextInputLayout( R.id.checkOutPersonTextLayoutId, AppConstants.ROBOTO_CONDENCED );
         initTextInputLayout( R.id.checkOutPhoneLayoutId, AppConstants.ROBOTO_CONDENCED );
         initTextInputLayout( R.id.checkOutCommentLayoutId, AppConstants.ROBOTO_CONDENCED );
@@ -287,6 +297,10 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
             }
             ClientLocation clientLocation = GlobalManager.getInstance().getClientLocation();
             mClientOrderModel.setPhone( phone );
+            mClientOrderModel.setOrderDate( AppUtils.formatDate( AppConstants.ORDER_DATE_FORMAT, new Date() ));
+            mClientOrderModel.setOrderTime( AppUtils.formatDate( AppConstants.ORDER_TIME_FORMAT, new Date() ));
+            mClientOrderModel.setOrderPrice( mTotalAmount );
+            mClientOrderModel.setOrderStatus(OrderStatus.IN_PROGRESS.name() );
             mClientOrderModel.setCity( clientLocation.getCity() );
             mClientOrderModel.setStreet( clientLocation.getStreet() );
             mClientOrderModel.setBuilding( clientLocation.getHouse() );
@@ -298,8 +312,8 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
             //TODO if need
             mClientOrderModel.setNeedChange( null);
             mClientOrderModel.setComment( comment );
-            //TODO if need
-            mClientOrderModel.setPayType( null );
+
+            mClientOrderModel.setPayType(PayType.CASH.name() );
             for( BasketModel basketModel : mFilteredBasket.values() ){
                 mClientOrderModel.getOrders().add(  basketModel );
             }
@@ -382,7 +396,7 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
                 Response< ApiResponse > responseCodeValidate = validateCodeCall.execute();
                 if ( responseCodeValidate.body() != null ) {
                     if ( responseCodeValidate.body().getStatus() == 200 ) {
-                        mConfirmationCode = ( String ) responseCodeValidate.body().getResult();
+                        mConfirmationCode = responseCodeValidate.body().getMessage();
 //                        if ( AppConstants.SEND_PHONE_CODE.equals( mConfirmationCode ) ) {
 //                            mConfirmationCode = AppUtils.getRandomBetweenRange( 4000, 9999 ) + "";
 //                            SmsManager.getDefault().sendTextMessage( "+7" + mClientModel.getPhone(),

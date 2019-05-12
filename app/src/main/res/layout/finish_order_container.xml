@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/finishOrderContainerId"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="36dp"
+    android:visibility="visible"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="4"
+            android:orientation="vertical">
+            <TextView
+                style="@style/finishOrderTitle"
+                android:layout_marginLeft="24dp"
+                android:id="@+id/finishTitleRowOneId"
+                android:text="@string/splash_crimean"/>
+            <TextView
+                style="@style/finishOrderTitle"
+                android:layout_marginLeft="24dp"
+                android:id="@+id/finishTitleRowTwoId"
+                android:text="@string/splash_service"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="24dp"
+            android:layout_weight="6">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:srcCompat="@drawable/avatar"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <TextView
+        style="@style/splashText"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:id="@+id/finishTitleRowThreeId"
+        android:text="@string/finish_thanks"
+        android:textColor="@color/colorAccent"/>
+
+    <TextView
+        style="@style/splashText"
+        android:textSize="36dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:id="@+id/finishOrderNumberId"
+        android:text="4865"
+        android:textColor="@color/colorAccent"/>
+    <TextView
+        style="@style/grayTextSmall"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:id="@+id/finishOrderNuberDescId"
+        android:text="НОМЕР ЗАКАЗА"/>
+
+
+</LinearLayout>

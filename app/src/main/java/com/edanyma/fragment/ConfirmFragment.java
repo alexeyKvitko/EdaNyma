@@ -1,5 +1,8 @@
 package com.edanyma.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
 import android.support.v7.widget.AppCompatEditText;
@@ -10,10 +13,15 @@ import android.widget.TextView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.R;
+import com.edanyma.activity.BaseActivity;
+import com.edanyma.manager.GlobalManager;
 import com.edanyma.receiver.OwnSMSReceiver;
 import com.edanyma.utils.AppUtils;
 
 public class ConfirmFragment extends BaseFragment implements View.OnFocusChangeListener, View.OnKeyListener {
+
+    private IntentFilter mIntentFilter;
+    private SmsCodeMessageReceiver mSmsCodeMessageReceiver;
 
 
     protected AppCompatEditText mDigitOne;
@@ -34,6 +42,9 @@ public class ConfirmFragment extends BaseFragment implements View.OnFocusChangeL
     protected Runnable mCountdownJob;
 
     protected void initConfirmFragment() {
+
+        mIntentFilter = new IntentFilter( AppConstants.SHOW_SMS_CODE );
+        mSmsCodeMessageReceiver = new SmsCodeMessageReceiver();
 
         initTextView( R.id.confirmCodeTitleId , AppConstants.B52 );
         initTextView( R.id.sendConfirmCode, AppConstants.ROBOTO_CONDENCED );
@@ -113,6 +124,18 @@ public class ConfirmFragment extends BaseFragment implements View.OnFocusChangeL
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().registerReceiver( mSmsCodeMessageReceiver, mIntentFilter );
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver( mSmsCodeMessageReceiver );
+    }
+
+    @Override
     public void onFocusChange( View view, boolean isFocused ) {
         if ( isFocused
                 && AppConstants.ASTERISKS.equals( ( ( AppCompatEditText ) view ).getText().toString() ) ) {
@@ -143,6 +166,20 @@ public class ConfirmFragment extends BaseFragment implements View.OnFocusChangeL
         return false;
     }
 
+    private class SmsCodeMessageReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent ) {
+            String smdCode = intent.getStringExtra( AppConstants.SMS_CONFIRM_CODE );
+            mConfirmCodeBtn.requestFocus();
+            if( smdCode != null && smdCode.length() == 4 ){
+                String[] digits = smdCode.split("");
+                mDigitOne.setText( digits[1] );
+                mDigitTwo.setText( digits[2] );
+                mDigitThree.setText( digits[3] );
+                mDigitFour.setText( digits[4] );
+            }
+        }
+    }
 
 
 }

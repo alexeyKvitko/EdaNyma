@@ -10,6 +10,10 @@ import java.util.List;
 public class ClientOrderModel {
 
     private Integer id;
+    private String orderDate;
+    private String orderTime;
+    private Integer orderPrice;
+    private String orderStatus;
     private String nickName;
     private String email;
     private String phone;
@@ -35,6 +39,38 @@ public class ClientOrderModel {
 
     public void setId( Integer id ) {
         this.id = id;
+    }
+
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public String getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(String orderTime) {
+        this.orderTime = orderTime;
+    }
+
+    public Integer getOrderPrice() {
+        return orderPrice;
+    }
+
+    public void setOrderPrice(Integer orderPrice) {
+        this.orderPrice = orderPrice;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public String getNickName() {

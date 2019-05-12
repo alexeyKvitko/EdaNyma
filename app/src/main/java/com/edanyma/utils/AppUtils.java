@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -23,11 +24,15 @@ import com.edanyma.R;
 import com.edanyma.model.FavoriteCompanyModel;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public abstract class AppUtils {
+
+    private static final String TAG = "AppUtils";
 
     private static boolean isAnimated;
 
@@ -172,6 +177,17 @@ public abstract class AppUtils {
     public static String getSnapshotPath(){
         return Environment.getExternalStorageDirectory()+File.separator+AppConstants.PICTURE_DIR
                     +File.separator+AppConstants.FILENAME_DISH + AppConstants.EXTENSION_JPG;
+    }
+
+    public static String formatDate( String format, Date date ) {
+        SimpleDateFormat sdf = new SimpleDateFormat( format );
+        String result = null;
+        try {
+            result = sdf.format(date);
+        } catch ( Exception ex) {
+            Log.e( TAG, "Ошибка преобразования: "+ex.getMessage() );
+        }
+        return result;
     }
 
 

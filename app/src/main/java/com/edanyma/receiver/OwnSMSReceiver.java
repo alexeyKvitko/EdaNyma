@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import android.util.Log;
+
+import com.edanyma.AppConstants;
+import com.edanyma.EdaNymaApp;
 
 public class OwnSMSReceiver extends BroadcastReceiver {
 
@@ -17,10 +21,13 @@ public class OwnSMSReceiver extends BroadcastReceiver {
             for (int i = 0; i < pdus.length; i++)
                 messages[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
             for (SmsMessage message : messages) {
-                String msg = message.getMessageBody();
-                long when = message.getTimestampMillis();
-                String from = message.getOriginatingAddress();
-
+                Integer msgIdx = message.getMessageBody().indexOf(AppConstants.SMS_CODE_MSG );
+                if( msgIdx > AppConstants.FAKE_ID ){
+                    String code = message.getMessageBody().substring( msgIdx+AppConstants.SMS_CODE_MSG.length() );
+                    Intent codeIntent = new Intent( AppConstants.SHOW_SMS_CODE );
+                    codeIntent.putExtra( AppConstants.SMS_CONFIRM_CODE, code );
+                    EdaNymaApp.getAppContext().sendBroadcast( codeIntent );
+                }
             }
         }
     }
