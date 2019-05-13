@@ -81,6 +81,7 @@ public class BasketOrderManager {
 
     public static void clearBasket() {
         customerBasket = new LinkedList<>();
+        sendMessageToActivity();
     }
 
     public static Integer calculatePrice( MenuEntityModel menuEntity ) {

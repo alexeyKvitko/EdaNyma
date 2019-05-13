@@ -18,7 +18,7 @@ public class AppConstants {
     public static final Typeface OFFICE = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/office.ttf");
 
     public static final String ORDER_DATE_FORMAT = "dd-MM-yyyy";
-    public static final String ORDER_TIME_FORMAT = "dd-MM-yyyy";
+    public static final String ORDER_TIME_FORMAT = "HH:mm";
 
     public static final String BASKET_CONTENT_CHANGE = "com.edanyma.BASKET_CONTENT_CHANGE";
     public static final String SHOW_SMS_CODE = "com.edanyma.SHOW_SMS_CODE";

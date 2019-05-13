@@ -101,7 +101,7 @@
     <string name="profile_support">Служба Поддержки</string>
     <string name="splash_crimean">Крымская</string>
     <string name="splash_service">Cлужба Заказа Еды</string>
-    <string name="finish_thanks">Спасибо за заказ !</string>
+    <string name="finish_thanks">Спасибо за Заказ !</string>
     <string name="splash_desc_one">Легко! Удобно! Быстро!</string>
     <string name="splash_desc_two">Оформите Ваш заказ всего в несколько кликов!</string>
     <string name="splash_desc_three">Проведите уютный вечер дома с лучшими блюдами!</string>
@@ -110,6 +110,10 @@
     <string name="check_out_title">Ваш Заказ</string>
     <string name="contact_info_title">Контактная информация</string>
     <string name="delivery_address">Адрес Доставки</string>
+    <string name="order_day">Дата Заказа</string>
+    <string name="order_time">Время Заказа</string>
+    <string name="order_status">Статус Заказа</string>
+    <string name="status_processing">Обрабатывается Оператором</string>
     <string name="additional_address">Подъезд, этаж и т.д.</string>
     <string name="city_label">Город</string>
     <string name="street_label">Улица</string>
@@ -120,5 +124,6 @@
     <string name="not_available_yet">Пока Недоступно</string>
     <string name="check_out_btn">Заказать</string>
     <string name="sending_confirmation_code">Вам отправлен код подтверждения</string>
+    <string name="order_number_label">НОМЕР ЗАКАЗА</string>
 
 </resources>

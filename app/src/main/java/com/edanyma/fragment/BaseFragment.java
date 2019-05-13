@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatEditText;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.edanyma.EdaNymaApp;
@@ -74,6 +75,15 @@ public class BaseFragment extends Fragment {
 
     protected TextInputLayout initTextInputLayout( int textLayoutId ){
         return initTextInputLayout( textLayoutId , null );
+    }
+
+    //BUTTON
+    protected Button initButon( int buttonId, Typeface typeface ){
+        Button button = getView().findViewById( buttonId );
+        if( typeface != null ){
+            button.setTypeface( typeface );
+        }
+        return button;
     }
 
 

@@ -9,12 +9,15 @@ import java.util.List;
 public class OurClientModel {
 
     private Integer id;
+    private String nickName;
+    private String primaryAddress;
     private String email;
     private String phone;
     private String password;
     private String confirm;
     private String uuid;
     private Integer bonus;
+    private String photo;
     private String additionalMessage;
     private List<FavoriteCompanyModel> favoriteCompanies;
 
@@ -24,6 +27,22 @@ public class OurClientModel {
 
     public void setId( Integer id ) {
         this.id = id;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName( String nickName ) {
+        this.nickName = nickName;
+    }
+
+    public String getPrimaryAddress() {
+        return primaryAddress;
+    }
+
+    public void setPrimaryAddress( String primaryAddress ) {
+        this.primaryAddress = primaryAddress;
     }
 
     public String getEmail() {
@@ -72,6 +91,14 @@ public class OurClientModel {
 
     public void setBonus( Integer bonus ) {
         this.bonus = bonus;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto( String photo ) {
+        this.photo = photo;
     }
 
     public String getAdditionalMessage() {

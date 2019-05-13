@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="36dp"
-    android:visibility="visible"
+    android:visibility="gone"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,9 +35,9 @@
             android:layout_marginRight="24dp"
             android:layout_weight="6">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_marginLeft="24dp"
                 app:srcCompat="@drawable/avatar"/>
         </LinearLayout>
 
@@ -53,19 +53,117 @@
         android:textColor="@color/colorAccent"/>
 
     <TextView
-        style="@style/splashText"
-        android:textSize="36dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center_horizontal"
-        android:id="@+id/finishOrderNumberId"
-        android:text="4865"
-        android:textColor="@color/colorAccent"/>
-    <TextView
         style="@style/grayTextSmall"
         android:layout_marginTop="8dp"
-        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
         android:id="@+id/finishOrderNuberDescId"
-        android:text="НОМЕР ЗАКАЗА"/>
+        android:text="@string/order_number_label"/>
+
+    <TextView
+        android:id="@+id/finishOrderNumberId"
+        style="@style/splashText"
+        android:textSize="36dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center_horizontal"
+        android:text="4865"
+        android:textColor="@color/colorAccent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grayTextColor"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="16dp"
+        android:orientation="vertical">
+        <TextView
+            android:id = "@+id/foDeliveryAddressLabelId"
+            style="@style/grayTextSmall"
+            android:text="@string/delivery_address"/>
+        <TextView
+            android:id = "@+id/foDeliveryAddressValueId"
+            style="@style/grayTextMiddle"
+            android:layout_marginTop="8dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:text="г. Симферополь, ул. Самокиша, 6а"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="16dp"
+        android:orientation="vertical">
+        <TextView
+            android:id = "@+id/foDeliveryDateLabelId"
+            style="@style/grayTextSmall"
+            android:text="@string/order_day"/>
+        <TextView
+            android:id = "@+id/foDeliveryDayValueId"
+            style="@style/grayTextMiddle"
+            android:layout_marginTop="8dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:text="12 мая 2019 г"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="16dp"
+        android:orientation="vertical">
+        <TextView
+            android:id = "@+id/foDeliveryTimeLabelId"
+            style="@style/grayTextSmall"
+            android:text="@string/order_time"/>
+        <TextView
+            android:id = "@+id/foDeliveryTimeValueId"
+            style="@style/grayTextMiddle"
+            android:layout_marginTop="8dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:text="12:11"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="16dp"
+        android:orientation="vertical">
+        <TextView
+            android:id = "@+id/foDeliveryStatusLabelId"
+            style="@style/grayTextSmall"
+            android:text="@string/order_status"/>
+        <TextView
+            android:id = "@+id/foDeliveryStatusValueId"
+            style="@style/grayTextMiddle"
+            android:layout_marginTop="8dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:text="@string/status_processing"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/finishOrderContinueBtnId"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="@drawable/button_neon"
+        android:elevation="6dp"
+        android:gravity="center"
+        android:paddingTop="3dp"
+        android:paddingBottom="5dp"
+        android:text="@string/next_button"
+        android:textColor="@android:color/white" />
+
 
 
 </LinearLayout>

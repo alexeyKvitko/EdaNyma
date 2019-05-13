@@ -1,9 +1,6 @@
 package com.edanyma.fragment;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatEditText;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +28,7 @@ import com.edanyma.model.OrderStatus;
 import com.edanyma.model.PayType;
 import com.edanyma.owncomponent.CheckOutEntity;
 import com.edanyma.owncomponent.CompanyTotalView;
-import com.edanyma.receiver.OwnSMSReceiver;
+import com.edanyma.owncomponent.ModalMessage;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
@@ -61,6 +57,11 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
     private TextView mCheckOutCity;
     private TextView mCheckOutAddress;
     private TextView mCheckOutAdditionalAddress;
+
+    private TextView mFinishOrderNumber;
+    private TextView mFinishOrderAddress;
+    private TextView mFinishOrderDay;
+    private TextView mFinishOrderTime;
 
     private ClientOrderModel mClientOrderModel;
 
@@ -93,8 +94,7 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         initTextView( R.id.finishTitleRowTwoId, AppConstants.B52 );
         initTextView( R.id.finishTitleRowOneId, AppConstants.B52 );
         initTextView( R.id.finishTitleRowThreeId, AppConstants.OFFICE );
-        initTextView( R.id.finishOrderNumberId, AppConstants.OFFICE );
-        initTextView( R.id.finishOrderNuberDescId, AppConstants.ROBOTO_CONDENCED );
+
         initTextInputLayout( R.id.checkOutPersonTextLayoutId, AppConstants.ROBOTO_CONDENCED );
         initTextInputLayout( R.id.checkOutPhoneLayoutId, AppConstants.ROBOTO_CONDENCED );
         initTextInputLayout( R.id.checkOutCommentLayoutId, AppConstants.ROBOTO_CONDENCED );
@@ -120,15 +120,32 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         getView().findViewById( R.id.checkOutSuccessBtnId ).setOnClickListener( this );
         getView().findViewById( R.id.confirmCodeContainerId ).setOnClickListener( null );
         mDishContainer = getView().findViewById( R.id.checkOutDishContainerId );
-
+        initFinishOrderContainer();
         setClientInfo();
         setDeliveryAddress();
         fillDishContainer();
     }
 
+
+    private void initFinishOrderContainer(){
+        initTextView( R.id.finishOrderNuberDescId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.foDeliveryAddressLabelId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.foDeliveryDateLabelId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.foDeliveryTimeLabelId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.foDeliveryStatusLabelId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.foDeliveryStatusValueId, AppConstants.B52 );
+        initButon( R.id.finishOrderContinueBtnId, AppConstants.ROBOTO_CONDENCED )
+                                                                        .setOnClickListener( this );
+
+        mFinishOrderNumber = initTextView( R.id.finishOrderNumberId, AppConstants.OFFICE );
+        mFinishOrderAddress = initTextView( R.id.foDeliveryAddressValueId, AppConstants.B52 );
+        mFinishOrderDay = initTextView( R.id.foDeliveryDayValueId, AppConstants.B52 );
+        mFinishOrderTime = initTextView( R.id.foDeliveryTimeValueId, AppConstants.B52 );
+    }
+
     private void setClientInfo(){
         if ( GlobalManager.getInstance().isSignedIn() ){
-            mCheckOutPerson.setText( GlobalManager.getInstance().getClient().getUuid() );
+            mCheckOutPerson.setText( GlobalManager.getInstance().getClient().getNickName() );
             mCheckOutPhone.setText( GlobalManager.getInstance().getClient().getPhone() );
         }
     }
@@ -355,6 +372,9 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
                 AppUtils.hideKeyboardFrom( getActivity(), view );
                 confirmCheckOutSend();
                 break;
+            case R.id.finishOrderContinueBtnId:
+                getActivity().onBackPressed();
+                break;
         }
     }
 
@@ -452,13 +472,11 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
                 Call< ApiResponse> createOrderCall = RestController.getInstance()
                         .getApi().createClientOrder( AppConstants.AUTH_BEARER
                                 + GlobalManager.getInstance().getUserToken(), clientOrder[ 0 ] );
-
-
                 Response< ApiResponse> responseCreateOrder = createOrderCall.execute();
                 if ( responseCreateOrder.body() != null ) {
                     if ( responseCreateOrder.body().getStatus() == 200 ) {
-                        result = ( String ) responseCreateOrder.body().getResult();
-//
+                        Double orderId = ( Double ) responseCreateOrder.body().getResult();
+                        result = String.valueOf( orderId.intValue() );
                     } else {
                         result = responseCreateOrder.body().getMessage();
                     }
@@ -475,6 +493,29 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         @Override
         protected void onPostExecute( String result ) {
             super.onPostExecute( result );
+            if ( getResources().getString( R.string.internal_error ).equals( result ) ){
+                AppUtils.transitionAnimation( getView().findViewById( R.id.confirmCodeContainerId ),
+                        getView().findViewById( R.id.checkOutScrollId ) );
+                ModalMessage.show( getActivity(), "Сообщение", new String[] {result} );
+            } else {
+                StringBuilder sb = new StringBuilder( );
+                if ( mClientOrderModel.getCity() != null ){
+                    sb.append( mClientOrderModel.getCity() );
+                }
+                if ( mClientOrderModel.getStreet() != null ){
+                    sb.append(", ").append( mClientOrderModel.getStreet() );
+                }
+                if ( mClientOrderModel.getBuilding() != null ){
+                    sb.append(", ").append( mClientOrderModel.getBuilding() );
+                }
+                mFinishOrderNumber.setText( result );
+                mFinishOrderAddress.setText( sb.toString() );
+                mFinishOrderDay.setText( mClientOrderModel.getOrderDate() );
+                mFinishOrderTime.setText( mClientOrderModel.getOrderTime() );
+                BasketOrderManager.clearBasket();
+                AppUtils.transitionAnimation( getView().findViewById( R.id.confirmCodeContainerId ),
+                        getView().findViewById( R.id.finishOrderContainerId ) );
+            }
 
         }
     }
