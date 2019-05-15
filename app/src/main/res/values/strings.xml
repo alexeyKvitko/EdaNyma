@@ -10,7 +10,7 @@
     <string name="app_name">ЕдаНяма</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_notifications">Сообщение</string>
     <string name="gps_enabled">GPS Enabled</string>
     <string name="gps_disabled">GPS Disabled</string>
 
@@ -25,7 +25,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_title">Вход</string>
     <string name="fogot_password">Забыли пароль ?</string>
-    <string name="prompt_email"><font size="14">Ваш телефон или e-mail</font></string>
+    <string name="prompt_email_phone"><font size="14">Ваш телефон или e-mail</font></string>
+    <string name="prompt_email"><font size="14">Ваш e-mail</font></string>
     <string name="prompt_phone"><font size="14">Ваш телефон ( 10 цифр, без +7 )</font></string>
     <string name="prompt_comment"><font size="14">Ваш комментарий</font></string>
     <string name="prompt_password"><font size="14">Введите пароль</font></string>
@@ -42,6 +43,9 @@
     <string name="internal_error">Внутренняя ошибка, повторите попытку позже</string>
     <string name="sign_up_title">Регистрация</string>
     <string name="next_button">Продолжить</string>
+    <string name="remove_account">Удалить Акaунт</string>
+    <string name="update_profile_button">Обновить Профиль</string>
+    <string name="take_profile_photo">Сделать Фото</string>
     <string name="already_signup">Уже зарегистрированы ?</string>
     <string name="confirm_code_title">Введите Код</string>
     <string name="confirm_code_button">Подтвердить</string>
@@ -51,6 +55,7 @@
     <string name="sign_out">Выход</string>
     <string name="select">Выберите</string>
     <string name="edit_profile_menu">Редактировать профиль</string>
+    <string name="your_profile">Профиль</string>
     <string name="change_pswd_menu">Сменить пароль</string>
     <string name="address_menu">Адрес доставки</string>
     <string name="pay_type_menu">Тип оплаты</string>

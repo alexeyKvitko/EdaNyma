@@ -83,4 +83,8 @@ public interface RestApi {
     Call< ApiResponse > createClientOrder( @Header("Authorization") String authorization,
                                        @Body ClientOrderModel clientOrderModel  );
 
+    @POST(API_CLIENT+"updateClientInfo")
+    Call< ApiResponse > updateClientInfo( @Header("Authorization") String authorization,
+                                                      @Body OurClientModel ourClientModel  );
+
 }

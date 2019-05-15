@@ -231,11 +231,8 @@ public class SignUpFragment extends ConfirmFragment implements View.OnClickListe
         if ( authErrorMsg != null ) {
             loginErrorView.setText( authErrorMsg );
             loginErrorView.setVisibility( View.VISIBLE );
-            ( new Handler() ).postDelayed( new Runnable() {
-                @Override
-                public void run() {
+            ( new Handler() ).postDelayed( () -> {
                     loginErrorView.setVisibility( View.GONE );
-                }
             }, 3000 );
             return;
         }
@@ -353,11 +350,6 @@ public class SignUpFragment extends ConfirmFragment implements View.OnClickListe
                 if ( responseValidate.body() != null ) {
                     if ( responseValidate.body().getStatus() == 200 ) {
                         mConfirmationCode = ( String ) responseValidate.body().getResult();
-//                        if ( AppConstants.SEND_PHONE_CODE.equals( mConfirmationCode ) ) {
-//                            mConfirmationCode = AppUtils.getRandomBetweenRange( 4000, 9999 ) + "";
-//                            SmsManager.getDefault().sendTextMessage( "+7" + mClientModel.getPhone(),
-//                                    "ЕдаНяма", "Код регистрации: " + mConfirmationCode, null, null );
-//                        }
                     } else {
                         result = responseValidate.body().getMessage();
                     }

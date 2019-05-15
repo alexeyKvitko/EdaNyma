@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 app:errorEnabled="false"
                 app:errorTextAppearance="@style/errorText"
-                android:hint="@string/prompt_email">
+                android:hint="@string/prompt_email_phone">
 
                 <android.support.v7.widget.AppCompatEditText
                     style="@style/AppEditText"

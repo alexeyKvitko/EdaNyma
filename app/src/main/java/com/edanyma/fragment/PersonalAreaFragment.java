@@ -16,8 +16,9 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.manager.GlobalManager;
+import com.edanyma.utils.AppUtils;
 
-public class PersonalAreaFragment extends Fragment {
+public class PersonalAreaFragment extends BaseFragment implements View.OnClickListener {
 
 
     private OnPersonalAreaActionListener mListener;
@@ -44,49 +45,19 @@ public class PersonalAreaFragment extends Fragment {
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
-        ( ( TextView ) getView().findViewById( R.id.personalTitleId ) ).setTypeface( AppConstants.SANDORA, Typeface.BOLD );
-        ( ( TextView ) getView().findViewById( R.id.avatarNameId ) ).setTypeface( AppConstants.B52 );
-        ( ( TextView ) getView().findViewById( R.id.accountId ) ).setTypeface( AppConstants.SANDORA, Typeface.BOLD );
-        ( ( TextView ) getView().findViewById( R.id.personalMenuEditId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
-        ( ( TextView ) getView().findViewById( R.id.personalMenuPasswordId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
-        ( ( TextView ) getView().findViewById( R.id.personalMenuAddressId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
-        ( ( TextView ) getView().findViewById( R.id.personalMenuPayTypeId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
-        ( ( TextView ) getView().findViewById( R.id.personalMenuBonusId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );
-        final TextView signOut = getView().findViewById( R.id.signOutId );
-        signOut.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        signOut.setOnClickListener( (View view) -> {
-                signOutClick( view );
-        } );
-
-        TextView avatarAuth = getView().findViewById( R.id.avatarAuthId );
-        avatarAuth.setTypeface( AppConstants.ROBOTO_CONDENCED );
-        avatarAuth.setText( GlobalManager.getClient().getEmail() != null
-                ? GlobalManager.getClient().getEmail()
-                : GlobalManager.getClient().getPhone() );
-    }
-
-
-    private void signOutClick( final View view ) {
-        Animation bounce = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.short_bounce );
-        bounce.setAnimationListener( new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart( Animation animation ) {}
-
-            @Override
-            public void onAnimationEnd( Animation animation ) {
-                onSignOutAction();
-            }
-
-            @Override
-            public void onAnimationRepeat( Animation animation ) {}
-        } );
-        view.startAnimation( bounce );
-    }
-
-    public void onSignOutAction(){
-        if( mListener != null ){
-            mListener.onSignOutAction();
-        }
+        initTextView( R.id.personalTitleId, AppConstants.SANDORA, Typeface.BOLD, null );
+        initTextView( R.id.avatarNameId, AppConstants.B52 );
+        initTextView( R.id.accountId, AppConstants.SANDORA, Typeface.BOLD, null );
+        initTextView( R.id.personalMenuPasswordId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.personalMenuAddressId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.personalMenuPayTypeId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.personalMenuBonusId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.personalMenuEditId, AppConstants.ROBOTO_CONDENCED ).setOnClickListener( this );
+        initTextView( R.id.signOutId, AppConstants.ROBOTO_CONDENCED ).setOnClickListener( this );
+        initTextView( R.id.avatarAuthId , AppConstants.ROBOTO_CONDENCED,
+                                                GlobalManager.getClient().getEmail() != null
+                                                    ? GlobalManager.getClient().getEmail()
+                                                            : GlobalManager.getClient().getPhone() );
     }
 
 
@@ -107,7 +78,24 @@ public class PersonalAreaFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick( View view ) {
+        if ( mListener == null ){
+            return;
+        }
+        AppUtils.clickAnimation( view );
+        switch ( view.getId() ){
+            case R.id.signOutId :
+                mListener.onSignOutAction();
+                break;
+            case R.id.personalMenuEditId:
+                mListener.onEditProfileAction();
+                break;
+        }
+    }
+
     public interface OnPersonalAreaActionListener {
         void onSignOutAction();
+        void onEditProfileAction();
     }
 }

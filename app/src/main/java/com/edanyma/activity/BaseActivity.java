@@ -198,7 +198,7 @@ public abstract class BaseActivity extends AppCompatActivity
         if ( BasketOrderManager.getInstance().getBasketPrice() == 0 ) {
             ModalMessage.show( this, getString( R.string.empty_basket_msg ),
                     new String[]{ getString( R.string.splash_desc_two )
-                            , getString( R.string.splash_desc_three ) }, 3000 );
+                            , getString( R.string.splash_desc_three ) }, 2000 );
             return;
         }
         View snapView = null;

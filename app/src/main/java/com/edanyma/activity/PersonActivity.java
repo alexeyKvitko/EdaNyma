@@ -5,19 +5,23 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
+import android.view.View;
 import android.widget.ImageButton;
 
 import com.edanyma.AppConstants;
 import com.edanyma.R;
+import com.edanyma.fragment.EditProfileFragment;
 import com.edanyma.fragment.PersonalAreaFragment;
 import com.edanyma.fragment.SignInFragment;
 import com.edanyma.fragment.SignUpFragment;
+import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.utils.AppUtils;
 
 public class PersonActivity extends BaseActivity implements SignInFragment.OnSignInListener,
-        SignUpFragment.OnSignUpListener, PersonalAreaFragment.OnPersonalAreaActionListener {
+        SignUpFragment.OnSignUpListener, PersonalAreaFragment.OnPersonalAreaActionListener,
+        EditProfileFragment.OnEditFragmentActionListener{
 
     private String mSign;
 
@@ -75,6 +79,12 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
         addReplaceFragment( SignUpFragment.newInstance( AppConstants.NEW_CLIENT ) );
     }
 
+    private void signOut(){
+        GlobalManager.getInstance().setClient( null );
+        BasketOrderManager.getInstance().clearBasket();
+        NavUtils.navigateUpFromSameTask( this );
+    }
+
     @Override
     public void onSignUpAction() {
         NavUtils.navigateUpFromSameTask( this );
@@ -88,8 +98,12 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
 
     @Override
     public void onSignOutAction() {
-        GlobalManager.setClient( null );
-        NavUtils.navigateUpFromSameTask( this );
+        signOut();
+    }
+
+    @Override
+    public void onEditProfileAction() {
+        addReplaceFragment( EditProfileFragment.newInstance() );
     }
 
     @Override
@@ -105,5 +119,10 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
         }
         super.onBackPressed();
         overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
+    }
+
+    @Override
+    public void onSignOutFromEditAction() {
+        signOut();
     }
 }

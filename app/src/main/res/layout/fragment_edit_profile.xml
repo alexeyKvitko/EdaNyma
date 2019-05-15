@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/editProfileFragmentId"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.EditProfileFragment">
+
+    <ImageView
+        android:id="@+id/editProfileBackBtnId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|left"
+        app:srcCompat="@drawable/filter_back_black_btn" />
+    <include layout="@layout/please_wait" />
+    <ScrollView
+        android:id="@+id/editProfileScrollId"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="48dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/editProfileTitleId"
+                style="@style/splashText"
+                android:layout_marginLeft="56dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/your_profile" />
+
+            <LinearLayout
+                android:id="@+id/editProfileHeaderId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="154dp"
+                    android:layout_height="154dp">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="142dp"
+                        android:layout_height="142dp"
+                        android:layout_margin="6dp"
+                        card_view:cardCornerRadius="68dp"
+                        card_view:cardElevation="12dp">
+
+                        <ImageView
+                            android:layout_width="142dp"
+                            android:layout_height="142dp"
+                            android:gravity="center"
+                            app:srcCompat="@drawable/avatar_logo" />
+
+                    </android.support.v7.widget.CardView>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="136dp"
+                    android:layout_height="154dp"
+                    android:layout_marginLeft="36dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/signOutProfileBtnId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_logout_black_18dp" />
+
+                    <ImageView
+                        android:id="@+id/removeProfileBtnId"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginTop="24dp"
+                        app:srcCompat="@drawable/ic_trash_gray_24dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/profileTakePhotoId"
+                style="@style/blueNeonLabel"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="36dp"
+                android:text="@string/take_profile_photo"/>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/profileFormId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="8dp"
+                card_view:cardCornerRadius="8dp"
+                card_view:cardElevation="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginHorizontal="6dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="12dp">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/profileNickNameLayoutId"
+                        style="@style/AppInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_name"
+                        app:errorEnabled="false"
+                        app:errorTextAppearance="@style/errorText">
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/profileNickNameValueId"
+                            style="@style/AppEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:theme="@style/editTextTheme" />
+
+                        <TextView
+                            android:id="@+id/profileNickNameErrorFieldId"
+                            style="@style/errorText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/error_required_field"
+                            android:visibility="gone" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/profilePhoneLayoutId"
+                        style="@style/AppInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_phone"
+                        app:errorEnabled="false"
+                        app:errorTextAppearance="@style/errorText">
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/profilePhoneValueId"
+                            style="@style/AppEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="0123456789+"
+                            android:inputType="phone"
+                            android:theme="@style/editTextTheme" />
+
+                        <TextView
+                            android:id="@+id/profilePhoneErrorId"
+                            style="@style/errorText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/error_required_field"
+                            android:visibility="gone" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/profileEmailLayoutId"
+                        style="@style/AppInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_email"
+                        app:errorEnabled="false"
+                        app:errorTextAppearance="@style/errorText">
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/profileEmailValueId"
+                            style="@style/AppEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress"
+                            android:theme="@style/editTextTheme" />
+
+                        <TextView
+                            android:id="@+id/profileEmailErrorId"
+                            style="@style/errorText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/error_required_field"
+                            android:visibility="gone" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/updateProfileBtnId"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/button_neon"
+                android:elevation="6dp"
+                android:text="@string/update_profile_button"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/removeProfileBigBtnId"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/button_black_border"
+                android:elevation="6dp"
+                android:text="@string/remove_account"
+                android:textColor="@color/blackButton" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="48dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

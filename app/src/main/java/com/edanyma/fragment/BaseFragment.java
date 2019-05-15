@@ -27,6 +27,7 @@ public class BaseFragment extends Fragment {
         }
         return textView;
     }
+
     protected TextView initTextView( int textId, Typeface typeface,  String text ){
         return initTextView( textId, typeface, null, text );
     }
@@ -78,7 +79,7 @@ public class BaseFragment extends Fragment {
     }
 
     //BUTTON
-    protected Button initButon( int buttonId, Typeface typeface ){
+    protected Button initButton( int buttonId, Typeface typeface ){
         Button button = getView().findViewById( buttonId );
         if( typeface != null ){
             button.setTypeface( typeface );

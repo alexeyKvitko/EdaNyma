@@ -134,7 +134,7 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         initTextView( R.id.foDeliveryTimeLabelId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.foDeliveryStatusLabelId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.foDeliveryStatusValueId, AppConstants.B52 );
-        initButon( R.id.finishOrderContinueBtnId, AppConstants.ROBOTO_CONDENCED )
+        initButton( R.id.finishOrderContinueBtnId, AppConstants.ROBOTO_CONDENCED )
                                                                         .setOnClickListener( this );
 
         mFinishOrderNumber = initTextView( R.id.finishOrderNumberId, AppConstants.OFFICE );
