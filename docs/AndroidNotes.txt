@@ -4,6 +4,22 @@ https://android-developers.googleblog.com/2017/10/effective-phone-number-verific
 https://habr.com/ru/company/mailru/blog/260841/
 https://code.tutsplus.com/ru/tutorials/how-to-get-started-with-push-notifications-on-android--cms-25870 
 https://stfalcon.com/ru/blog/post/android-websocket 
+payeer
+p1012808911
+Alex16067408;mops
+792221744
+lTC3rSBadFTu6xig
+alex09079901dimavova12060919
+
+Логин: P1012822602
+Пароль: 04_Yura_16
+E-mail: yurmel_61@mail.ru
+Секретное слово: Vodka
+792490604
+
+
+https://payeer.com/merchant/?m_shop=792221744&m_orderid=12345&m_amount=10.00&m_curr=RUB&m_desc=VGVzdCBwYXltZW50IOKEljEyMzQ1&m_sign=ADBB6375CC944F458CB7CCD2E2807187C67FAFA9818E02BA6C3A69B818A78CD4&lang=ru
+https://payeer.com/merchant/?m_shop=792221744&m_orderid=12345&m_amount=10.00&m_curr=RUB&m_desc=VGVzdCBwYXltZW50IOKEljU4Nzg%3D&m_sign=0062C306FB6167308BA2233B40D5F7C985FCF846A6CF60980122B38F723E1354&lang=ru
 
 Retrofit:
 https://www.vogella.com/tutorials/Retrofit/article.html
@@ -17,6 +33,8 @@ https://www.ekchang.com/tutorial/2018/03/25/styling_textinputlayout.html
 
 https://pixplicity.com,
 
+com.googlecode.libphonenumber
+
 
 ldpi    @ 1.00dp    = 0.75px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt
 mdpi    @ 1.00dp    = 1.00px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt
@@ -25,3 +43,24 @@ hdpi    @ 1.00dp    = 1.50px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt
 xhdpi   @ 1.00dp    = 2.00px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt
 xxhdpi  @ 1.00dp    = 3.00px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt
 xxxhdpi @ 1.00dp    = 4.00px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt
+
+https://github.com/Muddz/PixelShot
+https://github.com/mozilla-mobile/android-components/tree/master/samples
+
+https://www.stoloto.ru/6x45/archive?firstDraw=1&lastDraw=6&mode=draw
+
+https://github.com/staliang/qiwi-client
+
+https://console.developers.google.com/google/maps-apis/apis/maps-android-backend.googleapis.com/credentials?project=edanyma&duration=PT1H
+
+AIzaSyAHg6Sh4XGNRuaVnunaO1oHv3msOwVzwqM
+
+twilio
+alexK_09079901
+
+
+
+
+
+
+
