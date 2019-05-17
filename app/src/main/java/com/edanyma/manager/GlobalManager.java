@@ -119,7 +119,7 @@ public class GlobalManager {
     public static void setClient( OurClientModel client ) {
         GlobalManager.client = client;
         setFavoriteSignToCompany( AppConstants.FAKE_ID, false );
-        if ( client != null ) {
+        if ( client != null && client.getFavoriteCompanies() != null) {
             for ( FavoriteCompanyModel favoriteCompany : client.getFavoriteCompanies() ) {
                 for ( CompanyModel company : bootstrapModel.getCompanies() ) {
                     if ( favoriteCompany.getCompanyId().toString().equals( company.getId() ) ) {

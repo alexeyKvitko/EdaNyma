@@ -13,10 +13,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
+import com.edanyma.AppPreferences;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.manager.GlobalManager;
+import com.edanyma.model.OurClientModel;
 import com.edanyma.utils.AppUtils;
+import com.google.gson.Gson;
+
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PersonalAreaFragment extends BaseFragment implements View.OnClickListener {
 
@@ -46,7 +51,11 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         initTextView( R.id.personalTitleId, AppConstants.SANDORA, Typeface.BOLD, null );
-        initTextView( R.id.avatarNameId, AppConstants.B52 );
+        String avatarName = getActivity().getResources().getString( R.string.prompt_name );
+        if( GlobalManager.getInstance().isSignedIn() ){
+            avatarName = GlobalManager.getInstance().getClient().getNickName();
+        }
+        initTextView( R.id.avatarNameId, AppConstants.B52, avatarName );
         initTextView( R.id.accountId, AppConstants.SANDORA, Typeface.BOLD, null );
         initTextView( R.id.personalMenuPasswordId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.personalMenuAddressId, AppConstants.ROBOTO_CONDENCED );

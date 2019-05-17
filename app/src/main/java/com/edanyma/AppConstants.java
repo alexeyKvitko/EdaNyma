@@ -11,11 +11,11 @@ import java.util.Map;
 
 public class AppConstants {
 
-    public static final Typeface ROBOTO_BLACK = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/Roboto-Black.ttf");
-    public static final Typeface ROBOTO_CONDENCED = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/RobotoCondensed.ttf");
-    public static final Typeface B52 = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/B52.otf");
-    public static final Typeface SANDORA = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/sandora.ttf");
-    public static final Typeface OFFICE = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/office.ttf");
+    public static final Typeface ROBOTO_BLACK = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/Roboto-Black.ttf" );
+    public static final Typeface ROBOTO_CONDENCED = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/RobotoCondensed.ttf" );
+    public static final Typeface B52 = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/B52.otf" );
+    public static final Typeface SANDORA = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/sandora.ttf" );
+    public static final Typeface OFFICE = Typeface.createFromAsset( EdaNymaApp.getAppContext().getAssets(), "font/office.ttf" );
 
     public static final String ORDER_DATE_FORMAT = "dd-MM-yyyy";
     public static final String ORDER_TIME_FORMAT = "HH:mm";
@@ -45,19 +45,22 @@ public class AppConstants {
 
     public static final float DECOR_CORNER_RADIUS = ConvertUtils.convertDpToPixel( 18 );
     public static final float DECOR_LEFT_MARGIN = ConvertUtils.convertDpToPixel( 230 );
-    public static final float DECOR_HEIGHT = ( ( float ) EdaNymaApp.getAppContext().getResources().getDisplayMetrics().heightPixels -  ConvertUtils.convertDpToPixel( 24 ));
+    public static final float DECOR_HEIGHT = ( ( float ) EdaNymaApp.getAppContext().getResources().getDisplayMetrics().heightPixels - ConvertUtils.convertDpToPixel( 24 ) );
     public static final float DECOR_WIDTH = ( ( float ) EdaNymaApp.getAppContext().getResources().getDisplayMetrics().widthPixels );
     public static final float HORIZONTAL_RATIO = ( DECOR_WIDTH - ConvertUtils.convertDpToPixel( 287 ) ) / DECOR_LEFT_MARGIN;
     public static final float VERTICAL_RATIO = ( DECOR_HEIGHT - ConvertUtils.convertDpToPixel( 510 ) ) / DECOR_LEFT_MARGIN;
     public static final float MARGIN_RATIO = ConvertUtils.convertDpToPixel( 65 ) / DECOR_LEFT_MARGIN;
 
+    public static final String OUR_CLIENT_PREF = "our_client";
+    public static final String BASKET_PREF = "our_client_basket";
 
-    public static final String ASTERISKS= "*";
-    public static final String CLOSE= "CLOSE";
-    public static final String OPEN= "OPEN";
 
-    public static final String SIGN_IN= "SIGN_IN";
-    public static final String SIGN_UP= "SIGN_UP";
+    public static final String ASTERISKS = "*";
+    public static final String CLOSE = "CLOSE";
+    public static final String OPEN = "OPEN";
+
+    public static final String SIGN_IN = "SIGN_IN";
+    public static final String SIGN_UP = "SIGN_UP";
     public static final String SIGN_TYPE = "signType";
 
     public static final String SEL_TYPE_ONE = "ONE";
@@ -65,10 +68,10 @@ public class AppConstants {
     public static final String SEL_TYPE_THREE = "THREE";
     public static final String SEL_TYPE_FOUR = "FOUR";
 
-    public static final int FAKE_ID= -1;
+    public static final int FAKE_ID = -1;
 
-    public static final String STATIC_COMPANY= "companies/%s.jpg";
-    public static final String STATIC_COMPANY_LOGO= "logos/%s.png";
+    public static final String STATIC_COMPANY = "companies/%s.jpg";
+    public static final String STATIC_COMPANY_LOGO = "logos/%s.png";
 
     public static final int CLOSE_DISH_FILTER_BUTTON = 6;
     public static final int CLOSE_KITCHEN_FILTER_BUTTON = 4;
@@ -119,24 +122,23 @@ public class AppConstants {
     public static final String PAY_TYPE_CARD = "CARD";
     public static final String PAY_TYPE_WALLET = "WALLET";
 
-    public static final Map<String,String> PAY_TYPES = new LinkedHashMap<String,String>(){
+    public static final Map< String, String > PAY_TYPES = new LinkedHashMap< String, String >() {
         {
-            put("CASH","Наличными");
-            put("CARD","Банковской Картой");
-            put("WALLET","Электронный кошелек");
+            put( "CASH", "Наличными" );
+            put( "CARD", "Банковской Картой" );
+            put( "WALLET", "Электронный кошелек" );
         }
     };
 
-    public static final Map<String,String> EXTRA_FILTER = new LinkedHashMap<String,String>(){
+    public static final Map< String, String > EXTRA_FILTER = new LinkedHashMap< String, String >() {
         {
-            put("FAVORITES","Избранное");
-            put("ACTION","Акция");
-            put("FREE_DELI","Бесплатная Доставка");
-            put("HIGH_RATING","Высокий Рейтинг");
-            put("NEW","Новые");
+            put( "FAVORITES", "Избранное" );
+            put( "ACTION", "Акция" );
+            put( "FREE_DELI", "Бесплатная Доставка" );
+            put( "HIGH_RATING", "Высокий Рейтинг" );
+            put( "NEW", "Новые" );
         }
     };
-
 
 
 }

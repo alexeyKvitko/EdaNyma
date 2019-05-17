@@ -44,7 +44,6 @@ public class ModalMessage extends RelativeLayout {
         mActivity = activity;
         mContainer = (( BaseActivity ) activity).getDrawer();
         mContainer.addView( this );
-        mContainer.setBackground( activity.getResources().getDrawable( R.drawable.border_debug_blue ) );
         mTimeOut = timeOut;
         initialize( title, text );
     }

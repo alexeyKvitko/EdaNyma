@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
+import com.edanyma.AppPreferences;
 import com.edanyma.R;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
@@ -232,6 +233,7 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
                 if ( responseSignIn.body() != null ) {
                     if( responseSignIn.body().getStatus() == 200 ){
                       GlobalManager.getInstance().setClient( responseSignIn.body().getResult() );
+                      AppPreferences.setPreference( AppConstants.OUR_CLIENT_PREF, responseSignIn.body().getResult() );
                     } else {
                         result = responseSignIn.body().getMessage();
                     }

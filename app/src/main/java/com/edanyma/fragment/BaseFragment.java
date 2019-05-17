@@ -4,12 +4,13 @@ import android.graphics.Typeface;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatEditText;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.edanyma.EdaNymaApp;
 
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
 
     //TEXT VIEW
@@ -85,6 +86,12 @@ public class BaseFragment extends Fragment {
             button.setTypeface( typeface );
         }
         return button;
+    }
+
+    protected void setThisOnClickListener( int[] ids ){
+        for( int id : ids ){
+            getView().findViewById( id ).setOnClickListener( ( View.OnClickListener ) this );
+        }
     }
 
 

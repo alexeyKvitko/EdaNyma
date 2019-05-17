@@ -3,8 +3,10 @@ package com.edanyma.manager;
 import android.content.Intent;
 
 import com.edanyma.AppConstants;
+import com.edanyma.AppPreferences;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.model.MenuEntityModel;
+import com.edanyma.model.PrefernceBasket;
 import com.edanyma.utils.ConvertUtils;
 
 import java.util.LinkedList;
@@ -105,14 +107,32 @@ public class BasketOrderManager {
         return calc;
     }
 
-    private static void sendMessageToActivity(){
+    public static void sendMessageToActivity(){
         Intent intent = new Intent( AppConstants.BASKET_CONTENT_CHANGE );
-        intent.putExtra( AppConstants.BASKET_PRICE_SHOW, true );
+        intent.putExtra( AppConstants.BASKET_PRICE_SHOW, customerBasket.size() > 0 );
         EdaNymaApp.getAppContext().sendBroadcast( intent );
+        if ( GlobalManager.getInstance().isSignedIn() ){
+            if ( customerBasket.size() > 0 ){
+                AppPreferences.setPreference( AppConstants.BASKET_PREF, new PrefernceBasket( customerBasket ).get() );
+            } else {
+                AppPreferences.removePreference( AppConstants.BASKET_PREF );
+            }
+        }
+    }
+
+    public static boolean isBasketEmpty(){
+        return customerBasket == null || customerBasket.size() == 0;
     }
 
     public static List<MenuEntityModel> getBasket() {
         return customerBasket;
+    }
+
+    public static void setBasket( PrefernceBasket prefernceBasket ){
+        customerBasket = new LinkedList<>( );
+        for( MenuEntityModel menuEntityModel :prefernceBasket.get() ){
+            customerBasket.add( menuEntityModel );
+        }
     }
 
 }

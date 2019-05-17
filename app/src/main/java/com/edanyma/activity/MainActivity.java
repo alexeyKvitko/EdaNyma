@@ -67,10 +67,10 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         initBaseActivity( new ActivityState( AppConstants.HOME_BOTTOM_INDEX ) );
         final MainActivity me = this;
         mProfileBtn = findViewById( R.id.navButtonId );
-        mProfileBtn.setOnClickListener( (View view) -> {
-                Animation rotate = AnimationUtils.loadAnimation( me, R.anim.icon_rotation );
-                view.startAnimation( rotate );
-                PixelShot.of( findViewById( R.id.contentMainLayoutId ) ).setResultListener( me ).save();
+        mProfileBtn.setOnClickListener( ( View view ) -> {
+            Animation rotate = AnimationUtils.loadAnimation( me, R.anim.icon_rotation );
+            view.startAnimation( rotate );
+            PixelShot.of( findViewById( R.id.contentMainLayoutId ) ).setResultListener( me ).save();
         } );
         mContext = this;
         List< CompanyActionModel > companyActionModels = GlobalManager.getInstance().getBootstrapModel()
@@ -307,7 +307,7 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         String homeMenuTag = ( ( TextView ) view.findViewById( R.id.dishTitleTextId ) ).getText().toString();
         String homeMenuCount = ( ( TextView ) view.findViewById( R.id.dishCountTextId ) ).getText().toString();
         if ( Integer.valueOf( homeMenuCount.substring( 0, 1 ) ).equals( 0 ) ) {
-            ModalMessage.show( this, "Сообщение", new String[]{"В Вашем городе еще нет выбранных заведений"} );
+            ModalMessage.show( this, "Сообщение", new String[]{ "В Вашем городе еще нет выбранных заведений" } );
         } else {
             if ( !AppConstants.ALL_DISHES.equals( homeMenuTag ) ) {
                 Map< String, String > params = new HashMap<>();

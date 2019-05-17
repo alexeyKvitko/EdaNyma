@@ -80,10 +80,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         mProfileEmail.setText( mClient.getEmail() );
 
         initTextView( R.id.editProfileTitleId, AppConstants.B52 );
-        initButton( R.id.updateProfileBtnId, AppConstants.ROBOTO_CONDENCED ).setOnClickListener( this );
-
-        getView().findViewById( R.id.editProfileBackBtnId ).setOnClickListener( this );
-        getView().findViewById( R.id.signOutProfileBtnId ).setOnClickListener( this );
+        initButton( R.id.updateProfileBtnId, AppConstants.ROBOTO_CONDENCED );
+        setThisOnClickListener( new int[]{R.id.updateProfileBtnId, R.id.editProfileBackBtnId,
+                R.id.signOutProfileBtnId, R.id.removeProfileBigBtnId, R.id.removeProfileBtnId} );
     }
 
     private void updateProfile(){
@@ -134,7 +133,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             mListener = ( OnEditFragmentActionListener ) context;
         } else {
             throw new RuntimeException( context.toString()
-                    + " must implement OnPersonalAreaActionListener" );
+                    + " must implement OnEditFragmentActionListener" );
         }
     }
 
@@ -171,8 +170,16 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
                     mListener.onSignOutFromEditAction();
                 }
                 break;
+            case R.id.removeProfileBtnId:
+            case R.id.removeProfileBigBtnId:
+                if ( mListener != null ) {
+                    mListener.onRemoveClientFullyAction();
+                }
+                break;
         }
     }
+
+
 
     class UpdateOurClientInfo extends AsyncTask< OurClientModel, Void, String > {
 
@@ -220,6 +227,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
     public interface OnEditFragmentActionListener {
         void onSignOutFromEditAction();
+        void onRemoveClientFullyAction();
     }
 
 }

@@ -4,15 +4,17 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public abstract class AppPreferences {
-
+     
+      private static final SharedPreferences SHARED_PREFERENCES 
+                    = PreferenceManager.getDefaultSharedPreferences( EdaNymaApp.getAppContext() );
+    
     /**
      *  Set Application Preferences
      *  @param key - key
      *  @param value - value
      */
     public static void setPreference( String key,Object value ){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences( EdaNymaApp.getAppContext() );
-        SharedPreferences.Editor editor = prefs.edit();
+        SharedPreferences.Editor editor = SHARED_PREFERENCES.edit();
         if ( value instanceof String ){
             editor.putString( key, (String) value );
         } else if ( value instanceof Float ){
@@ -29,8 +31,7 @@ public abstract class AppPreferences {
      *  @param defValue - value
      */
     public static String getPreference( String key, String defValue ){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences( EdaNymaApp.getAppContext() );
-        return prefs.getString( key, defValue );
+        return SHARED_PREFERENCES.getString( key, defValue );
     }
 
     /**
@@ -39,8 +40,7 @@ public abstract class AppPreferences {
      *  @param defValue - value
      */
     public static float getPreference(  String key, double defValue ){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences( EdaNymaApp.getAppContext() );
-        return prefs.getFloat(key, (float) defValue);
+        return SHARED_PREFERENCES.getFloat(key, (float) defValue);
     }
 
     /**
@@ -49,8 +49,15 @@ public abstract class AppPreferences {
      *  @param defValue - value
      */
     public static int getPreference( String key, int defValue ){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences( EdaNymaApp.getAppContext() );
-        return prefs.getInt(key, defValue);
+        return SHARED_PREFERENCES.getInt(key, defValue);
     }
+
+    public static void removePreference(String key){
+        SharedPreferences.Editor editor = SHARED_PREFERENCES.edit();
+        editor.remove( key );
+        editor.commit();
+    }
+    
+    
 
 }

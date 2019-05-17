@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
+import com.edanyma.AppPreferences;
 import com.edanyma.R;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
@@ -273,6 +274,7 @@ public class SignUpFragment extends ConfirmFragment implements View.OnClickListe
                 @Override
                 public void run() {
                     mListener.onSignUpAction();
+                    AppPreferences.setPreference( AppConstants.OUR_CLIENT_PREF, mClientModel );
                 }
             }, 3000 );
 

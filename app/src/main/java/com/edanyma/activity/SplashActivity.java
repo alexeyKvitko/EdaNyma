@@ -15,8 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.edanyma.AppConstants;
+import com.edanyma.AppPreferences;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
+import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.AuthToken;
@@ -24,12 +26,15 @@ import com.edanyma.model.BootstrapModel;
 import com.edanyma.model.ClientLocation;
 import com.edanyma.model.DictionaryModel;
 import com.edanyma.model.LoginUser;
+import com.edanyma.model.OurClientModel;
+import com.edanyma.model.PrefernceBasket;
 import com.edanyma.receiver.SingleShotLocationProvider;
 import com.edanyma.rest.RestApi;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.GeoUtils;
 import com.edanyma.utils.PicassoClient;
+import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.ArrayList;
@@ -187,6 +192,20 @@ public class SplashActivity extends Activity {
                         if ( GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() == null ) {
                             mBootstrapSuccess = false;
                         }
+                        Gson gson =  new Gson();
+                        String jsonClient = AppPreferences.getPreference( AppConstants.OUR_CLIENT_PREF, null );
+                        if(  jsonClient != null ){
+                            OurClientModel client = gson.fromJson( jsonClient, OurClientModel.class );
+                            GlobalManager.getInstance().setClient( client );
+                        }
+                        String jsonBasket = AppPreferences.getPreference( AppConstants.BASKET_PREF, null );
+                        if ( jsonBasket != null ){
+                            PrefernceBasket prefernceBasket = gson.fromJson( jsonBasket, PrefernceBasket.class );
+                            BasketOrderManager.getInstance().setBasket( prefernceBasket );
+                            BasketOrderManager.getInstance().sendMessageToActivity();
+
+                        }
+
                     }
                 }
             } catch ( Exception e ) {

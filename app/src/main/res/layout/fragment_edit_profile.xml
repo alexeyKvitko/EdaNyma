@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|left"
+        android:elevation="10dp"
         app:srcCompat="@drawable/filter_back_black_btn" />
     <include layout="@layout/please_wait" />
     <ScrollView
@@ -71,16 +72,16 @@
 
                     <ImageView
                         android:id="@+id/signOutProfileBtnId"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_logout_black_18dp" />
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:srcCompat="@drawable/ic_logout_blue_48dp" />
 
                     <ImageView
                         android:id="@+id/removeProfileBtnId"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_marginTop="24dp"
-                        app:srcCompat="@drawable/ic_trash_gray_24dp" />
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="12dp"
+                        app:srcCompat="@drawable/ic_trash_gray_48dp" />
                 </LinearLayout>
             </LinearLayout>
 

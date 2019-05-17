@@ -87,4 +87,8 @@ public interface RestApi {
     Call< ApiResponse > updateClientInfo( @Header("Authorization") String authorization,
                                                       @Body OurClientModel ourClientModel  );
 
+    @GET(API_CLIENT+"removeClient/{uuid}")
+    Call< ApiResponse > removeClient( @Header("Authorization") String authorization,
+                                     @Path("uuid") String uuid );
+
 }

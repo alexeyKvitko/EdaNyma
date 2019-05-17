@@ -43,7 +43,7 @@
     <string name="internal_error">Внутренняя ошибка, повторите попытку позже</string>
     <string name="sign_up_title">Регистрация</string>
     <string name="next_button">Продолжить</string>
-    <string name="remove_account">Удалить Акaунт</string>
+    <string name="remove_account">Удалить Профиль</string>
     <string name="update_profile_button">Обновить Профиль</string>
     <string name="take_profile_photo">Сделать Фото</string>
     <string name="already_signup">Уже зарегистрированы ?</string>
@@ -68,7 +68,7 @@
     <string name="not_available">Not Avilable</string>
     <string name="all_company_label">Все заведения</string>
     <string name="filter_company_label">Заведения</string>
-    <string name="prompt_name">Ваше имя</string>
+    <string name="prompt_name">Ваше Имя</string>
 
     <string name="filter_dish">Блюда</string>
     <string name="filter_kitchen">Кухни</string>
@@ -130,5 +130,9 @@
     <string name="check_out_btn">Заказать</string>
     <string name="sending_confirmation_code">Вам отправлен код подтверждения</string>
     <string name="order_number_label">НОМЕР ЗАКАЗА</string>
+    <string name="continue_order">Продолжить</string>
+    <string name="no_it_joke">Это ошибка</string>
+    <string name="removed_from_system">%s успешно удален из системы</string>
+    <string name="yes_sure">Да, уверен</string>
 
 </resources>
