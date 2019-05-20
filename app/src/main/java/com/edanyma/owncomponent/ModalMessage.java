@@ -1,5 +1,7 @@
 package com.edanyma.owncomponent;
 
+import android.animation.IntEvaluator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
@@ -22,6 +24,8 @@ import com.edanyma.utils.ConvertUtils;
 
 
 public class ModalMessage extends RelativeLayout {
+
+    private static final int MESSAGE_HEIGHT = ( int ) ConvertUtils.convertDpToPixel( 150 );
 
     private RelativeLayout mModalMessage;
     private FrameLayout mContainer;
@@ -69,32 +73,48 @@ public class ModalMessage extends RelativeLayout {
             textView.setText( text );
             cardView.addView( textView );
         }
+        Animation fadeIn = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.fade_in );
+        fadeIn.setDuration( 300 );
+        mModalMessage.startAnimation( fadeIn );
         mModalMessage.setOnClickListener( null );
-        mModalMessage.startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.fade_in ) );
+        animateMessageContainer( 0, MESSAGE_HEIGHT );
         mModalMessage.setVisibility( View.VISIBLE );
-        ( new Handler() ).postDelayed( new Runnable() {
-            @Override
-            public void run() {
-                Animation fadeOut = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.fade_out );
+        ( new Handler() ).postDelayed( () -> {
+                Animation fadeOut = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),R.anim.fade_out );
+                fadeOut.setDuration( 300 );
                 fadeOut.setAnimationListener( new Animation.AnimationListener() {
                     @Override
-                    public void onAnimationStart( Animation animation ) {
-                    }
-
+                    public void onAnimationStart( Animation animation ) {}
                     @Override
                     public void onAnimationEnd( Animation animation ) {
-                        mModalMessage.setVisibility( View.GONE );
-                        mContainer.removeView( mModalMessage );
-                        mModalMessage = null;
+                        if ( mModalMessage != null ){
+                            if ( mContainer != null ){
+                                mContainer.removeView( mModalMessage );
+                            }
+                            mModalMessage.setVisibility( View.GONE );
+                            mModalMessage = null;
+                        }
                     }
-
                     @Override
-                    public void onAnimationRepeat( Animation animation ) {
-                    }
+                    public void onAnimationRepeat( Animation animation ) {}
                 } );
                 mModalMessage.startAnimation( fadeOut );
-            }
+                animateMessageContainer( MESSAGE_HEIGHT, 0 );
         }, mTimeOut );
+    }
+
+    private void animateMessageContainer( final int start, final int end ) {
+        final CardView messageContainer = findViewById( R.id.modalMessageCardId );
+        final RelativeLayout.LayoutParams layoutParams =
+                ( RelativeLayout.LayoutParams ) messageContainer.getLayoutParams();
+        ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), start, end );
+        valAnimator.addUpdateListener( ( ValueAnimator animator ) -> {
+            int val = ( Integer ) animator.getAnimatedValue();
+            layoutParams.height = val;
+            messageContainer.setLayoutParams( layoutParams );
+        } );
+        valAnimator.setDuration( 300 );
+        valAnimator.start();
     }
 
 

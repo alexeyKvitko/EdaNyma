@@ -108,11 +108,11 @@ public class ModalDialog extends RelativeLayout {
                 dialogContainer.setLayoutParams( layoutParams );
                 if( end == 0 && val <= 0 ){
                     if ( mModalDialog != null ){
-                        mModalDialog.setVisibility( View.GONE );
-                        mModalDialog = null;
                         if ( mContainer != null ){
                             mContainer.removeView( mModalDialog );
                         }
+                        mModalDialog.setVisibility( View.GONE );
+                        mModalDialog = null;
                     }
                     mListener = null;
                 }
