@@ -4,6 +4,9 @@ https://android-developers.googleblog.com/2017/10/effective-phone-number-verific
 https://habr.com/ru/company/mailru/blog/260841/
 https://code.tutsplus.com/ru/tutorials/how-to-get-started-with-push-notifications-on-android--cms-25870 
 https://stfalcon.com/ru/blog/post/android-websocket 
+https://github.com/CameraKit/camerakit-android
+qw
+Alex_16067408
 payeer
 p1012808911
 Alex16067408;mops
@@ -17,9 +20,15 @@ E-mail: yurmel_61@mail.ru
 Секретное слово: Vodka
 792490604
 
+Логин: P1012206100
+Пароль: ViconssAlliance97
+E-mail: viconssalliance.lp@gmail.com
+Секретное слово: 209237
+Master key: 275
 
-https://payeer.com/merchant/?m_shop=792221744&m_orderid=12345&m_amount=10.00&m_curr=RUB&m_desc=VGVzdCBwYXltZW50IOKEljEyMzQ1&m_sign=ADBB6375CC944F458CB7CCD2E2807187C67FAFA9818E02BA6C3A69B818A78CD4&lang=ru
-https://payeer.com/merchant/?m_shop=792221744&m_orderid=12345&m_amount=10.00&m_curr=RUB&m_desc=VGVzdCBwYXltZW50IOKEljU4Nzg%3D&m_sign=0062C306FB6167308BA2233B40D5F7C985FCF846A6CF60980122B38F723E1354&lang=ru
+секретный ключ 97529
+
+http://edanyma.ru/successMerchant/?m_operation_id=795201679&m_operation_ps=87815397&m_operation_date=20.05.2019%2011:58:01&m_operation_pay_date=20.05.2019%2012:00:31&m_shop=792221744&m_orderid=10032&m_amount=10.00&m_curr=RUB&m_desc=0JXQtNCw0J3Rj9C80LAu0YDRhC4g0J7Qv9C70LDRgtCwINC30LDQutCw0LfQsCDihJYgMTAwMzIsINC%2B0YIgMjAtMDUtMjAxOQ%3D%3D&m_status=success&m_sign=F786E5921F2E184AF55CB3A969A5DF7CD6930E2A965794B3A735BA21CF6188D5&lang=ru
 
 Retrofit:
 https://www.vogella.com/tutorials/Retrofit/article.html
@@ -58,9 +67,9 @@ AIzaSyAHg6Sh4XGNRuaVnunaO1oHv3msOwVzwqM
 twilio
 alexK_09079901
 
-
-
-
-
-
-
+Киви касса 
+https://developer.qiwi.com/ru/bill-payments/?java#steps
+публичный ключ:
+aixoQYoWQNPF2isu7ENmR6kPNgGvn8hYQ71aJfEc3T6wmprcWhNiRqDC9VRpT382yfHARYUKDqEgCEFatYkYU3MWHik7D2GwQSuwA4A81Fy8ofchybnzZjjjxUo5gynK1Li9b77ZrT1r2Xs8fkEq6bxx3afTEKWfHKAYJgjLJqkjFh1a4ng744kxeF
+Секретный ключ
+eyJ2ZXJzaW9uIjoiUDJQIiwiZGF0YSI6eyJwYXlpbl9tZXJjaGFudF9zaXRlX3VpZCI6ImFqaWQtMDAiLCJ1c2VyX2lkIjoiNzk3ODI1NTc5NzgiLCJzZWNyZXQiOiJiMTYyOGFmMjQxMzdhODg3NmRkOTYzZTE1YjYxYjIzZTA1YjZiZDc3Yjg0NGQzMDc3OTZkNTNiZDYyNzg4ZGZlIn19
