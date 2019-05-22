@@ -16,6 +16,11 @@ public class RestController {
         return restController;
     }
 
+    public static RestController setContentType(String contentType){
+
+        return restController;
+    }
+
     public static RestApi getApi(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl( REST_BASE_URL )

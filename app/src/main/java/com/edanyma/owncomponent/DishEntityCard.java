@@ -14,7 +14,7 @@ import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.utils.ConvertUtils;
-import com.edanyma.utils.PicassoClient;
+import com.edanyma.utils.GlideClient;
 
 public class DishEntityCard extends FrameLayout {
 
@@ -65,7 +65,7 @@ public class DishEntityCard extends FrameLayout {
     }
 
     public void setEntityImage( String uri ) {
-        PicassoClient.downloadImage( EdaNymaApp.getAppContext(), uri, this.mEntityImage,
+        GlideClient.downloadImage( EdaNymaApp.getAppContext(), uri, this.mEntityImage,
                 DISH_IMAGE_WIDTH, DISH_IMAGE_HEIGHT );
     }
 

@@ -26,7 +26,7 @@ import com.edanyma.pixelshot.PixelShot;
 import com.edanyma.recyclerview.CompanyActionAdapter;
 import com.edanyma.recyclerview.HomeMenuAdapter;
 import com.edanyma.recyclerview.manager.VegaLayoutManager;
-import com.edanyma.utils.PicassoClient;
+import com.edanyma.utils.GlideClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -228,7 +228,7 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         mPrevScrollState = AppConstants.FAKE_ID;
         mCurrentSlide = 0;
         changeSlideIcon( mCurrentSlide );
-        PicassoClient.downloadImage( mContext,
+        GlideClient.downloadImage( mContext,
                 mActionAdapter.getItem( mCurrentSlide ).getActionImgUrl(),
                 ( ImageView ) findViewById( R.id.actionBgImageId ) );
         mTimer = new Handler();
@@ -268,7 +268,7 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
                 public void onAnimationRepeat( Animation animation ) {
                 }
             } );
-            PicassoClient.downloadImage( mContext,
+            GlideClient.downloadImage( mContext,
                     mActionAdapter.getItem( prevSlide ).getActionImgUrl(),
                     ( ImageView ) findViewById( R.id.actionBgImageId ) );
             findViewById( actionSlideIconIds[ prevSlide ] ).
@@ -287,7 +287,7 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
 
             @Override
             public void onAnimationEnd( Animation animation ) {
-                PicassoClient.downloadImage( mContext,
+                GlideClient.downloadImage( mContext,
                         mActionAdapter.getItem( mCurrentSlide ).getActionImgUrl(),
                         ( ImageView ) findViewById( R.id.actionBgImageId ) );
 

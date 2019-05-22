@@ -194,6 +194,11 @@ public abstract class BaseActivity extends AppCompatActivity
 //        overridePendingTransition( R.anim.act_fade_in, R.anim.act_fade_out );
     }
 
+    public void setHeaderFooterVisibilty( int visibility ){
+        getHeader().setVisibility( visibility );
+        getFooter().setVisibility( visibility );
+    }
+
     private void startBasketActivity( View view ) {
         if ( BasketOrderManager.getInstance().getBasketPrice() == 0 ) {
             ModalMessage.show( this, getString( R.string.empty_basket_msg ),

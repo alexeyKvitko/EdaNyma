@@ -20,6 +20,7 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.activity.BaseActivity;
+import com.edanyma.activity.CompanyDishActivity;
 import com.edanyma.activity.DishActivity;
 import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.manager.GlobalManager;
@@ -28,7 +29,7 @@ import com.edanyma.model.MenuEntityModel;
 import com.edanyma.model.MenuTypeModel;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
-import com.edanyma.utils.PicassoClient;
+import com.edanyma.utils.GlideClient;
 
 public class DishInfoFragment extends BaseFragment implements View.OnClickListener {
 
@@ -92,7 +93,7 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
         mWspBtnMargin = 0;
         mDishCount = BasketOrderManager.getInstance().getEntityCountInBasket( mDishEntity.getId() );
         mDishCount = mDishCount == 0 ? 1 : mDishCount;
-        PicassoClient.downloadImage( EdaNymaApp.getAppContext(), mDishEntity.getImageUrl()
+        GlideClient.downloadImage( EdaNymaApp.getAppContext(), mDishEntity.getImageUrl()
                 , ( ImageView ) getView().findViewById( R.id.dishInfoImgId )
                 , DISH_IMAGE_WIDTH, DISH_IMAGE_HEIGHT );
         initTextView( R.id.dishInfoCompanyId, AppConstants.OFFICE, mCompanyName );
@@ -242,8 +243,7 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        ( ( BaseActivity ) getActivity() ).getHeader().setVisibility( View.VISIBLE );
-        ( ( BaseActivity ) getActivity() ).getFooter().setVisibility( View.VISIBLE );
+        ( ( CompanyDishActivity ) getActivity() ).setHeaderFooterVisibilty( View.VISIBLE );
         int containerId = getActivity() instanceof DishActivity ? R.id.eatMenuContainerId :
                                                                             R.id.dishContainerId;
         getActivity().findViewById( containerId )

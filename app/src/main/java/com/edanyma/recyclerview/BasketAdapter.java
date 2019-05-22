@@ -13,7 +13,7 @@ import com.edanyma.R;
 import com.edanyma.fragment.BasketFragment;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.utils.AppUtils;
-import com.edanyma.utils.PicassoClient;
+import com.edanyma.utils.GlideClient;
 
 import java.util.ArrayList;
 
@@ -39,7 +39,7 @@ public class BasketAdapter extends CommonBaseAdapter< MenuEntityModel > {
     public void onBindViewHolder(final BaseDataObjectHolder h, final int position) {
         BasketAdapter.BasketDataObjectHolder holder = ( BasketAdapter.BasketDataObjectHolder ) h;
         MenuEntityModel dish = mItemList.get( position );
-        PicassoClient.downloadImage( EdaNymaApp.getAppContext(), dish.getImageUrl(),
+        GlideClient.downloadImage( EdaNymaApp.getAppContext(), dish.getImageUrl(),
                 holder.basketEntityImg, BasketFragment.BASKET_IMAGE_WIDTH, BasketFragment.BASKET_IMAGE_HEIGHT );
         holder.basketEntityName.setText( dish.getDisplayName() );
         holder.basketEntityPrice.setText( dish.getActualPrice().toString() );

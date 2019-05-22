@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -48,17 +48,55 @@
                     android:layout_height="154dp">
 
                     <android.support.v7.widget.CardView
+                        android:id="@+id/avatarCardViewId"
                         android:layout_width="142dp"
                         android:layout_height="142dp"
                         android:layout_margin="6dp"
                         card_view:cardCornerRadius="68dp"
                         card_view:cardElevation="12dp">
 
-                        <ImageView
-                            android:layout_width="142dp"
-                            android:layout_height="142dp"
-                            android:gravity="center"
-                            app:srcCompat="@drawable/avatar_logo" />
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                                <ImageView
+                                    android:id="@+id/editProfileImageAvatarId"
+                                    android:layout_width="142dp"
+                                    android:layout_height="142dp"
+                                    android:gravity="center"
+                                    app:srcCompat="@drawable/avatar_logo" />
+                                 <ImageView
+                                     android:layout_width="wrap_content"
+                                     android:layout_height="wrap_content"
+                                     android:layout_gravity="center_horizontal|bottom"
+                                     android:layout_marginBottom="8dp"
+                                     app:srcCompat="@drawable/ic_camera_enhance_outline_white_18dp"/>
+                              </FrameLayout>
+
+                            <LinearLayout
+                                android:id="@+id/editProfileLayoutAvatarId"
+                                android:layout_width="142dp"
+                                android:layout_height="142dp"
+                                android:elevation="14dp"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:id="@+id/editProfileFirstLetterId"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="top|center_horizontal"
+                                    android:drawableBottom="@drawable/ic_camera_enhance_outline_white_18dp"
+                                    android:layout_marginTop="-32dp"
+                                    android:textColor="@color/white"
+                                    android:textSize="138dp" />
+                            </LinearLayout>
+
+
+
+                        </FrameLayout>
 
                     </android.support.v7.widget.CardView>
                 </RelativeLayout>
@@ -85,19 +123,13 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/profileTakePhotoId"
-                style="@style/blueNeonLabel"
-                android:layout_marginTop="24dp"
-                android:layout_marginLeft="36dp"
-                android:text="@string/take_profile_photo"/>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/profileFormId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="24dp"
                 card_view:cardCornerRadius="8dp"
                 card_view:cardElevation="12dp">
 

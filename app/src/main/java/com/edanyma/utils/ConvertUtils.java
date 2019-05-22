@@ -1,6 +1,8 @@
 package com.edanyma.utils;
 
+import android.graphics.Bitmap;
 import android.util.DisplayMetrics;
+import android.util.Size;
 
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
@@ -8,6 +10,12 @@ import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.CompanyLight;
 import com.edanyma.model.CompanyModel;
 import com.edanyma.model.MenuEntityModel;
+
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public abstract class ConvertUtils {
 
@@ -61,5 +69,14 @@ public abstract class ConvertUtils {
     public static float convertPixelsToDp( float px ){
         return px / ((float) EdaNymaApp.getAppContext().getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
+
+    public static byte[] bitmapToByteArray( Bitmap bm) {
+        int iBytes = bm.getWidth() * bm.getHeight() * 4;
+        ByteBuffer buffer = ByteBuffer.allocate(iBytes);
+        bm.copyPixelsToBuffer(buffer);
+        return buffer.array();
+    }
+
+
 
 }

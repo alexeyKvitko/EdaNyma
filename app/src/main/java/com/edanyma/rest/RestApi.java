@@ -3,6 +3,7 @@ package com.edanyma.rest;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.AuthToken;
 import com.edanyma.model.BootstrapModel;
+import com.edanyma.model.ClientAvatar;
 import com.edanyma.model.ClientOrderModel;
 import com.edanyma.model.CompanyInfoModel;
 import com.edanyma.model.Dishes;
@@ -12,11 +13,16 @@ import com.edanyma.model.OurClientModel;
 
 import org.json.JSONObject;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -90,5 +96,13 @@ public interface RestApi {
     @GET(API_CLIENT+"removeClient/{uuid}")
     Call< ApiResponse > removeClient( @Header("Authorization") String authorization,
                                      @Path("uuid") String uuid );
+
+//    @POST(API_CLIENT+"updateClientAvatar")
+//    Call< ApiResponse > updateClientAvatar( @Header("Authorization") String authorization,
+//                                            @Body ClientAvatar clientAvatar );
+    @Multipart
+    @POST(API_CLIENT+"updateClientAvatar")
+    Call< ApiResponse > updateClientAvatar( @Header("Authorization") String authorization,
+                                      @Part MultipartBody.Part file, @Part("description") String description);
 
 }

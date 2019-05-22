@@ -1,6 +1,7 @@
 package com.edanyma.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,16 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.AppPreferences;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
+import com.edanyma.activity.PersonActivity;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.OurClientModel;
 import com.edanyma.utils.AppUtils;
+import com.edanyma.utils.GlideClient;
 import com.google.gson.Gson;
+
+import java.util.Date;
 
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -52,21 +59,38 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
         super.onActivityCreated( savedInstanceState );
         initTextView( R.id.personalTitleId, AppConstants.SANDORA, Typeface.BOLD, null );
         String avatarName = getActivity().getResources().getString( R.string.prompt_name );
-        if( GlobalManager.getInstance().isSignedIn() ){
-            avatarName = GlobalManager.getInstance().getClient().getNickName();
+        int avatarLayoutVisibility = View.GONE;
+        LinearLayout avatarLayout = getView().findViewById( R.id.personalAreaLayoutAvatarId );
+        TextView firstLatter = initTextView( R.id.personalAreaFirstLetterId, AppConstants.ROBOTO_BLACK );
+        OurClientModel client = GlobalManager.getInstance().getClient();
+        if( AppUtils.nullOrEmpty( client.getPhoto() ) ){
+            avatarName = client.getNickName();
+            avatarLayoutVisibility = View.VISIBLE;
+            int blueIndex = client.getNickName().hashCode() % 256;
+            int color = Color.argb( 180, 83,91, blueIndex );
+            avatarLayout.setBackgroundColor( color );
+            firstLatter.setText( client.getNickName().substring( 0,1 ).toUpperCase() );
+        } else {
+            String url = client.getPhoto()+"?time="+( new Date() ).getTime();
+            GlideClient.downloadImage( getActivity(), url,
+                    getView().findViewById( R.id.personalAreaImageAvatarId ) );
         }
+        avatarLayout.setVisibility( avatarLayoutVisibility );
+
         initTextView( R.id.avatarNameId, AppConstants.B52, avatarName );
         initTextView( R.id.accountId, AppConstants.SANDORA, Typeface.BOLD, null );
         initTextView( R.id.personalMenuPasswordId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.personalMenuAddressId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.personalMenuPayTypeId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.personalMenuBonusId, AppConstants.ROBOTO_CONDENCED );
-        initTextView( R.id.personalMenuEditId, AppConstants.ROBOTO_CONDENCED ).setOnClickListener( this );
-        initTextView( R.id.signOutId, AppConstants.ROBOTO_CONDENCED ).setOnClickListener( this );
+        initTextView( R.id.personalMenuEditId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.signOutId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.avatarAuthId , AppConstants.ROBOTO_CONDENCED,
                                                 GlobalManager.getClient().getEmail() != null
                                                     ? GlobalManager.getClient().getEmail()
                                                             : GlobalManager.getClient().getPhone() );
+        setThisOnClickListener( new int[]{ R.id.personalMenuEditId ,R.id.signOutId,
+                                            R.id.personalAreaBackBtnId} );
     }
 
 
@@ -88,6 +112,18 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        (( PersonActivity) getActivity()).getHeader().setVisibility( View.GONE );
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        (( PersonActivity) getActivity()).getHeader().setVisibility( View.VISIBLE );
+    }
+
+    @Override
     public void onClick( View view ) {
         if ( mListener == null ){
             return;
@@ -99,6 +135,9 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
                 break;
             case R.id.personalMenuEditId:
                 mListener.onEditProfileAction();
+                break;
+            case R.id.personalAreaBackBtnId:
+                getActivity().onBackPressed();
                 break;
         }
     }

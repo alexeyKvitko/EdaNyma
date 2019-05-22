@@ -20,6 +20,7 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.activity.BaseActivity;
+import com.edanyma.activity.MainActivity;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
@@ -92,8 +93,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void setMainContainerVisibility( int visibility ){
-        ( ( BaseActivity ) getActivity() ).getHeader().setVisibility( visibility );
-        ( ( BaseActivity ) getActivity() ).getFooter().setVisibility( visibility );
+        ( ( MainActivity ) getActivity() ).setHeaderFooterVisibilty( visibility );
         getActivity().findViewById( R.id.contentMainLayoutId ).setVisibility( visibility );
     }
 

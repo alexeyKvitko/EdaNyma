@@ -13,7 +13,7 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.model.CompanyLight;
-import com.edanyma.utils.PicassoClient;
+import com.edanyma.utils.GlideClient;
 
 import java.util.ArrayList;
 
@@ -37,7 +37,7 @@ public class CompanyAdapter extends CommonBaseAdapter< CompanyLight > {
     @Override
     public void onBindViewHolder(final BaseDataObjectHolder h, final int position) {
         CompanyAdapter.CompanyDataObjectHolder holder = ( CompanyAdapter.CompanyDataObjectHolder ) h;
-        PicassoClient.downloadImage( EdaNymaApp.getAppContext(),
+        GlideClient.downloadImage( EdaNymaApp.getAppContext(),
                 mItemList.get( position ).getThumbUrl(),holder.companyImg );
         int favVisibility = mItemList.get( position ).isFavorite() ? View.VISIBLE : View.GONE;
         holder.companyFavoriteImg.setVisibility( favVisibility );

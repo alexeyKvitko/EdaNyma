@@ -69,6 +69,7 @@
     <string name="all_company_label">Все заведения</string>
     <string name="filter_company_label">Заведения</string>
     <string name="prompt_name">Ваше Имя</string>
+    <string name="take_photo">Получить Фото</string>
 
     <string name="filter_dish">Блюда</string>
     <string name="filter_kitchen">Кухни</string>
@@ -134,5 +135,6 @@
     <string name="no_it_joke">Это ошибка</string>
     <string name="removed_from_system">%s успешно удален из системы</string>
     <string name="yes_sure">Да, уверен</string>
+    <string name="go_back">НАЗАД</string>
 
 </resources>

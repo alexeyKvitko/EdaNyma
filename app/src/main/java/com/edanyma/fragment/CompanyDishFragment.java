@@ -30,7 +30,7 @@ import com.edanyma.recyclerview.DishEntityAdapter;
 import com.edanyma.recyclerview.StickyRecyclerView;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
-import com.edanyma.utils.PicassoClient;
+import com.edanyma.utils.GlideClient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,7 +97,7 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
         int favVisibility = GlobalManager.getInstance().isFavorite( Integer.valueOf( mCompanyDish.getCompanyModel().getId() ) )
                 ? View.VISIBLE : View.GONE;
         getView().findViewById( R.id.companyFavIconId ).setVisibility( favVisibility );
-        PicassoClient.downloadImage( getActivity(), GlobalManager.getInstance().getBootstrapModel()
+        GlideClient.downloadImage( getActivity(), GlobalManager.getInstance().getBootstrapModel()
                 .getStaticUrl() + String.format( AppConstants.STATIC_COMPANY_LOGO,
                 mCompanyDish.getCompanyModel().getThumb() ), ( ImageView ) getView().findViewById( R.id.companyDishLogoId ) );
 

@@ -2,6 +2,7 @@ package com.edanyma.fragment;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.support.v7.widget.AppCompatEditText;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
@@ -21,13 +23,15 @@ import com.edanyma.model.OurClientModel;
 import com.edanyma.owncomponent.ModalMessage;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
+import com.edanyma.utils.GlideClient;
+
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
 
 public class EditProfileFragment extends BaseFragment implements View.OnClickListener {
-
 
     private OnEditFragmentActionListener mListener;
 
@@ -64,6 +68,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         mClient = GlobalManager.getInstance().getClient();
+        updateAvatar();
         initTextInputLayout( R.id.profileNickNameLayoutId, AppConstants.ROBOTO_CONDENCED );
         initTextInputLayout( R.id.profilePhoneLayoutId, AppConstants.ROBOTO_CONDENCED );
         initTextInputLayout( R.id.profileEmailLayoutId, AppConstants.ROBOTO_CONDENCED );
@@ -82,7 +87,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         initTextView( R.id.editProfileTitleId, AppConstants.B52 );
         initButton( R.id.updateProfileBtnId, AppConstants.ROBOTO_CONDENCED );
         setThisOnClickListener( new int[]{R.id.updateProfileBtnId, R.id.editProfileBackBtnId,
-                R.id.signOutProfileBtnId, R.id.removeProfileBigBtnId, R.id.removeProfileBtnId} );
+                R.id.signOutProfileBtnId, R.id.removeProfileBigBtnId, R.id.removeProfileBtnId, R.id.avatarCardViewId } );
     }
 
     private void updateProfile(){
@@ -155,6 +160,24 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         (( PersonActivity ) getActivity() ).getHeader().setVisibility( View.VISIBLE );
     }
 
+    private void updateAvatar(){
+        int avatarLayoutVisibility = View.GONE;
+        LinearLayout avatarLayout = getView().findViewById( R.id.editProfileLayoutAvatarId );
+        TextView firstLatter = initTextView( R.id.editProfileFirstLetterId, AppConstants.ROBOTO_BLACK );
+        if( AppUtils.nullOrEmpty( mClient.getPhoto() ) ){
+            avatarLayoutVisibility = View.VISIBLE;
+            int blueIndex = mClient.getNickName().hashCode() % 256;
+            int color = Color.argb( 180, 83,91, blueIndex );
+            avatarLayout.setBackgroundColor( color );
+            firstLatter.setText( mClient.getNickName().substring( 0,1 ).toUpperCase() );
+        } else {
+            String url = mClient.getPhoto()+"?time="+( new Date() ).getTime();
+            GlideClient.downloadImage( getActivity(), url,
+                                    getView().findViewById( R.id.editProfileImageAvatarId ) );
+        }
+        avatarLayout.setVisibility( avatarLayoutVisibility );
+    }
+
     @Override
     public void onClick( View view ) {
         AppUtils.clickAnimation( view );
@@ -168,6 +191,11 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
             case R.id.signOutProfileBtnId:
                 if ( mListener != null ) {
                     mListener.onSignOutFromEditAction();
+                }
+                break;
+            case R.id.avatarCardViewId:
+                if ( mListener != null ) {
+                    mListener.onGetAvatarClick();
                 }
                 break;
             case R.id.removeProfileBtnId:
@@ -217,6 +245,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         @Override
         protected void onPostExecute( String result ) {
             super.onPostExecute( result );
+            updateAvatar();
             AppUtils.transitionAnimation( getView().findViewById( R.id.pleaseWaitContainerId ),
                         getView().findViewById( R.id.editProfileScrollId ) );
             ModalMessage.show( getActivity(), getString( R.string.title_notifications ),
@@ -227,6 +256,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
     public interface OnEditFragmentActionListener {
         void onSignOutFromEditAction();
+        void onGetAvatarClick();
         void onRemoveClientFullyAction();
     }
 

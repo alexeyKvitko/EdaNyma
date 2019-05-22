@@ -269,8 +269,7 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onPause() {
         super.onPause();
-        ( ( BaseActivity ) getActivity() ).getHeader().setVisibility( View.VISIBLE );
-        ( ( BaseActivity ) getActivity() ).getFooter().setVisibility( View.VISIBLE );
+        ( ( DishActivity ) getActivity() ).setHeaderFooterVisibilty( View.VISIBLE );
     }
 
     @Override

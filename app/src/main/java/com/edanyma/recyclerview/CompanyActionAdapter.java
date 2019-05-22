@@ -12,7 +12,7 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.model.CompanyActionModel;
-import com.edanyma.utils.PicassoClient;
+import com.edanyma.utils.GlideClient;
 
 import java.util.ArrayList;
 
@@ -37,7 +37,7 @@ public class CompanyActionAdapter extends CommonBaseAdapter< CompanyActionModel 
     public void onBindViewHolder(final BaseDataObjectHolder h, final int position) {
         CompanyActionDataObjectHolder holder = ( CompanyActionDataObjectHolder ) h;
         holder.actionCompany.setText( mItemList.get( position ).getCompanyName() );
-        PicassoClient.downloadImage( EdaNymaApp.getAppContext(),
+        GlideClient.downloadImage( EdaNymaApp.getAppContext(),
                 mItemList.get( position ).getActionImgUrl(),holder.actionImage);
     }
 

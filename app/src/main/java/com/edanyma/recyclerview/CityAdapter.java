@@ -17,7 +17,7 @@ import com.edanyma.R;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.TripleModel;
 import com.edanyma.utils.AppUtils;
-import com.edanyma.utils.PicassoClient;
+import com.edanyma.utils.GlideClient;
 
 import java.util.ArrayList;
 
@@ -54,11 +54,11 @@ public class CityAdapter extends CommonBaseAdapter< TripleModel > {
                 tripleHolder.rightCheckImage );
 
 
-        PicassoClient.downloadImage( EdaNymaApp.getAppContext(),
+        GlideClient.downloadImage( EdaNymaApp.getAppContext(),
                 mItemList.get( position ).getLeftItem().getUrl(), tripleHolder.leftImage );
-        PicassoClient.downloadImage( EdaNymaApp.getAppContext(),
+        GlideClient.downloadImage( EdaNymaApp.getAppContext(),
                 mItemList.get( position ).getCenterItem().getUrl(), tripleHolder.centerImage );
-        PicassoClient.downloadImage( EdaNymaApp.getAppContext(),
+        GlideClient.downloadImage( EdaNymaApp.getAppContext(),
                 mItemList.get( position ).getRightItem().getUrl(), tripleHolder.rightImage );
     }
 

@@ -2,6 +2,7 @@ package com.edanyma.activity;
 
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,8 +14,8 @@ import android.widget.ImageButton;
 
 import com.edanyma.AppConstants;
 import com.edanyma.AppPreferences;
-import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
+import com.edanyma.fragment.CameraFragment;
 import com.edanyma.fragment.EditProfileFragment;
 import com.edanyma.fragment.PersonalAreaFragment;
 import com.edanyma.fragment.SignInFragment;
@@ -23,22 +24,17 @@ import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.ApiResponse;
-import com.edanyma.model.FavoriteCompanyModel;
 import com.edanyma.model.OurClientModel;
 import com.edanyma.owncomponent.ModalDialog;
 import com.edanyma.owncomponent.ModalMessage;
-import com.edanyma.rest.RestApi;
 import com.edanyma.rest.RestController;
-import com.edanyma.utils.AppUtils;
-
-import java.util.LinkedList;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
 public class PersonActivity extends BaseActivity implements SignInFragment.OnSignInListener,
         SignUpFragment.OnSignUpListener, PersonalAreaFragment.OnPersonalAreaActionListener,
-        EditProfileFragment.OnEditFragmentActionListener {
+        EditProfileFragment.OnEditFragmentActionListener, CameraFragment.OnCameraFragmentListener {
 
     private final String TAG = "PersonActivity";
 
@@ -190,6 +186,16 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     @Override
     public void onSignOutFromEditAction() {
         signOut();
+    }
+
+    @Override
+    public void onGetAvatarClick() {
+        addReplaceFragment( CameraFragment.newInstance() );
+    }
+
+    @Override
+    public void onCameraAction( Uri uri ) {
+
     }
 
     private class RemoveOurClient extends AsyncTask< Void, Void, String > {

@@ -18,6 +18,7 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.activity.BaseActivity;
+import com.edanyma.activity.CompanyDishActivity;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.CompanyModel;
@@ -26,7 +27,7 @@ import com.edanyma.owncomponent.ModalMessage;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
-import com.edanyma.utils.PicassoClient;
+import com.edanyma.utils.GlideClient;
 
 import java.util.LinkedList;
 
@@ -87,7 +88,7 @@ public class CompanyInfoFragment extends BaseFragment implements View.OnClickLis
         super.onActivityCreated( savedInstanceState );
         initTextView( R.id.companyInfoTitleId, AppConstants.B52,
                 mCompanyModel.getDisplayName() );
-        PicassoClient.downloadImage( getActivity(), GlobalManager.getInstance().getBootstrapModel()
+        GlideClient.downloadImage( getActivity(), GlobalManager.getInstance().getBootstrapModel()
                 .getStaticUrl() + String.format( AppConstants.STATIC_COMPANY_LOGO,
                 mCompanyModel.getThumb() ), ( ImageView ) getView().findViewById( R.id.companyInfoLogoId ) );
 
@@ -199,8 +200,7 @@ public class CompanyInfoFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onDetach() {
         super.onDetach();
-        ( ( BaseActivity ) getActivity() ).getHeader().setVisibility( View.VISIBLE );
-        ( ( BaseActivity ) getActivity() ).getFooter().setVisibility( View.VISIBLE );
+        ( ( CompanyDishActivity ) getActivity() ).setHeaderFooterVisibilty( View.VISIBLE );
         getActivity().findViewById( R.id.dishContainerId )
                 .setBackground( EdaNymaApp.getAppContext().getResources()
                         .getDrawable( R.drawable.main_background_light ) );

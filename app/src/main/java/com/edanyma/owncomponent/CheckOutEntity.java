@@ -17,7 +17,7 @@ import com.edanyma.R;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
-import com.edanyma.utils.PicassoClient;
+import com.edanyma.utils.GlideClient;
 
 public class CheckOutEntity extends FrameLayout implements View.OnClickListener {
 
@@ -124,7 +124,7 @@ public class CheckOutEntity extends FrameLayout implements View.OnClickListener 
     }
 
     public void setEntityImage( String uri ) {
-        PicassoClient.downloadImage( EdaNymaApp.getAppContext(), uri, this.mEntityImage,
+        GlideClient.downloadImage( EdaNymaApp.getAppContext(), uri, this.mEntityImage,
                 CHECKOUT_IMAGE_WIDTH, CHECKOUT_IMAGE_HEIGHT );
     }
 

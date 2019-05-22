@@ -24,6 +24,7 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.activity.BaseActivity;
+import com.edanyma.activity.CompanyDishActivity;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.CompanyMenu;
 import com.edanyma.model.FilterDishModel;
@@ -197,8 +198,7 @@ public class FilterCompanyDishFragment extends BaseFragment implements View.OnCl
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        ( ( BaseActivity ) getActivity() ).getHeader().setVisibility( View.VISIBLE );
-        ( ( BaseActivity ) getActivity() ).getFooter().setVisibility( View.VISIBLE );
+        ( ( CompanyDishActivity ) getActivity() ).setHeaderFooterVisibilty( View.VISIBLE );
         getActivity().findViewById( R.id.dishContainerId )
                 .setBackground( EdaNymaApp.getAppContext().getResources()
                         .getDrawable( R.drawable.main_background_light ) );

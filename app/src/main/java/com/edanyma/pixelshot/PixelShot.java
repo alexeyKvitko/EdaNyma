@@ -1,19 +1,12 @@
 package com.edanyma.pixelshot;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -30,8 +23,8 @@ import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 
 import static com.edanyma.AppConstants.EXTENSION_JPG;
-import static com.edanyma.AppConstants.EXTENSION_PNG;
 import static com.edanyma.AppConstants.EXTENSION_NOMEDIA;
+import static com.edanyma.AppConstants.EXTENSION_PNG;
 
 
 public class PixelShot {
@@ -94,9 +87,6 @@ public class PixelShot {
         return this;
     }
 
-    /**
-     * @throws NullPointerException If View is null.
-     */
 
     public void save() throws NullPointerException {
         if (!AppUtils.isStorageReady()) {
@@ -160,35 +150,9 @@ public class PixelShot {
         void onPixelShotFailed();
     }
 
-    static class BlurBuilder {
-        private static final float BITMAP_SCALE = 0.1f;
-        private static final float BLUR_RADIUS = 1.5f;
-
-        @SuppressLint("NewApi")
-        public static Bitmap blur(Context context, Bitmap image) {
-            int width = Math.round(image.getWidth() * BITMAP_SCALE);
-            int height = Math.round(image.getHeight() * BITMAP_SCALE);
-
-            Bitmap inputBitmap = Bitmap.createScaledBitmap(image, width, height,
-                    false);
-            Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
-
-            RenderScript rs = RenderScript.create(context);
-            ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(rs,
-                    Element.U8_4(rs));
-            Allocation tmpIn = Allocation.createFromBitmap(rs, inputBitmap);
-            Allocation tmpOut = Allocation.createFromBitmap(rs, outputBitmap);
-            theIntrinsic.setRadius(BLUR_RADIUS);
-            theIntrinsic.setInput(tmpIn);
-            theIntrinsic.forEach(tmpOut);
-            tmpOut.copyTo(outputBitmap);
-
-            return outputBitmap;
-        }
-    }
 
 
-    static class BitmapSaver extends AsyncTask<Void, Void, Boolean> {
+   public static class BitmapSaver extends AsyncTask<Void, Void, Boolean> {
 //            implements MediaScannerConnection.OnScanCompletedListener {
 
         private final WeakReference<Context> weakContext;
@@ -201,7 +165,7 @@ public class PixelShot {
         private PixelShotListener listener;
         private File file;
 
-        BitmapSaver(Context context, Bitmap bitmap, String path, String filename, String fileExtension, int jpgQuality, PixelShotListener listener) {
+        public BitmapSaver( Context context, Bitmap bitmap, String path, String filename, String fileExtension, int jpgQuality, PixelShotListener listener ) {
             this.weakContext = new WeakReference<>(context);
             this.bitmap = bitmap;
             this.path = path;
