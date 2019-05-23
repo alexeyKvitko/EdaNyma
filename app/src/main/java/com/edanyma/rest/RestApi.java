@@ -93,13 +93,15 @@ public interface RestApi {
     Call< ApiResponse > updateClientInfo( @Header("Authorization") String authorization,
                                                       @Body OurClientModel ourClientModel  );
 
+    @POST(API_CLIENT+"updateClientPassword")
+    Call< ApiResponse > updateClientPassword( @Header("Authorization") String authorization,
+                                          @Body OurClientModel ourClientModel  );
+
     @GET(API_CLIENT+"removeClient/{uuid}")
     Call< ApiResponse > removeClient( @Header("Authorization") String authorization,
                                      @Path("uuid") String uuid );
 
-//    @POST(API_CLIENT+"updateClientAvatar")
-//    Call< ApiResponse > updateClientAvatar( @Header("Authorization") String authorization,
-//                                            @Body ClientAvatar clientAvatar );
+
     @Multipart
     @POST(API_CLIENT+"updateClientAvatar")
     Call< ApiResponse > updateClientAvatar( @Header("Authorization") String authorization,

@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import com.edanyma.R;
 import com.edanyma.activity.PersonActivity;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
-import com.edanyma.model.ClientAvatar;
 import com.edanyma.owncomponent.AutoFitTextureView;
 import com.edanyma.owncomponent.ModalMessage;
 import com.edanyma.pixelshot.PixelShot;
@@ -55,7 +53,6 @@ public class CameraFragment extends BaseFragment implements PixelShot.PixelShotL
 
     private static final int AVATAR_SIZE = ( int ) ConvertUtils.convertDpToPixel( 256 );
 
-    private OnCameraFragmentListener mListener;
 
     private AutoFitTextureView mCameraView;
     private EZCam mCamera;
@@ -177,19 +174,12 @@ public class CameraFragment extends BaseFragment implements PixelShot.PixelShotL
     @Override
     public void onAttach( Context context ) {
         super.onAttach( context );
-        if ( context instanceof OnCameraFragmentListener ) {
-            mListener = ( OnCameraFragmentListener ) context;
-        } else {
-            throw new RuntimeException( context.toString()
-                    + " must implement OnCameraFragmentListener" );
-        }
     }
 
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -204,11 +194,6 @@ public class CameraFragment extends BaseFragment implements PixelShot.PixelShotL
                 getView().findViewById( R.id.cameraViewId ) );
     }
 
-
-    public interface OnCameraFragmentListener {
-        // TODO: Update argument type and name
-        void onCameraAction( Uri uri );
-    }
 
     class UpdateClientAvatar extends AsyncTask< String, Void, String > {
 

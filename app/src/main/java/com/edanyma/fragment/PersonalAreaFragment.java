@@ -57,14 +57,16 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
+        OurClientModel client = GlobalManager.getInstance().getClient();
         initTextView( R.id.personalTitleId, AppConstants.SANDORA, Typeface.BOLD, null );
         String avatarName = getActivity().getResources().getString( R.string.prompt_name );
+        if (client != null ){
+            avatarName = client.getNickName();
+        }
         int avatarLayoutVisibility = View.GONE;
         LinearLayout avatarLayout = getView().findViewById( R.id.personalAreaLayoutAvatarId );
         TextView firstLatter = initTextView( R.id.personalAreaFirstLetterId, AppConstants.ROBOTO_BLACK );
-        OurClientModel client = GlobalManager.getInstance().getClient();
         if( AppUtils.nullOrEmpty( client.getPhoto() ) ){
-            avatarName = client.getNickName();
             avatarLayoutVisibility = View.VISIBLE;
             int blueIndex = client.getNickName().hashCode() % 256;
             int color = Color.argb( 180, 83,91, blueIndex );
@@ -90,7 +92,7 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
                                                     ? GlobalManager.getClient().getEmail()
                                                             : GlobalManager.getClient().getPhone() );
         setThisOnClickListener( new int[]{ R.id.personalMenuEditId ,R.id.signOutId,
-                                            R.id.personalAreaBackBtnId} );
+                                            R.id.personalAreaBackBtnId,R.id. personalMenuPasswordId} );
     }
 
 
@@ -136,6 +138,9 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
             case R.id.personalMenuEditId:
                 mListener.onEditProfileAction();
                 break;
+            case R.id.personalMenuPasswordId:
+                mListener.onChangePasswordAction();
+                break;
             case R.id.personalAreaBackBtnId:
                 getActivity().onBackPressed();
                 break;
@@ -145,5 +150,6 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
     public interface OnPersonalAreaActionListener {
         void onSignOutAction();
         void onEditProfileAction();
+        void onChangePasswordAction();
     }
 }

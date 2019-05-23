@@ -21,7 +21,6 @@
         android:layout_marginBottom="@dimen/fragment_margin_bottom"
         android:orientation="vertical">
 
-
         <TextView
             android:id="@+id/personalTitleId"
             style="@style/splashText"
@@ -136,6 +135,7 @@
             android:layout_below="@+id/accountId"
             android:layout_marginHorizontal="32dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
             card_view:cardCornerRadius="8dp"
             card_view:cardElevation="8dp"
             card_view:contentPaddingBottom="12dp"

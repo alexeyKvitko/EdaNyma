@@ -15,7 +15,9 @@
         android:layout_gravity="top|left"
         android:elevation="10dp"
         app:srcCompat="@drawable/filter_back_black_btn" />
+
     <include layout="@layout/please_wait" />
+
     <ScrollView
         android:id="@+id/editProfileScrollId"
         android:layout_width="match_parent"

@@ -30,21 +30,26 @@
     <string name="prompt_phone"><font size="14">Ваш телефон ( 10 цифр, без +7 )</font></string>
     <string name="prompt_comment"><font size="14">Ваш комментарий</font></string>
     <string name="prompt_password"><font size="14">Введите пароль</font></string>
-    <string name="confirm_password"><font size="14">Подтвердите пароль</font></string>
     <string name="new_password"><font size="14">Новый пароль</font></string>
+    <string name="old_password"><font size="14">Ваш старый пароль</font></string>
+    <string name="confirm_password"><font size="14">Подтвердите пароль</font></string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="not_register">Еще не зарегистрированы?</string>
     <string name="registration">Регистрация</string>
     <string name="sign_in">Войти</string>
     <string name="sign_in_google">Войти через Google</string>
     <string name="error_required_field">Поле обязательно для заполнения</string>
+    <string name="error_wrong_password">Введен неверный пароль</string>
     <string name="error_wrong_email">Введен неверный email</string>
     <string name="error_wrong_phone">Введен неверный номер телеона</string>
     <string name="internal_error">Внутренняя ошибка, повторите попытку позже</string>
+    <string name="password_not_match">Пароли не совпадают</string>
     <string name="sign_up_title">Регистрация</string>
     <string name="next_button">Продолжить</string>
     <string name="remove_account">Удалить Профиль</string>
     <string name="update_profile_button">Обновить Профиль</string>
+    <string name="update_password_button">Обновить Пароль</string>
+    <string name="cancel_button">Отменить</string>
     <string name="take_profile_photo">Сделать Фото</string>
     <string name="already_signup">Уже зарегистрированы ?</string>
     <string name="confirm_code_title">Введите Код</string>
@@ -136,5 +141,6 @@
     <string name="removed_from_system">%s успешно удален из системы</string>
     <string name="yes_sure">Да, уверен</string>
     <string name="go_back">НАЗАД</string>
+    <string name="change_passord_title">Изменить Пароль</string>
 
 </resources>

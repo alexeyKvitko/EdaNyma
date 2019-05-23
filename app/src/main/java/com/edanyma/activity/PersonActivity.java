@@ -9,13 +9,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 
 import com.edanyma.AppConstants;
 import com.edanyma.AppPreferences;
 import com.edanyma.R;
 import com.edanyma.fragment.CameraFragment;
+import com.edanyma.fragment.ChangePasswordFragment;
 import com.edanyma.fragment.EditProfileFragment;
 import com.edanyma.fragment.PersonalAreaFragment;
 import com.edanyma.fragment.SignInFragment;
@@ -34,7 +34,7 @@ import retrofit2.Response;
 
 public class PersonActivity extends BaseActivity implements SignInFragment.OnSignInListener,
         SignUpFragment.OnSignUpListener, PersonalAreaFragment.OnPersonalAreaActionListener,
-        EditProfileFragment.OnEditFragmentActionListener, CameraFragment.OnCameraFragmentListener {
+        EditProfileFragment.OnEditFragmentActionListener {
 
     private final String TAG = "PersonActivity";
 
@@ -154,6 +154,11 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     }
 
     @Override
+    public void onChangePasswordAction() {
+        addReplaceFragment( ChangePasswordFragment.newInstance() );
+    }
+
+    @Override
     public void onSignInListener() {
         addReplaceFragment( SignInFragment.newInstance() );
     }
@@ -193,10 +198,6 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
         addReplaceFragment( CameraFragment.newInstance() );
     }
 
-    @Override
-    public void onCameraAction( Uri uri ) {
-
-    }
 
     private class RemoveOurClient extends AsyncTask< Void, Void, String > {
 
