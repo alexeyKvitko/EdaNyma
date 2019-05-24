@@ -20,7 +20,7 @@ import com.edanyma.owncomponent.CheckOutEntity;
 import com.edanyma.utils.AppUtils;
 
 public class BasketActivity extends BaseActivity implements BasketFragment.OnBasketCheckOutListener,
-                                                CheckOutFragment.OnCheckOutFragmentListener, OwnMapFragment.OnChooseAddressOnMap{
+                                                CheckOutFragment.OnCheckOutFragmentListener{
 
     private final String TAG = "BasketActivity";
 
@@ -92,12 +92,7 @@ public class BasketActivity extends BaseActivity implements BasketFragment.OnBas
     }
 
     @Override
-    public void onChooseAddress() {
-        onBasketCheckOut();
-    }
-
-    @Override
     public void onShowMapClick() {
-        addReplaceFragment( OwnMapFragment.newInstance(), true );
+        addReplaceFragment( OwnMapFragment.newInstance( false ), true );
     }
 }

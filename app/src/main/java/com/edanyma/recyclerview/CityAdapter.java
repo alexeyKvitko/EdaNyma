@@ -17,13 +17,18 @@ import com.edanyma.R;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.TripleModel;
 import com.edanyma.utils.AppUtils;
+import com.edanyma.utils.ConvertUtils;
 import com.edanyma.utils.GlideClient;
 
 import java.util.ArrayList;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 public class CityAdapter extends CommonBaseAdapter< TripleModel > {
 
     private static final String CLASS_TAG = "CityAdapter";
+
+    private static int GERB_SIZE = (int) ConvertUtils.convertDpToPixel( 76 );
 
     public CommonBaseAdapter mAdapter;
 
@@ -55,11 +60,11 @@ public class CityAdapter extends CommonBaseAdapter< TripleModel > {
 
 
         GlideClient.downloadImage( EdaNymaApp.getAppContext(),
-                mItemList.get( position ).getLeftItem().getUrl(), tripleHolder.leftImage );
+                mItemList.get( position ).getLeftItem().getUrl(), tripleHolder.leftImage, GERB_SIZE, GERB_SIZE );
         GlideClient.downloadImage( EdaNymaApp.getAppContext(),
-                mItemList.get( position ).getCenterItem().getUrl(), tripleHolder.centerImage );
+                mItemList.get( position ).getCenterItem().getUrl(), tripleHolder.centerImage, GERB_SIZE, GERB_SIZE );
         GlideClient.downloadImage( EdaNymaApp.getAppContext(),
-                mItemList.get( position ).getRightItem().getUrl(), tripleHolder.rightImage );
+                mItemList.get( position ).getRightItem().getUrl(), tripleHolder.rightImage, GERB_SIZE, GERB_SIZE );
     }
 
     private void setTextAndSelectedCard( TextView textView, String title, ImageView checkImage ) {
@@ -67,7 +72,7 @@ public class CityAdapter extends CommonBaseAdapter< TripleModel > {
         if ( title.length() > 12 ) {
             textView.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 10 );
         }
-        if ( GlobalManager.getInstance().getBootstrapModel()
+        if ( getBootstrapModel()
                 .getDeliveryCity().toUpperCase().equals( title.toUpperCase() ) ) {
             checkImage.setVisibility( View.VISIBLE );
             textView.setTextColor( EdaNymaApp.getAppContext().getResources().getColor( R.color.blueNeon ) );
@@ -132,7 +137,7 @@ public class CityAdapter extends CommonBaseAdapter< TripleModel > {
                 }
                 if ( layout.getChildAt( i ) instanceof CardView ) {
                     TextView textView = ( ( TextView ) ( ( CardView ) layout.getChildAt( i ) ).getChildAt( 0 ) );
-                    GlobalManager.getInstance().getBootstrapModel()
+                    getBootstrapModel()
                             .setDeliveryCity( textView.getText().toString() );
                 }
             }

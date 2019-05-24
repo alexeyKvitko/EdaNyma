@@ -25,6 +25,8 @@ import com.edanyma.utils.AppUtils;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 
 public class SignUpFragment extends ConfirmFragment implements View.OnClickListener {
 
@@ -298,15 +300,15 @@ public class SignUpFragment extends ConfirmFragment implements View.OnClickListe
         protected String doInBackground( OurClientModel... ourClient ) {
             String result = null;
             try {
-                Call< ApiResponse<OurClientModel> > signUpCall = RestController.getInstance()
+                Call< ApiResponse<OurClientModel> > signUpCall = RestController
                         .getApi().signUp( AppConstants.AUTH_BEARER
-                                + GlobalManager.getInstance().getUserToken(), ourClient[ 0 ] );
+                                + getUserToken(), ourClient[ 0 ] );
 
 
                 Response< ApiResponse<OurClientModel> > responseSignUp = signUpCall.execute();
                 if ( responseSignUp.body() != null ) {
                     if ( responseSignUp.body().getStatus() == 200 ) {
-                        GlobalManager.getInstance().setClient( responseSignUp.body().getResult() );
+                        setClient( responseSignUp.body().getResult() );
                     } else {
                         result = responseSignUp.body().getMessage();
                     }
@@ -343,9 +345,9 @@ public class SignUpFragment extends ConfirmFragment implements View.OnClickListe
         protected String doInBackground( OurClientModel... ourClient ) {
             String result = null;
             try {
-                Call< ApiResponse<String> > validateCall = RestController.getInstance()
+                Call< ApiResponse<String> > validateCall = RestController
                         .getApi().validateAndSendEmail( AppConstants.AUTH_BEARER
-                                + GlobalManager.getInstance().getUserToken(), ourClient[ 0 ] );
+                                + getUserToken(), ourClient[ 0 ] );
 
 
                 Response< ApiResponse<String> > responseValidate = validateCall.execute();

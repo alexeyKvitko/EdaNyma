@@ -19,6 +19,8 @@ import com.edanyma.utils.AppUtils;
 
 import java.util.List;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 public class DishActivity extends BaseActivity implements DishFragment.OnDishActionListener,
         DishInfoFragment.OnAddToBasketListener, FilterDishFragment.OnDishFilterActionListener {
 
@@ -40,7 +42,7 @@ public class DishActivity extends BaseActivity implements DishFragment.OnDishAct
 
     private void initialize() {
         initBaseActivity( new ActivityState( AppConstants.DISH_BOTTOM_INDEX ) );
-        GlobalManager.getInstance().setDishFilter( null );
+        setDishFilter( null );
         mSelectedCompanyId = null;
         mSelectedDishId = AppConstants.SUSHI_SET_ID;
         mPrevCompanyId = null;
@@ -89,7 +91,7 @@ public class DishActivity extends BaseActivity implements DishFragment.OnDishAct
 
 
     private void applyAllDishesFiler() {
-        for ( MenuCategoryModel menuCategory : GlobalManager.getBootstrapModel().getDeliveryMenu().getMenuCategories() ) {
+        for ( MenuCategoryModel menuCategory : getBootstrapModel().getDeliveryMenu().getMenuCategories() ) {
             if ( mSelectedDishId == Integer.valueOf( menuCategory.getId() ).intValue() ) {
                 mDishTitle = menuCategory.getDisplayName();
                 break;

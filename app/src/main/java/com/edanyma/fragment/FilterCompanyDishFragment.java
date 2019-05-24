@@ -43,6 +43,7 @@ import static com.edanyma.AppConstants.DECOR_WIDTH;
 import static com.edanyma.AppConstants.HORIZONTAL_RATIO;
 import static com.edanyma.AppConstants.MARGIN_RATIO;
 import static com.edanyma.AppConstants.VERTICAL_RATIO;
+import static com.edanyma.manager.GlobalManager.*;
 
 
 public class FilterCompanyDishFragment extends BaseFragment implements View.OnClickListener {
@@ -228,9 +229,9 @@ public class FilterCompanyDishFragment extends BaseFragment implements View.OnCl
                 MENU_CATEGORY_PADDING_RIGHT, MENU_CATEGORY_PADDING_BOTTOM );
         dishView.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 16 );
 
-        if ( GlobalManager.getInstance().getDishFilter() != null
-                && GlobalManager.getInstance().getDishFilter().getKitchenId().equals( menuTypeId )
-                && GlobalManager.getInstance().getDishFilter().getDishId().equals( menuCategoryId ) ) {
+        if ( getDishFilter() != null
+                && getDishFilter().getKitchenId().equals( menuTypeId )
+                && getDishFilter().getDishId().equals( menuCategoryId ) ) {
             dishView.setBackground( getActivity().getResources().getDrawable( R.drawable.border_light_blue_r18 ) );
         }
         dishView.setText( dish );
@@ -246,7 +247,7 @@ public class FilterCompanyDishFragment extends BaseFragment implements View.OnCl
         if ( view instanceof MenuTextView ) {
             AppUtils.clickAnimation( view );
             MenuTextView menuTextView = ( MenuTextView ) view;
-            GlobalManager.getInstance().setDishFilter( new FilterDishModel( menuTextView.getMenuTypeId(),
+            setDishFilter( new FilterDishModel( menuTextView.getMenuTypeId(),
                     menuTextView.getMenuCategoryId(), menuTextView.getText().toString() ) );
             new Handler().postDelayed( new Runnable() {
                 @Override

@@ -17,12 +17,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 public abstract class ConvertUtils {
 
     public static CompanyLight convertToCompanyLight( CompanyModel companyModel ){
         CompanyLight company = new CompanyLight();
         company.setId( companyModel.getId() );
-        company.setThumbUrl( GlobalManager.getInstance().getBootstrapModel().getStaticUrl()+
+        company.setThumbUrl( getBootstrapModel().getStaticUrl()+
                 String.format( AppConstants.STATIC_COMPANY, companyModel.getThumb() ) );
         company.setDisplayName( companyModel.getDisplayName() );
         company.setDelivery( "от " + companyModel.getDelivery().toString() + " руб." );

@@ -30,6 +30,8 @@ import java.util.Date;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 
 public class EditProfileFragment extends BaseFragment implements View.OnClickListener {
 
@@ -67,7 +69,7 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
-        mClient = GlobalManager.getInstance().getClient();
+        mClient = getClient();
         updateAvatar();
         initTextInputLayout( R.id.profileNickNameLayoutId, AppConstants.ROBOTO_CONDENCED );
         initTextInputLayout( R.id.profilePhoneLayoutId, AppConstants.ROBOTO_CONDENCED );
@@ -220,9 +222,9 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
         protected String doInBackground( OurClientModel... ourClient ) {
             String result = null;
             try {
-                Call< ApiResponse> updateCall = RestController.getInstance()
+                Call< ApiResponse> updateCall = RestController
                         .getApi().updateClientInfo( AppConstants.AUTH_BEARER
-                                + GlobalManager.getInstance().getUserToken(), ourClient[ 0 ] );
+                                + getUserToken(), ourClient[ 0 ] );
 
 
                 Response< ApiResponse > responseUpdate = updateCall.execute();

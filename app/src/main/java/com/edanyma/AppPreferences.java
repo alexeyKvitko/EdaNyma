@@ -3,6 +3,8 @@ package com.edanyma;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.gson.Gson;
+
 public abstract class AppPreferences {
      
       private static final SharedPreferences SHARED_PREFERENCES 
@@ -21,6 +23,10 @@ public abstract class AppPreferences {
             editor.putFloat(key, (Float) value);
         } else if ( value instanceof Integer ){
             editor.putInt(key, (Integer) value);
+        } else {
+            Gson gson =  new Gson();
+            String jsonString = gson.toJson( value );
+            editor.putString( key, jsonString );
         }
         editor.apply();
     }

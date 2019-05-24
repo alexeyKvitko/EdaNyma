@@ -37,6 +37,7 @@ import static com.edanyma.AppConstants.DECOR_WIDTH;
 import static com.edanyma.AppConstants.HORIZONTAL_RATIO;
 import static com.edanyma.AppConstants.MARGIN_RATIO;
 import static com.edanyma.AppConstants.VERTICAL_RATIO;
+import static com.edanyma.manager.GlobalManager.*;
 
 public class FilterDishFragment extends BaseFragment implements View.OnClickListener {
 
@@ -118,13 +119,13 @@ public class FilterDishFragment extends BaseFragment implements View.OnClickList
         LinearLayout dishesListLayout = getView().findViewById( R.id.filterDishesListId );
         LinearLayout companyListLayout = getView().findViewById( R.id.filterCompanyListId );
         int idx = 0;
-        for ( MenuCategoryModel menuCategory : GlobalManager.getInstance().getBootstrapModel().getDeliveryMenu().getMenuCategories() ) {
+        for ( MenuCategoryModel menuCategory : getBootstrapModel().getDeliveryMenu().getMenuCategories() ) {
             int visibility = idx < MENU_CLOSED_DISHES ? View.VISIBLE : View.GONE;
             dishesListLayout.addView( createDishMenu( null, menuCategory.getId(), menuCategory.getDisplayName(), visibility ) );
             idx++;
         }
         idx = 0;
-        for ( CompanyModel company : GlobalManager.getInstance().getBootstrapModel().getCompanies() ) {
+        for ( CompanyModel company : getBootstrapModel().getCompanies() ) {
             int visibility = idx < MENU_CLOSED_COMPANIES ? View.VISIBLE : View.GONE;
             companyListLayout.addView( createDishMenu( company.getId(), null, company.getDisplayName(), visibility ) );
             idx++;

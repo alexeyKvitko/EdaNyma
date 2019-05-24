@@ -27,6 +27,8 @@ import com.edanyma.utils.ConvertUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.edanyma.manager.BasketOrderManager.*;
+
 
 public class BasketFragment extends BaseFragment implements View.OnClickListener,
                     BasketAdapter.CardClickListener{
@@ -67,7 +69,7 @@ public class BasketFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
-        mBasket = BasketOrderManager.getInstance().getBasket();
+        mBasket = getBasket();
         int basketHeight =  mBasket.size() > 3 ? 3 : mBasket.size();
         mBasketHeight = BASKET_HEADER_HEIGHT + BASKET_ROW_HEIGHT* basketHeight;
         animateBasketBody( 0, mBasketHeight );
@@ -186,10 +188,10 @@ public class BasketFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onItemClick( int position, View v ) {
-        BasketOrderManager.getInstance().removeEntityFromBasket( mBasket.get( position ) );
+        removeEntityFromBasket( mBasket.get( position ) );
         mBasketAdapter.deleteItem( position );
         mBasketAdapter.notifyDataSetChanged();
-        mBasket = BasketOrderManager.getInstance().getBasket();
+        mBasket = getBasket();
         if ( mBasket.size() < 3 ){
             int oldHeight = mBasketHeight;
             mBasketHeight = BASKET_HEADER_HEIGHT + BASKET_ROW_HEIGHT* mBasket.size();

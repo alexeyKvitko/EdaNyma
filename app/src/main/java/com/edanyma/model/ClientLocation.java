@@ -1,9 +1,12 @@
 package com.edanyma.model;
 
+import com.edanyma.utils.AppUtils;
+
 import java.io.Serializable;
 
 public class ClientLocation implements Serializable {
 
+    private String uuid;
     private String city;
     private String street;
     private String house;
@@ -12,6 +15,14 @@ public class ClientLocation implements Serializable {
     private String intercom;
     private Double latitude;
     private Double longitude;
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid( String uuid ) {
+        this.uuid = uuid;
+    }
 
     public String getCity() {
         return city;
@@ -75,5 +86,27 @@ public class ClientLocation implements Serializable {
 
     public void setLongitude( Double longitude ) {
         this.longitude = longitude;
+    }
+
+    public String getFullAddressAsString(){
+        StringBuilder address = new StringBuilder().append( getCity() ).append( ", " )
+                .append( getStreet() ).append( ", " )
+                .append( getHouse() );
+        if ( !AppUtils.nullOrEmpty( getEntrance() ) ) {
+            address.append( ", подъезд: " ).append( getEntrance() );
+        }
+        if ( !AppUtils.nullOrEmpty( getFloor() ) ) {
+            address.append( ", этаж: " ).append( getFloor() );
+        }
+        if ( !AppUtils.nullOrEmpty( getIntercom() ) ) {
+            address.append( ", код: " ).append( getIntercom() );
+        }
+        return address.toString();
+    }
+
+    public boolean isAdditionalInfoExist(){
+        return !AppUtils.nullOrEmpty( this.entrance ) ||
+               !AppUtils.nullOrEmpty( this.floor ) ||
+               !AppUtils.nullOrEmpty( this.intercom );
     }
 }

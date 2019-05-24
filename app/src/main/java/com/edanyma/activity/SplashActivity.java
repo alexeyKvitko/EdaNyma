@@ -136,11 +136,8 @@ public class SplashActivity extends Activity {
 
     private void finishActivity( String toastMsg ) {
         Toast.makeText( this, toastMsg, Toast.LENGTH_LONG ).show();
-        new Handler().postDelayed( new Runnable() {
-            @Override
-            public void run() {
+        new Handler().postDelayed( () -> {
                 finish();
-            }
         }, SPLASH_TIME_OUT );
     }
 

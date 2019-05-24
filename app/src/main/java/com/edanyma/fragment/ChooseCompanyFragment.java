@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 
 public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OwnSearchViewListener,
         CompanyAdapter.CardClickListener,
@@ -74,19 +76,19 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
             mInitFilterParam = getArguments().getString( COMPANY_FILTER );
             switch ( mInitFilterParam ) {
                 case AppConstants.DISH_PIZZA:
-                    mCategoryIds = GlobalManager.getInstance().getBootstrapModel().getFastMenu().getPizzaIds();
+                    mCategoryIds = getBootstrapModel().getFastMenu().getPizzaIds();
                     break;
                 case AppConstants.DISH_SUSHI:
-                    mCategoryIds = GlobalManager.getInstance().getBootstrapModel().getFastMenu().getShushiIds();
+                    mCategoryIds = getBootstrapModel().getFastMenu().getShushiIds();
                     break;
                 case AppConstants.DISH_BURGERS:
-                    mCategoryIds = GlobalManager.getInstance().getBootstrapModel().getFastMenu().getBurgerIds();
+                    mCategoryIds = getBootstrapModel().getFastMenu().getBurgerIds();
                     break;
                 case AppConstants.DISH_GRILL:
-                    mCategoryIds = GlobalManager.getInstance().getBootstrapModel().getFastMenu().getGrillIds();
+                    mCategoryIds = getBootstrapModel().getFastMenu().getGrillIds();
                     break;
                 case AppConstants.DISH_WOK:
-                    mCategoryIds = GlobalManager.getInstance().getBootstrapModel().getFastMenu().getWokIds();
+                    mCategoryIds = getBootstrapModel().getFastMenu().getWokIds();
                     break;
                 case AppConstants.CUSTOM_FILTER:
                     setCustomFilter();
@@ -132,7 +134,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
 
     private void initAdapter() {
         if ( mCompanyAdapter == null ) {
-            fillCompanyAdapter( GlobalManager.getInstance().getBootstrapModel().getCompanies() );
+            fillCompanyAdapter( getBootstrapModel().getCompanies() );
         }
         mCompanyAdapter.notifyDataSetChanged();
     }
@@ -158,7 +160,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
                 }
             }
             if( AppConstants.DISH_FAVOITES.equals( mInitFilterParam ) ){
-                filtered = GlobalManager.isFavorite( Integer.valueOf(companyModel.getId()) );
+                filtered = isFavorite( Integer.valueOf(companyModel.getId()) );
             }
             if ( mCompanyFilter != null ) {
                 filtered = applyCompanyFilter( companyModel );
@@ -178,7 +180,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
     }
 
     private void setCustomFilter() {
-        mCompanyFilter = GlobalManager.getInstance().getCompanyFilter();
+        mCompanyFilter = getCompanyFilter();
         if ( mCompanyFilter != null ) {
             int totalFilter = mCompanyFilter.getDishesId().size()
                     + mCompanyFilter.getKitchenId().size()
@@ -286,7 +288,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
     @Override
     public void onApplySearch( String query ) {
         if ( query == null && mSearchMade ) {
-            fillCompanyAdapter( GlobalManager.getInstance().getBootstrapModel().getCompanies() );
+            fillCompanyAdapter( getBootstrapModel().getCompanies() );
             mCompanyRecView.getAdapter().notifyDataSetChanged();
             mCompanyAdapter.notifyDataSetChanged();
             mSearchMade = false;
@@ -300,7 +302,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
         }
         mCompanyAdapter.deleteAllItem();
         int idx = 0;
-        for ( CompanyModel companyModel : GlobalManager.getInstance().getBootstrapModel().getCompanies() ) {
+        for ( CompanyModel companyModel : getBootstrapModel().getCompanies() ) {
             if ( companyModel.getDisplayName().toUpperCase().indexOf( query.toUpperCase() ) > -1 ) {
                 mCompanyAdapter.addItem( ConvertUtils.convertToCompanyLight( companyModel ), idx );
                 idx++;
@@ -315,10 +317,10 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
 
     @Override
     public void onItemClick( final int position, View view ) {
-        if ( GlobalManager.getInstance().isAnimationInProgess() ){
+        if ( isAnimationInProgess() ){
             return;
         }
-        GlobalManager.getInstance().setAnimationInProgess( true );
+        setAnimationInProgess( true );
         AppUtils.bounceAnimation( view.findViewById( R.id.companyImgId ) );
         new Handler( ).postDelayed( new Runnable() {
             @Override
@@ -329,12 +331,12 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
                         categoryIds.append( categoryId).append(",");
                     }
                     categoryIds.deleteCharAt( categoryIds.length()-1 );
-                    GlobalManager.getInstance().setDishFilter( new FilterDishModel( AppConstants.FAST_MENU, categoryIds.toString(), mInitFilterParam ) );
+                    setDishFilter( new FilterDishModel( AppConstants.FAST_MENU, categoryIds.toString(), mInitFilterParam ) );
                 } else {
-                    GlobalManager.getInstance().setDishFilter( null );
+                    setDishFilter( null );
                 }
                 onCompanyChoose( mCompanyAdapter.getItem( position ) );
-                GlobalManager.getInstance().setAnimationInProgess( false );
+                setAnimationInProgess( false );
             }
         }, 300 );
     }

@@ -27,6 +27,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 public class CityActivity extends BaseActivity implements CityAdapter.CardClickListener {
 
     private static final String CLASS_TAG = "CityActivity";
@@ -44,7 +46,7 @@ public class CityActivity extends BaseActivity implements CityAdapter.CardClickL
         super.onCreate( savedInstanceState );
         instance = this;
         setContentView( R.layout.activity_city );
-        fillCityAdapter( GlobalManager.getInstance().getBootstrapModel().getCities() );
+        fillCityAdapter( getBootstrapModel().getCities() );
         initialize();
     }
 
@@ -136,8 +138,8 @@ public class CityActivity extends BaseActivity implements CityAdapter.CardClickL
 
     @Override
     public void onItemClick( int position, View v ) {
-        mDeliveryTV.setText( GlobalManager.getInstance().getBootstrapModel() != null ?
-                GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() :
+        mDeliveryTV.setText( getBootstrapModel() != null ?
+                getBootstrapModel().getDeliveryCity() :
                 getResources().getString( R.string.not_available ) );
         mCityRecView.getAdapter().notifyDataSetChanged();
         AppUtils.transitionAnimation( findViewById( R.id.citiesContainerId ),
@@ -156,21 +158,21 @@ public class CityActivity extends BaseActivity implements CityAdapter.CardClickL
         protected Void doInBackground( Void... arg0 ) {
             try {
                 DictionaryModel currentCity = null;
-                for ( DictionaryModel city : GlobalManager.getInstance().getBootstrapModel().getCities() ) {
-                    if ( GlobalManager.getInstance().getBootstrapModel()
+                for ( DictionaryModel city : getBootstrapModel().getCities() ) {
+                    if ( getBootstrapModel()
                             .getDeliveryCity().toUpperCase().equals( city.getDisplayName().toUpperCase() ) ) {
                         currentCity = city;
                         break;
                     }
                 }
                 if ( currentCity != null ) {
-                    Call< BootstrapModel > bootstrapCall = RestController.getInstance()
+                    Call< BootstrapModel > bootstrapCall = RestController
                             .getApi().fetchBootstrapData( AppConstants.AUTH_BEARER
-                                            + GlobalManager.getInstance().getUserToken(),
+                                            + getUserToken(),
                                     currentCity.getLatitude(), currentCity.getLongitude() );
                     Response< BootstrapModel > responseBootstrap = bootstrapCall.execute();
                     if ( responseBootstrap.body() != null ) {
-                        GlobalManager.getInstance().setBootstrapModel( responseBootstrap.body() );
+                        setBootstrapModel( responseBootstrap.body() );
                     }
                 }
             } catch ( Exception e ) {

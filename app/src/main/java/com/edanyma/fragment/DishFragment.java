@@ -38,6 +38,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearchViewListener,
         DishEntityAdapter.CardClickListener, PixelShot.PixelShotListener, View.OnClickListener {
 
@@ -113,7 +115,7 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
         }
         int idx = 0;
         for ( MenuEntityModel entity : entities ) {
-            entity.setCount( BasketOrderManager.getInstance().getEntityCountInBasket( entity.getId() ) );
+            entity.setCount( BasketOrderManager.getEntityCountInBasket( entity.getId() ) );
             mDishEntityAdapter.addItem( entity, idx );
         }
     }
@@ -220,7 +222,7 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
         if ( view instanceof DishEntityCard ) {
             mDishEntity = ( ( DishEntityCard ) view ).getDishEntity();
             AppUtils.bounceAnimation( view.findViewById( R.id.entityImgId ) );
-            GlobalManager.getInstance().setDishEntityPosition( position );
+            setDishEntityPosition( position );
             PixelShot.of( getActivity().findViewById( R.id.eatMenuContainerId ) ).setResultListener( this ).save();
         }
     }
@@ -228,7 +230,7 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
 
     @Override
     public void onPixelShotSuccess( String path ) {
-        if ( AppConstants.FAKE_ID != GlobalManager.getInstance().getDishEntityPosition() ) {
+        if ( AppConstants.FAKE_ID != getDishEntityPosition() ) {
             mListener.onMoreDishInfo( mDishEntity.getCompanyName(), mDishEntity );
         } else {
             mListener.onFilterDishSelect();
@@ -269,10 +271,10 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
             @Override
             public void run() {
                 initRecView();
-                if ( AppConstants.FAKE_ID != GlobalManager.getInstance().getDishEntityPosition() ) {
-                    mDishRecView.scrollToPosition( GlobalManager.getInstance().getDishEntityPosition() );
+                if ( AppConstants.FAKE_ID != getDishEntityPosition() ) {
+                    mDishRecView.scrollToPosition( getDishEntityPosition() );
                 }
-                GlobalManager.getInstance().setDishEntityPosition( AppConstants.FAKE_ID );
+                setDishEntityPosition( AppConstants.FAKE_ID );
             }
         }, 200 );
 
@@ -296,9 +298,9 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
         @Override
         protected Void doInBackground( Void... arg0 ) {
             try {
-                Call< ApiResponse< Dishes > > dishesCall = RestController.getInstance()
+                Call< ApiResponse< Dishes > > dishesCall = RestController
                         .getApi().getDishes( AppConstants.AUTH_BEARER
-                                        + GlobalManager.getInstance().getUserToken(), GlobalManager.getInstance().getBootstrapModel().getDeliveryCity(),
+                                        + getUserToken(), getBootstrapModel().getDeliveryCity(),
                                 mSelectedDishId );
                 Response< ApiResponse< Dishes > > responseDishes = dishesCall.execute();
                 if ( responseDishes.body() != null ) {
@@ -308,7 +310,7 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
                         if ( mSelectedCompanyId == null ||
                                 ( mSelectedCompanyId != null &&
                                         mSelectedCompanyId.equals( Integer.valueOf( menuEntity.getCompanyId() ) ) ) ) {
-                            for ( CompanyModel company : GlobalManager.getBootstrapModel().getCompanies() ) {
+                            for ( CompanyModel company : getBootstrapModel().getCompanies() ) {
                                 if ( mSelectedCompanyId == null && menuEntity.getCompanyId().equals( company.getId() ) ) {
                                     menuEntity.setCompanyName( company.getDisplayName() );
                                     break;

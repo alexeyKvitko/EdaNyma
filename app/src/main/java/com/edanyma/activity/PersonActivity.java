@@ -2,13 +2,13 @@ package com.edanyma.activity;
 
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 
 import com.edanyma.AppConstants;
@@ -17,20 +17,29 @@ import com.edanyma.R;
 import com.edanyma.fragment.CameraFragment;
 import com.edanyma.fragment.ChangePasswordFragment;
 import com.edanyma.fragment.EditProfileFragment;
+import com.edanyma.fragment.OwnMapFragment;
 import com.edanyma.fragment.PersonalAreaFragment;
 import com.edanyma.fragment.SignInFragment;
 import com.edanyma.fragment.SignUpFragment;
 import com.edanyma.manager.BasketOrderManager;
-import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.OurClientModel;
 import com.edanyma.owncomponent.ModalDialog;
 import com.edanyma.owncomponent.ModalMessage;
 import com.edanyma.rest.RestController;
+import com.edanyma.utils.AppUtils;
 
 import retrofit2.Call;
 import retrofit2.Response;
+
+import static com.edanyma.manager.GlobalManager.getClient;
+import static com.edanyma.manager.GlobalManager.getClientLocation;
+import static com.edanyma.manager.GlobalManager.getUserToken;
+import static com.edanyma.manager.GlobalManager.isSignedIn;
+import static com.edanyma.manager.GlobalManager.setActionConfirmed;
+import static com.edanyma.manager.GlobalManager.setClient;
+import static com.edanyma.manager.GlobalManager.setClientLocation;
 
 public class PersonActivity extends BaseActivity implements SignInFragment.OnSignInListener,
         SignUpFragment.OnSignUpListener, PersonalAreaFragment.OnPersonalAreaActionListener,
@@ -47,7 +56,7 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
         setContentView( R.layout.activity_person );
         initBaseActivity( new ActivityState( AppConstants.LOGIN_BOTTOM_INDEX ) );
         mThis = this;
-        if ( !GlobalManager.getInstance().isSignedIn() ) {
+        if ( !isSignedIn() ) {
             findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.login_navigation ) );
             mSign = this.getIntent().getStringExtra( AppConstants.SIGN_TYPE );
             if ( mSign == null || AppConstants.SIGN_IN.equals( mSign ) ) {
@@ -84,7 +93,7 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     public void onSignInAction() {
         if ( mSign != null ) {
             changeClientStatus();
-            GlobalManager.getInstance().setActionConfirmed( true );
+            setActionConfirmed( true );
             onBackPressed();
         } else {
             NavUtils.navigateUpFromSameTask( this );
@@ -97,7 +106,7 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     }
 
     private void signOut() {
-        if( BasketOrderManager.getInstance().isBasketEmpty() ){
+        if( BasketOrderManager.isBasketEmpty() ){
             exactlySignOut();
             return;
         }
@@ -140,10 +149,10 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     }
 
     private void exactlySignOut(){
-        GlobalManager.getInstance().setClient( null );
+        setClient( null );
         AppPreferences.removePreference( AppConstants.OUR_CLIENT_PREF );
         AppPreferences.removePreference( AppConstants.BASKET_PREF );
-        BasketOrderManager.getInstance().clearBasket();
+        BasketOrderManager.clearBasket();
         NavUtils.navigateUpFromSameTask( this );
     }
 
@@ -156,6 +165,17 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     @Override
     public void onChangePasswordAction() {
         addReplaceFragment( ChangePasswordFragment.newInstance() );
+    }
+
+    @Override
+    public void onChangePrimaryAddress() {
+        setHeaderFooterVisibilty( View.GONE );
+        boolean useGlobalLocation = false;
+        if( !AppUtils.nullOrEmpty( getClient().getClientLocation().getStreet() ) ){
+            setClientLocation( getClient().getClientLocation() );
+            useGlobalLocation = true;
+        }
+        addReplaceFragment( OwnMapFragment.newInstance( useGlobalLocation ) );
     }
 
     @Override
@@ -180,6 +200,7 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
 
     @Override
     public void onBackPressed() {
+        setHeaderFooterVisibilty( View.VISIBLE );
         if ( getSupportFragmentManager().getFragments().size() == 0 ) {
             NavUtils.navigateUpFromSameTask( this );
             overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
@@ -210,10 +231,10 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
         protected String doInBackground( Void... arg0 ) {
             String result = null;
             try {
-                OurClientModel client = GlobalManager.getInstance().getClient();
-                Call< ApiResponse > removeClientCall = RestController.getInstance()
+                OurClientModel client = getClient();
+                Call< ApiResponse > removeClientCall = RestController
                         .getApi().removeClient(AppConstants.AUTH_BEARER
-                                + GlobalManager.getInstance().getUserToken(), client.getUuid()  );
+                                + getUserToken(), client.getUuid()  );
                 Response< ApiResponse > removeClientResponse = removeClientCall.execute();
                 if ( removeClientResponse.body() != null ) {
                     if( removeClientResponse.body().getStatus() == 200 ){

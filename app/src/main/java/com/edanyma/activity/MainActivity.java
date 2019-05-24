@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
+import com.edanyma.AppPreferences;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.fragment.ProfileFragment;
@@ -32,6 +34,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.edanyma.manager.GlobalManager.*;
 
 public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardClickListener,
         ProfileFragment.OnProfileFrafmentListener, PixelShot.PixelShotListener {
@@ -73,10 +77,10 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
             PixelShot.of( findViewById( R.id.contentMainLayoutId ) ).setResultListener( me ).save();
         } );
         mContext = this;
-        List< CompanyActionModel > companyActionModels = GlobalManager.getInstance().getBootstrapModel()
+        List< CompanyActionModel > companyActionModels = getBootstrapModel()
                 .getCompanyActions();
         fillActionAdapter( companyActionModels );
-        fillHomeMenuAdapter( GlobalManager.getInstance().getHomeMenus() );
+        fillHomeMenuAdapter( getHomeMenus() );
         initRecyclerView();
     }
 

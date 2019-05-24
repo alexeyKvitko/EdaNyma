@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.TextureView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -188,6 +189,16 @@ public abstract class AppUtils {
             Log.e( TAG, "Ошибка преобразования: "+ex.getMessage() );
         }
         return result;
+    }
+
+    public static void showError(TextView view, String text, TextView ... hideViews){
+        view.setText( text );
+        view.setVisibility( View.VISIBLE );
+        new Handler( ).postDelayed( ()->{
+            for( TextView hideView: hideViews ){
+                hideView.setVisibility( View.GONE );
+            }
+        },1000 );
     }
 
 

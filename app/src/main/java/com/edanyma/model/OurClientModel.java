@@ -19,6 +19,7 @@ public class OurClientModel {
     private Integer bonus;
     private String photo;
     private String additionalMessage;
+    private ClientLocation clientLocation;
     private List<FavoriteCompanyModel> favoriteCompanies;
 
     public Integer getId() {
@@ -115,6 +116,14 @@ public class OurClientModel {
 
     public void setFavoriteCompanies( List< FavoriteCompanyModel > favoriteCompanies ) {
         this.favoriteCompanies = favoriteCompanies;
+    }
+
+    public ClientLocation getClientLocation() {
+        return clientLocation;
+    }
+
+    public void setClientLocation( ClientLocation clientLocation ) {
+        this.clientLocation = clientLocation;
     }
 
     @Override public boolean equals( Object o) {

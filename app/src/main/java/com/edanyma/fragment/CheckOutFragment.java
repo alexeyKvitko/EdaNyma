@@ -12,6 +12,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -40,6 +41,8 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 
 public class CheckOutFragment extends ConfirmFragment implements View.OnClickListener,
         CheckOutEntity.OnRemoveFromBasketListener {
@@ -52,6 +55,8 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
     private AppCompatEditText mCheckOutPhone;
     private AppCompatEditText mCheckOutСomment;
 
+    private CheckOutFragment mThis;
+
 
     private TextView mCheckOutCommonTotal;
     private TextView mCheckOutCity;
@@ -63,11 +68,14 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
     private TextView mFinishOrderDay;
     private TextView mFinishOrderTime;
 
+    private Button mCheckOutBtn;
+
     private ClientOrderModel mClientOrderModel;
 
 
     private Map< String, BasketModel > mFilteredBasket;
     private Integer mTotalAmount;
+
 
     public CheckOutFragment() {
     }
@@ -86,6 +94,7 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         initConfirmFragment();
+        mThis = this;
         mResendLabel.setOnClickListener( this );
         mConfirmCodeBtn.setOnClickListener( this );
         initTextView( R.id.checkOutLabelId, AppConstants.B52 );
@@ -108,7 +117,7 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         mCheckOutPhone.addTextChangedListener( new PhoneNumberFormattingTextWatcher() );
 
         mCheckOutCity = initTextView( R.id.checkOutCityId, AppConstants.ROBOTO_CONDENCED,
-                GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() );
+                getBootstrapModel().getDeliveryCity() );
         mCheckOutAddress = initTextView( R.id.checkOutStreetHouseId, AppConstants.ROBOTO_CONDENCED,
                 getActivity().getResources().getString( R.string.not_available_yet ) );
         mCheckOutAdditionalAddress = initTextView( R.id.checkOutAdditionalAddressId, AppConstants.ROBOTO_CONDENCED,
@@ -117,7 +126,8 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
 
         getView().findViewById( R.id.checkOutBackBtnId ).setOnClickListener( this );
         getView().findViewById( R.id.checkOutMapId ).setOnClickListener( this );
-        getView().findViewById( R.id.checkOutSuccessBtnId ).setOnClickListener( this );
+        mCheckOutBtn = initButton( R.id.checkOutSuccessBtnId, AppConstants.ROBOTO_CONDENCED );
+        mCheckOutBtn.setOnClickListener( this );
         getView().findViewById( R.id.confirmCodeContainerId ).setOnClickListener( null );
         mDishContainer = getView().findViewById( R.id.checkOutDishContainerId );
         initFinishOrderContainer();
@@ -144,14 +154,14 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
     }
 
     private void setClientInfo(){
-        if ( GlobalManager.getInstance().isSignedIn() ){
-            mCheckOutPerson.setText( GlobalManager.getInstance().getClient().getNickName() );
-            mCheckOutPhone.setText( GlobalManager.getInstance().getClient().getPhone() );
+        if ( isSignedIn() ){
+            mCheckOutPerson.setText( getClient().getNickName() );
+            mCheckOutPhone.setText( getClient().getPhone() );
         }
     }
 
     private void setDeliveryAddress() {
-        ClientLocation location = GlobalManager.getInstance().getClientLocation();
+        ClientLocation location = getClientLocation();
         if ( !AppUtils.nullOrEmpty( location.getStreet() ) ){
             String address = location.getStreet();
             if ( !AppUtils.nullOrEmpty( location.getHouse() ) ){
@@ -184,11 +194,11 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
     private void filterBasket() {
         mFilteredBasket = new HashMap<>();
         mTotalAmount = 0;
-        for ( MenuEntityModel dish : BasketOrderManager.getInstance().getBasket() ) {
+        for ( MenuEntityModel dish : BasketOrderManager.getBasket() ) {
             BasketModel basketModel = mFilteredBasket.get( dish.getCompanyId() );
             if ( basketModel == null ) {
                 basketModel = new BasketModel();
-                basketModel.setCompany( GlobalManager.getInstance().getCompanyById( dish.getCompanyId() ) );
+                basketModel.setCompany( getCompanyById( dish.getCompanyId() ) );
             }
             basketModel.getBasket().add( dish );
             mFilteredBasket.put( dish.getCompanyId(), basketModel );
@@ -305,14 +315,15 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
                     phoneError.setVisibility( View.GONE );
                 }
             }, 3000 );
+            mCheckOutBtn.setOnClickListener( this );
         }
         if( errorMsg == null ){
             mClientOrderModel = new ClientOrderModel();
             mClientOrderModel.setNickName( person );
-            if ( GlobalManager.getInstance().isSignedIn() ){
-                mClientOrderModel.setEmail( GlobalManager.getInstance().getClient().getEmail() );
+            if ( isSignedIn() ){
+                mClientOrderModel.setEmail( getClient().getEmail() );
             }
-            ClientLocation clientLocation = GlobalManager.getInstance().getClientLocation();
+            ClientLocation clientLocation = getClientLocation();
             mClientOrderModel.setPhone( phone );
             mClientOrderModel.setOrderDate( AppUtils.formatDate( AppConstants.ORDER_DATE_FORMAT, new Date() ));
             mClientOrderModel.setOrderTime( AppUtils.formatDate( AppConstants.ORDER_TIME_FORMAT, new Date() ));
@@ -357,6 +368,8 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
                 getActivity().onBackPressed();
                 break;
             case R.id.checkOutSuccessBtnId:
+                AppUtils.clickAnimation( view );
+                mCheckOutBtn.setOnClickListener( null );
                 finishCheckOut();
                 break;
             case R.id.checkOutMapId:
@@ -410,18 +423,13 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         protected String doInBackground( String... phone ) {
             String result = null;
             try {
-                Call< ApiResponse > validateCodeCall = RestController.getInstance()
+                Call< ApiResponse > validateCodeCall = RestController
                         .getApi().sendSmsCode( AppConstants.AUTH_BEARER
-                                + GlobalManager.getInstance().getUserToken(), phone[0] );
+                                + getUserToken(), phone[0] );
                 Response< ApiResponse > responseCodeValidate = validateCodeCall.execute();
                 if ( responseCodeValidate.body() != null ) {
                     if ( responseCodeValidate.body().getStatus() == 200 ) {
                         mConfirmationCode = responseCodeValidate.body().getMessage();
-//                        if ( AppConstants.SEND_PHONE_CODE.equals( mConfirmationCode ) ) {
-//                            mConfirmationCode = AppUtils.getRandomBetweenRange( 4000, 9999 ) + "";
-//                            SmsManager.getDefault().sendTextMessage( "+7" + mClientModel.getPhone(),
-//                                    "ЕдаНяма", "Код регистрации: " + mConfirmationCode, null, null );
-//                        }
                     } else {
                         result = responseCodeValidate.body().getMessage();
                     }
@@ -438,6 +446,7 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         @Override
         protected void onPostExecute( String result ) {
             super.onPostExecute( result );
+            mCheckOutBtn.setOnClickListener( mThis );
             if ( result != null ) {
 //                AppUtils.transitionAnimation( getView().findViewById( R.id.pleaseWaitContainerId ),
 //                        getView().findViewById( R.id.signUpContailnerId ) );
@@ -469,9 +478,9 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         protected String doInBackground( ClientOrderModel... clientOrder ) {
             String result = null;
             try {
-                Call< ApiResponse> createOrderCall = RestController.getInstance()
+                Call< ApiResponse> createOrderCall = RestController
                         .getApi().createClientOrder( AppConstants.AUTH_BEARER
-                                + GlobalManager.getInstance().getUserToken(), clientOrder[ 0 ] );
+                                + getUserToken(), clientOrder[ 0 ] );
                 Response< ApiResponse> responseCreateOrder = createOrderCall.execute();
                 if ( responseCreateOrder.body() != null ) {
                     if ( responseCreateOrder.body().getStatus() == 200 ) {

@@ -23,6 +23,8 @@ import com.edanyma.utils.AppUtils;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 
 public class FilterCompanyFragment extends Fragment {
 
@@ -62,11 +64,11 @@ public class FilterCompanyFragment extends Fragment {
         mKitchenFilter = getView().findViewById( R.id.filterKitchenId );
         mPayFilter = getView().findViewById( R.id.filterPayId );
         mExtraFilter = getView().findViewById( R.id.filterExtraId );
-        if ( GlobalManager.getInstance().getCompanyFilter() != null ){
-            mDishFilter.setSelectedIds( GlobalManager.getInstance().getCompanyFilter().getDishesId() );
-            mKitchenFilter.setSelectedIds( GlobalManager.getInstance().getCompanyFilter().getKitchenId() );
-            mPayFilter.setSelectedIds( GlobalManager.getInstance().getCompanyFilter().getPayTypes() );
-            mExtraFilter.setSelectedIds( GlobalManager.getInstance().getCompanyFilter().getExtraFilters() );
+        if ( getCompanyFilter() != null ){
+            mDishFilter.setSelectedIds( getCompanyFilter().getDishesId() );
+            mKitchenFilter.setSelectedIds( getCompanyFilter().getKitchenId() );
+            mPayFilter.setSelectedIds( getCompanyFilter().getPayTypes() );
+            mExtraFilter.setSelectedIds( getCompanyFilter().getExtraFilters() );
         }
 
         final TextView clearFilter = getView().findViewById( R.id.clearFilterButtonId );
@@ -112,7 +114,7 @@ public class FilterCompanyFragment extends Fragment {
 
     private void addCategoriesFilter( boolean hideShowAll ) {
         List< DictionaryModel > categoriesFilter = new LinkedList<>();
-        for ( MenuCategoryModel menuCategory : GlobalManager.getInstance().getBootstrapModel()
+        for ( MenuCategoryModel menuCategory : getBootstrapModel()
                 .getDeliveryMenu().getMenuCategories() ) {
             DictionaryModel model = new DictionaryModel();
             model.setId( menuCategory.getId() );
@@ -124,7 +126,7 @@ public class FilterCompanyFragment extends Fragment {
 
     private void addTypesFilter( boolean hideShowAll ) {
         List< DictionaryModel > typesFilter = new LinkedList<>();
-        for ( MenuTypeModel menuType : GlobalManager.getInstance().getBootstrapModel()
+        for ( MenuTypeModel menuType : getBootstrapModel()
                 .getDeliveryMenu().getMenuTypes() ) {
             DictionaryModel model = new DictionaryModel();
             model.setId( menuType.getId() );

@@ -115,7 +115,7 @@
     <string name="finish_thanks">Спасибо за Заказ !</string>
     <string name="splash_desc_one">Легко! Удобно! Быстро!</string>
     <string name="splash_desc_two">Оформите Ваш заказ всего в несколько кликов!</string>
-    <string name="splash_desc_three">Проведите уютный вечер дома с лучшими блюдами!</string>
+    <string name="splash_desc_three">У Нас всегда есть, что Вам поесть!</string>
     <string name="empty_basket_msg">Ваша корзина пуста</string>
     <string name="check_out">Оформить Заказ</string>
     <string name="check_out_title">Ваш Заказ</string>
@@ -142,5 +142,7 @@
     <string name="yes_sure">Да, уверен</string>
     <string name="go_back">НАЗАД</string>
     <string name="change_passord_title">Изменить Пароль</string>
+    <string name="accept_message">Принять</string>
+    <string name="decline_message">Отменить</string>
 
 </resources>

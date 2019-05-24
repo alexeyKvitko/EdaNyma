@@ -32,6 +32,7 @@ import static com.edanyma.AppConstants.DECOR_WIDTH;
 import static com.edanyma.AppConstants.HORIZONTAL_RATIO;
 import static com.edanyma.AppConstants.MARGIN_RATIO;
 import static com.edanyma.AppConstants.VERTICAL_RATIO;
+import static com.edanyma.manager.GlobalManager.*;
 
 
 public class ProfileFragment extends BaseFragment implements View.OnClickListener {
@@ -85,7 +86,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 AppUtils.clickAnimation( view );
                 backAnimateSnapShotLayout( snapshotLayout );
         } );
-        if( GlobalManager.getInstance().isSignedIn() ){
+        if( isSignedIn() ){
             swithVisibilityOnSignIn( View.GONE , View.VISIBLE );
         } else {
             swithVisibilityOnSignIn( View.VISIBLE , View.GONE );

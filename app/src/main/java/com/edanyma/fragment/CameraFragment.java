@@ -42,6 +42,8 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 
 public class CameraFragment extends BaseFragment implements PixelShot.PixelShotListener {
 
@@ -141,7 +143,7 @@ public class CameraFragment extends BaseFragment implements PixelShot.PixelShotL
         bmp = Bitmap.createBitmap(bmp, 0,0, AVATAR_SIZE, AVATAR_SIZE );
         mTakePhotoBtn.setEnabled( false );
         mGoBackBtn.setEnabled( false );
-        new PixelShot.BitmapSaver( getActivity(), bmp, AppConstants.PICTURE_DIR, GlobalManager.getInstance().getClient().getUuid()
+        new PixelShot.BitmapSaver( getActivity(), bmp, AppConstants.PICTURE_DIR, getClient().getUuid()
                 , AppConstants.EXTENSION_JPG, JPG_MAX_QUALITY, this ).execute();
     }
 
@@ -184,7 +186,7 @@ public class CameraFragment extends BaseFragment implements PixelShot.PixelShotL
 
     @Override
     public void onPixelShotSuccess( String path ) {
-        new UpdateClientAvatar().execute( GlobalManager.getInstance().getClient().getUuid() );
+        new UpdateClientAvatar().execute( getClient().getUuid() );
     }
 
     @Override
@@ -214,9 +216,9 @@ public class CameraFragment extends BaseFragment implements PixelShot.PixelShotL
                 File file = new File( directory, fileName + AppConstants.EXTENSION_JPG );
                 RequestBody fileReqBody = RequestBody.create( MediaType.parse( "multipart/form-data" ), file );
                 MultipartBody.Part part = MultipartBody.Part.createFormData( "clientAvatar", file.getName(), fileReqBody );
-                Call< ApiResponse > avatarCall = RestController.getInstance()
+                Call< ApiResponse > avatarCall = RestController
                         .getApi().updateClientAvatar( AppConstants.AUTH_BEARER
-                                + GlobalManager.getInstance().getUserToken(), part, fileName );
+                                + getUserToken(), part, fileName );
 
 
                 Response< ApiResponse > responseUpdate = avatarCall.execute();
@@ -244,7 +246,7 @@ public class CameraFragment extends BaseFragment implements PixelShot.PixelShotL
             mTakePhotoBtn.setEnabled( true );
             mGoBackBtn.setEnabled( true );
             if ( result != null ) {
-                GlobalManager.getInstance().getClient().setPhoto( result );
+                getClient().setPhoto( result );
                 new Handler().postDelayed( () -> {
                     getActivity().onBackPressed();
                 }, 200 );

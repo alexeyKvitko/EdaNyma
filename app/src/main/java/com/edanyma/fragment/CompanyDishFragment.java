@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 
 public class CompanyDishFragment extends BaseFragment implements OwnSearchView.OwnSearchViewListener,
         DishEntityAdapter.CardClickListener, StickyRecyclerView.OnActionHeaderListener,
@@ -94,10 +96,10 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
                 mCompanyDish.getCompanyModel().getDisplayName() );
         companyTitle.setOnClickListener( this );
         getView().findViewById( R.id.companyInfoIconId ).setOnClickListener( this );
-        int favVisibility = GlobalManager.getInstance().isFavorite( Integer.valueOf( mCompanyDish.getCompanyModel().getId() ) )
+        int favVisibility = isFavorite( Integer.valueOf( mCompanyDish.getCompanyModel().getId() ) )
                 ? View.VISIBLE : View.GONE;
         getView().findViewById( R.id.companyFavIconId ).setVisibility( favVisibility );
-        GlideClient.downloadImage( getActivity(), GlobalManager.getInstance().getBootstrapModel()
+        GlideClient.downloadImage( getActivity(), getBootstrapModel()
                 .getStaticUrl() + String.format( AppConstants.STATIC_COMPANY_LOGO,
                 mCompanyDish.getCompanyModel().getThumb() ), ( ImageView ) getView().findViewById( R.id.companyDishLogoId ) );
 
@@ -112,8 +114,8 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
         ( ( OwnSearchView ) getView().findViewById( R.id.searchDishId ) )
                 .setOnApplySearchListener( this );
         String dishTitle = getActivity().getResources().getString( R.string.all_dishes_label );
-        if ( GlobalManager.getInstance().getDishFilter() != null ) {
-            dishTitle = GlobalManager.getInstance().getDishFilter().getDishName() + " от";
+        if ( getDishFilter() != null ) {
+            dishTitle = getDishFilter().getDishName() + " от";
         }
 
         mSelectedDish = initTextView( R.id.selectedDishTitleId, AppConstants.ROBOTO_CONDENCED, Typeface.BOLD,
@@ -139,9 +141,9 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
             mDishEntity = null;
         }
         mDishRecView.getAdapter().notifyDataSetChanged();
-        if ( AppConstants.FAKE_ID != GlobalManager.getInstance().getDishEntityPosition() ) {
-            mDishRecView.scrollToTop( GlobalManager.getInstance().getDishEntityPosition() );
-            GlobalManager.getInstance().setDishEntityPosition( AppConstants.FAKE_ID );
+        if ( AppConstants.FAKE_ID != getDishEntityPosition() ) {
+            mDishRecView.scrollToTop( getDishEntityPosition() );
+            setDishEntityPosition( AppConstants.FAKE_ID );
 
         }
     }
@@ -164,7 +166,7 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
         for ( MenuEntityModel entity : entities ) {
             boolean filtered = isFilterCondition( entity );
             if ( filtered ) {
-                entity.setCount( BasketOrderManager.getInstance().getEntityCountInBasket( entity.getId() ) );
+                entity.setCount( BasketOrderManager.getEntityCountInBasket( entity.getId() ) );
                 mDishEntityAdapter.addItem( entity, idx );
                 idx++;
             }
@@ -172,19 +174,19 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
     }
 
     private boolean isFilterCondition( MenuEntityModel menuEntityModel ) {
-        if ( GlobalManager.getInstance().getDishFilter() == null ) {
+        if ( getDishFilter() == null ) {
             return true;
         }
         boolean result = false;
-        if ( AppConstants.FAST_MENU.equals( GlobalManager.getInstance().getDishFilter().getKitchenId() ) ) {
-            String[] categoryIds = GlobalManager.getInstance().getDishFilter().getDishId().split( "," );
+        if ( AppConstants.FAST_MENU.equals( getDishFilter().getKitchenId() ) ) {
+            String[] categoryIds = getDishFilter().getDishId().split( "," );
             if ( Arrays.asList( categoryIds ).contains( menuEntityModel.getCategoryId() ) ) {
                 result = true;
             }
         } else {
-            if ( GlobalManager.getInstance().getDishFilter()
+            if ( getDishFilter()
                     .getKitchenId().equals( menuEntityModel.getTypeId() )
-                    && GlobalManager.getInstance().getDishFilter()
+                    && getDishFilter()
                     .getDishId().equals( menuEntityModel.getCategoryId() ) ) {
                 result = true;
             }
@@ -281,7 +283,7 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
         if ( view instanceof DishEntityCard ) {
             mDishEntity = ( ( DishEntityCard ) view ).getDishEntity();
             AppUtils.bounceAnimation( view.findViewById( R.id.entityImgId ) );
-            GlobalManager.getInstance().setDishEntityPosition( position );
+            setDishEntityPosition( position );
             PixelShot.of( getActivity().findViewById( R.id.dishContainerId ) ).setResultListener( this ).save();
         }
     }
@@ -338,7 +340,7 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
 
     @Override
     public void onPixelShotSuccess( String path ) {
-        if ( AppConstants.FAKE_ID != GlobalManager.getInstance().getDishEntityPosition() ) {
+        if ( AppConstants.FAKE_ID != getDishEntityPosition() ) {
             mListener.onMoreDishInfo( mCompanyDish.getCompanyModel().getDisplayName(), mDishEntity );
         } else {
             mListener.onFilterDishSelect();

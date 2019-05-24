@@ -24,6 +24,8 @@ import org.mindrot.jbcrypt.BCrypt;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 public class ChangePasswordFragment extends BaseFragment {
 
     private AppCompatEditText mOldPassword;
@@ -82,7 +84,7 @@ public class ChangePasswordFragment extends BaseFragment {
     }
 
     private void updatePassword(){
-        OurClientModel client = GlobalManager.getInstance().getClient();
+        OurClientModel client = getClient();
         String oldPassword = mOldPassword.getText().toString().trim();
         String newPassword = mNewPassword.getText().toString().trim();
         String confirmPassword = mConfirmPassword.getText().toString().trim();
@@ -94,39 +96,28 @@ public class ChangePasswordFragment extends BaseFragment {
             errorMessage = getActivity().getResources().getString( R.string.error_wrong_password );
         }
         if ( errorMessage != null ){
-            showError( mOldPasswordError, errorMessage );
+            AppUtils.showError( mOldPasswordError, errorMessage, mOldPasswordError );
             return;
         }
         if( newPassword.length() == 0 ){
             errorMessage = getActivity().getResources().getString( R.string.error_required_field );
-            showError( mNewPasswordError, errorMessage );
+            AppUtils.showError( mNewPasswordError, errorMessage, mNewPasswordError );
             return;
         }
         if( confirmPassword.length() == 0 ){
             errorMessage = getActivity().getResources().getString( R.string.error_required_field );
-            showError( mConfirmPasswordError, errorMessage );
+            AppUtils.showError( mConfirmPasswordError, errorMessage, mConfirmPasswordError );
             return;
         }
         if( !newPassword.equals( confirmPassword ) ){
             errorMessage = getActivity().getResources().getString( R.string.password_not_match );
-            showError( mConfirmPasswordError, errorMessage );
+            AppUtils.showError( mConfirmPasswordError, errorMessage, mConfirmPasswordError );
             return;
         }
         client.setPassword( newPassword );
         AppUtils.transitionAnimation( getView().findViewById( R.id.changePasswordContainerId ),
                 getView().findViewById( R.id.pleaseWaitContainerId ) );
         new UpdateOurClientPassword().execute( client );
-    }
-
-    private void showError(TextView view, String text){
-        view.setText( text );
-        view.setVisibility( View.VISIBLE );
-        new Handler( ).postDelayed( ()->{
-            mOldPasswordError.setVisibility( View.GONE );
-            mNewPasswordError.setVisibility( View.GONE );
-            mConfirmPasswordError.setVisibility( View.GONE );
-                },1000 );
-
     }
 
     class UpdateOurClientPassword extends AsyncTask< OurClientModel, Void, String > {
@@ -142,7 +133,7 @@ public class ChangePasswordFragment extends BaseFragment {
             try {
                 Call< ApiResponse > updateCall = RestController.getInstance()
                         .getApi().updateClientPassword( AppConstants.AUTH_BEARER
-                                + GlobalManager.getInstance().getUserToken(), ourClient[ 0 ] );
+                                + getInstance().getUserToken(), ourClient[ 0 ] );
 
 
                 Response< ApiResponse > responseUpdate = updateCall.execute();

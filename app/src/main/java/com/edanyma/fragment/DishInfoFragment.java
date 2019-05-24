@@ -20,16 +20,16 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.activity.BaseActivity;
-import com.edanyma.activity.CompanyDishActivity;
 import com.edanyma.activity.DishActivity;
 import com.edanyma.manager.BasketOrderManager;
-import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.MenuCategoryModel;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.model.MenuTypeModel;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
 import com.edanyma.utils.GlideClient;
+
+import static com.edanyma.manager.GlobalManager.*;
 
 public class DishInfoFragment extends BaseFragment implements View.OnClickListener {
 
@@ -99,13 +99,13 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
         initTextView( R.id.dishInfoCompanyId, AppConstants.OFFICE, mCompanyName );
         String kitchen = null;
         String category = null;
-        for ( MenuTypeModel menuType : GlobalManager.getInstance().getBootstrapModel().getDeliveryMenu().getMenuTypes() ) {
+        for ( MenuTypeModel menuType : getBootstrapModel().getDeliveryMenu().getMenuTypes() ) {
             if ( mDishEntity.getTypeId().equals( menuType.getId() ) ) {
                 kitchen = menuType.getDisplayName();
                 break;
             }
         }
-        for ( MenuCategoryModel menuCategory : GlobalManager.getInstance().getBootstrapModel().getDeliveryMenu().getMenuCategories() ) {
+        for ( MenuCategoryModel menuCategory : getInstance().getBootstrapModel().getDeliveryMenu().getMenuCategories() ) {
             if ( mDishEntity.getCategoryId().equals( menuCategory.getId() ) ) {
                 category = menuCategory.getDisplayName();
                 break;
@@ -243,7 +243,7 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        ( ( CompanyDishActivity ) getActivity() ).setHeaderFooterVisibilty( View.VISIBLE );
+        ( ( BaseActivity ) getActivity() ).setHeaderFooterVisibilty( View.VISIBLE );
         int containerId = getActivity() instanceof DishActivity ? R.id.eatMenuContainerId :
                                                                             R.id.dishContainerId;
         getActivity().findViewById( containerId )

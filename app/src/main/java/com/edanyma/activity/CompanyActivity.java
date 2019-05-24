@@ -18,6 +18,8 @@ import com.edanyma.utils.AppUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.edanyma.manager.GlobalManager.setCompanyFilter;
+
 public class CompanyActivity extends BaseActivity implements ChooseCompanyFragment.OnCompanyChosenListener,
                                                             FilterCompanyFragment.OnApplyFilterListener{
 
@@ -73,7 +75,7 @@ public class CompanyActivity extends BaseActivity implements ChooseCompanyFragme
 
     @Override
     public void onApplyFilter( FilterModel filterModel ) {
-        GlobalManager.getInstance().setCompanyFilter( filterModel );
+        setCompanyFilter( filterModel );
         addReplaceFragment( ChooseCompanyFragment.newInstance( AppConstants.CUSTOM_FILTER ) );
     }
 

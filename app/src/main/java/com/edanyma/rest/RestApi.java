@@ -4,6 +4,7 @@ import com.edanyma.model.ApiResponse;
 import com.edanyma.model.AuthToken;
 import com.edanyma.model.BootstrapModel;
 import com.edanyma.model.ClientAvatar;
+import com.edanyma.model.ClientLocation;
 import com.edanyma.model.ClientOrderModel;
 import com.edanyma.model.CompanyInfoModel;
 import com.edanyma.model.Dishes;
@@ -92,6 +93,10 @@ public interface RestApi {
     @POST(API_CLIENT+"updateClientInfo")
     Call< ApiResponse > updateClientInfo( @Header("Authorization") String authorization,
                                                       @Body OurClientModel ourClientModel  );
+
+    @POST(API_CLIENT+"updateClientAddress")
+    Call< ApiResponse > updateClientAddress( @Header("Authorization") String authorization,
+                                          @Body ClientLocation clientLocation  );
 
     @POST(API_CLIENT+"updateClientPassword")
     Call< ApiResponse > updateClientPassword( @Header("Authorization") String authorization,

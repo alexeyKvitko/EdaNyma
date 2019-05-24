@@ -27,6 +27,8 @@ import com.edanyma.utils.AppUtils;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 
 public class SignInFragment extends BaseFragment implements View.OnClickListener {
 
@@ -224,15 +226,16 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         protected String doInBackground( OurClientModel... ourClient ) {
             String result = null;
             try {
-                Call< ApiResponse<OurClientModel> > signInCall = RestController.getInstance()
+                Call< ApiResponse<OurClientModel> > signInCall = RestController
                         .getApi().signIn( AppConstants.AUTH_BEARER
-                                + GlobalManager.getInstance().getUserToken(), ourClient[ 0 ] );
+                                + getUserToken(), ourClient[ 0 ] );
 
 
                 Response< ApiResponse<OurClientModel> > responseSignIn = signInCall.execute();
                 if ( responseSignIn.body() != null ) {
                     if( responseSignIn.body().getStatus() == 200 ){
-                      GlobalManager.getInstance().setClient( responseSignIn.body().getResult() );
+                      setClient( responseSignIn.body().getResult() );
+
                       AppPreferences.setPreference( AppConstants.OUR_CLIENT_PREF, responseSignIn.body().getResult() );
                     } else {
                         result = responseSignIn.body().getMessage();

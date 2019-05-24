@@ -28,6 +28,8 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 public class CompanyDishActivity extends BaseActivity implements CompanyDishFragment.OnDishActionListener,
         DishInfoFragment.OnAddToBasketListener, FilterCompanyDishFragment.OnApplyDishFilterListener,
         CompanyInfoFragment.OnSignActionListener {
@@ -129,9 +131,9 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
         @Override
         protected Void doInBackground( Void... arg0 ) {
             try {
-                Call< CompanyInfoModel > companyDishCall = RestController.getInstance()
+                Call< CompanyInfoModel > companyDishCall = RestController
                         .getApi().getCompanyDishes( AppConstants.AUTH_BEARER
-                                + GlobalManager.getInstance().getUserToken(), mCompanyId );
+                                + getUserToken(), mCompanyId );
                 Response< CompanyInfoModel > responseCompanyDish = companyDishCall.execute();
                 if ( responseCompanyDish.body() != null ) {
                     mCompanyInfo = responseCompanyDish.body();
@@ -148,7 +150,7 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
             super.onPostExecute( result );
             findViewById( R.id.pleaseWaitContainerId ).setVisibility( View.GONE );
             findViewById( R.id.dishContainerId ).setVisibility( View.VISIBLE );
-            GlobalManager.getInstance().setDishEntityPosition( AppConstants.FAKE_ID );
+            setDishEntityPosition( AppConstants.FAKE_ID );
             addReplaceFragment( CompanyDishFragment.newInstance(), true );
         }
     }

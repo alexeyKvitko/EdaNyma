@@ -34,6 +34,8 @@ import java.util.LinkedList;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 
 public class CompanyInfoFragment extends BaseFragment implements View.OnClickListener {
 
@@ -88,14 +90,14 @@ public class CompanyInfoFragment extends BaseFragment implements View.OnClickLis
         super.onActivityCreated( savedInstanceState );
         initTextView( R.id.companyInfoTitleId, AppConstants.B52,
                 mCompanyModel.getDisplayName() );
-        GlideClient.downloadImage( getActivity(), GlobalManager.getInstance().getBootstrapModel()
+        GlideClient.downloadImage( getActivity(), getBootstrapModel()
                 .getStaticUrl() + String.format( AppConstants.STATIC_COMPANY_LOGO,
-                mCompanyModel.getThumb() ), ( ImageView ) getView().findViewById( R.id.companyInfoLogoId ) );
+                mCompanyModel.getThumb() ),  getView().findViewById( R.id.companyInfoLogoId ) );
 
         initTextView( R.id.companyInfoReviewCountId, AppConstants.ROBOTO_CONDENCED,
                 mCompanyModel.getCommentCount() );
         initTextView( R.id.companyInfoCityId, AppConstants.ROBOTO_CONDENCED,
-                GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() );
+                getBootstrapModel().getDeliveryCity() );
         initTextView( R.id.companyInfoDeliPriceId, AppConstants.ROBOTO_CONDENCED,
                 "от " + mCompanyModel.getDelivery().toString() + " р." );
 
@@ -132,7 +134,7 @@ public class CompanyInfoFragment extends BaseFragment implements View.OnClickLis
 
     private void addToFavorite( final View view ) {
         AppUtils.clickAnimation( view );
-        if ( GlobalManager.getInstance().getClient() == null ) {
+        if ( getClient() == null ) {
             mShowFavoriteHandler = new Handler( );
             mShowFavoriteJob = new Runnable(){
                 @Override
@@ -222,10 +224,10 @@ public class CompanyInfoFragment extends BaseFragment implements View.OnClickLis
         super.onResume();
         mFavoriteCompany = null;
         mCompanyId = Integer.valueOf( mCompanyModel.getId() );
-        mClientId = GlobalManager.getInstance().getClient() != null ? GlobalManager.getInstance().getClient().getId() : null;
-        if( GlobalManager.getInstance().isSignedIn() ){
+        mClientId = getClient() != null ? getClient().getId() : null;
+        if( isSignedIn() ){
             for ( FavoriteCompanyModel favoriteCompanyModel :
-                    GlobalManager.getInstance().getClient().getFavoriteCompanies() ){
+                    getClient().getFavoriteCompanies() ){
                 if(  favoriteCompanyModel.getCompanyId().equals( mCompanyId ) ){
                     mFavoriteCompany = favoriteCompanyModel;
                     break;
@@ -233,10 +235,10 @@ public class CompanyInfoFragment extends BaseFragment implements View.OnClickLis
             }
         }
         changeFavoriteIcon();
-        if ( GlobalManager.getInstance().isActionConfirmed() && mFavoriteCompany == null ){
+        if ( isActionConfirmed() && mFavoriteCompany == null ){
             postFavoriteAction();
         }
-        GlobalManager.getInstance().setActionConfirmed( false );
+        setActionConfirmed( false );
     }
 
 
@@ -281,13 +283,13 @@ public class CompanyInfoFragment extends BaseFragment implements View.OnClickLis
                     favoriteCompanyModel = new FavoriteCompanyModel();
                     favoriteCompanyModel.setCompanyId( mCompanyId  );
                     favoriteCompanyModel.setClientId( mClientId );
-                    favoriteCall = RestController.getInstance()
+                    favoriteCall = RestController
                             .getApi().addToFavorite( AppConstants.AUTH_BEARER
-                            + GlobalManager.getInstance().getUserToken(), favoriteCompanyModel );
+                            + getUserToken(), favoriteCompanyModel );
                 }  else {
-                    favoriteCall = RestController.getInstance()
+                    favoriteCall = RestController
                             .getApi().removeFromFavorite( AppConstants.AUTH_BEARER
-                                    + GlobalManager.getInstance().getUserToken(), mFavoriteCompany );
+                                    + getUserToken(), mFavoriteCompany );
                     favAction = getActivity().getResources().getString( R.string.removed_from_favorite );
                 }
 
@@ -295,16 +297,16 @@ public class CompanyInfoFragment extends BaseFragment implements View.OnClickLis
                 if ( responseFavorite.body() != null ) {
                     response = responseFavorite.body();
                     if ( AppConstants.HTTP_OK == response.getStatus() ){
-                        if ( GlobalManager.getInstance().getClient().getFavoriteCompanies() == null ){
-                            GlobalManager.getInstance().getClient()
+                        if ( getClient().getFavoriteCompanies() == null ){
+                            getClient()
                                     .setFavoriteCompanies( new LinkedList< FavoriteCompanyModel >() );
                         }
                         if ( getActivity().getResources().getString( R.string.added_to_favorite ).equals( favAction ) ){
                             mFavoriteCompany = favoriteCompanyModel;
                             mFavoriteCompany.setId( Integer.valueOf( response.getMessage() ) );
-                            GlobalManager.getInstance().addToFavorites( mFavoriteCompany );
+                            addToFavorites( mFavoriteCompany );
                         } else {
-                            GlobalManager.getInstance().removeFromFavorites( mFavoriteCompany.getCompanyId() );
+                            removeFromFavorites( mFavoriteCompany.getCompanyId() );
                             mFavoriteCompany = null;
                         }
                     } else {

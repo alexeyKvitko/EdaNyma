@@ -12,6 +12,8 @@ import com.edanyma.utils.ConvertUtils;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 public class BasketOrderManager {
 
 
@@ -111,7 +113,7 @@ public class BasketOrderManager {
         Intent intent = new Intent( AppConstants.BASKET_CONTENT_CHANGE );
         intent.putExtra( AppConstants.BASKET_PRICE_SHOW, customerBasket.size() > 0 );
         EdaNymaApp.getAppContext().sendBroadcast( intent );
-        if ( GlobalManager.getInstance().isSignedIn() ){
+        if ( isSignedIn() ){
             if ( customerBasket.size() > 0 ){
                 AppPreferences.setPreference( AppConstants.BASKET_PREF, new PrefernceBasket( customerBasket ).get() );
             } else {

@@ -30,6 +30,8 @@ import java.util.Date;
 
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.edanyma.manager.GlobalManager.*;
+
 public class PersonalAreaFragment extends BaseFragment implements View.OnClickListener {
 
 
@@ -57,23 +59,23 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
-        OurClientModel client = GlobalManager.getInstance().getClient();
+        OurClientModel client = getClient();
         initTextView( R.id.personalTitleId, AppConstants.SANDORA, Typeface.BOLD, null );
         String avatarName = getActivity().getResources().getString( R.string.prompt_name );
-        if (client != null ){
+        if ( client != null ) {
             avatarName = client.getNickName();
         }
         int avatarLayoutVisibility = View.GONE;
         LinearLayout avatarLayout = getView().findViewById( R.id.personalAreaLayoutAvatarId );
         TextView firstLatter = initTextView( R.id.personalAreaFirstLetterId, AppConstants.ROBOTO_BLACK );
-        if( AppUtils.nullOrEmpty( client.getPhoto() ) ){
+        if ( AppUtils.nullOrEmpty( client.getPhoto() ) ) {
             avatarLayoutVisibility = View.VISIBLE;
             int blueIndex = client.getNickName().hashCode() % 256;
-            int color = Color.argb( 180, 83,91, blueIndex );
+            int color = Color.argb( 180, 83, 91, blueIndex );
             avatarLayout.setBackgroundColor( color );
-            firstLatter.setText( client.getNickName().substring( 0,1 ).toUpperCase() );
+            firstLatter.setText( client.getNickName().substring( 0, 1 ).toUpperCase() );
         } else {
-            String url = client.getPhoto()+"?time="+( new Date() ).getTime();
+            String url = client.getPhoto() + "?time=" + ( new Date() ).getTime();
             GlideClient.downloadImage( getActivity(), url,
                     getView().findViewById( R.id.personalAreaImageAvatarId ) );
         }
@@ -87,12 +89,12 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
         initTextView( R.id.personalMenuBonusId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.personalMenuEditId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.signOutId, AppConstants.ROBOTO_CONDENCED );
-        initTextView( R.id.avatarAuthId , AppConstants.ROBOTO_CONDENCED,
-                                                GlobalManager.getClient().getEmail() != null
-                                                    ? GlobalManager.getClient().getEmail()
-                                                            : GlobalManager.getClient().getPhone() );
-        setThisOnClickListener( new int[]{ R.id.personalMenuEditId ,R.id.signOutId,
-                                            R.id.personalAreaBackBtnId,R.id. personalMenuPasswordId} );
+        initTextView( R.id.avatarAuthId, AppConstants.ROBOTO_CONDENCED,
+                getClient().getEmail() != null
+                        ? getClient().getEmail()
+                        : getClient().getPhone() );
+        setThisOnClickListener( new int[]{ R.id.personalMenuEditId, R.id.signOutId, R.id.personalAreaBackBtnId
+                , R.id.personalMenuPasswordId, R.id.personalMenuAddressId } );
     }
 
 
@@ -116,23 +118,23 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onResume() {
         super.onResume();
-        (( PersonActivity) getActivity()).getHeader().setVisibility( View.GONE );
+        ( ( PersonActivity ) getActivity() ).getHeader().setVisibility( View.GONE );
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        (( PersonActivity) getActivity()).getHeader().setVisibility( View.VISIBLE );
+        ( ( PersonActivity ) getActivity() ).getHeader().setVisibility( View.VISIBLE );
     }
 
     @Override
     public void onClick( View view ) {
-        if ( mListener == null ){
+        if ( mListener == null ) {
             return;
         }
         AppUtils.clickAnimation( view );
-        switch ( view.getId() ){
-            case R.id.signOutId :
+        switch ( view.getId() ) {
+            case R.id.signOutId:
                 mListener.onSignOutAction();
                 break;
             case R.id.personalMenuEditId:
@@ -140,6 +142,9 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
                 break;
             case R.id.personalMenuPasswordId:
                 mListener.onChangePasswordAction();
+                break;
+            case R.id.personalMenuAddressId:
+                mListener.onChangePrimaryAddress();
                 break;
             case R.id.personalAreaBackBtnId:
                 getActivity().onBackPressed();
@@ -149,7 +154,11 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
 
     public interface OnPersonalAreaActionListener {
         void onSignOutAction();
+
         void onEditProfileAction();
+
         void onChangePasswordAction();
+
+        void onChangePrimaryAddress();
     }
 }
