@@ -171,6 +171,38 @@
                     style="@style/personalMenuItem"
                     android:drawableLeft="@drawable/ic_cash_black_18dp"
                     android:text="@string/pay_type_menu" />
+                <LinearLayout
+                    android:id="@+id/selectPayTypeContainerId"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/border_bottom"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/clientPayTypeCashId"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/border_disable_r18"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_weight="1"
+                        android:textSize="14dp"
+                        android:text="Наличными"/>
+                    <TextView
+                        android:id="@+id/clientPayWalletId"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:background="@drawable/border_disable_r18"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="16dp"
+                        android:textSize="14dp"
+                        android:text="В приложении"/>
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/personalMenuBonusId"

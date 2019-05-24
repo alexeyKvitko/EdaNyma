@@ -25,7 +25,7 @@ import com.edanyma.model.BootstrapModel;
 import com.edanyma.model.ClientLocation;
 import com.edanyma.model.LoginUser;
 import com.edanyma.model.OurClientModel;
-import com.edanyma.model.PrefernceBasket;
+import com.edanyma.model.PreferenceBasket;
 import com.edanyma.receiver.SingleShotLocationProvider;
 import com.edanyma.rest.RestApi;
 import com.edanyma.rest.RestController;
@@ -185,20 +185,24 @@ public class SplashActivity extends Activity {
                         if ( GlobalManager.getInstance().getBootstrapModel().getDeliveryCity() == null ) {
                             mBootstrapSuccess = false;
                         }
+                        try{
                         Gson gson =  new Gson();
                         String jsonClient = AppPreferences.getPreference( AppConstants.OUR_CLIENT_PREF, null );
                         if(  jsonClient != null ){
                             OurClientModel client = gson.fromJson( jsonClient, OurClientModel.class );
                             GlobalManager.getInstance().setClient( client );
                         }
-                        String jsonBasket = AppPreferences.getPreference( AppConstants.BASKET_PREF, null );
-                        if ( jsonBasket != null ){
-                            PrefernceBasket prefernceBasket = gson.fromJson( jsonBasket, PrefernceBasket.class );
-                            BasketOrderManager.getInstance().setBasket( prefernceBasket );
-                            BasketOrderManager.getInstance().sendMessageToActivity();
 
+                            String jsonBasket = AppPreferences.getPreference( AppConstants.BASKET_PREF, null );
+                            if ( jsonBasket != null ){
+                                PreferenceBasket preferenceBasket = gson.fromJson( jsonBasket, PreferenceBasket.class );
+                                BasketOrderManager.getInstance().setBasket( preferenceBasket );
+                                BasketOrderManager.getInstance().sendMessageToActivity();
+                            }
+                        } catch ( Exception e ){
+                            Log.e( TAG, "Can not get data, from preferences:"+e.getMessage() );
+                            e.printStackTrace();
                         }
-
                     }
                 }
             } catch ( Exception e ) {

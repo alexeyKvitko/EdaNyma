@@ -6,7 +6,7 @@ import com.edanyma.AppConstants;
 import com.edanyma.AppPreferences;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.model.MenuEntityModel;
-import com.edanyma.model.PrefernceBasket;
+import com.edanyma.model.PreferenceBasket;
 import com.edanyma.utils.ConvertUtils;
 
 import java.util.LinkedList;
@@ -115,7 +115,7 @@ public class BasketOrderManager {
         EdaNymaApp.getAppContext().sendBroadcast( intent );
         if ( isSignedIn() ){
             if ( customerBasket.size() > 0 ){
-                AppPreferences.setPreference( AppConstants.BASKET_PREF, new PrefernceBasket( customerBasket ).get() );
+                AppPreferences.setPreference( AppConstants.BASKET_PREF, new PreferenceBasket( customerBasket ).get() );
             } else {
                 AppPreferences.removePreference( AppConstants.BASKET_PREF );
             }
@@ -130,9 +130,9 @@ public class BasketOrderManager {
         return customerBasket;
     }
 
-    public static void setBasket( PrefernceBasket prefernceBasket ){
+    public static void setBasket( PreferenceBasket preferenceBasket ){
         customerBasket = new LinkedList<>( );
-        for( MenuEntityModel menuEntityModel :prefernceBasket.get() ){
+        for( MenuEntityModel menuEntityModel : preferenceBasket.getSharedPreferenceBasket() ){
             customerBasket.add( menuEntityModel );
         }
     }

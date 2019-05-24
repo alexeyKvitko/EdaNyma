@@ -37,6 +37,10 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
 
     private OnPersonalAreaActionListener mListener;
 
+    private LinearLayout mPayTypeContainer;
+    private TextView mPayTypeText;
+    private boolean mPayTypeOpen;
+
     public PersonalAreaFragment() {
     }
 
@@ -60,6 +64,7 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         OurClientModel client = getClient();
+        mPayTypeOpen = false;
         initTextView( R.id.personalTitleId, AppConstants.SANDORA, Typeface.BOLD, null );
         String avatarName = getActivity().getResources().getString( R.string.prompt_name );
         if ( client != null ) {
@@ -85,7 +90,6 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
         initTextView( R.id.accountId, AppConstants.SANDORA, Typeface.BOLD, null );
         initTextView( R.id.personalMenuPasswordId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.personalMenuAddressId, AppConstants.ROBOTO_CONDENCED );
-        initTextView( R.id.personalMenuPayTypeId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.personalMenuBonusId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.personalMenuEditId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.signOutId, AppConstants.ROBOTO_CONDENCED );
@@ -93,10 +97,25 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
                 getClient().getEmail() != null
                         ? getClient().getEmail()
                         : getClient().getPhone() );
+
+        mPayTypeText = initTextView( R.id.personalMenuPayTypeId, AppConstants.ROBOTO_CONDENCED );
+        mPayTypeContainer = getView().findViewById( R.id.selectPayTypeContainerId );
+
         setThisOnClickListener( new int[]{ R.id.personalMenuEditId, R.id.signOutId, R.id.personalAreaBackBtnId
-                , R.id.personalMenuPasswordId, R.id.personalMenuAddressId } );
+                , R.id.personalMenuPasswordId, R.id.personalMenuAddressId, R.id.personalMenuPayTypeId } );
     }
 
+    private void showPayTypeContainer(){
+        if ( mPayTypeOpen ){
+            mPayTypeText.setBackground( getActivity().getResources().getDrawable( R.drawable.border_bottom ) );
+            mPayTypeContainer.setVisibility( View.GONE );
+        } else {
+            mPayTypeText.setBackground( null );
+            mPayTypeContainer.setVisibility( View.VISIBLE );
+        }
+        mPayTypeOpen = !mPayTypeOpen;
+
+    }
 
     @Override
     public void onAttach( Context context ) {
@@ -145,6 +164,9 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
                 break;
             case R.id.personalMenuAddressId:
                 mListener.onChangePrimaryAddress();
+                break;
+            case R.id.personalMenuPayTypeId:
+                showPayTypeContainer();
                 break;
             case R.id.personalAreaBackBtnId:
                 getActivity().onBackPressed();
