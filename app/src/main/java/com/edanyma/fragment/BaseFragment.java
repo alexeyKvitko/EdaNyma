@@ -88,7 +88,7 @@ public abstract class BaseFragment extends Fragment {
         return button;
     }
 
-    protected void setThisOnClickListener( int[] ids ){
+    protected void setThisOnClickListener( int ... ids ){
         for( int id : ids ){
             getView().findViewById( id ).setOnClickListener( ( View.OnClickListener ) this );
         }

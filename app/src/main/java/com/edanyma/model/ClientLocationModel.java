@@ -4,7 +4,7 @@ import com.edanyma.utils.AppUtils;
 
 import java.io.Serializable;
 
-public class ClientLocation implements Serializable {
+public class ClientLocationModel implements Serializable {
 
     private String uuid;
     private String city;

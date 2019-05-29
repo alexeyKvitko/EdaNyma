@@ -3,42 +3,47 @@ package com.edanyma.fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.AppPreferences;
-import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.activity.PersonActivity;
-import com.edanyma.manager.GlobalManager;
+import com.edanyma.model.ApiResponse;
 import com.edanyma.model.OurClientModel;
+import com.edanyma.model.PayType;
+import com.edanyma.owncomponent.ModalMessage;
+import com.edanyma.owncomponent.PayTypeSelector;
+import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.GlideClient;
-import com.google.gson.Gson;
 
 import java.util.Date;
 
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.Call;
+import retrofit2.Response;
 
-import static com.edanyma.manager.GlobalManager.*;
+import static com.edanyma.manager.GlobalManager.getClient;
+import static com.edanyma.manager.GlobalManager.getInstance;
 
 public class PersonalAreaFragment extends BaseFragment implements View.OnClickListener {
 
 
     private OnPersonalAreaActionListener mListener;
 
-    private LinearLayout mPayTypeContainer;
+    private PayTypeSelector mPayTypeContainer;
+
     private TextView mPayTypeText;
+    private TextView mPersonalEdit;
+
     private boolean mPayTypeOpen;
 
     public PersonalAreaFragment() {
@@ -91,31 +96,46 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
         initTextView( R.id.personalMenuPasswordId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.personalMenuAddressId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.personalMenuBonusId, AppConstants.ROBOTO_CONDENCED );
-        initTextView( R.id.personalMenuEditId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.signOutId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.avatarAuthId, AppConstants.ROBOTO_CONDENCED,
                 getClient().getEmail() != null
                         ? getClient().getEmail()
                         : getClient().getPhone() );
 
+        mPersonalEdit = initTextView( R.id.personalMenuEditId, AppConstants.ROBOTO_CONDENCED );
         mPayTypeText = initTextView( R.id.personalMenuPayTypeId, AppConstants.ROBOTO_CONDENCED );
+
         mPayTypeContainer = getView().findViewById( R.id.selectPayTypeContainerId );
 
-        setThisOnClickListener( new int[]{ R.id.personalMenuEditId, R.id.signOutId, R.id.personalAreaBackBtnId
-                , R.id.personalMenuPasswordId, R.id.personalMenuAddressId, R.id.personalMenuPayTypeId } );
+        setThisOnClickListener( R.id.personalMenuEditId, R.id.signOutId, R.id.personalAreaBackBtnId
+                , R.id.personalMenuPasswordId, R.id.personalMenuAddressId, R.id.personalMenuPayTypeId
+                , R.id.personalMenuBonusId );
+
+        if( getClient().getPayType() != null && PayType.WALLET.name().equals( getClient().getPayType() ) ){
+            mPayTypeContainer.setSelectedPayType( PayType.WALLET );
+        }
+
+        mPayTypeContainer.setPayTypeSelectListener( ( PayType payType ) -> {
+            getClient().setPayType( payType.name() );
+            mPayTypeContainer.enabledPayTypeButton( false );
+            new UpdateClientPayType().execute( getClient() );
+        } );
     }
 
     private void showPayTypeContainer(){
         if ( mPayTypeOpen ){
             mPayTypeText.setBackground( getActivity().getResources().getDrawable( R.drawable.border_bottom ) );
             mPayTypeContainer.setVisibility( View.GONE );
+            mPersonalEdit.setVisibility( View.VISIBLE );
         } else {
             mPayTypeText.setBackground( null );
             mPayTypeContainer.setVisibility( View.VISIBLE );
+            mPersonalEdit.setVisibility( View.GONE );
         }
         mPayTypeOpen = !mPayTypeOpen;
-
     }
+
+
 
     @Override
     public void onAttach( Context context ) {
@@ -165,12 +185,61 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
             case R.id.personalMenuAddressId:
                 mListener.onChangePrimaryAddress();
                 break;
+            case R.id.personalMenuBonusId:
+                mListener.onShowBonusesAction();
+                break;
             case R.id.personalMenuPayTypeId:
                 showPayTypeContainer();
                 break;
             case R.id.personalAreaBackBtnId:
                 getActivity().onBackPressed();
                 break;
+
+        }
+    }
+
+
+    class UpdateClientPayType extends AsyncTask< OurClientModel, Void, String > {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground( OurClientModel... ourClientModel) {
+            String result = null;
+            try {
+                Call< ApiResponse > updateCall = RestController.getInstance()
+                        .getApi().updateClientPayType( AppConstants.AUTH_BEARER
+                                + getInstance().getUserToken(), ourClientModel[ 0 ] );
+                Response< ApiResponse > responseUpdate = updateCall.execute();
+                if ( responseUpdate.body() != null ) {
+                    if ( responseUpdate.body().getStatus() == 200 ) {
+                        result = responseUpdate.body().getMessage();
+                        AppPreferences.setPreference( AppConstants.OUR_CLIENT_PREF, getClient() );
+                    } else {
+                        result = responseUpdate.body().getMessage();
+                    }
+                } else {
+                    result = getResources().getString( R.string.internal_error );
+                }
+            } catch ( Exception e ) {
+                result = getResources().getString( R.string.internal_error );
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute( String result ) {
+            super.onPostExecute( result );
+            mPayTypeContainer.enabledPayTypeButton( true );
+            if( result != null ){
+                ModalMessage.show( getActivity(), getString( R.string.title_notifications ),
+                        new String[]{ result }, 1000 );
+            }
+
         }
     }
 
@@ -182,5 +251,7 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
         void onChangePasswordAction();
 
         void onChangePrimaryAddress();
+
+        void onShowBonusesAction();
     }
 }

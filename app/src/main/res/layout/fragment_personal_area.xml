@@ -24,8 +24,8 @@
         <TextView
             android:id="@+id/personalTitleId"
             style="@style/splashText"
-            android:layout_marginTop="16dp"
             android:layout_marginLeft="56dp"
+            android:layout_marginTop="16dp"
             android:text="@string/personal_area_title" />
 
         <LinearLayout
@@ -71,8 +71,8 @@
                                 android:id="@+id/personalAreaFirstLetterId"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:gravity="top|center_horizontal"
                                 android:layout_marginTop="-32dp"
+                                android:gravity="top|center_horizontal"
                                 android:textColor="@color/white"
                                 android:textSize="138dp" />
                         </LinearLayout>
@@ -167,49 +167,22 @@
                     android:text="@string/address_menu" />
 
                 <TextView
-                    android:id="@+id/personalMenuPayTypeId"
-                    style="@style/personalMenuItem"
-                    android:drawableLeft="@drawable/ic_cash_black_18dp"
-                    android:text="@string/pay_type_menu" />
-                <LinearLayout
-                    android:id="@+id/selectPayTypeContainerId"
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/border_bottom"
-                    android:layout_marginTop="4dp"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/clientPayTypeCashId"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/border_disable_r18"
-                        android:gravity="center"
-                        android:layout_marginHorizontal="8dp"
-                        android:layout_marginBottom="16dp"
-                        android:layout_weight="1"
-                        android:textSize="14dp"
-                        android:text="Наличными"/>
-                    <TextView
-                        android:id="@+id/clientPayWalletId"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:background="@drawable/border_disable_r18"
-                        android:layout_marginHorizontal="12dp"
-                        android:layout_weight="1"
-                        android:layout_marginBottom="16dp"
-                        android:textSize="14dp"
-                        android:text="В приложении"/>
-                </LinearLayout>
-
-
-                <TextView
                     android:id="@+id/personalMenuBonusId"
                     style="@style/personalMenuItem"
                     android:drawableLeft="@drawable/ic_gift_outline_black_18dp"
                     android:text="@string/my_bonus_menu" />
 
+                <TextView
+                    android:id="@+id/personalMenuPayTypeId"
+                    style="@style/personalMenuItem"
+                    android:drawableLeft="@drawable/ic_cash_black_18dp"
+                    android:text="@string/pay_type_menu" />
+
+                <com.edanyma.owncomponent.PayTypeSelector
+                    android:id="@+id/selectPayTypeContainerId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
 
             </LinearLayout>
         </android.support.v7.widget.CardView>

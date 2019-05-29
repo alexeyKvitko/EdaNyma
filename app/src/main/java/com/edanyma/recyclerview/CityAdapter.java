@@ -21,6 +21,7 @@ import com.edanyma.utils.ConvertUtils;
 import com.edanyma.utils.GlideClient;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import static com.edanyma.manager.GlobalManager.*;
 
@@ -28,7 +29,7 @@ public class CityAdapter extends CommonBaseAdapter< TripleModel > {
 
     private static final String CLASS_TAG = "CityAdapter";
 
-    private static int GERB_SIZE = (int) ConvertUtils.convertDpToPixel( 76 );
+    private static int GERB_SIZE = ( int ) ConvertUtils.convertDpToPixel( 76 );
 
     public CommonBaseAdapter mAdapter;
 
@@ -50,21 +51,31 @@ public class CityAdapter extends CommonBaseAdapter< TripleModel > {
     public void onBindViewHolder( final BaseDataObjectHolder holder, final int position ) {
         TripleModelDataObjectHolder tripleHolder = ( TripleModelDataObjectHolder ) holder;
 
-        tripleHolder.container.setElevation( position );
-        setTextAndSelectedCard( tripleHolder.leftTitle, mItemList.get( position ).getLeftItem().getDisplayName(),
-                tripleHolder.leftCheckImage );
-        setTextAndSelectedCard( tripleHolder.centerTitle, mItemList.get( position ).getCenterItem().getDisplayName(),
-                tripleHolder.centerCheckImage );
-        setTextAndSelectedCard( tripleHolder.rightTitle, mItemList.get( position ).getRightItem().getDisplayName(),
-                tripleHolder.rightCheckImage );
+        String addUrl = "?time="+(new Date()).getTime();
+        if ( mItemList.get( position ).getLeftItem() != null ) {
+            setTextAndSelectedCard( tripleHolder.leftTitle, mItemList.get( position ).getLeftItem().getDisplayName(),
+                    tripleHolder.leftCheckImage );
+            GlideClient.downloadImage( EdaNymaApp.getAppContext(),
+                    mItemList.get( position ).getLeftItem().getUrl()+addUrl, tripleHolder.leftImage, GERB_SIZE, GERB_SIZE );
+        }
 
+        if ( mItemList.get( position ).getCenterItem() != null ) {
+            setTextAndSelectedCard( tripleHolder.centerTitle, mItemList.get( position ).getCenterItem().getDisplayName(),
+                    tripleHolder.centerCheckImage );
+            GlideClient.downloadImage( EdaNymaApp.getAppContext(),
+                    mItemList.get( position ).getCenterItem().getUrl()+addUrl, tripleHolder.centerImage, GERB_SIZE, GERB_SIZE );
+        }
 
-        GlideClient.downloadImage( EdaNymaApp.getAppContext(),
-                mItemList.get( position ).getLeftItem().getUrl(), tripleHolder.leftImage, GERB_SIZE, GERB_SIZE );
-        GlideClient.downloadImage( EdaNymaApp.getAppContext(),
-                mItemList.get( position ).getCenterItem().getUrl(), tripleHolder.centerImage, GERB_SIZE, GERB_SIZE );
-        GlideClient.downloadImage( EdaNymaApp.getAppContext(),
-                mItemList.get( position ).getRightItem().getUrl(), tripleHolder.rightImage, GERB_SIZE, GERB_SIZE );
+        if ( mItemList.get( position ).getRightItem() != null ) {
+            setTextAndSelectedCard( tripleHolder.rightTitle, mItemList.get( position ).getRightItem().getDisplayName(),
+                    tripleHolder.rightCheckImage );
+            GlideClient.downloadImage( EdaNymaApp.getAppContext(),
+                    mItemList.get( position ).getRightItem().getUrl()+addUrl, tripleHolder.rightImage, GERB_SIZE, GERB_SIZE );
+        }
+        tripleHolder.leftContainer.setVisibility( mItemList.get( position ).getLeftItem() != null ? View.VISIBLE : View.GONE );
+        tripleHolder.centerContainer.setVisibility( mItemList.get( position ).getCenterItem() != null ? View.VISIBLE : View.GONE );
+        tripleHolder.rightContainer.setVisibility( mItemList.get( position ).getRightItem() != null ? View.VISIBLE : View.GONE );
+
     }
 
     private void setTextAndSelectedCard( TextView textView, String title, ImageView checkImage ) {
@@ -96,12 +107,17 @@ public class CityAdapter extends CommonBaseAdapter< TripleModel > {
         public ImageView rightCheckImage;
         public TextView rightTitle;
 
-        public LinearLayout container;
+        public FrameLayout leftContainer;
+        public FrameLayout centerContainer;
+        public FrameLayout rightContainer;
 
         public TripleModelDataObjectHolder( View itemView ) {
             super( itemView );
 
-            container = itemView.findViewById( R.id.itemCityRecViewId );
+            leftContainer = itemView.findViewById( R.id.leftCityCardId );
+            centerContainer = itemView.findViewById( R.id.centerCityCardId );
+            rightContainer = itemView.findViewById( R.id.rightCityCardId );
+
             leftImage = itemView.findViewById( R.id.leftCityImgId );
             leftCheckImage = itemView.findViewById( R.id.leftCheckImgId );
             leftTitle = itemView.findViewById( R.id.leftCityTextId );
@@ -129,6 +145,9 @@ public class CityAdapter extends CommonBaseAdapter< TripleModel > {
 
         @Override
         public void onClick( final View view ) {
+            if ( !( view instanceof FrameLayout ) ){
+                return;
+            }
             FrameLayout layout = ( FrameLayout ) view;
             for ( int i = 0; i < layout.getChildCount(); i++ ) {
                 if ( layout.getChildAt( i ) instanceof ImageView &&

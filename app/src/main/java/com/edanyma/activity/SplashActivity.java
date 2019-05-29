@@ -22,7 +22,7 @@ import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.AuthToken;
 import com.edanyma.model.BootstrapModel;
-import com.edanyma.model.ClientLocation;
+import com.edanyma.model.ClientLocationModel;
 import com.edanyma.model.LoginUser;
 import com.edanyma.model.OurClientModel;
 import com.edanyma.model.PreferenceBasket;
@@ -246,10 +246,10 @@ public class SplashActivity extends Activity {
                 Response< Object > locationResponse = locationCall.execute();
                 if ( locationResponse.body() != null ) {
                     String source = locationResponse.body().toString();
-                    ClientLocation clientLocation =  GlobalManager.getInstance().getClientLocation();
-                    clientLocation.setCity( GeoUtils.getValueFromGeocoder( source, GeoUtils.CITY_KEY ) );
-                    clientLocation.setStreet( GeoUtils.getValueFromGeocoder( source, GeoUtils.STREET_KEY ) );
-                    clientLocation.setHouse( GeoUtils.getValueFromGeocoder( source, GeoUtils.HOUSE_KEY ) );
+                    ClientLocationModel clientLocationModel =  GlobalManager.getInstance().getClientLocation();
+                    clientLocationModel.setCity( GeoUtils.getValueFromGeocoder( source, GeoUtils.CITY_KEY ) );
+                    clientLocationModel.setStreet( GeoUtils.getValueFromGeocoder( source, GeoUtils.STREET_KEY ) );
+                    clientLocationModel.setHouse( GeoUtils.getValueFromGeocoder( source, GeoUtils.HOUSE_KEY ) );
                 }
             } catch ( Exception e ) {
                 Log.e( TAG, e.getMessage() );

@@ -3,8 +3,7 @@ package com.edanyma.rest;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.AuthToken;
 import com.edanyma.model.BootstrapModel;
-import com.edanyma.model.ClientAvatar;
-import com.edanyma.model.ClientLocation;
+import com.edanyma.model.ClientLocationModel;
 import com.edanyma.model.ClientOrderModel;
 import com.edanyma.model.CompanyInfoModel;
 import com.edanyma.model.Dishes;
@@ -12,11 +11,7 @@ import com.edanyma.model.FavoriteCompanyModel;
 import com.edanyma.model.LoginUser;
 import com.edanyma.model.OurClientModel;
 
-import org.json.JSONObject;
-
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -96,7 +91,11 @@ public interface RestApi {
 
     @POST(API_CLIENT+"updateClientAddress")
     Call< ApiResponse > updateClientAddress( @Header("Authorization") String authorization,
-                                          @Body ClientLocation clientLocation  );
+                                          @Body ClientLocationModel clientLocationModel );
+
+    @POST(API_CLIENT+"updateClientPayType")
+    Call< ApiResponse > updateClientPayType( @Header("Authorization") String authorization,
+                                             @Body OurClientModel ourClientModel  );
 
     @POST(API_CLIENT+"updateClientPassword")
     Call< ApiResponse > updateClientPassword( @Header("Authorization") String authorization,

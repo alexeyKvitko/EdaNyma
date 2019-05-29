@@ -47,8 +47,8 @@
         <ImageView
             android:id="@+id/centerCityImgId"
             android:layout_gravity="center_horizontal|top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
             android:elevation="7dp"/>
         <ImageView
             android:id="@+id/centerCheckImgId"
@@ -80,8 +80,8 @@
         <ImageView
             android:id="@+id/rightCityImgId"
             android:layout_gravity="center_horizontal|top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
             android:elevation="7dp"/>
         <ImageView
             android:id="@+id/rightCheckImgId"

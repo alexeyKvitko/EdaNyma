@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.R;
-import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.BootstrapModel;
 import com.edanyma.model.DictionaryModel;
@@ -31,7 +30,7 @@ import static com.edanyma.manager.GlobalManager.*;
 
 public class CityActivity extends BaseActivity implements CityAdapter.CardClickListener {
 
-    private static final String CLASS_TAG = "CityActivity";
+    private static final String TAG = "CityActivity";
 
 
     private RecyclerView mCityRecView;
@@ -78,7 +77,7 @@ public class CityActivity extends BaseActivity implements CityAdapter.CardClickL
                         for( int i = 0; i < recyclerView.getLayoutManager().getChildCount(); i++ ){
                             if ( recyclerView.getLayoutManager().getChildAt( i ).getElevation() > 3 ){
                                 mCityAdapter.notifyDataSetChanged();
-                                Log.i( CLASS_TAG, "Reload Adapter: "+recyclerView.getLayoutManager().getChildAt( i ).getElevation() );
+                                Log.i( TAG, "Reload Adapter: "+recyclerView.getLayoutManager().getChildAt( i ).getElevation() );
                             }
                             if( recyclerView.getLayoutManager().getChildAt( i ).getElevation() == 5 ){
                                 mDoOnes = false;
@@ -104,11 +103,16 @@ public class CityActivity extends BaseActivity implements CityAdapter.CardClickL
             mCityAdapter.setOnItemClickListener( this );
         }
         int idx = 0;
-        for ( int i = 0; i < cities.size(); i += 3 ) {
+        int citiesSize = cities.size();
+        for ( int i = 0; i < citiesSize; i += 3 ) {
             TripleModel tripleModel = new TripleModel();
             tripleModel.setLeftItem( cities.get( i ) );
-            tripleModel.setCenterItem( cities.get( i + 1 ) );
-            tripleModel.setRightItem( cities.get( i + 2 ) );
+            if ( i+1 < citiesSize ){
+                tripleModel.setCenterItem( cities.get( i + 1 ) );
+            }
+            if ( i+2 < citiesSize ){
+                tripleModel.setRightItem( cities.get( i + 2 ) );
+            }
             mCityAdapter.addItem( tripleModel, idx );
             idx++;
         }
@@ -176,7 +180,7 @@ public class CityActivity extends BaseActivity implements CityAdapter.CardClickL
                     }
                 }
             } catch ( Exception e ) {
-                Log.i( CLASS_TAG, e.getMessage() );
+                Log.i( TAG, e.getMessage() );
                 e.printStackTrace();
             }
             return null;

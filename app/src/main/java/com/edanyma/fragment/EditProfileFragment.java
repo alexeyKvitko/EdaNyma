@@ -88,8 +88,8 @@ public class EditProfileFragment extends BaseFragment implements View.OnClickLis
 
         initTextView( R.id.editProfileTitleId, AppConstants.B52 );
         initButton( R.id.updateProfileBtnId, AppConstants.ROBOTO_CONDENCED );
-        setThisOnClickListener( new int[]{R.id.updateProfileBtnId, R.id.editProfileBackBtnId,
-                R.id.signOutProfileBtnId, R.id.removeProfileBigBtnId, R.id.removeProfileBtnId, R.id.avatarCardViewId } );
+        setThisOnClickListener( R.id.updateProfileBtnId, R.id.editProfileBackBtnId,
+                R.id.signOutProfileBtnId, R.id.removeProfileBigBtnId, R.id.removeProfileBtnId, R.id.avatarCardViewId );
     }
 
     private void updateProfile(){

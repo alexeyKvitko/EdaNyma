@@ -16,11 +16,12 @@ public class OurClientModel {
     private String password;
     private String confirm;
     private String uuid;
-    private Integer bonus;
     private String photo;
     private String additionalMessage;
-    private ClientLocation clientLocation;
+    private String payType;
+    private ClientLocationModel clientLocationModel;
     private List<FavoriteCompanyModel> favoriteCompanies;
+    private List<BonusModel> bonusModels;
 
     public Integer getId() {
         return id;
@@ -86,14 +87,6 @@ public class OurClientModel {
         this.uuid = uuid;
     }
 
-    public Integer getBonus() {
-        return bonus;
-    }
-
-    public void setBonus( Integer bonus ) {
-        this.bonus = bonus;
-    }
-
     public String getPhoto() {
         return photo;
     }
@@ -118,12 +111,28 @@ public class OurClientModel {
         this.favoriteCompanies = favoriteCompanies;
     }
 
-    public ClientLocation getClientLocation() {
-        return clientLocation;
+    public ClientLocationModel getClientLocationModel() {
+        return clientLocationModel;
     }
 
-    public void setClientLocation( ClientLocation clientLocation ) {
-        this.clientLocation = clientLocation;
+    public void setClientLocationModel( ClientLocationModel clientLocationModel ) {
+        this.clientLocationModel = clientLocationModel;
+    }
+
+    public String getPayType() {
+        return payType;
+    }
+
+    public void setPayType( String payType ) {
+        this.payType = payType;
+    }
+
+    public List< BonusModel > getBonusModels() {
+        return bonusModels;
+    }
+
+    public void setBonusModels( List< BonusModel > bonusModels ) {
+        this.bonusModels = bonusModels;
     }
 
     @Override public boolean equals( Object o) {

@@ -4,7 +4,7 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.model.BootstrapModel;
-import com.edanyma.model.ClientLocation;
+import com.edanyma.model.ClientLocationModel;
 import com.edanyma.model.CompanyModel;
 import com.edanyma.model.FavoriteCompanyModel;
 import com.edanyma.model.FilterDishModel;
@@ -29,7 +29,7 @@ public class GlobalManager {
     private static int dishEntityPosition;
     private static boolean actionConfirmed;
     private static boolean animationInProgess;
-    private static ClientLocation mClientLocation;
+    private static ClientLocationModel mClientLocationModel;
 
     private GlobalManager() {
     }
@@ -234,15 +234,15 @@ public class GlobalManager {
         return companyModel;
     }
 
-    public static void setClientLocation( ClientLocation mClientLocation ) {
-        GlobalManager.mClientLocation = mClientLocation;
+    public static void setClientLocation( ClientLocationModel mClientLocationModel ) {
+        GlobalManager.mClientLocationModel = mClientLocationModel;
     }
 
-    public static ClientLocation getClientLocation() {
-        if( mClientLocation == null ){
-            mClientLocation = new ClientLocation();
+    public static ClientLocationModel getClientLocation() {
+        if( mClientLocationModel == null ){
+            mClientLocationModel = new ClientLocationModel();
         }
-        return mClientLocation;
+        return mClientLocationModel;
     }
 
 }

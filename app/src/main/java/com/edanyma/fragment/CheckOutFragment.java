@@ -19,17 +19,18 @@ import android.widget.TextView;
 import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.manager.BasketOrderManager;
-import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.BasketModel;
-import com.edanyma.model.ClientLocation;
+import com.edanyma.model.ClientLocationModel;
 import com.edanyma.model.ClientOrderModel;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.model.OrderStatus;
+import com.edanyma.model.OurClientModel;
 import com.edanyma.model.PayType;
 import com.edanyma.owncomponent.CheckOutEntity;
 import com.edanyma.owncomponent.CompanyTotalView;
 import com.edanyma.owncomponent.ModalMessage;
+import com.edanyma.owncomponent.PayTypeSelector;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
@@ -67,15 +68,20 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
     private TextView mFinishOrderAddress;
     private TextView mFinishOrderDay;
     private TextView mFinishOrderTime;
+    private TextView mContactInfo;
+
+    private PayTypeSelector mPayTypeSelector;
 
     private Button mCheckOutBtn;
 
     private ClientOrderModel mClientOrderModel;
 
+    private PayType mSelectedPayType;
+
+    private boolean mIsClientInfoSet;
 
     private Map< String, BasketModel > mFilteredBasket;
     private Integer mTotalAmount;
-
 
     public CheckOutFragment() {
     }
@@ -95,11 +101,13 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         super.onActivityCreated( savedInstanceState );
         initConfirmFragment();
         mThis = this;
+        mSelectedPayType = PayType.CASH;
         mResendLabel.setOnClickListener( this );
         mConfirmCodeBtn.setOnClickListener( this );
         initTextView( R.id.checkOutLabelId, AppConstants.B52 );
         initTextView( R.id.contactInfoTitleId, AppConstants.B52 );
         initTextView( R.id.deliveryAddressTitleId, AppConstants.B52 );
+        initTextView( R.id.checkOutPayTypeId, AppConstants.B52 );
         initTextView( R.id.finishTitleRowTwoId, AppConstants.B52 );
         initTextView( R.id.finishTitleRowOneId, AppConstants.B52 );
         initTextView( R.id.finishTitleRowThreeId, AppConstants.OFFICE );
@@ -123,21 +131,30 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         mCheckOutAdditionalAddress = initTextView( R.id.checkOutAdditionalAddressId, AppConstants.ROBOTO_CONDENCED,
                 getActivity().getResources().getString( R.string.not_available_yet ) );
 
+        mContactInfo = initTextView( R.id.contactInfoBtnId );
+        mIsClientInfoSet = false;
+        if ( !isSignedIn() ) {
+            mContactInfo.setVisibility( View.GONE );
+        }
 
-        getView().findViewById( R.id.checkOutBackBtnId ).setOnClickListener( this );
-        getView().findViewById( R.id.checkOutMapId ).setOnClickListener( this );
+        mPayTypeSelector = getView().findViewById( R.id.checkOutPayTypeContainerId );
+        mPayTypeSelector.hideBottomBorder();
+        mPayTypeSelector.setPayTypeSelectListener( ( PayType payType ) -> {
+            mSelectedPayType = payType;
+        } );
+
         mCheckOutBtn = initButton( R.id.checkOutSuccessBtnId, AppConstants.ROBOTO_CONDENCED );
         mCheckOutBtn.setOnClickListener( this );
         getView().findViewById( R.id.confirmCodeContainerId ).setOnClickListener( null );
         mDishContainer = getView().findViewById( R.id.checkOutDishContainerId );
+        setThisOnClickListener( R.id.checkOutBackBtnId, R.id.checkOutMapId, R.id.contactInfoBtnId );
         initFinishOrderContainer();
-        setClientInfo();
-        setDeliveryAddress();
+        setDeliveryAddress( getClientLocation() );
         fillDishContainer();
     }
 
 
-    private void initFinishOrderContainer(){
+    private void initFinishOrderContainer() {
         initTextView( R.id.finishOrderNuberDescId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.foDeliveryAddressLabelId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.foDeliveryDateLabelId, AppConstants.ROBOTO_CONDENCED );
@@ -145,7 +162,7 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         initTextView( R.id.foDeliveryStatusLabelId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.foDeliveryStatusValueId, AppConstants.B52 );
         initButton( R.id.finishOrderContinueBtnId, AppConstants.ROBOTO_CONDENCED )
-                                                                        .setOnClickListener( this );
+                .setOnClickListener( this );
 
         mFinishOrderNumber = initTextView( R.id.finishOrderNumberId, AppConstants.OFFICE );
         mFinishOrderAddress = initTextView( R.id.foDeliveryAddressValueId, AppConstants.B52 );
@@ -153,37 +170,46 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         mFinishOrderTime = initTextView( R.id.foDeliveryTimeValueId, AppConstants.B52 );
     }
 
-    private void setClientInfo(){
-        if ( isSignedIn() ){
-            mCheckOutPerson.setText( getClient().getNickName() );
-            mCheckOutPhone.setText( getClient().getPhone() );
+    private void setClientInfo() {
+        OurClientModel client = mIsClientInfoSet ? new OurClientModel() : getClient();
+        ClientLocationModel location = mIsClientInfoSet ? getClientLocation() : getClient().getClientLocationModel();
+        int iconId = mIsClientInfoSet ? R.drawable.ic_account_off_outline_grey600_24dp
+                                        : R.drawable.ic_account_outline_blue_24dp;
+        mContactInfo.setCompoundDrawablesWithIntrinsicBounds( 0, 0, iconId, 0 );
+        mCheckOutPerson.setText( client.getNickName() );
+        mCheckOutPhone.setText( client.getPhone() );
+        if ( PayType.WALLET.name().equals( client.getPayType() ) ){
+            mPayTypeSelector.setSelectedPayType( PayType.WALLET );
+        } else {
+            mPayTypeSelector.setSelectedPayType( PayType.CASH );
         }
+        setDeliveryAddress( location );
+        mIsClientInfoSet = !mIsClientInfoSet;
     }
 
-    private void setDeliveryAddress() {
-        ClientLocation location = getClientLocation();
-        if ( !AppUtils.nullOrEmpty( location.getStreet() ) ){
+    private void setDeliveryAddress( ClientLocationModel location ) {
+        if ( !AppUtils.nullOrEmpty( location.getStreet() ) ) {
             String address = location.getStreet();
-            if ( !AppUtils.nullOrEmpty( location.getHouse() ) ){
-                address = address+", " + location.getHouse();
+            if ( !AppUtils.nullOrEmpty( location.getHouse() ) ) {
+                address = address + ", " + location.getHouse();
             }
             mCheckOutAddress.setText( address );
         }
         StringBuilder additionalAddress = new StringBuilder();
         if ( !AppUtils.nullOrEmpty( location.getEntrance() ) ) {
-            additionalAddress.append( getActivity().getResources().getString( R.string.entrace_label )+": " )
+            additionalAddress.append( getActivity().getResources().getString( R.string.entrace_label ) + ", " )
                     .append( location.getEntrance() ).append( ", " );
         }
         if ( !AppUtils.nullOrEmpty( location.getIntercom() ) ) {
-            additionalAddress.append( getActivity().getResources().getString( R.string.intercom_label )+": " )
+            additionalAddress.append( getActivity().getResources().getString( R.string.intercom_label ) + ", " )
                     .append( location.getIntercom() ).append( ", " );
         }
         if ( !AppUtils.nullOrEmpty( location.getFloor() ) ) {
-            additionalAddress.append( getActivity().getResources().getString( R.string.floor_label )+": " )
+            additionalAddress.append( getActivity().getResources().getString( R.string.floor_label ) + ", " )
                     .append( location.getFloor() ).append( ", " );
         }
-        if( additionalAddress.length() > 0 ){
-            additionalAddress.delete( additionalAddress.length()-2, additionalAddress.length() );
+        if ( additionalAddress.length() > 0 ) {
+            additionalAddress.delete( additionalAddress.length() - 2, additionalAddress.length() );
             mCheckOutAdditionalAddress.setText( additionalAddress.toString() );
             mCheckOutAdditionalAddress.setVisibility( View.VISIBLE );
         } else {
@@ -285,26 +311,26 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         }
     }
 
-    private void finishCheckOut(){
+    private void finishCheckOut() {
         String person = mCheckOutPerson.getText().toString();
         String phone = mCheckOutPhone.getText().toString();
         String comment = mCheckOutСomment.getText().toString();
         String errorMsg = null;
-        TextView personError = initTextView( R.id.checkOutPersonErrorId, AppConstants.ROBOTO_CONDENCED  );
-        TextView phoneError = initTextView( R.id.checkOutPhoneErrorId, AppConstants.ROBOTO_CONDENCED  );
-        if ( person.length() == 0 ){
+        TextView personError = initTextView( R.id.checkOutPersonErrorId, AppConstants.ROBOTO_CONDENCED );
+        TextView phoneError = initTextView( R.id.checkOutPhoneErrorId, AppConstants.ROBOTO_CONDENCED );
+        if ( person.length() == 0 ) {
             errorMsg = getResources().getString( R.string.error_required_field );
             personError.setText( errorMsg );
             personError.setVisibility( View.VISIBLE );
         }
-        if ( errorMsg == null && phone.length() == 0 ){
+        if ( errorMsg == null && phone.length() == 0 ) {
             errorMsg = getResources().getString( R.string.error_required_field );
         }
         if ( errorMsg == null && !AppUtils.validatePhone( phone ) ) {
             errorMsg = getResources().getString( R.string.error_wrong_phone );
         }
-        if ( errorMsg != null  ){
-            if ( personError.getVisibility() == View.GONE ){
+        if ( errorMsg != null ) {
+            if ( personError.getVisibility() == View.GONE ) {
                 phoneError.setText( errorMsg );
                 phoneError.setVisibility( View.VISIBLE );
             }
@@ -317,41 +343,41 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
             }, 3000 );
             mCheckOutBtn.setOnClickListener( this );
         }
-        if( errorMsg == null ){
+        if ( errorMsg == null ) {
             mClientOrderModel = new ClientOrderModel();
             mClientOrderModel.setNickName( person );
-            if ( isSignedIn() ){
+            if ( isSignedIn() ) {
                 mClientOrderModel.setEmail( getClient().getEmail() );
             }
-            ClientLocation clientLocation = getClientLocation();
+            ClientLocationModel clientLocationModel = getClientLocation();
             mClientOrderModel.setPhone( phone );
-            mClientOrderModel.setOrderDate( AppUtils.formatDate( AppConstants.ORDER_DATE_FORMAT, new Date() ));
-            mClientOrderModel.setOrderTime( AppUtils.formatDate( AppConstants.ORDER_TIME_FORMAT, new Date() ));
+            mClientOrderModel.setOrderDate( AppUtils.formatDate( AppConstants.ORDER_DATE_FORMAT, new Date() ) );
+            mClientOrderModel.setOrderTime( AppUtils.formatDate( AppConstants.ORDER_TIME_FORMAT, new Date() ) );
             mClientOrderModel.setOrderPrice( mTotalAmount );
-            mClientOrderModel.setOrderStatus(OrderStatus.IN_PROGRESS.name() );
-            mClientOrderModel.setCity( clientLocation.getCity() );
-            mClientOrderModel.setStreet( clientLocation.getStreet() );
-            mClientOrderModel.setBuilding( clientLocation.getHouse() );
+            mClientOrderModel.setOrderStatus( OrderStatus.IN_PROGRESS.name() );
+            mClientOrderModel.setCity( clientLocationModel.getCity() );
+            mClientOrderModel.setStreet( clientLocationModel.getStreet() );
+            mClientOrderModel.setBuilding( clientLocationModel.getHouse() );
             //TODO if need
             mClientOrderModel.setFlat( null );
-            mClientOrderModel.setFloor( clientLocation.getFloor() );
-            mClientOrderModel.setEntry( clientLocation.getEntrance() );
-            mClientOrderModel.setIntercom( clientLocation.getIntercom() );
+            mClientOrderModel.setFloor( clientLocationModel.getFloor() );
+            mClientOrderModel.setEntry( clientLocationModel.getEntrance() );
+            mClientOrderModel.setIntercom( clientLocationModel.getIntercom() );
             //TODO if need
-            mClientOrderModel.setNeedChange( null);
+            mClientOrderModel.setNeedChange( null );
             mClientOrderModel.setComment( comment );
 
-            mClientOrderModel.setPayType(PayType.CASH.name() );
-            for( BasketModel basketModel : mFilteredBasket.values() ){
-                mClientOrderModel.getOrders().add(  basketModel );
+            mClientOrderModel.setPayType( mSelectedPayType.name() );
+            for ( BasketModel basketModel : mFilteredBasket.values() ) {
+                mClientOrderModel.getOrders().add( basketModel );
             }
             new ValidateCheckoutCode().execute( phone );
         }
     }
 
-    private void confirmCheckOutSend(){
-        if ( checkEnteredCode() ){
-            new CreateClientOrder().execute(mClientOrderModel );
+    private void confirmCheckOutSend() {
+        if ( checkEnteredCode() ) {
+            new CreateClientOrder().execute( mClientOrderModel );
         }
     }
 
@@ -373,13 +399,16 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
                 finishCheckOut();
                 break;
             case R.id.checkOutMapId:
-                if( mListener !=null ){
+                if ( mListener != null ) {
                     AppUtils.clickAnimation( view );
                     mListener.onShowMapClick();
                 }
                 break;
             case R.id.resendCodeLabelId:
                 clickResendCode( view );
+                break;
+            case R.id.contactInfoBtnId:
+                setClientInfo();
                 break;
             case R.id.confirmCodeButtonId:
                 AppUtils.hideKeyboardFrom( getActivity(), view );
@@ -390,7 +419,6 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
                 break;
         }
     }
-
 
 
     @Override
@@ -408,6 +436,7 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
     public interface OnCheckOutFragmentListener {
         // TODO: Update argument type and name
         void onCheckOut();
+
         void onShowMapClick();
     }
 
@@ -425,7 +454,7 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
             try {
                 Call< ApiResponse > validateCodeCall = RestController
                         .getApi().sendSmsCode( AppConstants.AUTH_BEARER
-                                + getUserToken(), phone[0] );
+                                + getUserToken(), phone[ 0 ] );
                 Response< ApiResponse > responseCodeValidate = validateCodeCall.execute();
                 if ( responseCodeValidate.body() != null ) {
                     if ( responseCodeValidate.body().getStatus() == 200 ) {
@@ -448,8 +477,7 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
             super.onPostExecute( result );
             mCheckOutBtn.setOnClickListener( mThis );
             if ( result != null ) {
-//                AppUtils.transitionAnimation( getView().findViewById( R.id.pleaseWaitContainerId ),
-//                        getView().findViewById( R.id.signUpContailnerId ) );
+
                 final TextView errorView = initTextView( R.id.checkOutCommentErrorId, AppConstants.ROBOTO_CONDENCED );
                 errorView.setText( result );
                 errorView.setVisibility( View.VISIBLE );
@@ -478,10 +506,10 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         protected String doInBackground( ClientOrderModel... clientOrder ) {
             String result = null;
             try {
-                Call< ApiResponse> createOrderCall = RestController
+                Call< ApiResponse > createOrderCall = RestController
                         .getApi().createClientOrder( AppConstants.AUTH_BEARER
                                 + getUserToken(), clientOrder[ 0 ] );
-                Response< ApiResponse> responseCreateOrder = createOrderCall.execute();
+                Response< ApiResponse > responseCreateOrder = createOrderCall.execute();
                 if ( responseCreateOrder.body() != null ) {
                     if ( responseCreateOrder.body().getStatus() == 200 ) {
                         Double orderId = ( Double ) responseCreateOrder.body().getResult();
@@ -502,20 +530,20 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         @Override
         protected void onPostExecute( String result ) {
             super.onPostExecute( result );
-            if ( getResources().getString( R.string.internal_error ).equals( result ) ){
+            if ( getResources().getString( R.string.internal_error ).equals( result ) ) {
                 AppUtils.transitionAnimation( getView().findViewById( R.id.confirmCodeContainerId ),
                         getView().findViewById( R.id.checkOutScrollId ) );
-                ModalMessage.show( getActivity(), "Сообщение", new String[] {result} );
+                ModalMessage.show( getActivity(), "Сообщение", new String[]{ result } );
             } else {
-                StringBuilder sb = new StringBuilder( );
-                if ( mClientOrderModel.getCity() != null ){
+                StringBuilder sb = new StringBuilder();
+                if ( mClientOrderModel.getCity() != null ) {
                     sb.append( mClientOrderModel.getCity() );
                 }
-                if ( mClientOrderModel.getStreet() != null ){
-                    sb.append(", ").append( mClientOrderModel.getStreet() );
+                if ( mClientOrderModel.getStreet() != null ) {
+                    sb.append( ", " ).append( mClientOrderModel.getStreet() );
                 }
-                if ( mClientOrderModel.getBuilding() != null ){
-                    sb.append(", ").append( mClientOrderModel.getBuilding() );
+                if ( mClientOrderModel.getBuilding() != null ) {
+                    sb.append( ", " ).append( mClientOrderModel.getBuilding() );
                 }
                 mFinishOrderNumber.setText( result );
                 mFinishOrderAddress.setText( sb.toString() );

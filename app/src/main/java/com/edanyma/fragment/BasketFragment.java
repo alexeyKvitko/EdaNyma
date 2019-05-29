@@ -187,7 +187,11 @@ public class BasketFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Override
-    public void onItemClick( int position, View v ) {
+    public void onItemClick( int position, View view ) {
+        if ( R.id.basketTrashId != view.getId() ){
+            return;
+        }
+        AppUtils.clickAnimation( view );
         removeEntityFromBasket( mBasket.get( position ) );
         mBasketAdapter.deleteItem( position );
         mBasketAdapter.notifyDataSetChanged();

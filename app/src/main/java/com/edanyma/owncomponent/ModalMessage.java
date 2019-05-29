@@ -27,18 +27,20 @@ public class ModalMessage extends RelativeLayout {
 
     private static final int MESSAGE_HEIGHT = ( int ) ConvertUtils.convertDpToPixel( 150 );
 
+    private OnModalMessageHideListener mListener;
+
     private RelativeLayout mModalMessage;
     private FrameLayout mContainer;
     private TextView mMessageTitle;
     private Activity mActivity;
     private int mTimeOut;
 
-    public static void show( Activity activity, String title, String[] body){
-        new ModalMessage( activity, title, body, 2000 );
+    public static ModalMessage show( Activity activity, String title, String[] body){
+        return new ModalMessage( activity, title, body, 2000 );
     }
 
-    public static void show( Activity activity, String title, String[] body, int timeOut){
-        new ModalMessage( activity, title, body, timeOut );
+    public static ModalMessage show( Activity activity, String title, String[] body, int timeOut){
+        return new ModalMessage( activity, title, body, timeOut );
     }
 
 
@@ -93,6 +95,9 @@ public class ModalMessage extends RelativeLayout {
                             }
                             mModalMessage.setVisibility( View.GONE );
                             mModalMessage = null;
+                            if( mListener != null ){
+                                mListener.onMessageHide();
+                            }
                         }
                     }
                     @Override
@@ -117,5 +122,11 @@ public class ModalMessage extends RelativeLayout {
         valAnimator.start();
     }
 
+    public void setOnMessageHideListener(OnModalMessageHideListener listener){
+        mListener = listener;
+    }
 
+    public interface OnModalMessageHideListener{
+        void onMessageHide();
+    }
 }

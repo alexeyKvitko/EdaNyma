@@ -5,7 +5,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestController {
 
-    private static final String REST_BASE_URL = "http://194.58.122.145:8080/yummyeat/";
+    private static final String BASE_URL = "http://194.58.122.145:8080/";
+    private static final String REST_BASE_URL = BASE_URL + "yummyeat/";
+    public static final String COMPANIES_LOGO_URL = BASE_URL + "static/images/logos/";
 
     private static final RestController restController = new RestController();
 

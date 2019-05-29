@@ -19,6 +19,7 @@ import com.edanyma.R;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.OurClientModel;
+import com.edanyma.model.PayType;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 
@@ -249,22 +250,20 @@ public class SignUpFragment extends ConfirmFragment implements View.OnClickListe
             return;
         }
         mClientModel.setPassword( password );
+        mClientModel.setPayType( PayType.CASH.name() );
         if ( AppConstants.FORGOT_PASSWORD.equals( mIsNewOrForgot ) ){
             mClientModel.setAdditionalMessage( AppConstants.FORGOT_PASSWORD );
         }
         AppUtils.transitionAnimation( getView().findViewById( R.id.signUpContailnerId ),
                 getView().findViewById( R.id.pleaseWaitContainerId ) );
-        new SignUpFragment.ValidateClientSignUp().execute( mClientModel );
+        new ValidateClientSignUp().execute( mClientModel );
 
     }
 
     private void showPasswordError() {
         mPasswordErrorView.setVisibility( View.VISIBLE );
-        ( new Handler() ).postDelayed( new Runnable() {
-            @Override
-            public void run() {
+        ( new Handler() ).postDelayed( () -> {
                 mPasswordErrorView.setVisibility( View.GONE );
-            }
         }, 3000 );
     }
 
@@ -272,14 +271,10 @@ public class SignUpFragment extends ConfirmFragment implements View.OnClickListe
         if ( mListener != null ) {
             AppUtils.transitionAnimation( getView().findViewById( R.id.confirmCodeContainerId ),
                     getView().findViewById( R.id.successContainerId ) );
-            new Handler().postDelayed( new Runnable() {
-                @Override
-                public void run() {
+            new Handler().postDelayed( () -> {
                     mListener.onSignUpAction();
                     AppPreferences.setPreference( AppConstants.OUR_CLIENT_PREF, mClientModel );
-                }
             }, 3000 );
-
         }
     }
 

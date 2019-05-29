@@ -175,6 +175,10 @@ public abstract class AppUtils {
         return value == null || ( value != null && value.trim().length() == 0 );
     }
 
+    public static boolean nullOrEmpty( List collection ) {
+        return collection == null || ( collection != null && collection.size() == 0 );
+    }
+
     public static String getSnapshotPath(){
         return Environment.getExternalStorageDirectory()+File.separator+AppConstants.PICTURE_DIR
                     +File.separator+AppConstants.FILENAME_DISH + AppConstants.EXTENSION_JPG;

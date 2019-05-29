@@ -63,7 +63,7 @@
     <string name="your_profile">Профиль</string>
     <string name="change_pswd_menu">Сменить пароль</string>
     <string name="address_menu">Адрес доставки</string>
-    <string name="pay_type_menu">Тип оплаты</string>
+    <string name="pay_type_menu">Способ оплаты</string>
     <string name="my_bonus_menu">Мои бонусы</string>
     <string name="resend_password">Отправить Пароль</string>
     <string name="thank_label">Спасибо</string>
@@ -115,7 +115,8 @@
     <string name="finish_thanks">Спасибо за Заказ !</string>
     <string name="splash_desc_one">Легко! Удобно! Быстро!</string>
     <string name="splash_desc_two">Оформите Ваш заказ всего в несколько кликов!</string>
-    <string name="splash_desc_three">У Нас всегда есть, что Вам поесть!</string>
+    <string name="splash_desc_three">ЕдаНяма, доставка из лучших ресторанов !</string>
+    <string name="no_bonus">У Вас пока нет бонусов!</string>
     <string name="empty_basket_msg">Ваша корзина пуста</string>
     <string name="check_out">Оформить Заказ</string>
     <string name="check_out_title">Ваш Заказ</string>
@@ -144,5 +145,8 @@
     <string name="change_passord_title">Изменить Пароль</string>
     <string name="accept_message">Принять</string>
     <string name="decline_message">Отменить</string>
+    <string name="cash_label">Наличными</string>
+    <string name="online_label">Онлайн</string>
+    <string name="my_bonuses">Мои Бонусы</string>
 
 </resources>

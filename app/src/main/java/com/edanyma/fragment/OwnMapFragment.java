@@ -18,9 +18,8 @@ import android.widget.TextView;
 import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.activity.PersonActivity;
-import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ApiResponse;
-import com.edanyma.model.ClientLocation;
+import com.edanyma.model.ClientLocationModel;
 import com.edanyma.owncomponent.ModalDialog;
 import com.edanyma.owncomponent.ModalMessage;
 import com.edanyma.rest.RestApi;
@@ -56,7 +55,7 @@ public class OwnMapFragment extends BaseFragment implements OnMapReadyCallback {
 
     private GoogleMap mGoogleMap;
     private MapView mMapView;
-    private ClientLocation mLocation;
+    private ClientLocationModel mLocation;
     private Marker mMarker;
 
     private AppCompatEditText mCityEdit;
@@ -108,7 +107,7 @@ public class OwnMapFragment extends BaseFragment implements OnMapReadyCallback {
         if ( mUseGlobalAddress ){
             mLocation = getInstance().getClientLocation();
         } else {
-            mLocation = new ClientLocation();
+            mLocation = new ClientLocationModel();
             mLocation.setLatitude( getInstance().getClientLocation().getLatitude() );
             mLocation.setLongitude( getInstance().getClientLocation().getLongitude() );
         }
@@ -259,7 +258,7 @@ public class OwnMapFragment extends BaseFragment implements OnMapReadyCallback {
                 getView().findViewById( R.id.addressContainerId ) );
     }
 
-    class UpdateClientAddress extends AsyncTask< ClientLocation, Void, String > {
+    class UpdateClientAddress extends AsyncTask< ClientLocationModel, Void, String > {
 
         @Override
         protected void onPreExecute() {
@@ -267,18 +266,18 @@ public class OwnMapFragment extends BaseFragment implements OnMapReadyCallback {
         }
 
         @Override
-        protected String doInBackground( ClientLocation... clientLocations) {
+        protected String doInBackground( ClientLocationModel... clientLocationModels ) {
             String result = null;
             try {
                 Call< ApiResponse > updateCall = RestController.getInstance()
                         .getApi().updateClientAddress( AppConstants.AUTH_BEARER
-                                + getInstance().getUserToken(), clientLocations[ 0 ] );
+                                + getInstance().getUserToken(), clientLocationModels[ 0 ] );
                 Response< ApiResponse > responseUpdate = updateCall.execute();
                 if ( responseUpdate.body() != null ) {
                     if ( responseUpdate.body().getStatus() == 200 ) {
                         result = responseUpdate.body().getMessage();
-                        getClient().setClientLocation( clientLocations[0] );
-                        setClientLocation( clientLocations[0] );
+                        getClient().setClientLocationModel( clientLocationModels[0] );
+                        setClientLocation( clientLocationModels[0] );
                     } else {
                         result = responseUpdate.body().getMessage();
                     }

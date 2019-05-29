@@ -2,6 +2,7 @@ package com.edanyma.activity;
 
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.ImageButton;
 import com.edanyma.AppConstants;
 import com.edanyma.AppPreferences;
 import com.edanyma.R;
+import com.edanyma.fragment.BonusFragment;
 import com.edanyma.fragment.CameraFragment;
 import com.edanyma.fragment.ChangePasswordFragment;
 import com.edanyma.fragment.EditProfileFragment;
@@ -27,6 +29,7 @@ import com.edanyma.model.ApiResponse;
 import com.edanyma.model.OurClientModel;
 import com.edanyma.owncomponent.ModalDialog;
 import com.edanyma.owncomponent.ModalMessage;
+import com.edanyma.pixelshot.PixelShot;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 
@@ -34,7 +37,6 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import static com.edanyma.manager.GlobalManager.getClient;
-import static com.edanyma.manager.GlobalManager.getClientLocation;
 import static com.edanyma.manager.GlobalManager.getUserToken;
 import static com.edanyma.manager.GlobalManager.isSignedIn;
 import static com.edanyma.manager.GlobalManager.setActionConfirmed;
@@ -69,6 +71,7 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
             addReplaceFragment( PersonalAreaFragment.newInstance() );
         }
         ( ( ImageButton ) findViewById( R.id.navButtonId ) ).setImageDrawable( getResources().getDrawable( R.drawable.ic_chevron_left_black_24dp ) );
+        findViewById( R.id.mainHeaderId ).setVisibility( View.GONE );
     }
 
     protected void addReplaceFragment( Fragment newFragment ) {
@@ -171,8 +174,8 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     public void onChangePrimaryAddress() {
         setHeaderFooterVisibilty( View.GONE );
         boolean useGlobalLocation = false;
-        if( !AppUtils.nullOrEmpty( getClient().getClientLocation().getStreet() ) ){
-            setClientLocation( getClient().getClientLocation() );
+        if( !AppUtils.nullOrEmpty( getClient().getClientLocationModel().getStreet() ) ){
+            setClientLocation( getClient().getClientLocationModel() );
             useGlobalLocation = true;
         }
         addReplaceFragment( OwnMapFragment.newInstance( useGlobalLocation ) );
@@ -219,6 +222,10 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
         addReplaceFragment( CameraFragment.newInstance() );
     }
 
+    @Override
+    public void onShowBonusesAction() {
+        addReplaceFragment( BonusFragment.newInstance() );
+    }
 
     private class RemoveOurClient extends AsyncTask< Void, Void, String > {
 
