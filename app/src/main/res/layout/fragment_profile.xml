@@ -18,8 +18,7 @@
         android:layout_width="360dp"
         android:layout_height="640dp"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="-24dp"
-        android:background="@drawable/border_debug_blue" />
+        android:layout_marginTop="-24dp"/>
 
     <ImageView
         android:id="@+id/profileBackBtnId"
@@ -91,25 +90,56 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_width="128dp"
-                android:layout_height="128dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="48dp"
-                card_view:cardCornerRadius="64dp"
-                card_view:cardElevation="1dp">
+            <RelativeLayout
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="32dp"
+                android:layout_width="140dp"
+                android:layout_height="140dp">
 
-                <ImageView
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:layout_width="128dp"
                     android:layout_height="128dp"
-                    android:cropToPadding="true"
-                    app:srcCompat="@drawable/avatar_logo" />
-            </android.support.v7.widget.CardView>
+                    android:layout_margin="6dp"
+                    card_view:cardCornerRadius="64dp"
+                    card_view:cardElevation="12dp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/profileImageAvatarId"
+                            android:layout_width="128dp"
+                            android:layout_height="128dp"
+                            android:gravity="center"
+                            app:srcCompat="@drawable/avatar_logo" />
+
+                        <LinearLayout
+                            android:id="@+id/profileLayoutAvatarId"
+                            android:layout_width="128dp"
+                            android:layout_height="128dp"
+                            android:elevation="14dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/profileFirstLetterId"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="-32dp"
+                                android:gravity="top|center_horizontal"
+                                android:textColor="@color/white"
+                                android:textSize="138dp" />
+                        </LinearLayout>
+                    </FrameLayout>
+                </android.support.v7.widget.CardView>
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -122,7 +152,6 @@
                     android:text="@string/personal_area_title"
                     android:textColor="@color/white" />
 
-
             </LinearLayout>
 
         </LinearLayout>
@@ -131,7 +160,7 @@
             android:id="@+id/profileBasketId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="48dp"
             android:drawableLeft="@drawable/ic_cart_outline_white_18dp"
             android:drawablePadding="6dp"
             android:textSize="18dp"

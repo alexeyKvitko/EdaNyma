@@ -3,6 +3,7 @@ package com.edanyma.fragment;
 import android.animation.IntEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Outline;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,6 +26,9 @@ import com.edanyma.activity.MainActivity;
 import com.edanyma.manager.GlobalManager;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
+import com.edanyma.utils.GlideClient;
+
+import java.util.Date;
 
 import static com.edanyma.AppConstants.DECOR_CORNER_RADIUS;
 import static com.edanyma.AppConstants.DECOR_HEIGHT;
@@ -67,6 +72,24 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         snapshotLayout.setOnClickListener( (View view) -> {
                 backAnimateSnapShotLayout( snapshotLayout );
         } );
+        if ( isSignedIn() ){
+            int avatarLayoutVisibility = View.GONE;
+            LinearLayout avatarLayout = getView().findViewById( R.id.profileLayoutAvatarId );
+            TextView firstLatter = initTextView( R.id.profileFirstLetterId, AppConstants.ROBOTO_BLACK );
+            if ( AppUtils.nullOrEmpty( getClient().getPhoto() ) ) {
+                avatarLayoutVisibility = View.VISIBLE;
+                int blueIndex = getClient().getNickName().hashCode() % 256;
+                int color = Color.argb( 180, 83, 91, blueIndex );
+                avatarLayout.setBackgroundColor( color );
+                firstLatter.setText( getClient().getNickName().substring( 0, 1 ).toUpperCase() );
+            } else {
+                String url = getClient().getPhoto() + "?time=" + ( new Date() ).getTime();
+                GlideClient.downloadImage( getActivity(), url,
+                        getView().findViewById( R.id.profileImageAvatarId ) );
+            }
+            avatarLayout.setVisibility( avatarLayoutVisibility );
+        }
+
         TextView signIn = initTextView( R.id.profileSignInId, AppConstants.ROBOTO_CONDENCED );
         signIn.setOnClickListener( this );
         TextView signUp = initTextView( R.id.profileSignUpId, AppConstants.ROBOTO_CONDENCED );

@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -15,11 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
-import com.edanyma.AppPreferences;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.fragment.ProfileFragment;
-import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.model.HomeMenuModel;
@@ -35,7 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.edanyma.manager.GlobalManager.*;
+import static com.edanyma.manager.GlobalManager.getBootstrapModel;
+import static com.edanyma.manager.GlobalManager.getHomeMenus;
 
 public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardClickListener,
         ProfileFragment.OnProfileFrafmentListener, PixelShot.PixelShotListener {
