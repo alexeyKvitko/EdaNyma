@@ -11,7 +11,7 @@
         android:background="@color/transparentToastBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></RelativeLayout>
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/basketBodyId"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/grayTextColor"/>
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/basketRVId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -69,6 +69,6 @@
 
 
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </FrameLayout>

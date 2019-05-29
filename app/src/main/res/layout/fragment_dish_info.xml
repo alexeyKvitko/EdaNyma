@@ -9,7 +9,7 @@
     android:background="@color/transparentToastBackground"
     tools:context=".fragment.DishInfoFragment">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/cardDishInfoImgId"
         android:layout_width="184dp"
         android:layout_height="176dp"
@@ -24,9 +24,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="4dp" />
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/dishInfoCardId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -296,6 +296,6 @@
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </FrameLayout>

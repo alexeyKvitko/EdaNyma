@@ -1,20 +1,18 @@
 package com.edanyma.recyclerview;
 
 import android.os.Handler;
-import android.support.v7.widget.CardView;
+import androidx.cardview.widget.CardView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
-import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.TripleModel;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;

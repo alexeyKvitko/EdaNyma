@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/basketBodyId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/checkOutCityTextLayoutId"
                         style="@style/AppInputLayout"
                         android:layout_width="match_parent"
@@ -65,21 +65,21 @@
                         app:errorEnabled="false"
                         app:errorTextAppearance="@style/errorText">
 
-                        <android.support.v7.widget.AppCompatEditText
+                        <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/checkOutCityId"
                             style="@style/AppEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:theme="@style/editTextTheme" />
 
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/checkOutStreeTextLayoutId"
                             style="@style/AppInputLayout"
                             android:layout_width="match_parent"
@@ -91,7 +91,7 @@
                             app:errorEnabled="false"
                             app:errorTextAppearance="@style/errorText">
 
-                            <android.support.v7.widget.AppCompatEditText
+                            <androidx.appcompat.widget.AppCompatEditText
                                 android:id="@+id/checkOutStreetId"
                                 style="@style/AppEditText"
                                 android:layout_width="match_parent"
@@ -105,9 +105,9 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/error_required_field"
                                 android:visibility="gone" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/checkOutHouseTextLayoutId"
                             style="@style/AppInputLayout"
                             android:layout_width="match_parent"
@@ -119,7 +119,7 @@
                             app:errorEnabled="false"
                             app:errorTextAppearance="@style/errorText">
 
-                            <android.support.v7.widget.AppCompatEditText
+                            <androidx.appcompat.widget.AppCompatEditText
                                 android:id="@+id/checkOutHouseId"
                                 style="@style/AppEditText"
                                 android:layout_width="match_parent"
@@ -133,7 +133,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/error_required_field"
                                 android:visibility="gone" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
 
@@ -144,7 +144,7 @@
                         android:orientation="horizontal"
                         android:visibility="gone">
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/checkOutEntranceTextLayoutId"
                             style="@style/AppInputLayout"
                             android:layout_width="match_parent"
@@ -155,15 +155,15 @@
                             app:errorEnabled="false"
                             app:errorTextAppearance="@style/errorText">
 
-                            <android.support.v7.widget.AppCompatEditText
+                            <androidx.appcompat.widget.AppCompatEditText
                                 android:id="@+id/checkOutEntranceId"
                                 style="@style/AppEditText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:theme="@style/editTextTheme" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/checkOutIntercomTextLayoutId"
                             style="@style/AppInputLayout"
                             android:layout_width="match_parent"
@@ -174,15 +174,15 @@
                             app:errorEnabled="false"
                             app:errorTextAppearance="@style/errorText">
 
-                            <android.support.v7.widget.AppCompatEditText
+                            <androidx.appcompat.widget.AppCompatEditText
                                 android:id="@+id/checkOutIntercomId"
                                 style="@style/AppEditText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:theme="@style/editTextTheme" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/checkOutFloorTextLayoutId"
                             style="@style/AppInputLayout"
                             android:layout_width="match_parent"
@@ -193,13 +193,13 @@
                             app:errorEnabled="false"
                             app:errorTextAppearance="@style/errorText">
 
-                            <android.support.v7.widget.AppCompatEditText
+                            <androidx.appcompat.widget.AppCompatEditText
                                 android:id="@+id/checkOutFloorId"
                                 style="@style/AppEditText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:theme="@style/editTextTheme" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -240,6 +240,6 @@
 
             </LinearLayout>
         </FrameLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </FrameLayout>

@@ -12,7 +12,7 @@
         android:layout_marginHorizontal="24dp"
         android:layout_marginVertical="8dp">
 
-            <android.support.v7.widget.SearchView
+            <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchInputId"
                 style="@style/AppEditText"
                 android:theme="@style/editTextTheme"
@@ -23,7 +23,7 @@
                 app:queryBackground="@null"
                 app:iconifiedByDefault="false">
 
-            </android.support.v7.widget.SearchView>
+            </androidx.appcompat.widget.SearchView>
 
         <ImageView
             android:id="@+id/ownFilterId"

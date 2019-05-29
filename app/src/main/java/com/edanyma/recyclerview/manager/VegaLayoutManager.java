@@ -1,8 +1,8 @@
 package com.edanyma.recyclerview.manager;
 
 import android.graphics.Rect;
-import android.support.v4.util.ArrayMap;
-import android.support.v7.widget.RecyclerView;
+import androidx.collection.ArrayMap;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.view.View;

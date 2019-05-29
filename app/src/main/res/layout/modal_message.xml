@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:elevation="10dp"
     android:background="@color/transparentToastBackground">
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/modalMessageCardId"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -35,5 +35,5 @@
         </LinearLayout>
 
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

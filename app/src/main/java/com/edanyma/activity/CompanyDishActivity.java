@@ -3,8 +3,8 @@ package com.edanyma.activity;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 
@@ -14,7 +14,6 @@ import com.edanyma.fragment.CompanyDishFragment;
 import com.edanyma.fragment.CompanyInfoFragment;
 import com.edanyma.fragment.DishInfoFragment;
 import com.edanyma.fragment.FilterCompanyDishFragment;
-import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyInfoModel;
 import com.edanyma.model.CompanyMenu;

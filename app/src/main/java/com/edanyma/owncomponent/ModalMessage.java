@@ -4,8 +4,8 @@ import android.animation.IntEvaluator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.os.Handler;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.CardView;
+
+import androidx.cardview.widget.CardView;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;

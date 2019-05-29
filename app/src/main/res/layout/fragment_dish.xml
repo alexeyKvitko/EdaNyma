@@ -51,7 +51,7 @@
             android:src="@drawable/fluid_loader" />
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/eatMenuEntityRVId"
         android:visibility="gone"
         android:layout_width="match_parent"

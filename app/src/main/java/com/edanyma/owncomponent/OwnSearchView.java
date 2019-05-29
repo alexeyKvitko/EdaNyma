@@ -2,8 +2,8 @@ package com.edanyma.owncomponent;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.SearchView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -52,7 +52,7 @@ public class OwnSearchView extends LinearLayout {
     private void initialize( String queryHint ) {
         mSearchInput = this.findViewById( R.id.searchInputId );
         mSearchInput.setQueryHint( queryHint );
-        EditText searchEditText = mSearchInput.findViewById( android.support.v7.appcompat.R.id.search_src_text );
+        EditText searchEditText = mSearchInput.findViewById( R.id.search_src_text );
         searchEditText.setTypeface( AppConstants.ROBOTO_CONDENCED );
         searchEditText.setTextSize( TypedValue.COMPLEX_UNIT_DIP, 14 );
         searchEditText.setTextColor( EdaNymaApp.getAppContext().getResources().getColor( R.color.splashTextColor ) );

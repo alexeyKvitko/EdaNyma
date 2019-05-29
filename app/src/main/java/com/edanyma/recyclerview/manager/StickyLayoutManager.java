@@ -1,9 +1,8 @@
 package com.edanyma.recyclerview.manager;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.edanyma.recyclerview.StickyRecyclerView;
 

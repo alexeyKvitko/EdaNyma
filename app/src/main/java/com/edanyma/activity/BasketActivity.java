@@ -1,22 +1,18 @@
 package com.edanyma.activity;
 
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.View;
 
 import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.fragment.BasketFragment;
 import com.edanyma.fragment.CheckOutFragment;
-import com.edanyma.fragment.DishFragment;
-import com.edanyma.fragment.FilterDishFragment;
 import com.edanyma.fragment.OwnMapFragment;
 import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.model.ActivityState;
-import com.edanyma.owncomponent.CheckOutEntity;
 import com.edanyma.utils.AppUtils;
 
 public class BasketActivity extends BaseActivity implements BasketFragment.OnBasketCheckOutListener,

@@ -3,18 +3,14 @@ package com.edanyma.owncomponent;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
+import androidx.annotation.Nullable;
+
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
-import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 
 public class MainCardItem extends LinearLayout {

@@ -36,7 +36,7 @@
             android:layout_width="54dp"
             android:layout_height="62dp"
             android:background="@drawable/gray_r12">
-            <android.support.v7.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatEditText
                 style="@style/ConfirmEditText"
                 android:id="@+id/confirmDigitOneId"
                 android:layout_width="match_parent"
@@ -48,7 +48,7 @@
             android:layout_width="54dp"
             android:layout_height="62dp"
             android:background="@drawable/gray_r12">
-            <android.support.v7.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatEditText
                 style="@style/ConfirmEditText"
                 android:id="@+id/confirmDigitTwoId"
                 android:layout_width="match_parent"
@@ -60,7 +60,7 @@
             android:layout_width="54dp"
             android:layout_height="62dp"
             android:background="@drawable/gray_r12">
-            <android.support.v7.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatEditText
                 style="@style/ConfirmEditText"
                 android:id="@+id/confirmDigitThreeId"
                 android:layout_width="match_parent"
@@ -72,7 +72,7 @@
             android:layout_width="54dp"
             android:layout_height="62dp"
             android:background="@drawable/gray_r12">
-            <android.support.v7.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatEditText
                 style="@style/ConfirmEditText"
                 android:id="@+id/confirmDigitFourId"
                 android:layout_width="match_parent"

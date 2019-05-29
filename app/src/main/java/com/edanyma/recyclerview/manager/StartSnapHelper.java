@@ -1,11 +1,9 @@
 package com.edanyma.recyclerview.manager;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearSnapHelper;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
-
-import com.edanyma.recyclerview.manager.VegaLayoutManager;
 
 /**
  * 定位到第一个子View的SnapHelper

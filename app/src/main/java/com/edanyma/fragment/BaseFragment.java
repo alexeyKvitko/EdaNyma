@@ -1,14 +1,12 @@
 package com.edanyma.fragment;
 
 import android.graphics.Typeface;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.widget.AppCompatEditText;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.edanyma.EdaNymaApp;
 
 public abstract class BaseFragment extends Fragment {
 

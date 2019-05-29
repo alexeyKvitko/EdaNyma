@@ -3,7 +3,7 @@ package com.edanyma.owncomponent;
 import android.animation.IntEvaluator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.support.v7.widget.CardView;
+import androidx.cardview.widget.CardView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;

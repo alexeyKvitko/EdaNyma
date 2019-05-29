@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".fragment.CameraFragment">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/takePhotoCardId"
         android:layout_width="294dp"
         android:layout_height="360dp"
@@ -41,7 +41,7 @@
             </RelativeLayout>
         </FrameLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 
     <Button

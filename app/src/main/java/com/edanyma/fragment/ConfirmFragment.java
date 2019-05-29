@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
-import android.support.v7.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatEditText;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -13,9 +13,6 @@ import android.widget.TextView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.R;
-import com.edanyma.activity.BaseActivity;
-import com.edanyma.manager.GlobalManager;
-import com.edanyma.receiver.OwnSMSReceiver;
 import com.edanyma.utils.AppUtils;
 
 public class ConfirmFragment extends BaseFragment implements View.OnFocusChangeListener, View.OnKeyListener {

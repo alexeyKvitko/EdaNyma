@@ -1,8 +1,8 @@
 package com.edanyma.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -10,7 +10,6 @@ import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.fragment.ChooseCompanyFragment;
 import com.edanyma.fragment.FilterCompanyFragment;
-import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.FilterModel;
 import com.edanyma.utils.AppUtils;
