@@ -333,10 +333,8 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
 
     @Override
     public void onBackPressed() {
-        if ( getSupportFragmentManager().getFragments().size() > 0 ) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.remove( mProfileFragment );
-            fragmentTransaction.commit();
+        if ( getSupportFragmentManager().getFragments().size() > 1 ) {
+            getSupportFragmentManager().beginTransaction().remove( mProfileFragment ).commit();
             return;
         }
         super.onBackPressed();
