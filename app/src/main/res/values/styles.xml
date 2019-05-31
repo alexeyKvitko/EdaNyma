@@ -245,7 +245,14 @@
         <item name="srcCompat">@drawable/ic_fool_star_18dp</item>
     </style>
 
-
-
+    <style name="selectorText">
+        <item name="android:layout_width">96dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:background">@drawable/border_disable_r18</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/iconGrayColor</item>
+        <item name="android:textSize">14dp</item>
+    </style>
 
 </resources>

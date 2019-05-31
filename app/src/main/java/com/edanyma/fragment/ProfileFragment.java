@@ -7,7 +7,9 @@ import android.graphics.Color;
 import android.graphics.Outline;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +45,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     private OnProfileFrafmentListener mListener;
 
-    public ProfileFragment() {}
+    public ProfileFragment() {
+    }
 
     public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
@@ -66,10 +69,10 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         super.onActivityCreated( savedInstanceState );
         final RelativeLayout snapshotLayout = getView().findViewById( R.id.snapShotLayoutId );
         snapshotLayout.setBackground( Drawable.createFromPath( AppUtils.getSnapshotPath() ) );
-        snapshotLayout.setOnClickListener( (View view) -> {
-                backAnimateSnapShotLayout( snapshotLayout );
+        snapshotLayout.setOnClickListener( ( View view ) -> {
+            backAnimateSnapShotLayout( snapshotLayout );
         } );
-        if ( isSignedIn() ){
+        if ( isSignedIn() ) {
             int avatarLayoutVisibility = View.GONE;
             LinearLayout avatarLayout = getView().findViewById( R.id.profileLayoutAvatarId );
             TextView firstLatter = initTextView( R.id.profileFirstLetterId, AppConstants.ROBOTO_BLACK );
@@ -87,41 +90,38 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             avatarLayout.setVisibility( avatarLayoutVisibility );
         }
 
-        TextView signIn = initTextView( R.id.profileSignInId, AppConstants.ROBOTO_CONDENCED );
-        signIn.setOnClickListener( this );
-        TextView signUp = initTextView( R.id.profileSignUpId, AppConstants.ROBOTO_CONDENCED );
-        signUp.setOnClickListener( this );
-        TextView personalArea = initTextView( R.id.profilePersonalAreaId, AppConstants.ROBOTO_CONDENCED );
-        personalArea.setOnClickListener( this );
-
+        initTextView( R.id.profileSignInId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.profileSignUpId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.profilePersonalAreaId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.profileBasketId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.profileGiftId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.profileDiscountId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.profileSupportId, AppConstants.ROBOTO_CONDENCED );
-        initTextView( R.id.profileOrderId, AppConstants.ROBOTO_CONDENCED );
 
         animateSnapShotLayout( snapshotLayout );
         setMainContainerVisibility( View.GONE );
-        getView().findViewById( R.id.profileBackBtnId ).setOnClickListener( (View view) -> {
-                AppUtils.clickAnimation( view );
-                backAnimateSnapShotLayout( snapshotLayout );
+        getView().findViewById( R.id.profileBackBtnId ).setOnClickListener( ( View view ) -> {
+            AppUtils.clickAnimation( view );
+            backAnimateSnapShotLayout( snapshotLayout );
         } );
-        if( isSignedIn() ){
-            swithVisibilityOnSignIn( View.GONE , View.VISIBLE );
+        if ( isSignedIn() ) {
+            swithVisibilityOnSignIn( View.GONE, View.VISIBLE );
         } else {
-            swithVisibilityOnSignIn( View.VISIBLE , View.GONE );
+            swithVisibilityOnSignIn( View.VISIBLE, View.GONE );
         }
+        setThisOnClickListener( R.id.profileBasketId, R.id.profileSignInId, R.id.profileSignUpId,
+                R.id.profilePersonalAreaId );
+
     }
 
-    private void setMainContainerVisibility( int visibility ){
+    private void setMainContainerVisibility( int visibility ) {
         ( ( MainActivity ) getActivity() ).setHeaderFooterVisibilty( visibility );
         getActivity().findViewById( R.id.contentMainLayoutId ).setVisibility( visibility );
     }
 
-    private void swithVisibilityOnSignIn(int signInVisibility, int profileVisibility ){
+    private void swithVisibilityOnSignIn( int signInVisibility, int profileVisibility ) {
         getView().findViewById( R.id.profileSignHeaderId ).setVisibility( signInVisibility );
         getView().findViewById( R.id.profilePersonalHeaderId ).setVisibility( profileVisibility );
-        getView().findViewById( R.id.profileOrderId ).setVisibility( profileVisibility );
         getView().findViewById( R.id.profileMultiplyOrderId ).setVisibility( profileVisibility );
     }
 
@@ -179,8 +179,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         getView().findViewById( R.id.profilePersonalHeaderId ).setVisibility( View.GONE );
         snapShotLayout.setClipToOutline( false );
         final FrameLayout.LayoutParams layoutParams = ( FrameLayout.LayoutParams ) snapShotLayout.getLayoutParams();
-        final int end = - (int) ConvertUtils.convertDpToPixel( 0 );
-        ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(),( int ) DECOR_LEFT_MARGIN , end );
+        final int end = -( int ) ConvertUtils.convertDpToPixel( 0 );
+        ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), ( int ) DECOR_LEFT_MARGIN, end );
         valAnimator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate( ValueAnimator animator ) {
@@ -190,11 +190,11 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 int width = ( int ) ( DECOR_WIDTH - HORIZONTAL_RATIO * val );
                 int height = ( int ) ( DECOR_HEIGHT - VERTICAL_RATIO * val );
                 layoutParams.width = width > DECOR_WIDTH ? ( int ) DECOR_WIDTH : width;
-                layoutParams.height = height > DECOR_HEIGHT ? (int) DECOR_HEIGHT : height;
+                layoutParams.height = height > DECOR_HEIGHT ? ( int ) DECOR_HEIGHT : height;
                 layoutParams.topMargin = margin;
                 layoutParams.bottomMargin = margin;
                 snapShotLayout.setLayoutParams( layoutParams );
-                if( (int) val == end && getActivity() != null){
+                if ( ( int ) val == end && getActivity() != null ) {
                     getActivity().onBackPressed();
                 }
             }
@@ -205,18 +205,20 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onClick( View view ) {
-        if ( mListener == null ){
+        if ( mListener == null ) {
             return;
         }
         AppUtils.clickAnimation( view );
-
-        switch ( view.getId() ){
+        switch ( view.getId() ) {
             case R.id.profileSignInId:
             case R.id.profilePersonalAreaId:
                 mListener.onProfileFragmentSignIn();
                 break;
             case R.id.profileSignUpId:
                 mListener.onProfileFragmentSignUp();
+                break;
+            case R.id.profileBasketId:
+                mListener.onProfileFragmentBasket();
                 break;
         }
     }
@@ -225,5 +227,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     public interface OnProfileFrafmentListener {
         void onProfileFragmentSignIn();
         void onProfileFragmentSignUp();
+        void onProfileFragmentBasket();
     }
 }

@@ -143,6 +143,10 @@
             card_view:contentPaddingRight="10dp"
             card_view:contentPaddingTop="4dp">
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -167,12 +171,6 @@
                     android:text="@string/address_menu" />
 
                 <TextView
-                    android:id="@+id/personalMenuBonusId"
-                    style="@style/personalMenuItem"
-                    android:drawableLeft="@drawable/ic_gift_outline_black_18dp"
-                    android:text="@string/my_bonus_menu" />
-
-                <TextView
                     android:id="@+id/personalMenuPayTypeId"
                     style="@style/personalMenuItem"
                     android:drawableLeft="@drawable/ic_cash_black_18dp"
@@ -184,7 +182,23 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone" />
 
+                <TextView
+                    android:id="@+id/personalMenuOrderId"
+                    style="@style/personalMenuItem"
+                    android:drawableLeft="@drawable/ic_bag_personal_outline_blue_18dp"
+                    android:text="@string/my_orders"/>
+
+                <TextView
+                    android:id="@+id/personalMenuBonusId"
+                    style="@style/personalMenuItem"
+                    android:drawableLeft="@drawable/ic_gift_outline_black_18dp"
+                    android:text="@string/my_bonus_menu" />
+
+
             </LinearLayout>
+
+            </ScrollView>
+
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>

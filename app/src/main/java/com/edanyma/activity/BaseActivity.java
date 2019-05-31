@@ -146,7 +146,7 @@ public abstract class BaseActivity extends AppCompatActivity
                 startNewActivity( PersonActivity.class );
                 break;
             case R.id.navigation_basket:
-                startBasketActivity( view );
+                startBasketActivity( );
                 break;
             case R.id.navButtonCityId:
                 startCityActivity( view );
@@ -180,7 +180,7 @@ public abstract class BaseActivity extends AppCompatActivity
         getFooter().setVisibility( visibility );
     }
 
-    private void startBasketActivity( View view ) {
+    public void startBasketActivity() {
         if ( BasketOrderManager.getInstance().getBasketPrice() == 0 ) {
             ModalMessage.show( this, getString( R.string.empty_basket_msg ),
                     new String[]{ getString( R.string.splash_desc_two )

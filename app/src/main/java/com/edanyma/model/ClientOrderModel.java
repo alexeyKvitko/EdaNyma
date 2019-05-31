@@ -10,6 +10,12 @@ import java.util.List;
 public class ClientOrderModel {
 
     private Integer id;
+    private String clientUuid;
+    private Integer companyOneId;
+    private String companyOneName;
+    private Integer companyTwoId;
+    private String companyTwoName;
+    private String companyLogo;
     private String orderDate;
     private String orderTime;
     private Integer orderPrice;
@@ -28,6 +34,54 @@ public class ClientOrderModel {
     private String comment;
     private String payType;
     private List<BasketModel> orders;
+
+    public String getClientUuid() {
+        return clientUuid;
+    }
+
+    public void setClientUuid( String clientUuid ) {
+        this.clientUuid = clientUuid;
+    }
+
+    public Integer getCompanyOneId() {
+        return companyOneId;
+    }
+
+    public void setCompanyOneId( Integer companyOneId ) {
+        this.companyOneId = companyOneId;
+    }
+
+    public String getCompanyOneName() {
+        return companyOneName;
+    }
+
+    public void setCompanyOneName( String companyOneName ) {
+        this.companyOneName = companyOneName;
+    }
+
+    public Integer getCompanyTwoId() {
+        return companyTwoId;
+    }
+
+    public void setCompanyTwoId( Integer companyTwoId ) {
+        this.companyTwoId = companyTwoId;
+    }
+
+    public String getCompanyTwoName() {
+        return companyTwoName;
+    }
+
+    public void setCompanyTwoName( String companyTwoName ) {
+        this.companyTwoName = companyTwoName;
+    }
+
+    public String getCompanyLogo() {
+        return companyLogo;
+    }
+
+    public void setCompanyLogo( String companyLogo ) {
+        this.companyLogo = companyLogo;
+    }
 
     public ClientOrderModel() {
         this.orders = new LinkedList<>( );

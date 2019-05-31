@@ -201,18 +201,6 @@
             android:text="@string/discount"/>
 
         <TextView
-            android:id="@+id/profileOrderId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:drawableLeft="@drawable/ic_bag_personal_outline_white_18dp"
-            android:drawablePadding="8dp"
-            android:textSize="18dp"
-            android:textColor="@color/white"
-            android:text="@string/my_orders"/>
-
-
-        <TextView
             android:id="@+id/profileSupportId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

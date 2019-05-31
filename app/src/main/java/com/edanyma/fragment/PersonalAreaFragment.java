@@ -94,6 +94,7 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
         initTextView( R.id.accountId, AppConstants.SANDORA, Typeface.BOLD, null );
         initTextView( R.id.personalMenuPasswordId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.personalMenuAddressId, AppConstants.ROBOTO_CONDENCED );
+        initTextView( R.id.personalMenuOrderId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.personalMenuBonusId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.signOutId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.avatarAuthId, AppConstants.ROBOTO_CONDENCED,
@@ -108,7 +109,7 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
 
         setThisOnClickListener( R.id.personalMenuEditId, R.id.signOutId, R.id.personalAreaBackBtnId
                 , R.id.personalMenuPasswordId, R.id.personalMenuAddressId, R.id.personalMenuPayTypeId
-                , R.id.personalMenuBonusId );
+                , R.id.personalMenuBonusId, R.id.personalMenuOrderId );
 
         if( getClient().getPayType() != null && PayType.WALLET.name().equals( getClient().getPayType() ) ){
             mPayTypeContainer.setSelectedPayType( PayType.WALLET );
@@ -187,13 +188,15 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
             case R.id.personalMenuBonusId:
                 mListener.onShowBonusesAction();
                 break;
+            case R.id.personalMenuOrderId:
+                mListener.onShowOrdersAction();
+                break;
             case R.id.personalMenuPayTypeId:
                 showPayTypeContainer();
                 break;
             case R.id.personalAreaBackBtnId:
                 getActivity().onBackPressed();
                 break;
-
         }
     }
 
@@ -252,5 +255,7 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
         void onChangePrimaryAddress();
 
         void onShowBonusesAction();
+
+        void onShowOrdersAction();
     }
 }

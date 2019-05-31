@@ -18,6 +18,7 @@ import com.edanyma.fragment.BonusFragment;
 import com.edanyma.fragment.CameraFragment;
 import com.edanyma.fragment.ChangePasswordFragment;
 import com.edanyma.fragment.EditProfileFragment;
+import com.edanyma.fragment.OrderFragment;
 import com.edanyma.fragment.OwnMapFragment;
 import com.edanyma.fragment.PersonalAreaFragment;
 import com.edanyma.fragment.SignInFragment;
@@ -192,6 +193,12 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     @Override
     public void onEditProfileAction() {
         addReplaceFragment( EditProfileFragment.newInstance() );
+    }
+
+    @Override
+    public void onShowOrdersAction() {
+        getHeader().setVisibility( View.GONE );
+        addReplaceFragment( OrderFragment.newInstance() );
     }
 
     @Override

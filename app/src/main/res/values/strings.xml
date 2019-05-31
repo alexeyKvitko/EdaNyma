@@ -57,6 +57,7 @@
     <string name="resend_confirm_code">Отправить Код Повторно</string>
     <string name="success_sign_up">Вы успешно зарегистрированы</string>
     <string name="personal_area_title">Личный кабинет</string>
+    <string name="order_title">Мои Заказы</string>
     <string name="sign_out">Выход</string>
     <string name="select">Выберите</string>
     <string name="edit_profile_menu">Редактировать профиль</string>
@@ -148,5 +149,8 @@
     <string name="cash_label">Наличными</string>
     <string name="online_label">Онлайн</string>
     <string name="my_bonuses">Мои Бонусы</string>
+    <string name="order_status_in_progress">В обработке</string>
+    <string name="order_status_succes">Выполненные</string>
+    <string name="order_status_decline">Отклоненные</string>
 
 </resources>

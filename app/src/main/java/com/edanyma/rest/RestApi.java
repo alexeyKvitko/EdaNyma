@@ -28,6 +28,8 @@ public interface RestApi {
 
     final String API_CLIENT= "api/client/";
 
+    final String API_CLIENT_ORDER = "api/client/order/";
+
     final String API_GEOCODE = "https://geocode-maps.yandex.ru/1.x/";
     final String API_KEY = "32b33c62-4d72-47a7-92a3-25aedf11e968";
     final String FORMAT_JSON = "json";
@@ -110,5 +112,9 @@ public interface RestApi {
     @POST(API_CLIENT+"updateClientAvatar")
     Call< ApiResponse > updateClientAvatar( @Header("Authorization") String authorization,
                                       @Part MultipartBody.Part file, @Part("description") String description);
+
+    @GET(API_CLIENT_ORDER+"getClientOrders/{uuid}")
+    Call< ApiResponse > getClientOrders( @Header("Authorization") String authorization,
+                                      @Path("uuid") String uuid );
 
 }

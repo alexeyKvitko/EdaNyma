@@ -352,6 +352,10 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         startNewActivity( PersonActivity.class, params );
     }
 
+    @Override
+    public void onProfileFragmentBasket() {
+        startBasketActivity();
+    }
 
     private class SliderJob implements Runnable {
         @Override

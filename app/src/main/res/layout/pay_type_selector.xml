@@ -14,26 +14,15 @@
 
         <TextView
             android:id="@+id/clientPayTypeCashId"
-            android:layout_width="96dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/border_disable_r18"
-            android:gravity="center"
+            style="@style/selectorText"
             android:text="@string/cash_label"
-            android:textColor="@color/blueNeon"
-            android:textSize="14dp" />
+            android:textColor="@color/blueNeon" />
 
         <TextView
             android:id="@+id/clientPayTypeWalletId"
-            android:layout_width="96dp"
-            android:layout_height="match_parent"
+            style="@style/selectorText"
             android:layout_marginLeft="12dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/border_disable_r18"
-            android:gravity="center"
-            android:text="@string/online_label"
-            android:textColor="@color/iconGrayColor"
-            android:textSize="14dp" />
+            android:text="@string/online_label" />
     </LinearLayout>
 
     <LinearLayout
