@@ -6,9 +6,11 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
 import com.edanyma.AppConstants;
+import com.edanyma.AppPreferences;
 import com.edanyma.R;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.recyclerview.BasketAdapter;
@@ -26,30 +29,27 @@ import com.edanyma.utils.ConvertUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.edanyma.AppConstants.ANIMATION_DUARATION;
+import static com.edanyma.AppConstants.BASKET_HEADER_HEIGHT;
+import static com.edanyma.AppConstants.BASKET_ROW_HEIGHT;
 import static com.edanyma.manager.BasketOrderManager.*;
 
 
 public class BasketFragment extends BaseFragment implements View.OnClickListener,
-                    BasketAdapter.CardClickListener{
+        BasketAdapter.BasketDataObjectHolder.BasketTrashListener {
 
     private OnBasketCheckOutListener mListener;
-
-    public static final int BASKET_IMAGE_WIDTH = ( int ) ConvertUtils.convertDpToPixel( 64 );
-    public static final int BASKET_IMAGE_HEIGHT = ( int ) ConvertUtils.convertDpToPixel( 64 );
-
-    private static final int BASKET_HEADER_HEIGHT = (int) ConvertUtils.convertDpToPixel( 56 );
-    private static final int BASKET_ROW_HEIGHT = (int) ConvertUtils.convertDpToPixel( 104 );
-    private static final int ANIMATION_DUARATION = 300;
 
     private RecyclerView mBasketRecView;
     private BasketAdapter mBasketAdapter;
 
     private int mBasketHeight;
-    private List<MenuEntityModel> mBasket;
+    private List< MenuEntityModel > mBasket;
 
-    public BasketFragment() {}
+    public BasketFragment() {
+    }
 
-    public static BasketFragment newInstance( ) {
+    public static BasketFragment newInstance() {
         BasketFragment fragment = new BasketFragment();
         return fragment;
     }
@@ -69,8 +69,8 @@ public class BasketFragment extends BaseFragment implements View.OnClickListener
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         mBasket = getBasket();
-        int basketHeight =  mBasket.size() > 3 ? 3 : mBasket.size();
-        mBasketHeight = BASKET_HEADER_HEIGHT + BASKET_ROW_HEIGHT* basketHeight;
+        int basketHeight = mBasket.size() > 3 ? 3 : mBasket.size();
+        mBasketHeight = BASKET_HEADER_HEIGHT + BASKET_ROW_HEIGHT * basketHeight;
         animateBasketBody( 0, mBasketHeight );
         getView().findViewById( R.id.basketFragmentId ).setOnClickListener( this );
         initTextView( R.id.basketTitleId, AppConstants.B52 );
@@ -78,22 +78,19 @@ public class BasketFragment extends BaseFragment implements View.OnClickListener
 
     }
 
-    private void animateBasketBody( int start, int end){
+    private void animateBasketBody( int start, int end ) {
         Animation fade = AnimationUtils.loadAnimation( getActivity(), R.anim.fade_in );
-        if ( mBasketHeight == start ){
+        if ( mBasketHeight == start ) {
             fade = AnimationUtils.loadAnimation( getActivity(), R.anim.fade_out );
         }
         getView().findViewById( R.id.shadowBasketLayoutId ).startAnimation( fade );
         final View basketBody = getView().findViewById( R.id.basketBodyId );
         final FrameLayout.LayoutParams layoutParams = ( FrameLayout.LayoutParams ) basketBody.getLayoutParams();
         ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), start, end );
-        valAnimator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate( ValueAnimator animator ) {
+        valAnimator.addUpdateListener( ( ValueAnimator animator ) -> {
                 int val = ( ( Integer ) animator.getAnimatedValue() );
                 layoutParams.height = val;
                 basketBody.setLayoutParams( layoutParams );
-            }
         } );
         valAnimator.setDuration( ANIMATION_DUARATION );
         valAnimator.start();
@@ -113,7 +110,7 @@ public class BasketFragment extends BaseFragment implements View.OnClickListener
         if ( mBasketAdapter == null ) {
             fillBasketAdapter( mBasket );
         }
-        mBasketAdapter.setOnItemClickListener( this );
+        mBasketAdapter.setBasketTrashListener( this );
         mBasketAdapter.notifyDataSetChanged();
     }
 
@@ -157,10 +154,10 @@ public class BasketFragment extends BaseFragment implements View.OnClickListener
         mBasketAdapter = null;
     }
 
-    private void closeBasket( boolean needBack ){
+    private void closeBasket( boolean needBack ) {
         animateBasketBody( mBasketHeight, 0 );
-        if ( needBack ){
-            new Handler( ).postDelayed( new Runnable() {
+        if ( needBack ) {
+            new Handler().postDelayed( new Runnable() {
                 @Override
                 public void run() {
                     getActivity().onBackPressed();
@@ -171,12 +168,12 @@ public class BasketFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick( View view ) {
-        switch ( view.getId() ){
+        switch ( view.getId() ) {
             case R.id.basketFragmentId:
                 closeBasket( true );
                 break;
-            case R.id.checkOutTitleId:{
-                if( mListener != null ){
+            case R.id.checkOutTitleId: {
+                if ( mListener != null ) {
                     AppUtils.clickAnimation( view );
                     mListener.onBasketCheckOut();
                     closeBasket( false );
@@ -185,24 +182,20 @@ public class BasketFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
+
     @Override
-    public void onItemClick( int position, View view ) {
-        if ( R.id.basketTrashId != view.getId() ){
-            return;
-        }
-        AppUtils.clickAnimation( view );
-        removeEntityFromBasket( mBasket.get( position ) );
-        mBasketAdapter.deleteItem( position );
-        mBasketAdapter.notifyDataSetChanged();
-        mBasket = getBasket();
-        if ( mBasket.size() < 3 ){
-            int oldHeight = mBasketHeight;
-            mBasketHeight = BASKET_HEADER_HEIGHT + BASKET_ROW_HEIGHT* mBasket.size();
-            animateBasketBody( oldHeight, mBasketHeight );
-        }
-        if ( mBasket.size() == 0 ){
-            closeBasket( true );
-        }
+    public void onBasketTrashClick( String entityId ) {
+            removeEntityFromBasket( entityId );
+            mBasket = getBasket();
+            fillBasketAdapter( mBasket );
+            if ( mBasket.size() < 3 ) {
+                int oldHeight = mBasketHeight;
+                mBasketHeight = BASKET_HEADER_HEIGHT + BASKET_ROW_HEIGHT * mBasket.size();
+                animateBasketBody( oldHeight, mBasketHeight );
+            }
+            if ( mBasket.size() == 0 ) {
+                closeBasket( true );
+            }
     }
 
     public interface OnBasketCheckOutListener {

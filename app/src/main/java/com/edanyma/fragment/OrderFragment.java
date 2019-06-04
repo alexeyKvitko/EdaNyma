@@ -2,6 +2,7 @@ package com.edanyma.fragment;
 
 import android.animation.IntEvaluator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.model.ApiResponse;
+import com.edanyma.model.BasketModel;
 import com.edanyma.model.ClientOrderModel;
+import com.edanyma.model.ExistOrders;
 import com.edanyma.model.OrderStatus;
 import com.edanyma.model.OurClientModel;
 import com.edanyma.owncomponent.ModalMessage;
@@ -39,7 +42,7 @@ import static com.edanyma.manager.GlobalManager.getClientOrders;
 import static com.edanyma.manager.GlobalManager.getUserToken;
 import static com.edanyma.manager.GlobalManager.setClientOrders;
 
-public class OrderFragment extends BaseFragment implements View.OnClickListener {
+public class OrderFragment extends BaseFragment implements View.OnClickListener, OrderAdapter.OnOrderDetailsListener {
 
     private final String TAG = "OrderFragment";
 
@@ -56,8 +59,12 @@ public class OrderFragment extends BaseFragment implements View.OnClickListener 
 
     private int mCurrentPosition;
 
+    private String mOrderStatus;
+
     private RecyclerView mOrderRecView;
     private OrderAdapter mOrderAdapter;
+
+    private OnShowOrderDetailsListener mListener;
 
 
     public OrderFragment() {
@@ -82,6 +89,8 @@ public class OrderFragment extends BaseFragment implements View.OnClickListener 
 
         mCurrentPosition = IN_PROGRESS_MARGIN;
 
+        mOrderStatus = OrderStatus.IN_PROGRESS.name();
+
         initTextView( R.id.orderTitleId, AppConstants.B52 );
         mOrderStatusProgress = initTextView( R.id.orderStatusProgressId, AppConstants.ROBOTO_CONDENCED );
         mOrderStatusSuccess = initTextView( R.id.orderStatusSuccesId, AppConstants.ROBOTO_CONDENCED );
@@ -98,6 +107,8 @@ public class OrderFragment extends BaseFragment implements View.OnClickListener 
             int val = ( Integer ) animator.getAnimatedValue();
             if ( val == end ) {
                 setOrderStatusColor();
+                fillOrderAdapter( getClientOrders().getExistOrders() );
+                mOrderAdapter.notifyDataSetChanged();
             }
             layoutParams.leftMargin = val;
             mOrderStatusBtn.setLayoutParams( layoutParams );
@@ -115,6 +126,7 @@ public class OrderFragment extends BaseFragment implements View.OnClickListener 
 
 
     private void chooseOrderStatus( OrderStatus selectedOrderStatus ) {
+        mOrderStatus = selectedOrderStatus.name();
         if ( OrderStatus.IN_PROGRESS.equals( selectedOrderStatus ) ) {
             mSelectedOrderStatus = mOrderStatusProgress;
             animateOrderStatusContainer( mCurrentPosition, IN_PROGRESS_MARGIN );
@@ -128,6 +140,7 @@ public class OrderFragment extends BaseFragment implements View.OnClickListener 
             animateOrderStatusContainer( mCurrentPosition, DECLINE_MARGIN );
             mCurrentPosition = DECLINE_MARGIN;
         }
+
     }
 
     private void startRecView(){
@@ -148,8 +161,9 @@ public class OrderFragment extends BaseFragment implements View.OnClickListener 
 
     private void initAdapter() {
         if ( mOrderAdapter == null ) {
-            fillOrderAdapter( getClientOrders() );
+            fillOrderAdapter( getClientOrders().getExistOrders() );
         }
+        mOrderAdapter.setOnOrderDetailsListener( this );
         mOrderAdapter.notifyDataSetChanged();
     }
 
@@ -161,7 +175,9 @@ public class OrderFragment extends BaseFragment implements View.OnClickListener 
         }
         int idx = 0;
         for ( ClientOrderModel order : orders ) {
-            mOrderAdapter.addItem( order, idx );
+            if ( mOrderStatus.equals( order.getOrderStatus() ) ){
+                mOrderAdapter.addItem( order, idx );
+            }
         }
     }
 
@@ -169,9 +185,11 @@ public class OrderFragment extends BaseFragment implements View.OnClickListener 
     @Override
     public void onResume() {
         super.onResume();
-        if( getClientOrders() != null ){
+        if( getClientOrders() != null && !AppUtils.nullOrEmpty( getClientOrders().getExistOrders() ) ){
             startRecView();
         } else {
+            AppUtils.transitionAnimation( getView().findViewById( R.id.orderContainerId ),
+                    getView().findViewById( R.id.pleaseWaitContainerId ) );
             new FeetchClientOrders().execute( );
         }
     }
@@ -184,6 +202,24 @@ public class OrderFragment extends BaseFragment implements View.OnClickListener 
             mOrderRecView = null;
         }
         mOrderAdapter = null;
+    }
+
+
+    @Override
+    public void onAttach( Context context ) {
+        super.onAttach( context );
+        if ( context instanceof OnShowOrderDetailsListener ) {
+            mListener = ( OnShowOrderDetailsListener ) context;
+        } else {
+            throw new RuntimeException( context.toString()
+                    + " must implement OnShowOrderDetailsListener" );
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
     
 
@@ -205,6 +241,17 @@ public class OrderFragment extends BaseFragment implements View.OnClickListener 
         }
     }
 
+    @Override
+    public void onOrderDetailsClick( ClientOrderModel order ) {
+        if( mListener != null ){
+            mListener.onShowOrderDetailsAction( order );
+        }
+    }
+
+    public interface OnShowOrderDetailsListener {
+        void onShowOrderDetailsAction( ClientOrderModel order );
+    }
+
     private class FeetchClientOrders extends AsyncTask< Void, Void, String > {
 
         @Override
@@ -217,13 +264,13 @@ public class OrderFragment extends BaseFragment implements View.OnClickListener 
             String result = null;
             try {
                 OurClientModel client = getClient();
-                Call< ApiResponse > orderCall = RestController
+                Call< ApiResponse< ExistOrders > > orderCall = RestController
                         .getApi().getClientOrders(AppConstants.AUTH_BEARER
                                 + getUserToken(), client.getUuid()  );
-                Response< ApiResponse > orderResponse = orderCall.execute();
+                Response< ApiResponse< ExistOrders > > orderResponse = orderCall.execute();
                 if ( orderResponse.body() != null ) {
                     if( orderResponse.body().getStatus() == 200 ){
-                        List<ClientOrderModel> orders = ( List< ClientOrderModel > ) orderResponse.body().getResult();
+                        ExistOrders orders = orderResponse.body().getResult();
                         setClientOrders( orders );
                     } else {
                         result = orderResponse.body().getMessage();
@@ -242,13 +289,15 @@ public class OrderFragment extends BaseFragment implements View.OnClickListener 
         @Override
         protected void onPostExecute( String result ) {
             super.onPostExecute( result );
+            AppUtils.transitionAnimation( getView().findViewById( R.id.pleaseWaitContainerId ),
+                    getView().findViewById( R.id.orderContainerId ) );
             if ( result != null ){
                 ModalMessage.show( getActivity(), "Сообщение", new String[] {result} );
             } else {
                 startRecView();
             }
-
-
         }
     }
+
+
 }

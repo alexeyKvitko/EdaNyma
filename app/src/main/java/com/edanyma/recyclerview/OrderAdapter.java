@@ -24,6 +24,8 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
 
     private static final String CLASS_TAG = "OrderAdapter";
 
+    private OnOrderDetailsListener mListener;
+
     public OrderAdapter( ArrayList< ClientOrderModel > mItemList ) {
         super( mItemList );
     }
@@ -40,14 +42,22 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
     @Override
     public void onBindViewHolder( final BaseDataObjectHolder h, final int position ) {
         OrderAdapter.OrderDataObjectHolder holder = ( OrderAdapter.OrderDataObjectHolder ) h;
-        ClientOrderModel order = mItemList.get( position );
+        final ClientOrderModel order = mItemList.get( position );
         GlideClient.downloadImage( EdaNymaApp.getAppContext(), RestController.COMPANIES_LOGO_URL + order.getCompanyLogo(),
                 holder.orderCompanyImg, IMAGE_SIZE, IMAGE_SIZE );
-        holder.orderCompanyName.setText( order.getCompanyOneName() );
+        String companyName = AppUtils.nullOrEmpty( order.getCompanyTwoName() ) ? order.getCompanyOneName() :
+                                        order.getCompanyOneName()+"/"+order.getCompanyTwoName();
+        holder.orderCompanyName.setText( companyName );
         holder.orderPrice.setText( order.getOrderPrice().toString() );
         holder.orderDate.setText( order.getOrderDate()+", "+order.getOrderTime() );
+        holder.orderDetails.setOnClickListener( (View view ) ->{
+            mListener.onOrderDetailsClick( order );
+        } );
     }
 
+    public void setOnOrderDetailsListener( OnOrderDetailsListener listener ){
+        this.mListener = listener;
+    }
 
     public static class OrderDataObjectHolder extends BaseDataObjectHolder {
 
@@ -55,6 +65,7 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
         public TextView orderCompanyName;
         public TextView orderPrice;
         public TextView orderDate;
+        public TextView orderDetails;
 
         public OrderDataObjectHolder( final View itemView ) {
             super( itemView );
@@ -65,14 +76,17 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
             orderPrice.setTypeface( AppConstants.OFFICE, Typeface.BOLD );
             orderDate = itemView.findViewById( R.id.orderDateId );
             orderDate.setTypeface( AppConstants.ROBOTO_CONDENCED, Typeface.BOLD );
-            ((TextView )itemView.findViewById( R.id.orderDateId ))
-                                                .setTypeface( AppConstants.ROBOTO_CONDENCED );
+            orderDetails = itemView.findViewById( R.id.orderDetailsId );
+            orderDetails.setTypeface( AppConstants.ROBOTO_CONDENCED );
         }
 
         @Override
         public void onClick( View view ) {
-            AppUtils.clickAnimation( view );
-            super.onClick( view );
+            return;
         }
+    }
+
+    public interface OnOrderDetailsListener {
+        void onOrderDetailsClick( ClientOrderModel order );
     }
 }

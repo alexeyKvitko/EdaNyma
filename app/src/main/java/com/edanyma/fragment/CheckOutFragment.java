@@ -348,6 +348,7 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
             mClientOrderModel.setNickName( person );
             if ( isSignedIn() ) {
                 mClientOrderModel.setEmail( getClient().getEmail() );
+                mClientOrderModel.setClientUuid( getClient().getUuid() );
             }
             ClientLocationModel clientLocationModel = getClientLocation();
             mClientOrderModel.setPhone( phone );
@@ -423,7 +424,7 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
 
     @Override
     public void onRemoveFromBasket( MenuEntityModel dishEntity ) {
-        BasketOrderManager.removeEntityFromBasket( dishEntity );
+        BasketOrderManager.removeEntityFromBasket( dishEntity.getId() );
         fillDishContainer();
     }
 

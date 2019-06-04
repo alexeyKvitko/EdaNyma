@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/orderDetailsFragmentId"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/fragment_margin_bottom"
+    android:background="@android:color/transparent">
+    <RelativeLayout
+        android:id="@+id/shadowOrderDetailsLayoutId"
+        android:background="@color/transparentToastBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></RelativeLayout>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/orderDetailsBodyId"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="-12dp"
+        card_view:cardCornerRadius="12dp"
+        card_view:cardElevation="6dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="24dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/orderDetailsTitleId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:textColor="@color/splashTextColor"
+                    android:textSize="22dp"
+                    android:text="@string/order_number"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/feedbackTitleId"
+                        android:layout_width="124dp"
+                        android:layout_height="32dp"
+                        android:gravity="center"
+                        android:textColor="@color/blueNeon"
+                        android:background="@drawable/border_neon_r18"
+                        android:textSize="14dp"
+                        android:text="@string/leave_feedback"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            <View
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grayTextColor"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/orderDetailsRVId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

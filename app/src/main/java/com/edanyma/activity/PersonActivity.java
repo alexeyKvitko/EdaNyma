@@ -18,6 +18,7 @@ import com.edanyma.fragment.BonusFragment;
 import com.edanyma.fragment.CameraFragment;
 import com.edanyma.fragment.ChangePasswordFragment;
 import com.edanyma.fragment.EditProfileFragment;
+import com.edanyma.fragment.OrderDetailsFragment;
 import com.edanyma.fragment.OrderFragment;
 import com.edanyma.fragment.OwnMapFragment;
 import com.edanyma.fragment.PersonalAreaFragment;
@@ -26,11 +27,16 @@ import com.edanyma.fragment.SignUpFragment;
 import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.ApiResponse;
+import com.edanyma.model.BasketModel;
+import com.edanyma.model.ClientOrderModel;
 import com.edanyma.model.OurClientModel;
 import com.edanyma.owncomponent.ModalDialog;
 import com.edanyma.owncomponent.ModalMessage;
+import com.edanyma.pixelshot.PixelShot;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -44,12 +50,14 @@ import static com.edanyma.manager.GlobalManager.setClientLocation;
 
 public class PersonActivity extends BaseActivity implements SignInFragment.OnSignInListener,
         SignUpFragment.OnSignUpListener, PersonalAreaFragment.OnPersonalAreaActionListener,
-        EditProfileFragment.OnEditFragmentActionListener {
+        EditProfileFragment.OnEditFragmentActionListener, OrderFragment.OnShowOrderDetailsListener,
+        OrderDetailsFragment.OnLeaveFeedbackListener{
 
     private final String TAG = "PersonActivity";
 
     private String mSign;
     private Activity mThis;
+    private ClientOrderModel mOrder;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -230,6 +238,24 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     @Override
     public void onShowBonusesAction() {
         addReplaceFragment( BonusFragment.newInstance() );
+    }
+
+    @Override
+    public void onShowOrderDetailsAction( ClientOrderModel order ) {
+        mOrder = order;
+        PixelShot.of( mDrawer.getChildAt( 0 ) ).setResultListener( this ).save();
+    }
+
+
+    @Override
+    public void onPixelShotSuccess( String path ) {
+        getHeader().setVisibility( View.GONE );
+        addReplaceFragment( OrderDetailsFragment.newInstance( mOrder.getId(), mOrder.getOrders() ) );
+    }
+
+    @Override
+    public void onLeaveFeedbackAction() {
+
     }
 
     private class RemoveOurClient extends AsyncTask< Void, Void, String > {

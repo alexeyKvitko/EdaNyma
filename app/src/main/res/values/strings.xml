@@ -149,8 +149,11 @@
     <string name="cash_label">Наличными</string>
     <string name="online_label">Онлайн</string>
     <string name="my_bonuses">Мои Бонусы</string>
-    <string name="order_status_in_progress">В обработке</string>
-    <string name="order_status_succes">Выполненные</string>
+    <string name="order_status_in_progress">Выполняется</string>
+    <string name="order_status_succes">Доставленные</string>
     <string name="order_status_decline">Отклоненные</string>
+    <string name="details_label">Подробно</string>
+    <string name="order_number">Заказ №</string>
+    <string name="leave_feedback">Оставить отзыв</string>
 
 </resources>

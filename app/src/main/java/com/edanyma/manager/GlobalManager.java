@@ -7,6 +7,7 @@ import com.edanyma.model.BootstrapModel;
 import com.edanyma.model.ClientLocationModel;
 import com.edanyma.model.ClientOrderModel;
 import com.edanyma.model.CompanyModel;
+import com.edanyma.model.ExistOrders;
 import com.edanyma.model.FavoriteCompanyModel;
 import com.edanyma.model.FilterDishModel;
 import com.edanyma.model.FilterModel;
@@ -23,7 +24,7 @@ public class GlobalManager {
 
     private static BootstrapModel bootstrapModel;
     private static List< HomeMenuModel > homeMenus;
-    private static List< ClientOrderModel > clientOrders = null;
+    private static ExistOrders clientOrders = null;
     private static String userToken;
     private static OurClientModel client;
     private static FilterModel companyFilter;
@@ -247,11 +248,11 @@ public class GlobalManager {
         return mClientLocationModel;
     }
 
-    public static List< ClientOrderModel > getClientOrders() {
+    public static ExistOrders getClientOrders() {
         return clientOrders;
     }
 
-    public static void setClientOrders( List< ClientOrderModel > clientOrders ) {
+    public static void setClientOrders( ExistOrders clientOrders ) {
         GlobalManager.clientOrders = clientOrders;
     }
 }

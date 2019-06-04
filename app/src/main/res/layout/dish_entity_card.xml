@@ -10,7 +10,7 @@
         android:id="@+id/dishCardCollapsedId"
         android:layout_width="match_parent"
         android:layout_height="190dp"
-        android:elevation="3dp">
+        android:elevation="2dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardEntityImgId"
@@ -18,13 +18,14 @@
             android:layout_height="142dp"
             android:layout_gravity="left|center_vertical"
             card_view:cardCornerRadius="8dp"
-            card_view:cardElevation="7dp">
+            card_view:cardElevation="3dp">
 
             <ImageView
                 android:id="@+id/entityImgId"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="4dp" />
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="152dp"
+                android:layout_height="146dp" />
             <TextView
                 android:id="@+id/entityCompanyNameId"
                 android:layout_width="match_parent"
@@ -48,7 +49,7 @@
             android:layout_marginRight="6dp"
             android:layout_marginBottom="8dp"
             card_view:cardCornerRadius="8dp"
-            card_view:cardElevation="6dp">
+            card_view:cardElevation="2dp">
             <ImageView
                 android:id="@+id/dishInBasketId"
                 android:layout_width="36dp"

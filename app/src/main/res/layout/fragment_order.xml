@@ -14,7 +14,10 @@
         android:elevation="10dp"
         app:srcCompat="@drawable/filter_back_black_btn" />
 
+    <include layout="@layout/please_wait" />
+
     <LinearLayout
+        android:id="@+id/orderContainerId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"

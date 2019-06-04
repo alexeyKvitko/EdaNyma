@@ -28,7 +28,7 @@ public class BasketOrderManager {
         return BASKET_MANAGER;
     }
 
-    public static void addEntityToBasket( MenuEntityModel menuEntity, Integer count ) {
+    public static void addEntityToBasket( MenuEntityModel menuEntity, String companyName, Integer count ) {
         boolean exist = false;
         if ( customerBasket == null ) {
             customerBasket = new LinkedList<>();
@@ -43,16 +43,17 @@ public class BasketOrderManager {
         }
         if ( !exist ) {
             MenuEntityModel basketEntity = ConvertUtils.cloneMenuEntity( menuEntity );
+            basketEntity.setCompanyName( companyName );
             basketEntity.setCount( count );
             customerBasket.add( basketEntity );
         }
         sendMessageToActivity();
     }
 
-    public static void removeEntityFromBasket( MenuEntityModel removeEntity ){
+    public static void removeEntityFromBasket( String removeEntityId ){
         List<MenuEntityModel> newBasket = new LinkedList<>( );
         for( MenuEntityModel entity : customerBasket){
-            if( !removeEntity.getId().equals( entity.getId() ) ){
+            if( !removeEntityId.equals( entity.getId() ) ){
                 newBasket.add( entity );
             }
         }

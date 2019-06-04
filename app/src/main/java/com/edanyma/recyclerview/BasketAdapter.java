@@ -21,10 +21,14 @@ public class BasketAdapter extends CommonBaseAdapter< MenuEntityModel > {
 
     private static final String CLASS_TAG = "BasketAdapter";
 
+    private BasketDataObjectHolder.BasketTrashListener mListener;
+
+    private int mTrashVisibility;
+
     public BasketAdapter( ArrayList< MenuEntityModel > mItemList ) {
         super( mItemList );
+        mTrashVisibility = View.VISIBLE;
     }
-
 
     @Override
     public BasketAdapter.BasketDataObjectHolder onCreateViewHolder( ViewGroup parent, int viewType) {
@@ -35,22 +39,38 @@ public class BasketAdapter extends CommonBaseAdapter< MenuEntityModel > {
         return dataObjectHolder;
     }
 
+    public void setBasketTrashListener( BasketDataObjectHolder.BasketTrashListener listener ){
+        mListener = listener;
+    }
+
+    public void hideTrashButton() {
+        this.mTrashVisibility = View.GONE;
+    }
+
     @Override
     public void onBindViewHolder(final BaseDataObjectHolder h, final int position) {
         BasketAdapter.BasketDataObjectHolder holder = ( BasketAdapter.BasketDataObjectHolder ) h;
-        MenuEntityModel dish = mItemList.get( position );
+        final MenuEntityModel dish = mItemList.get( position );
         GlideClient.downloadImage( EdaNymaApp.getAppContext(), dish.getImageUrl(),
-                holder.basketEntityImg, BasketFragment.BASKET_IMAGE_WIDTH, BasketFragment.BASKET_IMAGE_HEIGHT );
+                holder.basketEntityImg, AppConstants.BASKET_IMAGE_WIDTH, AppConstants.BASKET_IMAGE_HEIGHT );
+        holder.basketCompanyName.setText( dish.getCompanyName() );
         holder.basketEntityName.setText( dish.getDisplayName() );
         holder.basketEntityPrice.setText( dish.getActualPrice().toString() );
         holder.basketEntityCount.setText( dish.getCount().toString() );
-    }
+        holder.basketTrashImg.setVisibility( mTrashVisibility );
+        holder.basketTrashImg.setOnClickListener( ( View view )->{
+            AppUtils.clickAnimation( view );
+            mListener.onBasketTrashClick( dish.getId() );
+        } );
 
+    }
 
     public static class BasketDataObjectHolder extends BaseDataObjectHolder {
 
         public ImageView basketEntityImg;
+        public ImageView basketTrashImg;
         public TextView basketEntityName;
+        public TextView basketCompanyName;
         public TextView basketEntityPrice;
         public TextView basketEntityCount;
 
@@ -64,13 +84,21 @@ public class BasketAdapter extends CommonBaseAdapter< MenuEntityModel > {
             basketEntityPrice.setTypeface( AppConstants.OFFICE, Typeface.BOLD );
             basketEntityCount = itemView.findViewById( R.id.basketEntityCountId );
             basketEntityCount.setTypeface( AppConstants.ROBOTO_CONDENCED,Typeface.BOLD );
-            itemView.findViewById( R.id.basketTrashId ).setOnClickListener( this );
+            basketCompanyName = itemView.findViewById( R.id.basketCompanyNameId );
+            basketCompanyName.setTypeface( AppConstants.ROBOTO_CONDENCED,Typeface.BOLD  );
+            basketTrashImg = itemView.findViewById( R.id.basketTrashId );
         }
 
         @Override
-        public void onClick( View view ) {
-            AppUtils.clickAnimation( view );
-            super.onClick( view );
+        public void onClick( View v ) {
+            return;
         }
+
+        public interface BasketTrashListener {
+            void onBasketTrashClick( String entityId );
+        }
+
     }
+
+
 }

@@ -7,6 +7,7 @@ import com.edanyma.model.ClientLocationModel;
 import com.edanyma.model.ClientOrderModel;
 import com.edanyma.model.CompanyInfoModel;
 import com.edanyma.model.Dishes;
+import com.edanyma.model.ExistOrders;
 import com.edanyma.model.FavoriteCompanyModel;
 import com.edanyma.model.LoginUser;
 import com.edanyma.model.OurClientModel;
@@ -83,7 +84,7 @@ public interface RestApi {
 
 
 
-    @POST(API_CLIENT+"createClientOrder")
+    @POST(API_CLIENT_ORDER+"createClientOrder")
     Call< ApiResponse > createClientOrder( @Header("Authorization") String authorization,
                                        @Body ClientOrderModel clientOrderModel  );
 
@@ -114,7 +115,7 @@ public interface RestApi {
                                       @Part MultipartBody.Part file, @Part("description") String description);
 
     @GET(API_CLIENT_ORDER+"getClientOrders/{uuid}")
-    Call< ApiResponse > getClientOrders( @Header("Authorization") String authorization,
-                                      @Path("uuid") String uuid );
+    Call< ApiResponse< ExistOrders > > getClientOrders( @Header("Authorization") String authorization,
+                                                        @Path("uuid") String uuid );
 
 }
