@@ -3,11 +3,12 @@ package com.edanyma.model;
 import org.pojomatic.Pojomatic;
 import org.pojomatic.annotations.AutoProperty;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 @AutoProperty
-public class ClientOrderModel {
+public class ClientOrderModel implements Serializable {
 
     private Integer id;
     private String clientUuid;

@@ -250,7 +250,7 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     @Override
     public void onPixelShotSuccess( String path ) {
         getHeader().setVisibility( View.GONE );
-        addReplaceFragment( OrderDetailsFragment.newInstance( mOrder.getId(), mOrder.getOrders() ) );
+        addReplaceFragment( OrderDetailsFragment.newInstance( mOrder ) );
     }
 
     @Override

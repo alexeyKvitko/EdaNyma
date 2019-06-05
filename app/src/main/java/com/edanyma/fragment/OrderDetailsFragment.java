@@ -24,7 +24,9 @@ import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.activity.PersonActivity;
 import com.edanyma.model.BasketModel;
+import com.edanyma.model.ClientOrderModel;
 import com.edanyma.model.MenuEntityModel;
+import com.edanyma.model.OrderStatus;
 import com.edanyma.recyclerview.BasketAdapter;
 import com.edanyma.utils.AppUtils;
 import com.google.gson.Gson;
@@ -32,19 +34,16 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static com.edanyma.AppConstants.ANIMATION_DUARATION;
 import static com.edanyma.AppConstants.BASKET_HEADER_HEIGHT;
 import static com.edanyma.AppConstants.BASKET_ROW_HEIGHT;
-import static com.edanyma.manager.BasketOrderManager.getBasket;
 
 
 public class OrderDetailsFragment extends BaseFragment implements View.OnClickListener {
 
-    private static final String BASKET_LIST = "basket_list";
-    private static final String CLIENT_ORDER_NO = "client_order_no";
+    private static final String CLIENT_ORDER = "client_order_no";
 
     private OnLeaveFeedbackListener mListener;
 
@@ -54,18 +53,14 @@ public class OrderDetailsFragment extends BaseFragment implements View.OnClickLi
     private int mOrderDetailsHeight;
 
     private List< MenuEntityModel > mEntities;
-    private List< BasketModel > mBaskets;
-    private String mOrderNo;
+    private ClientOrderModel mOrder;
 
     public OrderDetailsFragment() {}
 
-    public static OrderDetailsFragment newInstance( Integer orderNo, List<BasketModel> basketModels ) {
+    public static OrderDetailsFragment newInstance( ClientOrderModel orderModel ) {
         OrderDetailsFragment fragment = new OrderDetailsFragment();
         Bundle args = new Bundle();
-        Gson gson = new Gson();
-        String basketsAsString = gson.toJson( basketModels );
-        args.putString( BASKET_LIST, basketsAsString );
-        args.putString( CLIENT_ORDER_NO, orderNo.toString() );
+        args.putSerializable( CLIENT_ORDER, orderModel );
         fragment.setArguments( args );
         return fragment;
     }
@@ -74,13 +69,9 @@ public class OrderDetailsFragment extends BaseFragment implements View.OnClickLi
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         if ( getArguments() != null ) {
-            String  basketsAsString = getArguments().getString( BASKET_LIST );
-            mOrderNo = getArguments().getString( CLIENT_ORDER_NO );
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<BasketModel>>() {}.getType();
-            mBaskets = gson.fromJson( basketsAsString, listType );
+            mOrder = ( ClientOrderModel ) getArguments().getSerializable( CLIENT_ORDER );
             mEntities = new ArrayList<>();
-            for( BasketModel basketModel : mBaskets ){
+            for( BasketModel basketModel : mOrder.getOrders() ){
                 for( MenuEntityModel entity: basketModel.getBasket() ){
                     entity.setCompanyName( basketModel.getCompany().getDisplayName() );
                     mEntities.add( entity );
@@ -104,8 +95,11 @@ public class OrderDetailsFragment extends BaseFragment implements View.OnClickLi
         animateOrderDetailsBody( 0, mOrderDetailsHeight );
         getView().findViewById( R.id.orderDetailsFragmentId ).setOnClickListener( this );
         TextView title = initTextView( R.id.orderDetailsTitleId, AppConstants.B52 );
-        title.setText( getActivity().getResources().getString( R.string.order_number )+" "+ mOrderNo);
-        initTextView( R.id.feedbackTitleId, AppConstants.ROBOTO_CONDENCED ).setOnClickListener( this );
+        title.setText( getActivity().getResources().getString( R.string.order_number )+" "+ mOrder.getId().toString() );
+        TextView feedBackBtn = initTextView( R.id.feedbackButtonId, AppConstants.ROBOTO_CONDENCED );
+        feedBackBtn.setOnClickListener( this );
+        feedBackBtn.setVisibility( OrderStatus.COMPLETED.name().equals( mOrder.getOrderStatus() ) ?
+                View.VISIBLE : View.GONE );
     }
 
     private void animateOrderDetailsBody( int start, int end ) {
@@ -200,7 +194,7 @@ public class OrderDetailsFragment extends BaseFragment implements View.OnClickLi
             case R.id.orderDetailsFragmentId:
                 closeBasket( true );
                 break;
-            case R.id.feedbackTitleId: {
+            case R.id.feedbackButtonId: {
                 if ( mListener != null ) {
                     AppUtils.clickAnimation( view );
                     mListener.onLeaveFeedbackAction();

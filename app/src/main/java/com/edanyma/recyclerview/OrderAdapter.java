@@ -26,8 +26,11 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
 
     private OnOrderDetailsListener mListener;
 
+    private int colorId;
+
     public OrderAdapter( ArrayList< ClientOrderModel > mItemList ) {
         super( mItemList );
+        this.colorId = R.color.grayTextColor;
     }
 
 
@@ -50,9 +53,15 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
         holder.orderCompanyName.setText( companyName );
         holder.orderPrice.setText( order.getOrderPrice().toString() );
         holder.orderDate.setText( order.getOrderDate()+", "+order.getOrderTime() );
+        holder.orderDate.setTextColor( EdaNymaApp.getAppContext().getResources().getColor( colorId ) );
         holder.orderDetails.setOnClickListener( (View view ) ->{
+            AppUtils.clickAnimation(  view  );
             mListener.onOrderDetailsClick( order );
         } );
+    }
+
+    public void setColorId( int colorId ) {
+        this.colorId = colorId;
     }
 
     public void setOnOrderDetailsListener( OnOrderDetailsListener listener ){
@@ -65,7 +74,7 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
         public TextView orderCompanyName;
         public TextView orderPrice;
         public TextView orderDate;
-        public TextView orderDetails;
+        public ImageView orderDetails;
 
         public OrderDataObjectHolder( final View itemView ) {
             super( itemView );
@@ -77,7 +86,6 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
             orderDate = itemView.findViewById( R.id.orderDateId );
             orderDate.setTypeface( AppConstants.ROBOTO_CONDENCED, Typeface.BOLD );
             orderDetails = itemView.findViewById( R.id.orderDetailsId );
-            orderDetails.setTypeface( AppConstants.ROBOTO_CONDENCED );
         }
 
         @Override

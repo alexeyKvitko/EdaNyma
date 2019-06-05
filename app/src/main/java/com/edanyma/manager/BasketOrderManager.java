@@ -91,7 +91,7 @@ public class BasketOrderManager {
 
     public static Integer calculatePrice( MenuEntityModel menuEntity ) {
         Integer calc = 0;
-        switch ( menuEntity.getWspType() ) {
+        switch ( menuEntity.getWspType().toUpperCase() ) {
             case AppConstants.SEL_TYPE_ONE:
                 calc = Integer.valueOf( menuEntity.getPriceOne() ) * menuEntity.getCount();
                 break;

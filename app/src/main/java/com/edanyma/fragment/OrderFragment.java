@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.model.ApiResponse;
-import com.edanyma.model.BasketModel;
 import com.edanyma.model.ClientOrderModel;
 import com.edanyma.model.ExistOrders;
 import com.edanyma.model.OrderStatus;
@@ -131,16 +130,18 @@ public class OrderFragment extends BaseFragment implements View.OnClickListener,
             mSelectedOrderStatus = mOrderStatusProgress;
             animateOrderStatusContainer( mCurrentPosition, IN_PROGRESS_MARGIN );
             mCurrentPosition = IN_PROGRESS_MARGIN;
+            mOrderAdapter.setColorId( R.color.grayTextColor );
         } else if ( OrderStatus.COMPLETED.equals( selectedOrderStatus ) ) {
             mSelectedOrderStatus = mOrderStatusSuccess;
             animateOrderStatusContainer( mCurrentPosition, COMPLETED_MARGIN );
             mCurrentPosition = COMPLETED_MARGIN;
+            mOrderAdapter.setColorId( R.color.colorPrimaryDark );
         } else if ( OrderStatus.DECLINE.equals( selectedOrderStatus ) ) {
             mSelectedOrderStatus = mOrderStatusDecline;
             animateOrderStatusContainer( mCurrentPosition, DECLINE_MARGIN );
             mCurrentPosition = DECLINE_MARGIN;
+            mOrderAdapter.setColorId( R.color.error_color );
         }
-
     }
 
     private void startRecView(){
