@@ -69,7 +69,7 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
         super.onActivityCreated( savedInstanceState );
         OurClientModel client = getClient();
         mPayTypeOpen = false;
-        initTextView( R.id.personalTitleId, AppConstants.SANDORA, Typeface.BOLD, null );
+        initTextView( R.id.personalTitleId, AppConstants.B52 );
         String avatarName = getActivity().getResources().getString( R.string.prompt_name );
         if ( client != null ) {
             avatarName = client.getNickName();

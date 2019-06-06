@@ -53,6 +53,7 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
         holder.orderCompanyName.setText( companyName );
         holder.orderPrice.setText( order.getOrderPrice().toString() );
         holder.orderDate.setText( order.getOrderDate()+", "+order.getOrderTime() );
+        holder.orderNo.setText( "№ "+order.getId().toString() );
         holder.orderDate.setTextColor( EdaNymaApp.getAppContext().getResources().getColor( colorId ) );
         holder.orderDetails.setOnClickListener( (View view ) ->{
             AppUtils.clickAnimation(  view  );
@@ -74,6 +75,7 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
         public TextView orderCompanyName;
         public TextView orderPrice;
         public TextView orderDate;
+        public TextView orderNo;
         public ImageView orderDetails;
 
         public OrderDataObjectHolder( final View itemView ) {
@@ -85,6 +87,8 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
             orderPrice.setTypeface( AppConstants.OFFICE, Typeface.BOLD );
             orderDate = itemView.findViewById( R.id.orderDateId );
             orderDate.setTypeface( AppConstants.ROBOTO_CONDENCED, Typeface.BOLD );
+            orderNo = itemView.findViewById( R.id.orderNoId );
+            orderNo.setTypeface( AppConstants.ROBOTO_CONDENCED, Typeface.BOLD );
             orderDetails = itemView.findViewById( R.id.orderDetailsId );
         }
 

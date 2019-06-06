@@ -4,12 +4,13 @@ package com.edanyma.activity;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.core.app.NavUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+
+import androidx.core.app.NavUtils;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.edanyma.AppConstants;
 import com.edanyma.AppPreferences;
@@ -17,6 +18,7 @@ import com.edanyma.R;
 import com.edanyma.fragment.BonusFragment;
 import com.edanyma.fragment.CameraFragment;
 import com.edanyma.fragment.ChangePasswordFragment;
+import com.edanyma.fragment.CreateFeedbackFragment;
 import com.edanyma.fragment.EditProfileFragment;
 import com.edanyma.fragment.OrderDetailsFragment;
 import com.edanyma.fragment.OrderFragment;
@@ -27,7 +29,6 @@ import com.edanyma.fragment.SignUpFragment;
 import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.ApiResponse;
-import com.edanyma.model.BasketModel;
 import com.edanyma.model.ClientOrderModel;
 import com.edanyma.model.OurClientModel;
 import com.edanyma.owncomponent.ModalDialog;
@@ -36,12 +37,11 @@ import com.edanyma.pixelshot.PixelShot;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Response;
 
 import static com.edanyma.manager.GlobalManager.getClient;
+import static com.edanyma.manager.GlobalManager.getCompanyById;
 import static com.edanyma.manager.GlobalManager.getUserToken;
 import static com.edanyma.manager.GlobalManager.isSignedIn;
 import static com.edanyma.manager.GlobalManager.setActionConfirmed;
@@ -255,7 +255,8 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
 
     @Override
     public void onLeaveFeedbackAction() {
-
+        getHeader().setVisibility( View.GONE );
+        addReplaceFragment( CreateFeedbackFragment.newInstance( getCompanyById( mOrder.getCompanyOneId().toString() ) ) );
     }
 
     private class RemoveOurClient extends AsyncTask< Void, Void, String > {
