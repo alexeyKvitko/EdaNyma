@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
@@ -59,6 +60,10 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
             AppUtils.clickAnimation(  view  );
             mListener.onOrderDetailsClick( order );
         } );
+        holder.orderBody.setOnClickListener( (View view ) ->{
+            AppUtils.bounceAnimation(  view  );
+            mListener.onOrderDetailsClick( order );
+        } );
     }
 
     public void setColorId( int colorId ) {
@@ -77,6 +82,7 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
         public TextView orderDate;
         public TextView orderNo;
         public ImageView orderDetails;
+        public LinearLayout orderBody;
 
         public OrderDataObjectHolder( final View itemView ) {
             super( itemView );
@@ -90,6 +96,7 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
             orderNo = itemView.findViewById( R.id.orderNoId );
             orderNo.setTypeface( AppConstants.ROBOTO_CONDENCED, Typeface.BOLD );
             orderDetails = itemView.findViewById( R.id.orderDetailsId );
+            orderBody = itemView.findViewById( R.id.orderItemBodyId );
         }
 
         @Override

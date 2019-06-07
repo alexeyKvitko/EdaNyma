@@ -154,7 +154,8 @@
     <string name="order_status_decline">Отклоненные</string>
     <string name="details_label">Подробно</string>
     <string name="order_number">Заказ №</string>
-    <string name="leave_feedback">Ожидается отзыв</string>
+    <string name="leave_feedback">Отзыв</string>
     <string name="rate_label">Ваша Оценка</string>
+    <string name="leave_feedback_btn">Оставить отзыв</string>
 
 </resources>

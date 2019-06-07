@@ -1,24 +1,42 @@
 package com.edanyma.fragment;
 
 
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 
 import com.edanyma.AppConstants;
 import com.edanyma.R;
+import com.edanyma.activity.BaseActivity;
+import com.edanyma.model.ApiResponse;
 import com.edanyma.model.CompanyModel;
+import com.edanyma.model.FeedbackModel;
+import com.edanyma.owncomponent.ModalDialog;
+import com.edanyma.owncomponent.ModalMessage;
+import com.edanyma.rest.RestController;
+import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.GlideClient;
 import com.etiennelawlor.discreteslider.library.ui.DiscreteSlider;
 
+import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Response;
+
+import static com.edanyma.AppConstants.STAR_ARRAY;
 import static com.edanyma.manager.GlobalManager.getBootstrapModel;
+import static com.edanyma.manager.GlobalManager.getClient;
+import static com.edanyma.manager.GlobalManager.getUserToken;
 
 
 public class CreateFeedbackFragment extends BaseFragment {
@@ -27,23 +45,22 @@ public class CreateFeedbackFragment extends BaseFragment {
 
     private static final String COMPANY_FEEDBACK = "company_feedback";
 
-    private static final int[] STAR_ARRAY = new int[]{ R.drawable.five_star_00, R.drawable.five_star_05,
-                                                      R.drawable.five_star_10, R.drawable.five_star_15,
-                                                      R.drawable.five_star_20, R.drawable.five_star_25,
-                                                      R.drawable.five_star_30, R.drawable.five_star_35,
-                                                      R.drawable.five_star_40, R.drawable.five_star_45,
-                                                      R.drawable.five_star_50 };
 
     private CompanyModel mCompanyModel;
 
-    private DiscreteSlider mFeedbackSlider;
-
     private ImageView mRateStar;
 
+    private AppCompatEditText mFeedbackComment;
 
-    public CreateFeedbackFragment() {}
+    private TextView mFeedbackError;
 
-    public static CreateFeedbackFragment newInstance( CompanyModel companyModel) {
+    private int mSliderPosition;
+
+
+    public CreateFeedbackFragment() {
+    }
+
+    public static CreateFeedbackFragment newInstance( CompanyModel companyModel ) {
         CreateFeedbackFragment fragment = new CreateFeedbackFragment();
         Bundle args = new Bundle();
         args.putSerializable( COMPANY_FEEDBACK, companyModel );
@@ -55,7 +72,7 @@ public class CreateFeedbackFragment extends BaseFragment {
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         if ( getArguments() != null ) {
-            mCompanyModel = ( CompanyModel ) getArguments().getSerializable(  COMPANY_FEEDBACK );
+            mCompanyModel = ( CompanyModel ) getArguments().getSerializable( COMPANY_FEEDBACK );
         }
     }
 
@@ -69,21 +86,126 @@ public class CreateFeedbackFragment extends BaseFragment {
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
+        getView().findViewById( R.id.feedbackContainerId ).setBackground( Drawable.createFromPath( AppUtils.getSnapshotPath() ) );
         initTextView( R.id.feedbackTitleId, AppConstants.B52,
                 mCompanyModel.getDisplayName() );
         GlideClient.downloadImage( getActivity(), getBootstrapModel()
                 .getStaticUrl() + String.format( AppConstants.STATIC_COMPANY_LOGO,
-                mCompanyModel.getThumb() ),  getView().findViewById( R.id.feedbackLogoId ) );
+                mCompanyModel.getThumb() ), getView().findViewById( R.id.feedbackLogoId ) );
         initTextView( R.id.feedbackCountId, AppConstants.ROBOTO_CONDENCED,
                 mCompanyModel.getCommentCount() );
         initTextView( R.id.feedbackRaitingTitleId, AppConstants.B52 );
+        initTextView( R.id.feedbackCommentTitleId, AppConstants.B52 );
 
         mRateStar = getView().findViewById( R.id.feedbackStarsId );
+        ( ( DiscreteSlider ) getView().findViewById( R.id.feedbackSliderId ) )
+                .setOnDiscreteSliderChangeListener( ( int position ) -> {
+                    mSliderPosition = position;
+                    mRateStar.setImageDrawable( getActivity().getResources().getDrawable( STAR_ARRAY[ position ] ) );
+                } );
 
-        mFeedbackSlider = getView().findViewById( R.id.feedbackSliderId );
-        mFeedbackSlider.setOnDiscreteSliderChangeListener( ( int position ) ->{
-            Log.i( TAG,"Slider position: "+position );
-            mRateStar.setImageDrawable( getActivity().getResources().getDrawable( STAR_ARRAY[ position] ) );
+        mFeedbackComment = initEditText( R.id.feedbackCommentValueId, AppConstants.ROBOTO_CONDENCED );
+        mFeedbackError = initTextView( R.id.feedbackErrorFieldId, AppConstants.ROBOTO_CONDENCED );
+        initButton( R.id.feedbackButtonId, AppConstants.ROBOTO_CONDENCED ).setOnClickListener( ( View view ) -> {
+            validateFeedback();
         } );
+        getView().findViewById( R.id.feedbackBackBtnId ).setOnClickListener( ( View view ) -> {
+            AppUtils.clickAnimation( view );
+            backPressed();
+        } );
+    }
+
+
+    private void validateFeedback() {
+        final String comment = mFeedbackComment.getText().toString();
+        if ( AppUtils.nullOrEmpty( comment ) ) {
+            ( new Handler() ).postDelayed( () -> {
+                mFeedbackError.setVisibility( View.GONE );
+            }, 3000 );
+            return;
+        }
+        if ( mSliderPosition < 3 ) {
+            ModalDialog.DialogParams params = ModalDialog.getDialogParms();
+            params.setTitle( "Подтверждение" )
+                    .setMessage( "Вы действительно хотите поставить такую низкую оченку !" )
+                    .setBlueButtonText( getResources().getString( R.string.no_it_joke ) )
+                    .setBlueButtonId( R.drawable.ic_emoticon_wink_outline_white_24dp )
+                    .setWhiteButtonText( getResources().getString( R.string.yes_sure ) )
+                    .setWhiteButtonId( R.drawable.ic_thumb_down_gray600_24dp );
+            ModalDialog.execute( getActivity(), params ).setOnModalBtnClickListener( new ModalDialog.OnModalBtnClickListener() {
+                @Override
+                public void onBlueButtonClick() {
+                    return;
+                }
+
+                @Override
+                public void onWhiteBtnClick() {
+                    postFeedback( comment );
+                }
+            } );
+            return;
+        }
+        postFeedback( comment );
+    }
+
+    private void postFeedback( String comment ) {
+        FeedbackModel feedbackModel = new FeedbackModel();
+        feedbackModel.setCompanyId( Integer.valueOf( mCompanyModel.getId() ) );
+        feedbackModel.setPerson( getClient().getNickName() );
+        feedbackModel.setPersonAvatar( getClient().getPhoto() );
+        feedbackModel.setFeedbackDate( AppUtils.formatDate( AppConstants.ORDER_DATE_FORMAT, new Date() ) );
+        feedbackModel.setFeedbackTime( AppUtils.formatDate( AppConstants.ORDER_TIME_FORMAT, new Date() ) );
+        feedbackModel.setRate( mSliderPosition );
+        feedbackModel.setComment( comment );
+        new PostFeedback().execute( feedbackModel );
+    }
+
+    private void backPressed() {
+        ( ( BaseActivity ) getActivity() ).getHeader().setVisibility( View.VISIBLE );
+        ( ( BaseActivity ) getActivity() ).getFooter().setVisibility( View.VISIBLE );
+        getActivity().onBackPressed();
+    }
+
+    private class PostFeedback extends AsyncTask< FeedbackModel, Void, String > {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground( FeedbackModel... feedbackModels ) {
+            String result = null;
+            try {
+                Call< ApiResponse > feedbackCall = RestController
+                        .getApi().saveFeedback( AppConstants.AUTH_BEARER
+                                + getUserToken(), feedbackModels[ 0 ] );
+                Response< ApiResponse > responseFeedback = feedbackCall.execute();
+                if ( responseFeedback.body() != null ) {
+                    if ( responseFeedback.body().getStatus() == 200 ) {
+                        result = "Спасибо за Ваш отзыв. Нам очень важно Ваше мнение.";
+                    } else {
+                        result = responseFeedback.body().getMessage();
+                    }
+                } else {
+                    result = getResources().getString( R.string.internal_error );
+                }
+            } catch ( Exception e ) {
+                result = getResources().getString( R.string.internal_error );
+                Log.i( TAG, e.getMessage() );
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute( String result ) {
+            super.onPostExecute( result );
+            ModalMessage.show( getActivity(), "Сообщение", new String[]{ result } );
+            ( new Handler() ).postDelayed( () -> {
+                backPressed();
+            }, 2000 );
+
+        }
     }
 }

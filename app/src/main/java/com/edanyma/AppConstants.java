@@ -148,5 +148,12 @@ public class AppConstants {
         }
     };
 
+    public static final int[] STAR_ARRAY = new int[]{ R.drawable.five_star_00, R.drawable.five_star_05,
+            R.drawable.five_star_10, R.drawable.five_star_15,
+            R.drawable.five_star_20, R.drawable.five_star_25,
+            R.drawable.five_star_30, R.drawable.five_star_35,
+            R.drawable.five_star_40, R.drawable.five_star_45,
+            R.drawable.five_star_50 };
+
 
 }

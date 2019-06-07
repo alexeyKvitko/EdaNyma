@@ -10,13 +10,15 @@ public class FeedbackModel {
 
     private Integer companyId;
 
-    private String rate;
-
-    private double rateValue;
-
     private String feedbackDate;
 
+    private String feedbackTime;
+
     private String person;
+
+    private String personAvatar;
+
+    private Integer rate;
 
     private String comment;
 
@@ -44,6 +46,14 @@ public class FeedbackModel {
         this.feedbackDate = feedbackDate;
     }
 
+    public String getFeedbackTime() {
+        return feedbackTime;
+    }
+
+    public void setFeedbackTime(String feedbackTime) {
+        this.feedbackTime = feedbackTime;
+    }
+
     public String getPerson() {
         return person;
     }
@@ -52,20 +62,20 @@ public class FeedbackModel {
         this.person = person;
     }
 
-    public String getRate() {
+    public String getPersonAvatar() {
+        return personAvatar;
+    }
+
+    public void setPersonAvatar(String personAvatar) {
+        this.personAvatar = personAvatar;
+    }
+
+    public Integer getRate() {
         return rate;
     }
 
-    public void setRate(String rate) {
+    public void setRate(Integer rate) {
         this.rate = rate;
-    }
-
-    public double getRateValue() {
-        return rateValue;
-    }
-
-    public void setRateValue(double rateValue) {
-        this.rateValue = rateValue;
     }
 
     public String getComment() {
@@ -87,4 +97,5 @@ public class FeedbackModel {
     @Override public String toString() {
         return Pojomatic.toString(this);
     }
+
 }

@@ -9,6 +9,7 @@ import com.edanyma.model.CompanyInfoModel;
 import com.edanyma.model.Dishes;
 import com.edanyma.model.ExistOrders;
 import com.edanyma.model.FavoriteCompanyModel;
+import com.edanyma.model.FeedbackModel;
 import com.edanyma.model.LoginUser;
 import com.edanyma.model.OurClientModel;
 
@@ -25,15 +26,17 @@ import retrofit2.http.Query;
 
 public interface RestApi {
 
-    final String API_COMPANY = "api/company/";
+     String API_COMPANY = "api/company/";
 
-    final String API_CLIENT= "api/client/";
+     String API_CLIENT= "api/client/";
 
-    final String API_CLIENT_ORDER = "api/client/order/";
+     String API_CLIENT_ORDER = "api/client/order/";
 
-    final String API_GEOCODE = "https://geocode-maps.yandex.ru/1.x/";
-    final String API_KEY = "32b33c62-4d72-47a7-92a3-25aedf11e968";
-    final String FORMAT_JSON = "json";
+     String API_FEEDBACK = "api/feedback/";
+
+     String API_GEOCODE = "https://geocode-maps.yandex.ru/1.x/";
+     String API_KEY = "32b33c62-4d72-47a7-92a3-25aedf11e968";
+     String FORMAT_JSON = "json";
 
     @POST("token/generate-token")
     Call< ApiResponse< AuthToken > > register( @Body LoginUser loginUser);
@@ -118,4 +121,7 @@ public interface RestApi {
     Call< ApiResponse< ExistOrders > > getClientOrders( @Header("Authorization") String authorization,
                                                         @Path("uuid") String uuid );
 
+    @POST(API_FEEDBACK+"saveFeedback")
+    Call< ApiResponse > saveFeedback( @Header("Authorization") String authorization,
+                                           @Body FeedbackModel feedbackModel  );
 }

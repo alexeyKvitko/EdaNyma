@@ -5,7 +5,6 @@
     android:id="@+id/feedbackContainerId"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparentToastBackground"
     tools:context=".fragment.CreateFeedbackFragment">
 
     <RelativeLayout
@@ -13,24 +12,40 @@
         android:layout_height="30dp"
         android:background="@color/white"></RelativeLayout>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/feedbackBackBtnId"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        card_view:cardCornerRadius="8dp"
-        card_view:cardElevation="6dp">
+        android:layout_gravity="top|left"
+        android:elevation="10dp"
+        app:srcCompat="@drawable/filter_back_black_btn" />
 
-            <LinearLayout
-                android:id="@+id/feedbackLayoutId"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="8dp"
+            android:layout_marginBottom="6dp"
+            card_view:cardElevation="6dp">
+
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginVertical="16dp"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
                 <LinearLayout
+                    android:id="@+id/feedbackLayoutId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="24dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:orientation="horizontal">
+
                         <ImageView
                             android:id="@+id/feedbackLogoId"
                             android:layout_width="48dp"
@@ -45,97 +60,142 @@
                             android:textColor="@color/splashTextColor"
                             android:textSize="24dp" />
 
-                </LinearLayout>
+                    </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/grayTextColor" />
-
-                <LinearLayout
-                    android:id="@+id/companyInfoReviewId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/grayTextColor" />
 
                     <LinearLayout
+                        android:id="@+id/feedbackReviewId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginTop="8dp"
                         android:orientation="horizontal">
 
-                        <ImageView
-                            android:layout_width="96dp"
-                            android:layout_height="18dp"
-                            android:layout_marginRight="2dp"
-                            app:srcCompat="@drawable/five_star_25" />
-
-                        <TextView
-                            android:id="@+id/feedbackCountId"
-                            style="@style/grayTextSmall"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_marginLeft="6dp"></TextView>
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="96dp"
+                                android:layout_height="18dp"
+                                android:layout_marginRight="2dp"
+                                app:srcCompat="@drawable/five_star_25" />
+
+                            <TextView
+                                android:id="@+id/feedbackCountId"
+                                style="@style/grayTextSmall"
+                                android:layout_width="match_parent"
+                                android:layout_marginLeft="6dp"></TextView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right">
+
+                            <TextView
+                                android:id="@+id/feedbackAllReviewId"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="@string/all_review_btn"
+                                android:textColor="@color/blueNeon"
+                                android:textSize="16dp" />
+                        </LinearLayout>
                     </LinearLayout>
 
-                    <LinearLayout
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/grayTextColor" />
+
+                    <TextView
+                        android:id="@+id/feedbackRaitingTitleId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/rate_label"
+                        android:textColor="@color/splashTextColor"
+                        android:textSize="20dp" />
+
+                    <ImageView
+                        android:id="@+id/feedbackStarsId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="right">
+                        android:layout_marginHorizontal="24dp"
+                        android:layout_marginTop="12dp"
+                        app:srcCompat="@drawable/five_star_00" />
 
-                        <TextView
-                            android:id="@+id/feedbackAllReviewId"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="@string/all_review_btn"
-                            android:textColor="@color/blueNeon"
-                            android:textSize="16dp" />
-                    </LinearLayout>
+                    <com.etiennelawlor.discreteslider.library.ui.DiscreteSlider
+                        android:id="@+id/feedbackSliderId"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:layout_gravity="bottom"
+                        app:backdropFillColor="@color/transpGrayTextColor"
+                        app:backdropStrokeColor="@color/transpGrayTextColor"
+                        app:backdropStrokeWidth="1dp"
+                        app:horizontalBarThickness="1dp"
+                        app:position="0"
+                        app:progressDrawable="@drawable/transparent_progress"
+                        app:thumb="@drawable/ic_empty_star_18dp"
+                        app:tickMarkCount="11"
+                        app:tickMarkRadius="2dp" />
+
+                    <TextView
+                        android:id="@+id/feedbackCommentTitleId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Комментарий"
+                        android:textColor="@color/splashTextColor"
+                        android:textSize="20dp" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/feedbackCommentValueId"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/border_edittext"
+                        android:cursorVisible="true"
+                        android:gravity="top|left"
+                        android:inputType="textMultiLine|textNoSuggestions"
+                        android:lines="8"
+                        android:maxLines="8"
+                        android:minLines="8"
+                        android:padding="8dp"
+                        android:scrollbars="none"
+                        android:textCursorDrawable="@drawable/edit_cursor"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/feedbackErrorFieldId"
+                        style="@style/errorText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/error_required_field"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/feedbackButtonId"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginHorizontal="24dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/button_neon"
+                        android:elevation="6dp"
+                        android:text="Опубликовать"
+                        android:textColor="@android:color/white" />
+
                 </LinearLayout>
+            </ScrollView>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/grayTextColor" />
-                <TextView
-                    android:id="@+id/feedbackRaitingTitleId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/splashTextColor"
-                    android:layout_marginTop="12dp"
-                    android:textSize="20dp"
-                    android:text="@string/rate_label"/>
-                <ImageView
-                    android:id="@+id/feedbackStarsId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginHorizontal="24dp"
-                    app:srcCompat="@drawable/five_star_00"/>
-
-                <com.etiennelawlor.discreteslider.library.ui.DiscreteSlider
-                    android:id="@+id/feedbackSliderId"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_gravity="bottom"
-                    app:backdropFillColor="@color/disableButtonColor"
-                    app:backdropStrokeColor="@color/transpGrayTextColor"
-                    app:backdropStrokeWidth="1dp"
-                    app:horizontalBarThickness="2dp"
-                    app:tickMarkCount="11"
-                    app:tickMarkRadius="4dp"
-                    app:position="0"
-                    app:thumb="@drawable/ic_empty_star_18dp"/>
-
-            </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="24dp"/>
-
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
 </FrameLayout>

@@ -124,10 +124,10 @@ public class CompanyInfoFragment extends BaseFragment implements View.OnClickLis
         }
 
         mAddToFavorite = getView().findViewById( R.id.addToFavButtonId );
-        mAddToFavorite.setOnClickListener( this );
-        getView().findViewById( R.id.dishInfoContainerId ).setOnClickListener( this );
-        getView().findViewById( R.id.favoriteSignInId ).setOnClickListener( this );
-        getView().findViewById( R.id.favoriteSignUpId ).setOnClickListener( this );
+
+        setThisOnClickListener(  R.id.dishInfoContainerId , R.id.favoriteSignInId,
+                R.id.favoriteSignUpId,R.id.addReviewButtonId, R.id.addToFavButtonId,
+                R.id.companyInfoAllReviewId );
     }
 
     private void addToFavorite( final View view ) {
@@ -239,7 +239,17 @@ public class CompanyInfoFragment extends BaseFragment implements View.OnClickLis
         setActionConfirmed( false );
     }
 
+    private void leaveFeedback(){
+        if ( mListener != null ){
+            mListener.onLeaveFeedbackAction( mCompanyModel );
+        }
+    }
 
+    private void viewFeedback(){
+        if ( mListener != null ){
+            mListener.onViewFeedbackAction( mCompanyModel );
+        }
+    }
 
     @Override
     public void onClick( View view ) {
@@ -256,11 +266,22 @@ public class CompanyInfoFragment extends BaseFragment implements View.OnClickLis
             case R.id.favoriteSignUpId:
                 signAction( view, AppConstants.SIGN_UP );
                 break;
+            case R.id.addReviewButtonId:
+                AppUtils.clickAnimation( view );
+                leaveFeedback();
+                break;
+            case R.id.companyInfoAllReviewId:
+                AppUtils.clickAnimation( view );
+                viewFeedback();
+                break;
+
         }
     }
 
     public interface OnSignActionListener {
         void onSignAction( String sign );
+        void onViewFeedbackAction( CompanyModel companyModel );
+        void onLeaveFeedbackAction( CompanyModel companyModel );
     }
 
     private class AddRemoveFavorites extends AsyncTask< Void, Void, String > {

@@ -12,11 +12,14 @@ import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.fragment.CompanyDishFragment;
 import com.edanyma.fragment.CompanyInfoFragment;
+import com.edanyma.fragment.CreateFeedbackFragment;
 import com.edanyma.fragment.DishInfoFragment;
 import com.edanyma.fragment.FilterCompanyDishFragment;
+import com.edanyma.fragment.ViewFeedbackFragment;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyInfoModel;
 import com.edanyma.model.CompanyMenu;
+import com.edanyma.model.CompanyModel;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
@@ -81,31 +84,26 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
 
     @Override
     public void onMoreDishInfo( String companyName, MenuEntityModel dishEntity ) {
-        getHeader().setVisibility( View.GONE );
-        getFooter().setVisibility( View.GONE );
+        setHeaderFooterVisibilty( View.GONE );
         findViewById( R.id.dishContainerId ).setBackground( Drawable.createFromPath( AppUtils.getSnapshotPath() ) );
         addReplaceFragment( DishInfoFragment.newInstance( companyName, dishEntity ), true );
     }
 
     @Override
     public void onMoreCompanyInfo() {
-        getHeader().setVisibility( View.GONE );
-        getFooter().setVisibility( View.GONE );
+        setHeaderFooterVisibilty( View.GONE );
         findViewById( R.id.dishContainerId ).setBackground( Drawable.createFromPath( AppUtils.getSnapshotPath() ) );
         addReplaceFragment( CompanyInfoFragment.newInstance( mCompanyInfo.getCompanyModel() ), false );
     }
 
     @Override
     public void onFilterDishSelect() {
-        getHeader().setVisibility( View.GONE );
-        getFooter().setVisibility( View.GONE );
+        setHeaderFooterVisibilty( View.GONE );
         addReplaceFragment( FilterCompanyDishFragment.newInstance( new CompanyMenu( mCompanyInfo.getMenuTypes() ) ), false );
     }
 
     @Override
-    public void onAddToBasket( MenuEntityModel dishEntity ) {
-
-    }
+    public void onAddToBasket( MenuEntityModel dishEntity ) {}
 
     @Override
     public void onApplyDishFiler() {
@@ -119,6 +117,17 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
         startNewActivity( PersonActivity.class, params );
     }
 
+    @Override
+    public void onLeaveFeedbackAction( CompanyModel companyModel ) {
+        setHeaderFooterVisibilty( View.GONE );
+        addReplaceFragment( CreateFeedbackFragment.newInstance( companyModel ), true );
+    }
+
+    @Override
+    public void onViewFeedbackAction( CompanyModel companyModel ) {
+        getHeader().setVisibility( View.GONE );
+        addReplaceFragment( ViewFeedbackFragment.newInstance( companyModel ), true );
+    }
 
     private class FetchCompanyDishes extends AsyncTask< Void, Void, Void > {
 

@@ -145,15 +145,11 @@
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
-                    <ImageView style="@style/emptyStar" />
-
-                    <ImageView style="@style/emptyStar" />
-
-                    <ImageView style="@style/emptyStar" />
-
-                    <ImageView style="@style/emptyStar" />
-
-                    <ImageView style="@style/emptyStar" />
+                    <ImageView
+                        android:layout_width="96dp"
+                        android:layout_height="18dp"
+                        android:layout_marginRight="2dp"
+                        app:srcCompat="@drawable/five_star_25" />
 
                     <TextView
                         android:id="@+id/companyInfoReviewCountId"
@@ -339,7 +335,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_neon"
                 android:elevation="6dp"
-                android:text="Оставить отзыв"
+                android:text="@string/leave_feedback_btn"
                 android:textColor="@android:color/white" />
 
         </RelativeLayout>

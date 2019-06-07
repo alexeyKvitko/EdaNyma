@@ -256,6 +256,7 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     @Override
     public void onLeaveFeedbackAction() {
         getHeader().setVisibility( View.GONE );
+        getFooter().setVisibility( View.GONE );
         addReplaceFragment( CreateFeedbackFragment.newInstance( getCompanyById( mOrder.getCompanyOneId().toString() ) ) );
     }
 

@@ -42,7 +42,6 @@ public class SignUpFragment extends ConfirmFragment implements View.OnClickListe
     private AppCompatEditText mPassword;
     private AppCompatEditText mConfirmPassword;
 
-
     private TextView mPasswordErrorView;
     private TextView mSignInView;
 
