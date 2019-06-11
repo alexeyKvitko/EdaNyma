@@ -34,7 +34,7 @@ import static com.edanyma.manager.GlobalManager.*;
 
 public class CompanyDishActivity extends BaseActivity implements CompanyDishFragment.OnDishActionListener,
         DishInfoFragment.OnAddToBasketListener, FilterCompanyDishFragment.OnApplyDishFilterListener,
-        CompanyInfoFragment.OnSignActionListener {
+        CompanyInfoFragment.OnSignActionListener, CreateFeedbackFragment.OnShowFeedbacksListener {
 
     private final String TAG = "CompanyDishActivity";
 
@@ -117,6 +117,7 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
         startNewActivity( PersonActivity.class, params );
     }
 
+
     @Override
     public void onLeaveFeedbackAction( CompanyModel companyModel ) {
         setHeaderFooterVisibilty( View.GONE );
@@ -125,9 +126,15 @@ public class CompanyDishActivity extends BaseActivity implements CompanyDishFrag
 
     @Override
     public void onViewFeedbackAction( CompanyModel companyModel ) {
-        getHeader().setVisibility( View.GONE );
+        setHeaderFooterVisibilty( View.GONE );
         addReplaceFragment( ViewFeedbackFragment.newInstance( companyModel ), true );
     }
+
+    @Override
+    public void onShowFeedbacksAction( CompanyModel companyModel ) {
+        onViewFeedbackAction( companyModel );
+    }
+
 
     private class FetchCompanyDishes extends AsyncTask< Void, Void, Void > {
 

@@ -1,6 +1,7 @@
 package com.edanyma.fragment;
 
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,12 +40,13 @@ import static com.edanyma.manager.GlobalManager.getClient;
 import static com.edanyma.manager.GlobalManager.getUserToken;
 
 
-public class CreateFeedbackFragment extends BaseFragment {
+public class CreateFeedbackFragment extends BaseFragment implements View.OnClickListener {
 
     private final String TAG = "CreateFeedbackFragment";
 
     private static final String COMPANY_FEEDBACK = "company_feedback";
 
+    public OnShowFeedbacksListener mListener;
 
     private CompanyModel mCompanyModel;
 
@@ -97,6 +99,8 @@ public class CreateFeedbackFragment extends BaseFragment {
         initTextView( R.id.feedbackRaitingTitleId, AppConstants.B52 );
         initTextView( R.id.feedbackCommentTitleId, AppConstants.B52 );
 
+        initTextView( R.id.feedbackAllReviewId , AppConstants.ROBOTO_CONDENCED);
+
         mRateStar = getView().findViewById( R.id.feedbackStarsId );
         ( ( DiscreteSlider ) getView().findViewById( R.id.feedbackSliderId ) )
                 .setOnDiscreteSliderChangeListener( ( int position ) -> {
@@ -106,13 +110,9 @@ public class CreateFeedbackFragment extends BaseFragment {
 
         mFeedbackComment = initEditText( R.id.feedbackCommentValueId, AppConstants.ROBOTO_CONDENCED );
         mFeedbackError = initTextView( R.id.feedbackErrorFieldId, AppConstants.ROBOTO_CONDENCED );
-        initButton( R.id.feedbackButtonId, AppConstants.ROBOTO_CONDENCED ).setOnClickListener( ( View view ) -> {
-            validateFeedback();
-        } );
-        getView().findViewById( R.id.feedbackBackBtnId ).setOnClickListener( ( View view ) -> {
-            AppUtils.clickAnimation( view );
-            backPressed();
-        } );
+        initButton( R.id.feedbackButtonId, AppConstants.ROBOTO_CONDENCED );
+        getView().findViewById( R.id.feedbackBackBtnId );
+        setThisOnClickListener(  R.id.feedbackAllReviewId, R.id.feedbackButtonId, R.id.feedbackBackBtnId  );
     }
 
 
@@ -164,6 +164,47 @@ public class CreateFeedbackFragment extends BaseFragment {
         ( ( BaseActivity ) getActivity() ).getHeader().setVisibility( View.VISIBLE );
         ( ( BaseActivity ) getActivity() ).getFooter().setVisibility( View.VISIBLE );
         getActivity().onBackPressed();
+    }
+
+    @Override
+    public void onClick( View view ) {
+        AppUtils.clickAnimation( view );
+        switch ( view.getId() ) {
+            case R.id.feedbackButtonId:
+                validateFeedback();
+                break;
+            case  R.id.feedbackBackBtnId:
+                backPressed();
+                break;
+            case R.id.feedbackAllReviewId:
+                if ( mListener != null ){
+                    mListener.onShowFeedbacksAction( mCompanyModel );
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onAttach( Context context ) {
+        super.onAttach( context );
+        if ( context instanceof OnShowFeedbacksListener ) {
+            mListener = ( OnShowFeedbacksListener ) context;
+        } else {
+            throw new RuntimeException( context.toString()
+                    + " must implement OnShowFeedbacksListener" );
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnShowFeedbacksListener {
+        void onShowFeedbacksAction( CompanyModel companyModel );
     }
 
     private class PostFeedback extends AsyncTask< FeedbackModel, Void, String > {

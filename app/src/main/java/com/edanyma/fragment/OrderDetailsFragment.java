@@ -146,6 +146,7 @@ public class OrderDetailsFragment extends BaseFragment implements View.OnClickLi
         int idx = 0;
         for ( MenuEntityModel entity : entities ) {
             mOrderDetailsAdapter.addItem( entity, idx );
+            idx++;
         }
         mOrderDetailsAdapter.hideTrashButton();
     }

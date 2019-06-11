@@ -33,6 +33,7 @@ public abstract class ConvertUtils {
         company.setDayoffWork( companyModel.getDayoffWork() );
         company.setWeekdayWork( companyModel.getWeekdayWork() );
         company.setFavorite( companyModel.isFavorite() );
+        company.setFeedbackRate( companyModel.getFeedbackRate() );
         return company;
     }
     

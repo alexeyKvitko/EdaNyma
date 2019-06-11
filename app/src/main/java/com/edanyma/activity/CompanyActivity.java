@@ -10,13 +10,16 @@ import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.fragment.ChooseCompanyFragment;
 import com.edanyma.fragment.FilterCompanyFragment;
+import com.edanyma.fragment.ViewFeedbackFragment;
 import com.edanyma.model.ActivityState;
+import com.edanyma.model.CompanyModel;
 import com.edanyma.model.FilterModel;
 import com.edanyma.utils.AppUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.edanyma.manager.GlobalManager.getCompanyById;
 import static com.edanyma.manager.GlobalManager.setCompanyFilter;
 
 public class CompanyActivity extends BaseActivity implements ChooseCompanyFragment.OnCompanyChosenListener,
@@ -73,8 +76,14 @@ public class CompanyActivity extends BaseActivity implements ChooseCompanyFragme
     }
 
     @Override
+    public void onFeeedbackClick( String companyId ) {
+        addReplaceFragment( ViewFeedbackFragment.newInstance( getCompanyById( companyId ) ) );
+    }
+
+    @Override
     public void onApplyFilter( FilterModel filterModel ) {
         setCompanyFilter( filterModel );
+        getFooter().setVisibility( View.GONE );
         addReplaceFragment( ChooseCompanyFragment.newInstance( AppConstants.CUSTOM_FILTER ) );
     }
 

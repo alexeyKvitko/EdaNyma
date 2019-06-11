@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
+import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.CompanyLight;
 import com.edanyma.model.CompanyModel;
 import com.edanyma.model.FilterDishModel;
@@ -34,8 +35,8 @@ import static com.edanyma.manager.GlobalManager.*;
 
 
 public class ChooseCompanyFragment extends Fragment implements OwnSearchView.OwnSearchViewListener,
-        CompanyAdapter.CardClickListener,
-        StickyRecyclerView.OnActionHeaderListener {
+        CompanyAdapter.CardClickListener,CompanyAdapter.OnCompanyFeedbackListener,
+                                                StickyRecyclerView.OnActionHeaderListener {
 
     private final String TAG = "ChooseCompanyFragment";
 
@@ -136,6 +137,7 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
             fillCompanyAdapter( getBootstrapModel().getCompanies() );
         }
         mCompanyAdapter.notifyDataSetChanged();
+        mCompanyAdapter.setFeedbackClickListener( this );
     }
 
     private void fillCompanyAdapter( List< CompanyModel > companies ) {
@@ -385,8 +387,16 @@ public class ChooseCompanyFragment extends Fragment implements OwnSearchView.Own
         }
     }
 
+    @Override
+    public void onCompanyFeedbackClick( String companyId ) {
+        if ( mListener != null ) {
+            mListener.onFeeedbackClick( companyId );
+        }
+    }
+
     public interface OnCompanyChosenListener {
         void onCompanyChose( String companyId );
         void onFilterClick();
+        void onFeeedbackClick( String companyId );
     }
 }

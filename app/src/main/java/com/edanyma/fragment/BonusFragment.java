@@ -127,6 +127,7 @@ public class BonusFragment extends BaseFragment {
         int idx = 0;
         for ( BonusModel bonus : bonuses ) {
             mBonusAdapter.addItem( bonus, idx );
+            idx++;
         }
     }
 

@@ -13,6 +13,8 @@ import com.edanyma.model.FeedbackModel;
 import com.edanyma.model.LoginUser;
 import com.edanyma.model.OurClientModel;
 
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -124,4 +126,8 @@ public interface RestApi {
     @POST(API_FEEDBACK+"saveFeedback")
     Call< ApiResponse > saveFeedback( @Header("Authorization") String authorization,
                                            @Body FeedbackModel feedbackModel  );
+
+    @GET(API_FEEDBACK+"getCompanyFeedbacks/{companyId}")
+    Call<ApiResponse< List<FeedbackModel> > > getCompanyFeedbacks( @Header("Authorization") String authorization,
+                                                            @Path("companyId") Integer companyId );
 }

@@ -21,6 +21,7 @@ public class CompanyModel implements Serializable {
     private String logo;
     private Integer delivery;
     private String commentCount;
+    private Integer feedbackRate;
     private String deliveryCondition;
     private Integer deliveryTimeMin;
     private Integer payTypeCash;
@@ -149,6 +150,14 @@ public class CompanyModel implements Serializable {
 
     public void setCommentCount( String commentCount ) {
         this.commentCount = commentCount;
+    }
+
+    public Integer getFeedbackRate() {
+        return feedbackRate;
+    }
+
+    public void setFeedbackRate( Integer feedbackRate ) {
+        this.feedbackRate = feedbackRate;
     }
 
     public String getDeliveryCondition() {

@@ -128,6 +128,10 @@ public class CompanyInfoFragment extends BaseFragment implements View.OnClickLis
         setThisOnClickListener(  R.id.dishInfoContainerId , R.id.favoriteSignInId,
                 R.id.favoriteSignUpId,R.id.addReviewButtonId, R.id.addToFavButtonId,
                 R.id.companyInfoAllReviewId );
+        ImageView feedbackStars = getView().findViewById( R.id.companyInfoFeedbackRateId );
+        feedbackStars.setImageDrawable( getActivity().getResources()
+                    .getDrawable( AppConstants.STAR_ARRAY[ mCompanyModel.getFeedbackRate() ] ) );
+
     }
 
     private void addToFavorite( final View view ) {

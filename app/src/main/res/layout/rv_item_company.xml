@@ -72,27 +72,27 @@
                     android:textSize="14dp" />
 
                 <LinearLayout
+                    android:id="@+id/cardTotalFeedbackId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:gravity="center_vertical"
+                    android:paddingRight="4dp"
+                    android:paddingBottom="4dp"
+                    android:layout_gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <ImageView style="@style/foolStar" />
-
-                    <ImageView style="@style/foolStar" />
-
-                    <ImageView style="@style/foolStar" />
-
-                    <ImageView style="@style/foolStar" />
-
-                    <ImageView style="@style/foolStar" />
+                    <ImageView
+                        android:id="@+id/cardFeedbackCompanyRateId"
+                        android:layout_width="64dp"
+                        android:layout_height="12dp"
+                        android:layout_marginTop="4dp"
+                        app:srcCompat="@drawable/five_star_00" />
 
                     <TextView
                         android:id="@+id/cardCompanyStarId"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="4dp"
                         android:textColor="@color/searchTextColor"
                         android:textSize="14dp" />
                 </LinearLayout>

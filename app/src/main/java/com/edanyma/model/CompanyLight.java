@@ -14,6 +14,7 @@ public class CompanyLight {
     private String deliveryTimeMin;
     private String weekdayWork;
     private String dayoffWork;
+    private Integer feedbackRate;
     private boolean isFavorite;
 
     public String getId() {
@@ -62,6 +63,14 @@ public class CompanyLight {
 
     public void setDeliveryTimeMin( String deliveryTimeMin ) {
         this.deliveryTimeMin = deliveryTimeMin;
+    }
+
+    public Integer getFeedbackRate() {
+        return feedbackRate;
+    }
+
+    public void setFeedbackRate( Integer feedbackRate ) {
+        this.feedbackRate = feedbackRate;
     }
 
     public String getWeekdayWork() {

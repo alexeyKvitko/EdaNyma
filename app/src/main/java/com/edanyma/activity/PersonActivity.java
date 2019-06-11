@@ -26,10 +26,12 @@ import com.edanyma.fragment.OwnMapFragment;
 import com.edanyma.fragment.PersonalAreaFragment;
 import com.edanyma.fragment.SignInFragment;
 import com.edanyma.fragment.SignUpFragment;
+import com.edanyma.fragment.ViewFeedbackFragment;
 import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.ClientOrderModel;
+import com.edanyma.model.CompanyModel;
 import com.edanyma.model.OurClientModel;
 import com.edanyma.owncomponent.ModalDialog;
 import com.edanyma.owncomponent.ModalMessage;
@@ -51,7 +53,7 @@ import static com.edanyma.manager.GlobalManager.setClientLocation;
 public class PersonActivity extends BaseActivity implements SignInFragment.OnSignInListener,
         SignUpFragment.OnSignUpListener, PersonalAreaFragment.OnPersonalAreaActionListener,
         EditProfileFragment.OnEditFragmentActionListener, OrderFragment.OnShowOrderDetailsListener,
-        OrderDetailsFragment.OnLeaveFeedbackListener{
+        OrderDetailsFragment.OnLeaveFeedbackListener,CreateFeedbackFragment.OnShowFeedbacksListener{
 
     private final String TAG = "PersonActivity";
 
@@ -255,9 +257,14 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
 
     @Override
     public void onLeaveFeedbackAction() {
-        getHeader().setVisibility( View.GONE );
-        getFooter().setVisibility( View.GONE );
+        setHeaderFooterVisibilty( View.GONE );
         addReplaceFragment( CreateFeedbackFragment.newInstance( getCompanyById( mOrder.getCompanyOneId().toString() ) ) );
+    }
+
+    @Override
+    public void onShowFeedbacksAction( CompanyModel companyModel ) {
+        setHeaderFooterVisibilty( View.GONE );
+        addReplaceFragment( ViewFeedbackFragment.newInstance( companyModel )  );
     }
 
     private class RemoveOurClient extends AsyncTask< Void, Void, String > {

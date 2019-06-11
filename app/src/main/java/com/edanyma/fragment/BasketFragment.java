@@ -123,6 +123,7 @@ public class BasketFragment extends BaseFragment implements View.OnClickListener
         int idx = 0;
         for ( MenuEntityModel entity : entities ) {
             mBasketAdapter.addItem( entity, idx );
+            idx++;
         }
     }
 

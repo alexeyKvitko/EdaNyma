@@ -116,6 +116,7 @@ public class DishFragment extends BaseFragment implements OwnSearchView.OwnSearc
         for ( MenuEntityModel entity : entities ) {
             entity.setCount( BasketOrderManager.getEntityCountInBasket( entity.getId() ) );
             mDishEntityAdapter.addItem( entity, idx );
+            idx++;
         }
     }
 

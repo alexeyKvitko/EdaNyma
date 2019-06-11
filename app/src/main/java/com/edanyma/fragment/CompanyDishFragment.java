@@ -90,7 +90,9 @@ public class CompanyDishFragment extends BaseFragment implements OwnSearchView.O
         super.onActivityCreated( savedInstanceState );
         mCompanyDish = ( ( CompanyDishActivity ) getActivity() ).getCompanyInfo();
         mSearchMade = false;
-
+        ImageView feedbackStars = getView().findViewById( R.id.companyFeedbackRateId );
+        feedbackStars.setImageDrawable( getActivity().getResources()
+                .getDrawable( AppConstants.STAR_ARRAY[ mCompanyDish.getCompanyModel().getFeedbackRate() ] ) );
         TextView companyTitle = initTextView( R.id.companyDishTitleId, AppConstants.B52,
                 mCompanyDish.getCompanyModel().getDisplayName() );
         companyTitle.setOnClickListener( this );

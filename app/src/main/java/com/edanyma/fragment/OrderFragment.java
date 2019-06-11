@@ -178,6 +178,7 @@ public class OrderFragment extends BaseFragment implements View.OnClickListener,
         for ( ClientOrderModel order : orders ) {
             if ( mOrderStatus.equals( order.getOrderStatus() ) ){
                 mOrderAdapter.addItem( order, idx );
+                idx++;
             }
         }
     }

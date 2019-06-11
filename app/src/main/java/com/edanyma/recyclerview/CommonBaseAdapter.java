@@ -11,17 +11,18 @@ import android.view.ViewGroup;
 import com.edanyma.EdaNymaApp;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CommonBaseAdapter<T> extends  RecyclerView.Adapter< BaseDataObjectHolder >{
 
     private T t;
-    protected ArrayList<T> mItemList;
+    protected List<T> mItemList;
     protected AssetManager mAssetManager;
     protected LruCache<Integer,Bitmap> mImages;
     protected LruCache<Integer, Drawable > mIcons;
     protected static CardClickListener mCardClickListener;
 
-    public CommonBaseAdapter(ArrayList<T> mItemList) {
+    public CommonBaseAdapter( List<T> mItemList) {
         this.mItemList = mItemList;
         mAssetManager = EdaNymaApp.getAppContext().getAssets();
         mImages = new LruCache<>(10);
