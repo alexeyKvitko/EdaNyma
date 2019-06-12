@@ -3,24 +3,22 @@ package com.edanyma.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.fragment.ProfileFragment;
-import com.edanyma.listener.OnSwipeTouchListener;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.model.HomeMenuModel;
@@ -73,7 +71,6 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         initBaseActivity( new ActivityState( AppConstants.HOME_BOTTOM_INDEX ) );
         final MainActivity me = this;
         final ConstraintLayout mainLayout = findViewById( R.id.contentMainLayoutId );
-        findViewById( R.id.swipeLayoutId ).setOnClickListener( null );
         mProfileBtn = findViewById( R.id.navButtonId );
         mProfileBtn.setOnClickListener( ( View view ) -> {
             Animation rotate = AnimationUtils.loadAnimation( me, R.anim.icon_rotation );
