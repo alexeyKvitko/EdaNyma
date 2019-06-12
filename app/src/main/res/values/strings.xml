@@ -157,5 +157,8 @@
     <string name="leave_feedback">Отзыв</string>
     <string name="rate_label">Ваша Оценка</string>
     <string name="leave_feedback_btn">Оставить отзыв</string>
+    <string name="feedback_empty">Отзывов о заведении пока нет.</string>
+    <string name="first_feedback">Оставьте Cвой отзыв, будьте Первым !</string>
+    <string name="message_title">Сообщение</string>
 
 </resources>

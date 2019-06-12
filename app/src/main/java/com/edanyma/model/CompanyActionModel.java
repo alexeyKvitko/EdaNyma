@@ -6,15 +6,12 @@ import org.pojomatic.annotations.AutoProperty;
 @AutoProperty
 public class CompanyActionModel {
 
+
     private String companyName;
     private String actionImgUrl;
+//    936х1680
+    private String fullScreenAction;
 
-    public CompanyActionModel(){}
-
-    public CompanyActionModel( String companyName, String actionImgUrl ) {
-        this.companyName = companyName;
-        this.actionImgUrl = actionImgUrl;
-    }
 
     public String getCompanyName() {
         return companyName;
@@ -32,7 +29,15 @@ public class CompanyActionModel {
         this.actionImgUrl = actionImgUrl;
     }
 
-    @Override public boolean equals(Object o) {
+    public String getFullScreenAction() {
+        return fullScreenAction;
+    }
+
+    public void setFullScreenAction( String fullScreenAction ) {
+        this.fullScreenAction = fullScreenAction;
+    }
+
+    @Override public boolean equals( Object o) {
         return Pojomatic.equals(this, o);
     }
 

@@ -199,10 +199,13 @@ public class ViewFeedbackFragment extends BaseFragment {
             AppUtils.transitionAnimation( getView().findViewById( R.id.pleaseWaitContainerId ),
                     getView().findViewById( R.id.viewFeedbackLayoutId ) );
             if ( result != null ){
-                ModalMessage.show( getActivity(), "Сообщение", new String[] {result} );
+                ModalMessage.show( getActivity(), getActivity().getResources().getString( R.string.message_title)
+                                                                        , new String[] {result} );
             } else {
                 if( mFeedbackModels.size() == 0 ){
-                    ModalMessage.show( getActivity(), "Сообщение", new String[] {"К сожалению, отзывов нет.","Оставьте свой отзыв, будьте Первым !"} );
+                    ModalMessage.show( getActivity(), getActivity().getResources().getString( R.string.message_title),
+                            new String[] { getActivity().getResources().getString( R.string.feedback_empty),
+                            getActivity().getResources().getString( R.string.first_feedback)} );
                     getActivity().onBackPressed();
                 } else {
                     startRecView();
