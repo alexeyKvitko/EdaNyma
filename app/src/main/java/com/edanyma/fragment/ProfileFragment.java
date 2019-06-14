@@ -45,6 +45,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     private OnProfileFrafmentListener mListener;
 
+    private RelativeLayout mSnapshotLayout;
+
     public ProfileFragment() {
     }
 
@@ -67,11 +69,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
-        final RelativeLayout snapshotLayout = getView().findViewById( R.id.snapShotLayoutId );
-        snapshotLayout.setBackground( Drawable.createFromPath( AppUtils.getSnapshotPath() ) );
-        snapshotLayout.setOnClickListener( ( View view ) -> {
-            backAnimateSnapShotLayout( snapshotLayout );
-        } );
+        mSnapshotLayout = getView().findViewById( R.id.snapShotLayoutId );
+        mSnapshotLayout.setBackground( Drawable.createFromPath( AppUtils.getSnapshotPath() ) );
         if ( isSignedIn() ) {
             int avatarLayoutVisibility = View.GONE;
             LinearLayout avatarLayout = getView().findViewById( R.id.profileLayoutAvatarId );
@@ -98,19 +97,15 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         initTextView( R.id.profileDiscountId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.profileSupportId, AppConstants.ROBOTO_CONDENCED );
 
-        animateSnapShotLayout( snapshotLayout );
+        animateSnapShotLayout( mSnapshotLayout );
         setMainContainerVisibility( View.GONE );
-        getView().findViewById( R.id.profileBackBtnId ).setOnClickListener( ( View view ) -> {
-            AppUtils.clickAnimation( view );
-            backAnimateSnapShotLayout( snapshotLayout );
-        } );
         if ( isSignedIn() ) {
             swithVisibilityOnSignIn( View.GONE, View.VISIBLE );
         } else {
             swithVisibilityOnSignIn( View.VISIBLE, View.GONE );
         }
         setThisOnClickListener( R.id.profileBasketId, R.id.profileSignInId, R.id.profileSignUpId,
-                R.id.profilePersonalAreaId );
+                R.id.profilePersonalAreaId, R.id.profileBackBtnId, R.id.snapShotLayoutId, R.id.profileGiftId );
 
     }
 
@@ -220,6 +215,13 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             case R.id.profileBasketId:
                 mListener.onProfileFragmentBasket();
                 break;
+            case R.id.profileBackBtnId:
+            case R.id.snapShotLayoutId:
+                backAnimateSnapShotLayout( mSnapshotLayout );
+            break;
+            case R.id.profileGiftId:{
+                mListener.onProfileFragmentPromoion();
+            }
         }
     }
 
@@ -228,5 +230,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         void onProfileFragmentSignIn();
         void onProfileFragmentSignUp();
         void onProfileFragmentBasket();
+        void onProfileFragmentPromoion();
     }
 }

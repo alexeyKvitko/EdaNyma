@@ -160,5 +160,6 @@
     <string name="feedback_empty">Отзывов о заведении пока нет.</string>
     <string name="first_feedback">Оставьте Cвой отзыв, будьте Первым !</string>
     <string name="message_title">Сообщение</string>
+    <string name="promotion">Акции</string>
 
 </resources>

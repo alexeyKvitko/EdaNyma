@@ -122,6 +122,9 @@ public class AppConstants {
     public static final String PAY_TYPE_CARD = "CARD";
     public static final String PAY_TYPE_WALLET = "WALLET";
 
+    public static final String PROMOTION_DESKTOP = "0";
+    public static final String PROMOTION_FRAGMENT = "1";
+
 
     public static final int BASKET_IMAGE_WIDTH = ( int ) ConvertUtils.convertDpToPixel( 66 );
     public static final int BASKET_IMAGE_HEIGHT = ( int ) ConvertUtils.convertDpToPixel( 66 );

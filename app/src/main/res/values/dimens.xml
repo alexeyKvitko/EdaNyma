@@ -8,8 +8,11 @@
     <dimen name="dp_7_offset">7dp</dimen>
     <dimen name="stream_item_title">18sp</dimen>
     <dimen name="card_elevation">3dp</dimen>
-    <dimen name="card_corner_radius">2dp</dimen>
     <dimen name="fragment_margin_top">48dp</dimen>
     <dimen name="fragment_margin_bottom">48dp</dimen>
-
+    <dimen name="recycler_view_left_offset">9dp</dimen>
+    <dimen name="left_offset">61dp</dimen>
+    <dimen name="card_width">148dp</dimen>
+    <dimen name="card_corner_radius">2dp</dimen>
+    <dimen name="slide_card_corner_radius">10dp</dimen>
 </resources>

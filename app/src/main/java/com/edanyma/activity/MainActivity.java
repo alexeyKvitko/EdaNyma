@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,7 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.fragment.ProfileFragment;
+import com.edanyma.fragment.PromotionFragment;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.model.HomeMenuModel;
@@ -78,9 +80,8 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
             PixelShot.of( mainLayout ).setResultListener( me ).save();
         } );
         mContext = this;
-        List< CompanyActionModel > companyActionModels = getBootstrapModel()
-                .getCompanyActions();
-        fillActionAdapter( companyActionModels );
+        fillActionAdapter( getBootstrapModel()
+                .getCompanyActions() );
         fillHomeMenuAdapter( getHomeMenus() );
         initRecyclerView();
     }
@@ -130,8 +131,12 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         if ( mActionAdapter == null ) {
             mActionAdapter = new CompanyActionAdapter( new ArrayList< CompanyActionModel >() );
         }
-        for ( int i = 0; i < actions.size(); i++ ) {
-            mActionAdapter.addItem( actions.get( i ), i );
+        int idx = 0;
+        for (CompanyActionModel action : actions ) {
+            if ( AppConstants.PROMOTION_DESKTOP.equals( action.getFullScreenAction() )){
+                mActionAdapter.addItem( action, idx );
+                idx++;
+            }
         }
     }
 
@@ -325,13 +330,21 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         }
     }
 
-    public void showProfileFragment() {
+    protected void addReplaceFragment( Fragment newFragment ) {
         findViewById( R.id.profileFragmentContainerId ).setVisibility( View.VISIBLE );
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations( R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out );
-        mProfileFragment = ProfileFragment.newInstance();
-        fragmentTransaction.add( R.id.profileFragmentContainerId, mProfileFragment );
+        if ( getSupportFragmentManager().getFragments().size() == 0 ) {
+            fragmentTransaction.add( R.id.profileFragmentContainerId, newFragment );
+        } else {
+            fragmentTransaction.replace( R.id.profileFragmentContainerId, newFragment );
+            fragmentTransaction.addToBackStack( null );
+        }
         fragmentTransaction.commit();
+    }
+
+    public void showProfileFragment() {
+        addReplaceFragment( ProfileFragment.newInstance() );
     }
 
     @Override
@@ -358,6 +371,11 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
     @Override
     public void onProfileFragmentBasket() {
         startBasketActivity();
+    }
+
+    @Override
+    public void onProfileFragmentPromoion() {
+        addReplaceFragment( PromotionFragment.newInstance() );
     }
 
     private class SliderJob implements Runnable {

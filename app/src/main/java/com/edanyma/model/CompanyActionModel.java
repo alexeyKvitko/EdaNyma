@@ -6,12 +6,18 @@ import org.pojomatic.annotations.AutoProperty;
 @AutoProperty
 public class CompanyActionModel {
 
-
+    private Integer companyId;
     private String companyName;
     private String actionImgUrl;
-//    936х1680
     private String fullScreenAction;
 
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId( Integer companyId ) {
+        this.companyId = companyId;
+    }
 
     public String getCompanyName() {
         return companyName;
