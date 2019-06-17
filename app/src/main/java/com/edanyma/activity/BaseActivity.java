@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Handler;
+
+import androidx.core.app.NavUtils;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
@@ -80,27 +82,24 @@ public abstract class BaseActivity extends AppCompatActivity
         mBasketPriceText.setTypeface( AppConstants.OFFICE, Typeface.BOLD );
     }
 
+    protected void removeAllFragments(){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        for ( int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++ ) {
+            getSupportFragmentManager().popBackStackImmediate();
+        }
+        for ( Fragment removedFragment : getSupportFragmentManager().getFragments() ) {
+            fragmentTransaction.remove( removedFragment );
+        }
+        fragmentTransaction.commit();
+    }
+
     @Override
     public void onBackPressed() {
         if ( FINISH_ACTIVITY ) {
             mDrawer.setVisibility( View.GONE );
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            for ( int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++ ) {
-                getSupportFragmentManager().popBackStackImmediate();
-            }
-            for ( Fragment removedFragment : getSupportFragmentManager().getFragments() ) {
-                fragmentTransaction.remove( removedFragment );
-            }
-            fragmentTransaction.commit();
-//            ActivityManager activityManager = ( ActivityManager ) EdaNymaApp.getAppContext()
-//                    .getSystemService( EdaNymaApp.getAppContext().ACTIVITY_SERVICE );
-//            List< ActivityManager.RunningTaskInfo > runningTaskInfoList = activityManager.getRunningTasks( 10 );
-//            Iterator< ActivityManager.RunningTaskInfo > itr = runningTaskInfoList.iterator();
-//            while ( itr.hasNext() ) {
-//                ActivityCompat.finishAffinity( this );
-//            }
-            System.exit( 0 );
-
+            removeAllFragments();
+//            System.exit( 0 );
+            NavUtils.navigateUpFromSameTask( this );
         }
         mFastClickCount++;
         new Handler().postDelayed( new Runnable() {
@@ -310,7 +309,7 @@ public abstract class BaseActivity extends AppCompatActivity
             startNewActivity( BasketActivity.class );
             mShowBasket = false;
         } else if ( this instanceof MainActivity ) {
-            ( ( MainActivity ) this ).showProfileFragment();
+            ( ( MainActivity ) this ).startNavigationActivity();
         }
     }
 

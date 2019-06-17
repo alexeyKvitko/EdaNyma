@@ -98,7 +98,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         initTextView( R.id.profileSupportId, AppConstants.ROBOTO_CONDENCED );
 
         animateSnapShotLayout( mSnapshotLayout );
-        setMainContainerVisibility( View.GONE );
         if ( isSignedIn() ) {
             swithVisibilityOnSignIn( View.GONE, View.VISIBLE );
         } else {
@@ -109,10 +108,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     }
 
-    private void setMainContainerVisibility( int visibility ) {
-        ( ( MainActivity ) getActivity() ).setHeaderFooterVisibilty( visibility );
-        getActivity().findViewById( R.id.contentMainLayoutId ).setVisibility( visibility );
-    }
 
     private void swithVisibilityOnSignIn( int signInVisibility, int profileVisibility ) {
         getView().findViewById( R.id.profileSignHeaderId ).setVisibility( signInVisibility );
@@ -135,11 +130,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        setMainContainerVisibility( View.VISIBLE );
-        getActivity().findViewById( R.id.profileFragmentContainerId ).setVisibility( View.GONE );
-        getActivity().findViewById( R.id.contentMainLayoutId )
-                .setBackground( EdaNymaApp.getAppContext().getResources()
-                        .getDrawable( R.drawable.main_background_light ) );
     }
 
     private void animateSnapShotLayout( final RelativeLayout snapShotLayout ) {
@@ -176,9 +166,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         final FrameLayout.LayoutParams layoutParams = ( FrameLayout.LayoutParams ) snapShotLayout.getLayoutParams();
         final int end = -( int ) ConvertUtils.convertDpToPixel( 0 );
         ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), ( int ) DECOR_LEFT_MARGIN, end );
-        valAnimator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate( ValueAnimator animator ) {
+        valAnimator.addUpdateListener( ( ValueAnimator animator ) -> {
                 float val = ( ( Integer ) animator.getAnimatedValue() ).floatValue();
                 int margin = ( int ) ( val * MARGIN_RATIO );
                 layoutParams.leftMargin = ( int ) val;
@@ -192,7 +180,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
                 if ( ( int ) val == end && getActivity() != null ) {
                     getActivity().onBackPressed();
                 }
-            }
         } );
         valAnimator.setDuration( 200 );
         valAnimator.start();

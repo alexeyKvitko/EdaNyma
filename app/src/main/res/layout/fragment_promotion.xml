@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_background_light"
+    android:layout_marginBottom="48dp"
     android:clipChildren="false"
     android:orientation="vertical">
 
@@ -16,6 +17,8 @@
         app:srcCompat="@drawable/filter_back_black_btn" />
 
     <LinearLayout
+        app:layout_constraintTop_toTopOf="@+id/orderBackBtnId"
+        android:layout_marginTop="32dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -24,15 +27,14 @@
             android:id="@+id/promotionTitleId"
             style="@style/splashText"
             android:layout_marginLeft="32dp"
-            android:layout_marginTop="36dp"
             android:text="@string/promotion" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/promotionRVId"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="12dp"
             android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="16dp"
             android:overScrollMode="ifContentScrolls" />
     </LinearLayout>
 

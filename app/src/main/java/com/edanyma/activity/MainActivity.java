@@ -11,16 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
+import com.edanyma.fragment.BaseFragment;
 import com.edanyma.fragment.ProfileFragment;
-import com.edanyma.fragment.PromotionFragment;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.model.HomeMenuModel;
@@ -39,8 +37,7 @@ import java.util.Map;
 import static com.edanyma.manager.GlobalManager.getBootstrapModel;
 import static com.edanyma.manager.GlobalManager.getHomeMenus;
 
-public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardClickListener,
-        ProfileFragment.OnProfileFrafmentListener, PixelShot.PixelShotListener {
+public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardClickListener, PixelShot.PixelShotListener {
 
     private final String TAG = "MainActivity";
 
@@ -59,7 +56,7 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
     private SliderJob mSliderJob;
     private Context mContext;
     private ImageView mProfileBtn;
-    private ProfileFragment mProfileFragment;
+    private BaseFragment mProfileFragment;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -330,53 +327,10 @@ public class MainActivity extends BaseActivity implements HomeMenuAdapter.CardCl
         }
     }
 
-    protected void addReplaceFragment( Fragment newFragment ) {
-        findViewById( R.id.profileFragmentContainerId ).setVisibility( View.VISIBLE );
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations( R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out );
-        if ( getSupportFragmentManager().getFragments().size() == 0 ) {
-            fragmentTransaction.add( R.id.profileFragmentContainerId, newFragment );
-        } else {
-            fragmentTransaction.replace( R.id.profileFragmentContainerId, newFragment );
-            fragmentTransaction.addToBackStack( null );
-        }
-        fragmentTransaction.commit();
+    public void startNavigationActivity() {
+        startNewActivity( NavigationActivity.class );
     }
 
-    public void showProfileFragment() {
-        addReplaceFragment( ProfileFragment.newInstance() );
-    }
-
-    @Override
-    public void onBackPressed() {
-        if ( getSupportFragmentManager().getFragments().size() > 1 ) {
-            getSupportFragmentManager().beginTransaction().remove( mProfileFragment ).commit();
-            return;
-        }
-        super.onBackPressed();
-    }
-
-    @Override
-    public void onProfileFragmentSignIn() {
-        startNewActivity( PersonActivity.class );
-    }
-
-    @Override
-    public void onProfileFragmentSignUp() {
-        Map< String, String > params = new HashMap<>();
-        params.put( AppConstants.SIGN_TYPE, AppConstants.SIGN_UP );
-        startNewActivity( PersonActivity.class, params );
-    }
-
-    @Override
-    public void onProfileFragmentBasket() {
-        startBasketActivity();
-    }
-
-    @Override
-    public void onProfileFragmentPromoion() {
-        addReplaceFragment( PromotionFragment.newInstance() );
-    }
 
     private class SliderJob implements Runnable {
         @Override

@@ -14,6 +14,7 @@ import com.edanyma.R;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.recyclerview.PromotionAdapter;
 import com.edanyma.recyclerview.manager.VegaLayoutManager;
+import com.edanyma.utils.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,9 @@ public class PromotionFragment extends BaseFragment {
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         initTextView( R.id.promotionTitleId, AppConstants.B52 );
+        getView().findViewById( R.id.orderBackBtnId ).setOnClickListener( ( View view ) -> {
+            getActivity().onBackPressed();
+        } );
     }
 
     private void initRecView() {
