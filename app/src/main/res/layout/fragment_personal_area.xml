@@ -24,7 +24,7 @@
         <TextView
             android:id="@+id/personalTitleId"
             style="@style/splashText"
-            android:layout_marginLeft="56dp"
+            android:layout_marginStart="56dp"
             android:layout_marginTop="16dp"
             android:text="@string/personal_area_title" />
 
@@ -90,7 +90,7 @@
                     android:id="@+id/avatarNameId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:textSize="20dp" />
 
                 <TextView
@@ -98,7 +98,7 @@
                     style="@style/grayTextSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp" />
 
                 <TextView
@@ -106,7 +106,7 @@
                     style="@style/blueNeonLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
                     android:background="@drawable/border_neon_radius"
                     android:drawableLeft="@drawable/ic_logout_black_18dp"
@@ -122,7 +122,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/avatarLayoutId"
-            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="12dp"
             android:text="@string/select"
             android:textColor="@color/splashTextColor"

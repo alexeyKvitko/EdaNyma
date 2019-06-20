@@ -18,7 +18,7 @@
                 android:theme="@style/editTextTheme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="42dp"
+                android:layout_marginEnd="42dp"
                 android:focusable="false"
                 app:queryBackground="@null"
                 app:iconifiedByDefault="false">

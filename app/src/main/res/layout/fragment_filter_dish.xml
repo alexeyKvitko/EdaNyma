@@ -9,14 +9,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="478dp"
-        android:layout_marginLeft="210dp"
+        android:layout_marginStart="210dp"
         android:layout_marginTop="81dp"
         android:background="@drawable/border_neon_18"/>
     <RelativeLayout
         android:id = "@+id/snapShotDishLayoutId"
         android:layout_width="360dp"
         android:layout_height="640dp"
-        android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="-24dp"/>
     <ImageView
         android:id="@+id/filterAllDishesBackBtnId"
@@ -32,7 +32,7 @@
             android:id="@+id/filterAllDishesMenuId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
             android:layout_marginBottom="26dp"
             android:orientation="vertical">
             <TextView
@@ -44,7 +44,7 @@
                 android:text="@string/filter_title"/>
             <TextView
                 android:id="@+id/filterAllDishesTextId"
-                android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,18 +55,18 @@
                 android:id="@+id/filterDishesListId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp"
                 android:orientation="vertical">
             </LinearLayout>
             <TextView
                 style="@style/lightNeonTextSmall"
                 android:id="@+id/filterBtnShowAllDishesId"
-                android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp"
                 android:paddingTop="4dp"
                 android:background="@drawable/border_bottom"/>
             <TextView
                 android:id="@+id/filterCompanyTextId"
-                android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,13 +77,13 @@
                 android:id="@+id/filterCompanyListId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp"
                 android:orientation="vertical">
             </LinearLayout>
             <TextView
                 style="@style/lightNeonTextSmall"
                 android:id="@+id/filterBtnShowAllCompanyId"
-                android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp"
                 android:paddingTop="4dp"
                 android:background="@drawable/border_bottom"/>
 

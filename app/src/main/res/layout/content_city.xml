@@ -25,7 +25,7 @@
         <TextView
             android:id="@+id/cityTitleId"
             style="@style/cityTitleText"
-            android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             android:text="@string/city_place" />
 

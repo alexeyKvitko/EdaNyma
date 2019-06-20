@@ -29,7 +29,7 @@ public class CompanyActionAdapter extends CommonBaseAdapter< CompanyActionModel 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate( R.layout.rv_item_action, parent, false);
         CompanyActionDataObjectHolder dataObjectHolder = new CompanyActionDataObjectHolder( view );
-        mAssetManager =  parent.getContext().getAssets();
+
         return dataObjectHolder;
     }
 

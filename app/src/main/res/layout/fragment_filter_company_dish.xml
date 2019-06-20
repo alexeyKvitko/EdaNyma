@@ -9,14 +9,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="478dp"
-        android:layout_marginLeft="210dp"
+        android:layout_marginStart="210dp"
         android:layout_marginTop="81dp"
         android:background="@drawable/border_neon_18"/>
     <RelativeLayout
         android:id = "@+id/decorLayoutId"
         android:layout_width="360dp"
         android:layout_height="640dp"
-        android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="-24dp"/>
     <ImageView
         android:id="@+id/filterBackBtnId"
@@ -32,7 +32,7 @@
             android:id="@+id/filterCompanyMenuId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
 
             android:orientation="vertical">
             <TextView

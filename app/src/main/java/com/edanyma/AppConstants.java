@@ -126,12 +126,16 @@ public class AppConstants {
     public static final String PROMOTION_FRAGMENT = "1";
 
 
+
     public static final int BASKET_IMAGE_WIDTH = ( int ) ConvertUtils.convertDpToPixel( 66 );
     public static final int BASKET_IMAGE_HEIGHT = ( int ) ConvertUtils.convertDpToPixel( 66 );
 
     public static final int BASKET_HEADER_HEIGHT = ( int ) ConvertUtils.convertDpToPixel( 56 );
     public static final int BASKET_ROW_HEIGHT = ( int ) ConvertUtils.convertDpToPixel( 112 );
     public static final int ANIMATION_DUARATION = 300;
+
+    public static final int FHD_HEIGHT = 1920;
+
 
     public static final Map< String, String > PAY_TYPES = new LinkedHashMap< String, String >() {
         {

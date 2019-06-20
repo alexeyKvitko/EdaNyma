@@ -26,7 +26,7 @@
         <TextView
             android:id="@+id/orderTitleId"
             style="@style/splashText"
-            android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="12dp"
             android:text="@string/order_title" />
 
@@ -51,13 +51,13 @@
                 <TextView
                     android:id="@+id/orderStatusSuccesId"
                     style="@style/selectorText"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:text="@string/order_status_succes" />
 
                 <TextView
                     android:id="@+id/orderStatusDeclineId"
                     style="@style/selectorText"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:text="@string/order_status_decline" />
             </LinearLayout>
 

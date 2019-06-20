@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/confirmCodeTitleId"
         style="@style/splashText"
-        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:text="@string/confirm_code_title" />
 
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
         android:text="@string/sending_confirmation_code"/>
 
     <LinearLayout
@@ -32,7 +32,7 @@
         android:layout_marginHorizontal="60dp"
         android:layout_marginTop="36dp">
         <RelativeLayout
-            android:layout_marginRight="4dp"
+            android:layout_marginEnd="4dp"
             android:layout_width="54dp"
             android:layout_height="62dp"
             android:background="@drawable/gray_r12">

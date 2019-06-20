@@ -24,7 +24,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="left|top"
-                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="0dp"
                 app:srcCompat="@drawable/ic_favorite_enable_24dp" />
 
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
                 android:layout_weight="4.5"
                 android:orientation="vertical">
 
@@ -92,7 +92,7 @@
                         android:id="@+id/cardCompanyStarId"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
+                        android:layout_marginStart="4dp"
                         android:textColor="@color/searchTextColor"
                         android:textSize="14dp" />
                 </LinearLayout>
@@ -102,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp"
                 android:layout_weight="5.5"
                 android:gravity="right"
                 android:orientation="vertical">

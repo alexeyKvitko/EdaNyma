@@ -19,12 +19,12 @@
             android:orientation="vertical">
             <TextView
                 style="@style/finishOrderTitle"
-                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
                 android:id="@+id/finishTitleRowOneId"
                 android:text="@string/splash_crimean"/>
             <TextView
                 style="@style/finishOrderTitle"
-                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
                 android:id="@+id/finishTitleRowTwoId"
                 android:text="@string/splash_service"/>
         </LinearLayout>
@@ -32,12 +32,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="24dp"
+            android:layout_marginEnd="24dp"
             android:layout_weight="6">
             <ImageView
                 android:layout_width="72dp"
                 android:layout_height="72dp"
-                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
                 app:srcCompat="@drawable/avatar"/>
         </LinearLayout>
 

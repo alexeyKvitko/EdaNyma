@@ -30,7 +30,7 @@
     <style name="dishTitleText">
         <item name="android:textSize">18dp</item>
         <item name="android:layout_marginTop">50dp</item>
-        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginStart">20dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
@@ -47,7 +47,7 @@
     <style name="dishCountText">
         <item name="android:textSize">10dp</item>
         <item name="android:layout_marginTop">68dp</item>
-        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginStart">20dp</item>
         <item name="android:textColor">@color/grayTextColor</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -65,13 +65,13 @@
         <item name="android:textColor">@color/splashTextColor</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">24dp</item>
+        <item name="android:layout_marginStart">24dp</item>
     </style>
 
     <style name="deliveryAddress">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:textSize">16dp</item>
         <item name="android:textColor">@color/iconGrayColor</item>
@@ -139,7 +139,7 @@
     </style>
 
     <style name="emptyStar">
-        <item name="android:layout_marginRight">2dp</item>
+        <item name="android:layout_marginEnd">2dp</item>
         <item name="srcCompat">@drawable/ic_empty_star_18dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -182,7 +182,7 @@
     <style name="wspContainer">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_weight">1</item>
         <item name="android:background">@drawable/border_disable_r18</item>
@@ -227,7 +227,7 @@
 
     <style name="errorText" parent="TextAppearance.AppCompat.Small">
         <item name="android:textSize">10dp</item>
-        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginStart">4dp</item>
         <item name="android:layout_marginTop">-4dp</item>
         <item name="android:textColor">@color/error_color</item>
     </style>
@@ -241,7 +241,7 @@
         <item name="android:layout_width">12dp</item>
         <item name="android:layout_height">12dp</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
         <item name="srcCompat">@drawable/ic_fool_star_18dp</item>
     </style>
 

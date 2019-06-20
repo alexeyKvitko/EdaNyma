@@ -1,6 +1,7 @@
 package com.edanyma.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,6 @@ import com.edanyma.R;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.recyclerview.PromotionAdapter;
 import com.edanyma.recyclerview.manager.VegaLayoutManager;
-import com.edanyma.utils.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +22,12 @@ import java.util.List;
 import static com.edanyma.manager.GlobalManager.getBootstrapModel;
 
 
-public class PromotionFragment extends BaseFragment {
+public class PromotionFragment extends BaseFragment implements PromotionAdapter.OnPromotionClickListener {
 
     private RecyclerView mPromotionRecView;
     private PromotionAdapter mPromotionAdapter;
+
+    public OnShowPromotionCompanyListener mListener;
 
     public PromotionFragment() {}
 
@@ -71,6 +73,7 @@ public class PromotionFragment extends BaseFragment {
         if ( mPromotionAdapter == null ) {
             fillPromotionAdapter( getBootstrapModel().getCompanyActions() );
         }
+        mPromotionAdapter.setOnPromotionClickListener( this );
         mPromotionAdapter.notifyDataSetChanged();
     }
 
@@ -87,6 +90,23 @@ public class PromotionFragment extends BaseFragment {
                 idx++;
             }
         }
+    }
+
+    @Override
+    public void onAttach( Context context ) {
+        super.onAttach( context );
+        if ( context instanceof OnShowPromotionCompanyListener ) {
+            mListener = ( OnShowPromotionCompanyListener ) context;
+        } else {
+            throw new RuntimeException( context.toString()
+                    + " must implement OnShowPromotionCompanyListener" );
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
 
@@ -107,4 +127,14 @@ public class PromotionFragment extends BaseFragment {
         mPromotionAdapter = null;
     }
 
+    @Override
+    public void onPromotionClick( Integer companyId ) {
+        if( mListener != null ){
+            mListener.onShowPromotionAction( companyId );
+        }
+    }
+
+    public interface OnShowPromotionCompanyListener {
+        void onShowPromotionAction(  Integer companyId );
+    }
 }

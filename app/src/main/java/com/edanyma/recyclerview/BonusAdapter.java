@@ -34,7 +34,7 @@ public class BonusAdapter extends CommonBaseAdapter< BonusModel > {
         View view = LayoutInflater.from( parent.getContext() )
                 .inflate( R.layout.rv_item_bonus, parent, false );
         BonusAdapter.BonusDataObjectHolder dataObjectHolder = new BonusAdapter.BonusDataObjectHolder( view );
-        mAssetManager = parent.getContext().getAssets();
+
         return dataObjectHolder;
     }
 

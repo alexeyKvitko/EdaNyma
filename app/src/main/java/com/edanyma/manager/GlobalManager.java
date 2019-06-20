@@ -34,6 +34,8 @@ public class GlobalManager {
     private static boolean animationInProgess;
     private static ClientLocationModel mClientLocationModel;
 
+    private static float displayRatio;
+
     private GlobalManager() {
     }
 
@@ -254,5 +256,13 @@ public class GlobalManager {
 
     public static void setClientOrders( ExistOrders clientOrders ) {
         GlobalManager.clientOrders = clientOrders;
+    }
+
+    public static float getDisplayRatio() {
+        return displayRatio;
+    }
+
+    public static void setDisplayRatio( float displayRatio ) {
+        GlobalManager.displayRatio = displayRatio;
     }
 }

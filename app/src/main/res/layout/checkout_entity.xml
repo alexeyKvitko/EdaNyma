@@ -8,7 +8,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="64dp"
         android:layout_height="86dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_gravity="right|center_vertical"
         app:cardBackgroundColor="@color/blueNeon"
         card_view:cardCornerRadius="8dp"
@@ -17,7 +17,7 @@
             android:id="@+id/checkOutRemoveDishId"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginRight="12dp"
+            android:layout_marginEnd="12dp"
             android:layout_gravity="right|center_vertical"
             app:srcCompat="@drawable/ic_trash_white_24dp"/>
     </androidx.cardview.widget.CardView>
@@ -31,7 +31,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="88dp"
             android:layout_height="86dp"
-            android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp"
             android:layout_gravity="left|center_vertical"
             card_view:cardCornerRadius="8dp"
             card_view:cardElevation="7dp">
@@ -47,9 +47,9 @@
             android:id="@+id/checkOutCardId"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="36dp"
+            android:layout_marginStart="36dp"
             android:layout_marginTop="4dp"
-            android:layout_marginRight="6dp"
+            android:layout_marginEnd="6dp"
             android:layout_marginBottom="8dp"
             card_view:cardCornerRadius="8dp"
             card_view:cardElevation="6dp">
@@ -63,9 +63,9 @@
                     android:id="@+id/checkOutTitleTextId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="64dp"
+                    android:layout_marginStart="64dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:textColor="@color/primaryTextColor"
@@ -74,7 +74,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="64dp"
+                    android:layout_marginStart="64dp"
                     android:layout_marginTop="8dp">
 
                     <TextView
@@ -89,7 +89,7 @@
                     <LinearLayout
                         android:layout_width="84dp"
                         android:layout_height="24dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginEnd="16dp"
                         android:background="@drawable/border_disable_r18"
                         android:orientation="horizontal">
 
@@ -127,7 +127,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="62dp"
+                    android:layout_marginStart="62dp"
                     android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
@@ -158,7 +158,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
                         android:gravity="right"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginEnd="16dp"
                         android:orientation="horizontal">
 
                         <TextView

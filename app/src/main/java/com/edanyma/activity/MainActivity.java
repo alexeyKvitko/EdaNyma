@@ -18,7 +18,6 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.fragment.BaseFragment;
-import com.edanyma.fragment.ProfileFragment;
 import com.edanyma.model.ActivityState;
 import com.edanyma.model.CompanyActionModel;
 import com.edanyma.model.HomeMenuModel;

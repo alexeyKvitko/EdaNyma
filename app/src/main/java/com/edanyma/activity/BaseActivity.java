@@ -11,6 +11,7 @@ import androidx.core.app.NavUtils;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -82,7 +83,7 @@ public abstract class BaseActivity extends AppCompatActivity
         mBasketPriceText.setTypeface( AppConstants.OFFICE, Typeface.BOLD );
     }
 
-    protected void removeAllFragments(){
+    protected void removeAllFragments() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         for ( int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++ ) {
             getSupportFragmentManager().popBackStackImmediate();
@@ -98,8 +99,10 @@ public abstract class BaseActivity extends AppCompatActivity
         if ( FINISH_ACTIVITY ) {
             mDrawer.setVisibility( View.GONE );
             removeAllFragments();
-//            System.exit( 0 );
-            NavUtils.navigateUpFromSameTask( this );
+            new Handler().postDelayed( () -> {
+                System.exit( 0 );
+            }, 200 );
+            return;
         }
         mFastClickCount++;
         new Handler().postDelayed( new Runnable() {
@@ -145,7 +148,7 @@ public abstract class BaseActivity extends AppCompatActivity
                 startNewActivity( PersonActivity.class );
                 break;
             case R.id.navigation_basket:
-                startBasketActivity( );
+                startBasketActivity();
                 break;
             case R.id.navButtonCityId:
                 startCityActivity( view );
@@ -174,7 +177,7 @@ public abstract class BaseActivity extends AppCompatActivity
 //        overridePendingTransition( R.anim.act_fade_in, R.anim.act_fade_out );
     }
 
-    public void setHeaderFooterVisibilty( int visibility ){
+    public void setHeaderFooterVisibilty( int visibility ) {
         getHeader().setVisibility( visibility );
         getFooter().setVisibility( visibility );
     }

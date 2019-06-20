@@ -29,9 +29,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="48dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="48dp"
                 android:orientation="vertical">
 
@@ -43,7 +43,7 @@
                     <TextView
                         android:id="@+id/checkOutLabelId"
                         style="@style/splashText"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginStart="12dp"
                         android:layout_weight="1"
                         android:text="@string/check_out_title" />
 
@@ -52,7 +52,7 @@
                         android:layout_height="wrap_content"
 
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="12dp"
+                        android:layout_marginEnd="12dp"
                         android:layout_weight="1"
                         android:gravity="right|bottom"
                         android:orientation="horizontal">
@@ -97,7 +97,7 @@
                     <TextView
                         android:id="@+id/contactInfoTitleId"
                         style="@style/splashText"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
                         android:layout_weight="2"
                         android:text="@string/contact_info_title"
@@ -180,7 +180,7 @@
                     <TextView
                         android:id="@+id/deliveryAddressTitleId"
                         style="@style/splashText"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
                         android:layout_weight="2"
                         android:text="@string/delivery_address"
@@ -240,7 +240,7 @@
                 <TextView
                     android:id="@+id/checkOutPayTypeId"
                     style="@style/splashText"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:text="@string/pay_type_menu"
                     android:textSize="24dp" />
@@ -248,7 +248,7 @@
                 <com.edanyma.owncomponent.PayTypeSelector
                     android:id="@+id/checkOutPayTypeContainerId"
                     android:layout_marginTop="12dp"
-                    android:layout_marginLeft="-32dp"
+                    android:layout_marginStart="-32dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 

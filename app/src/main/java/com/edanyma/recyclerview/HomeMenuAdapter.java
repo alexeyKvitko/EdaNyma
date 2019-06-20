@@ -27,7 +27,7 @@ public class HomeMenuAdapter extends CommonBaseAdapter< HomeMenuModel > {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate( R.layout.rv_item_home_menu, parent, false);
         HomeMenuDataObjectHolder dataObjectHolder = new HomeMenuDataObjectHolder( view );
-        mAssetManager =  parent.getContext().getAssets();
+
         return dataObjectHolder;
     }
 

@@ -8,7 +8,7 @@
         android:id="@+id/successTopId"
         android:layout_above="@+id/signUpSuccessImgId"
         style="@style/splashText"
-        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
         android:layout_marginBottom="-8dp"
         android:text="@string/thank_label" />
     <ImageView
@@ -22,7 +22,7 @@
         android:id="@+id/successBottomId"
         android:layout_below="@+id/signUpSuccessImgId"
         style="@style/splashText"
-        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="-8dp"
         android:text="@string/success_sign_in_label" />
 </RelativeLayout>

@@ -36,7 +36,7 @@ public class FeedbackAdapter extends CommonBaseAdapter< FeedbackModel > {
         View view = LayoutInflater.from( parent.getContext() )
                 .inflate( R.layout.rv_item_feedback, parent, false );
         FeedbackAdapter.FeedbackDataObjectHolder dataObjectHolder = new FeedbackAdapter.FeedbackDataObjectHolder( view );
-        mAssetManager = parent.getContext().getAssets();
+
         return dataObjectHolder;
     }
 

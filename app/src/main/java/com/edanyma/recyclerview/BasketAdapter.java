@@ -35,7 +35,6 @@ public class BasketAdapter extends CommonBaseAdapter< MenuEntityModel > {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate( R.layout.rv_item_basket, parent, false);
         BasketAdapter.BasketDataObjectHolder dataObjectHolder = new BasketAdapter.BasketDataObjectHolder( view );
-        mAssetManager =  parent.getContext().getAssets();
         return dataObjectHolder;
     }
 

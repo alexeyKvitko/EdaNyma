@@ -17,15 +17,10 @@ public class CommonBaseAdapter<T> extends  RecyclerView.Adapter< BaseDataObjectH
 
     private T t;
     protected List<T> mItemList;
-    protected AssetManager mAssetManager;
-    protected LruCache<Integer,Bitmap> mImages;
-    protected LruCache<Integer, Drawable > mIcons;
     protected static CardClickListener mCardClickListener;
 
     public CommonBaseAdapter( List<T> mItemList) {
         this.mItemList = mItemList;
-        mAssetManager = EdaNymaApp.getAppContext().getAssets();
-        mImages = new LruCache<>(10);
     }
 
     public T getT() {
@@ -54,11 +49,6 @@ public class CommonBaseAdapter<T> extends  RecyclerView.Adapter< BaseDataObjectH
         return mItemList.get( position );
     }
 
-//    public void clearImages() {
-//        mImages = null;
-//        mIcons = null;
-//    }
-
     public void deleteItem(int index) {
         mItemList.remove(index);
         notifyItemRemoved(index);
@@ -67,8 +57,6 @@ public class CommonBaseAdapter<T> extends  RecyclerView.Adapter< BaseDataObjectH
     public void deleteAllItem(){
         int size = getItemCount()-1;
         mItemList.clear();
-//        mImages.evictAll();
-//        mIcons.evictAll();
         notifyItemRangeRemoved( 0,size );
         notifyDataSetChanged();
     }
@@ -88,12 +76,5 @@ public class CommonBaseAdapter<T> extends  RecyclerView.Adapter< BaseDataObjectH
 //        void onAdditionalItemClick(int position, View v);
     }
 
-    public LruCache<Integer, Bitmap> getImages() {
-        return mImages;
-    }
-
-    public LruCache<Integer, Drawable> getIcons() {
-        return mIcons;
-    }
 
 }

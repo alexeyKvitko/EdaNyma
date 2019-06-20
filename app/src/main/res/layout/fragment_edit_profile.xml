@@ -33,7 +33,7 @@
             <TextView
                 android:id="@+id/editProfileTitleId"
                 style="@style/splashText"
-                android:layout_marginLeft="56dp"
+                android:layout_marginStart="56dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/your_profile" />
 
@@ -106,7 +106,7 @@
                 <LinearLayout
                     android:layout_width="136dp"
                     android:layout_height="154dp"
-                    android:layout_marginLeft="36dp"
+                    android:layout_marginStart="36dp"
                     android:gravity="center_vertical"
                     android:orientation="vertical">
 

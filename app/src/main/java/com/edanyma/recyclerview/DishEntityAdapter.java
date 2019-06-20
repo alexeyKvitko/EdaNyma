@@ -23,7 +23,7 @@ public class DishEntityAdapter extends CommonBaseAdapter< MenuEntityModel > {
         View view = LayoutInflater.from( parent.getContext() )
                 .inflate( R.layout.rv_item_dish_entity, parent, false );
         DishEntityAdapter.DishEntityObjectHolder dataObjectHolder = new DishEntityAdapter.DishEntityObjectHolder( view );
-        mAssetManager = parent.getContext().getAssets();
+
         return dataObjectHolder;
     }
 

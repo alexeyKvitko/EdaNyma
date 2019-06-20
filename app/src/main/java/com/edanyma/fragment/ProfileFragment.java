@@ -112,7 +112,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private void swithVisibilityOnSignIn( int signInVisibility, int profileVisibility ) {
         getView().findViewById( R.id.profileSignHeaderId ).setVisibility( signInVisibility );
         getView().findViewById( R.id.profilePersonalHeaderId ).setVisibility( profileVisibility );
-        getView().findViewById( R.id.profileMultiplyOrderId ).setVisibility( profileVisibility );
+//        getView().findViewById( R.id.profileMultiplyOrderId ).setVisibility( profileVisibility );
     }
 
     @Override

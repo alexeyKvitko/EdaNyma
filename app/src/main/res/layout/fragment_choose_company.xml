@@ -30,13 +30,13 @@
                 android:id="@+id/companyTitleId"
                 style="@style/cityTitleText"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="24dp" />
+                android:layout_marginStart="24dp" />
 
             <TextView
                 android:id="@+id/companyCountId"
                 style="@style/grayTextSmall"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="24dp" />
+                android:layout_marginEnd="24dp" />
         </RelativeLayout>
     </RelativeLayout>
 

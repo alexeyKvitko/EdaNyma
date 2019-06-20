@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
         android:orientation="horizontal">
 
         <TextView
@@ -21,7 +21,7 @@
         <TextView
             android:id="@+id/clientPayTypeWalletId"
             style="@style/selectorText"
-            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
             android:text="@string/online_label" />
     </LinearLayout>
 
@@ -29,7 +29,7 @@
         android:id="@+id/payTypeBtnId"
         android:layout_width="96dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
         android:layout_marginBottom="12dp"
         android:background="@drawable/border_neon_r18"
         android:orientation="horizontal" />

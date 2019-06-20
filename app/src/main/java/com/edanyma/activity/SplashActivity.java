@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import androidx.core.app.ActivityCompat;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,7 @@ public class SplashActivity extends Activity {
 
     private static int SPLASH_TIME_OUT = 2000;
 
-    static final int UNIQUE_PERMISSION_CODE = 100;
+    private static final int UNIQUE_PERMISSION_CODE = 100;
 
     private String mLatitude;
     private String mLongitude;
@@ -76,15 +77,15 @@ public class SplashActivity extends Activity {
                 Manifest.permission.RECEIVE_SMS,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION };
-        List permissions_not_granted_list = new ArrayList<>();
+        List notGrantedPermissions = new ArrayList<>();
         for ( String permission : permissions_required ) {
             if ( ActivityCompat.checkSelfPermission( getApplicationContext(), permission ) != PackageManager.PERMISSION_GRANTED ) {
-                permissions_not_granted_list.add( permission );
+                notGrantedPermissions.add( permission );
             }
         }
-        if ( permissions_not_granted_list.size() > 0 ) {
-            String[] permissions = new String[ permissions_not_granted_list.size() ];
-            permissions_not_granted_list.toArray( permissions );
+        if ( notGrantedPermissions.size() > 0 ) {
+            String[] permissions = new String[ notGrantedPermissions.size() ];
+            notGrantedPermissions.toArray( permissions );
             ActivityCompat.requestPermissions( this, permissions, code );
         } else {
             initSplashLayout();
@@ -112,6 +113,12 @@ public class SplashActivity extends Activity {
         mBootstrapSuccess = true;
         mPermissionGranted = true;
         final Context activity = this;
+        if( AppConstants.FHD_HEIGHT < getResources().getDisplayMetrics().heightPixels ){
+            GlobalManager.getInstance().setDisplayRatio( ( float ) getResources().getDisplayMetrics().heightPixels / ( float )AppConstants.FHD_HEIGHT );
+        } else {
+            GlobalManager.getInstance().setDisplayRatio( 1f );
+        }
+        ( ( ImageView ) this.findViewById( R.id.splashLogoId ) ).setImageDrawable( getResources().getDrawable( R.drawable.yummy_logo ) );
         ( ( TextView ) this.findViewById( R.id.splashTextOneId ) ).setTypeface( AppConstants.B52 );
         ( ( TextView ) this.findViewById( R.id.splashTextTwoId ) ).setTypeface( AppConstants.B52 );
         ( ( TextView ) this.findViewById( R.id.splashTextSmallOneId ) ).setTypeface( AppConstants.ROBOTO_CONDENCED );

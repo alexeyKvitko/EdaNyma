@@ -3,7 +3,6 @@ package com.edanyma.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.core.app.NavUtils;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -17,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NavigationActivity extends BaseActivity implements
-        ProfileFragment.OnProfileFrafmentListener{
+        ProfileFragment.OnProfileFrafmentListener, PromotionFragment.OnShowPromotionCompanyListener{
 
     private final String TAG = "NavigationActivity";
 
@@ -71,13 +70,25 @@ public class NavigationActivity extends BaseActivity implements
     @Override
     public void onBackPressed() {
         setHeaderFooterVisibilty( View.VISIBLE );
+        removeAllFragments();
         super.onBackPressed();
         overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onPause() {
-        removeAllFragments();
         super.onPause();
+    }
+
+    @Override
+    public void onShowPromotionAction( Integer companyId ) {
+        Map< String, String > params = new HashMap<>();
+        params.put( AppConstants.COMPANY_ID, companyId.toString() );
+        startNewActivity( CompanyDishActivity.class, params );
     }
 }

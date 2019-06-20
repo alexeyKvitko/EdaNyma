@@ -1,19 +1,26 @@
 package com.edanyma.activity;
 
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.hardware.camera2.CameraDevice;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NavUtils;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.edanyma.AppConstants;
 import com.edanyma.AppPreferences;
+import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.fragment.BonusFragment;
 import com.edanyma.fragment.CameraFragment;
@@ -39,6 +46,9 @@ import com.edanyma.pixelshot.PixelShot;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -57,16 +67,26 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
 
     private final String TAG = "PersonActivity";
 
+    private final int PERMISSION_REQUEST_CODE = 11;
+
     private String mSign;
     private Activity mThis;
     private ClientOrderModel mOrder;
+
+    private boolean mPermissionGranted;
+
+
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_person );
-        initBaseActivity( new ActivityState( AppConstants.LOGIN_BOTTOM_INDEX ) );
+        initialize();
+    }
+
+    private void initialize(){
         mThis = this;
+        initBaseActivity( new ActivityState( AppConstants.LOGIN_BOTTOM_INDEX ) );
         if ( !isSignedIn() ) {
             findViewById( R.id.navigation_login ).setBackground( getResources().getDrawable( R.drawable.login_navigation ) );
             mSign = this.getIntent().getStringExtra( AppConstants.SIGN_TYPE );
@@ -234,7 +254,11 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
 
     @Override
     public void onGetAvatarClick() {
-        addReplaceFragment( CameraFragment.newInstance() );
+        if ( Build.VERSION.SDK_INT < 23 ) {
+            addReplaceFragment( CameraFragment.newInstance() );
+        } else {
+            checkPermissions( PERMISSION_REQUEST_CODE );
+        }
     }
 
     @Override
@@ -265,6 +289,36 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     public void onShowFeedbacksAction( CompanyModel companyModel ) {
         setHeaderFooterVisibilty( View.GONE );
         addReplaceFragment( ViewFeedbackFragment.newInstance( companyModel )  );
+    }
+
+    private void checkPermissions( int code ) {
+        mPermissionGranted = false;
+        List notGranted = new ArrayList<>();
+        if ( ActivityCompat.checkSelfPermission( EdaNymaApp.getAppContext(), Manifest.permission.CAMERA ) != PackageManager.PERMISSION_GRANTED ) {
+            notGranted.add( Manifest.permission.CAMERA );
+        }
+        if ( notGranted.size() > 0 ) {
+            String[] permissions = new String[ notGranted.size() ];
+            notGranted.toArray( permissions );
+            ActivityCompat.requestPermissions( this, permissions, code );
+        } else {
+            addReplaceFragment( CameraFragment.newInstance() );
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult( int requestCode, String permissions[], int[] grantResults ) {
+        if ( requestCode == PERMISSION_REQUEST_CODE ) {
+            boolean ok = true;
+            for ( int i = 0; i < grantResults.length; ++i ) {
+                ok = ok && ( grantResults[ i ] == PackageManager.PERMISSION_GRANTED );
+            }
+            if ( ok ) {
+                addReplaceFragment( CameraFragment.newInstance() );
+            } else {
+                Toast.makeText( this, "Error: required permissions not granted!", Toast.LENGTH_SHORT ).show();
+            }
+        }
     }
 
     private class RemoveOurClient extends AsyncTask< Void, Void, String > {

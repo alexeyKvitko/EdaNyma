@@ -35,7 +35,7 @@ public class CompanyAdapter extends CommonBaseAdapter< CompanyLight > {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate( R.layout.rv_item_company, parent, false);
         CompanyAdapter.CompanyDataObjectHolder dataObjectHolder = new CompanyAdapter.CompanyDataObjectHolder( view );
-        mAssetManager =  parent.getContext().getAssets();
+
         return dataObjectHolder;
     }
 

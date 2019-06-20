@@ -1,6 +1,8 @@
 package com.edanyma.fragment;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.camera2.CameraCharacteristics;
@@ -9,16 +11,21 @@ import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.media.Image;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.edanyma.AppConstants;
+import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.activity.PersonActivity;
 import com.edanyma.model.ApiResponse;
@@ -31,6 +38,8 @@ import com.edanyma.utils.ConvertUtils;
 
 import java.io.File;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import me.aflak.ezcam.EZCam;
 import me.aflak.ezcam.EZCamCallback;
@@ -46,7 +55,6 @@ import static com.edanyma.manager.GlobalManager.*;
 public class CameraFragment extends BaseFragment implements PixelShot.PixelShotListener {
 
     private static final String TAG = "CameraFragment";
-
 
     private static final int JPG_MAX_QUALITY = 100;
 
@@ -81,6 +89,12 @@ public class CameraFragment extends BaseFragment implements PixelShot.PixelShotL
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
+        initialize();
+    }
+
+
+
+    private void initialize(){
         initializeCamera();
         mGoBackBtn = getView().findViewById( R.id.goBackCameraBtnId );
         mGoBackBtn.setOnClickListener( ( View view ) -> {
@@ -122,7 +136,7 @@ public class CameraFragment extends BaseFragment implements PixelShot.PixelShotL
             public void onError( String message ) {
                 AppUtils.transitionAnimation( getView().findViewById( R.id.pleaseWaitAvatarId ),
                         getView().findViewById( R.id.cameraViewId ) );
-                ModalMessage.show( getActivity(), "Сообщение", new String[]{ "Ошибка инициализации камеры" } );
+                Toast.makeText( getActivity(), "Ошибка инициализации камеры: "+message, Toast.LENGTH_LONG ).show();
             }
 
             @Override
@@ -161,14 +175,10 @@ public class CameraFragment extends BaseFragment implements PixelShot.PixelShotL
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mCamera.close();
-        mCamera = null;
-    }
-
-    @Override
-    public void onRequestPermissionsResult( int requestCode, String[] permissions, int[] grantResults ) {
-        super.onRequestPermissionsResult( requestCode, permissions, grantResults );
-//        mCameraView.onRequestPermissionsResult( requestCode, permissions, grantResults );
+        if ( mCamera != null ){
+            mCamera.close();
+            mCamera = null;
+        }
     }
 
     @Override

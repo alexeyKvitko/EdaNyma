@@ -41,7 +41,6 @@ public class CityAdapter extends CommonBaseAdapter< TripleModel > {
         View view = LayoutInflater.from( parent.getContext() )
                 .inflate( R.layout.rv_item_city, parent, false );
         TripleModelDataObjectHolder dataObjectHolder = new TripleModelDataObjectHolder( view );
-        mAssetManager = parent.getContext().getAssets();
         return dataObjectHolder;
     }
 

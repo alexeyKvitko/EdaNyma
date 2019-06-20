@@ -49,7 +49,7 @@
                     android:layout_gravity="center_vertical"
                     android:singleLine="true"
                     android:ellipsize="end"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:textColor="@color/splashTextColor"
                     android:textSize="24dp" />
                 <LinearLayout
@@ -67,7 +67,7 @@
                         android:id="@+id/companyFavIconId"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_marginLeft="4dp"
+                        android:layout_marginStart="4dp"
                         android:layout_gravity="top"
                         app:srcCompat="@drawable/ic_favorite_enable_24dp" />
                 </LinearLayout>
@@ -110,7 +110,7 @@
                     <TextView
                         android:id="@+id/reviewCountId"
                         style="@style/grayTextSmall"
-                        android:layout_marginLeft="6dp"></TextView>
+                        android:layout_marginStart="6dp"></TextView>
                 </LinearLayout>
 
 
