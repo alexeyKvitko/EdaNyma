@@ -45,6 +45,7 @@
     <string name="internal_error">Внутренняя ошибка, повторите попытку позже</string>
     <string name="password_not_match">Пароли не совпадают</string>
     <string name="sign_up_title">Регистрация</string>
+    <string name="support_service">Ваше Сообщение</string>
     <string name="next_button">Продолжить</string>
     <string name="remove_account">Удалить Профиль</string>
     <string name="update_profile_button">Обновить Профиль</string>
@@ -161,5 +162,7 @@
     <string name="first_feedback">Оставьте Cвой отзыв, будьте Первым !</string>
     <string name="message_title">Сообщение</string>
     <string name="promotion">Акции</string>
+    <string name="post_btn">Опубликовать</string>
+    <string name="send_to_support">Отправить</string>
 
 </resources>

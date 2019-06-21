@@ -20,9 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
-import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
-import com.edanyma.activity.MainActivity;
+import com.edanyma.owncomponent.ModalMessage;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
 import com.edanyma.utils.GlideClient;
@@ -104,7 +103,8 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             swithVisibilityOnSignIn( View.VISIBLE, View.GONE );
         }
         setThisOnClickListener( R.id.profileBasketId, R.id.profileSignInId, R.id.profileSignUpId,
-                R.id.profilePersonalAreaId, R.id.profileBackBtnId, R.id.snapShotLayoutId, R.id.profileGiftId );
+                R.id.profilePersonalAreaId, R.id.profileBackBtnId, R.id.snapShotLayoutId, R.id.profileGiftId,
+                R.id.profileDiscountId, R.id.profileSupportId );
 
     }
 
@@ -167,19 +167,19 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         final int end = -( int ) ConvertUtils.convertDpToPixel( 0 );
         ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), ( int ) DECOR_LEFT_MARGIN, end );
         valAnimator.addUpdateListener( ( ValueAnimator animator ) -> {
-                float val = ( ( Integer ) animator.getAnimatedValue() ).floatValue();
-                int margin = ( int ) ( val * MARGIN_RATIO );
-                layoutParams.leftMargin = ( int ) val;
-                int width = ( int ) ( DECOR_WIDTH - HORIZONTAL_RATIO * val );
-                int height = ( int ) ( DECOR_HEIGHT - VERTICAL_RATIO * val );
-                layoutParams.width = width > DECOR_WIDTH ? ( int ) DECOR_WIDTH : width;
-                layoutParams.height = height > DECOR_HEIGHT ? ( int ) DECOR_HEIGHT : height;
-                layoutParams.topMargin = margin;
-                layoutParams.bottomMargin = margin;
-                snapShotLayout.setLayoutParams( layoutParams );
-                if ( ( int ) val == end && getActivity() != null ) {
-                    getActivity().onBackPressed();
-                }
+            float val = ( ( Integer ) animator.getAnimatedValue() ).floatValue();
+            int margin = ( int ) ( val * MARGIN_RATIO );
+            layoutParams.leftMargin = ( int ) val;
+            int width = ( int ) ( DECOR_WIDTH - HORIZONTAL_RATIO * val );
+            int height = ( int ) ( DECOR_HEIGHT - VERTICAL_RATIO * val );
+            layoutParams.width = width > DECOR_WIDTH ? ( int ) DECOR_WIDTH : width;
+            layoutParams.height = height > DECOR_HEIGHT ? ( int ) DECOR_HEIGHT : height;
+            layoutParams.topMargin = margin;
+            layoutParams.bottomMargin = margin;
+            snapShotLayout.setLayoutParams( layoutParams );
+            if ( ( int ) val == end && getActivity() != null ) {
+                getActivity().onBackPressed();
+            }
         } );
         valAnimator.setDuration( 200 );
         valAnimator.start();
@@ -205,18 +205,30 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             case R.id.profileBackBtnId:
             case R.id.snapShotLayoutId:
                 backAnimateSnapShotLayout( mSnapshotLayout );
-            break;
-            case R.id.profileGiftId:{
-                mListener.onProfileFragmentPromoion();
-            }
+                break;
+            case R.id.profileGiftId:
+                mListener.onProfileFragmentPromotion();
+                break;
+            case R.id.profileDiscountId:
+                ModalMessage.show( getActivity(), "Сообщение.", new String[]{"Заведения предоставляющие скидки, отсутствуют"} );
+                break;
+            case R.id.profileSupportId:
+                mListener.onProfileFragmentSupport();
+                break;
+
         }
     }
 
 
     public interface OnProfileFrafmentListener {
         void onProfileFragmentSignIn();
+
         void onProfileFragmentSignUp();
+
         void onProfileFragmentBasket();
-        void onProfileFragmentPromoion();
+
+        void onProfileFragmentPromotion();
+
+        void onProfileFragmentSupport();
     }
 }

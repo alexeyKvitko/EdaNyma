@@ -1,0 +1,91 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="48dp"
+    android:background="@drawable/main_background_light"
+    tools:context=".fragment.SendMailFragment">
+
+    <include layout="@layout/please_wait" />
+    <LinearLayout
+        android:id="@+id/supportContainerId"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/supportBackBtnId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|left"
+            android:elevation="10dp"
+            app:srcCompat="@drawable/filter_back_black_btn" />
+
+        <TextView
+            android:id="@+id/supportTitleId"
+            style="@style/splashText"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/support_service" />
+
+        <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/supportFormId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="16dp"
+            card_view:cardCornerRadius="8dp"
+            card_view:cardElevation="12dp">
+
+            <LinearLayout
+                android:id="@+id/supportLayoutId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/supportMessagetValueId"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:cursorVisible="true"
+                    android:gravity="top|left"
+                    android:inputType="textMultiLine|textNoSuggestions"
+                    android:lines="8"
+                    android:maxLines="8"
+                    android:minLines="8"
+                    android:padding="8dp"
+                    android:scrollbars="none"
+                    android:textCursorDrawable="@drawable/edit_cursor"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/supportErrorFieldId"
+                    style="@style/errorText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/error_required_field"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/supportButtonId"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="36dp"
+            android:layout_marginTop="36dp"
+            android:background="@drawable/button_neon"
+            android:elevation="6dp"
+            android:text="@string/send_to_support"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+
+
+</FrameLayout>

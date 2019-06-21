@@ -130,4 +130,10 @@ public interface RestApi {
     @GET(API_FEEDBACK+"getCompanyFeedbacks/{companyId}")
     Call<ApiResponse< List<FeedbackModel> > > getCompanyFeedbacks( @Header("Authorization") String authorization,
                                                             @Path("companyId") Integer companyId );
+
+
+    @GET(API_CLIENT+"sendEmailToUs/{message}")
+    Call< ApiResponse> sendMessageToSupport( @Header("Authorization") String authorization,
+                                                        @Path("message") String message );
+
 }

@@ -111,7 +111,6 @@ public class CreateFeedbackFragment extends BaseFragment implements View.OnClick
         mFeedbackComment = initEditText( R.id.feedbackCommentValueId, AppConstants.ROBOTO_CONDENCED );
         mFeedbackError = initTextView( R.id.feedbackErrorFieldId, AppConstants.ROBOTO_CONDENCED );
         initButton( R.id.feedbackButtonId, AppConstants.ROBOTO_CONDENCED );
-        getView().findViewById( R.id.feedbackBackBtnId );
         setThisOnClickListener(  R.id.feedbackAllReviewId, R.id.feedbackButtonId, R.id.feedbackBackBtnId  );
     }
 

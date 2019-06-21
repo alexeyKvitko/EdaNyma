@@ -10,13 +10,14 @@ import com.edanyma.AppConstants;
 import com.edanyma.R;
 import com.edanyma.fragment.ProfileFragment;
 import com.edanyma.fragment.PromotionFragment;
+import com.edanyma.fragment.SendMailFragment;
 import com.edanyma.model.ActivityState;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class NavigationActivity extends BaseActivity implements
-        ProfileFragment.OnProfileFrafmentListener, PromotionFragment.OnShowPromotionCompanyListener{
+        ProfileFragment.OnProfileFrafmentListener, PromotionFragment.OnShowPromotionCompanyListener {
 
     private final String TAG = "NavigationActivity";
 
@@ -27,7 +28,7 @@ public class NavigationActivity extends BaseActivity implements
         initNavigationActivity();
     }
 
-    private void initNavigationActivity(){
+    private void initNavigationActivity() {
         initBaseActivity( new ActivityState( AppConstants.HOME_BOTTOM_INDEX ) );
         getHeader().setVisibility( View.GONE );
         addReplaceFragment( ProfileFragment.newInstance() );
@@ -63,8 +64,13 @@ public class NavigationActivity extends BaseActivity implements
     }
 
     @Override
-    public void onProfileFragmentPromoion() {
+    public void onProfileFragmentPromotion() {
         addReplaceFragment( PromotionFragment.newInstance() );
+    }
+
+    @Override
+    public void onProfileFragmentSupport() {
+        addReplaceFragment( SendMailFragment.newInstance() );
     }
 
     @Override
@@ -91,4 +97,5 @@ public class NavigationActivity extends BaseActivity implements
         params.put( AppConstants.COMPANY_ID, companyId.toString() );
         startNewActivity( CompanyDishActivity.class, params );
     }
+
 }
