@@ -313,7 +313,7 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void addDishToBasket(){
-        BasketOrderManager.getInstance().addEntityToBasket( mDishEntity, mCompanyName, mDishCount );
+        BasketOrderManager.getInstance().addEntityToBasket( getActivity(), mDishEntity, mCompanyName, mDishCount );
         final CardView dishImage = getView().findViewById( R.id.cardDishInfoImgId );
         final CardView dishInfo = getView().findViewById( R.id.dishInfoCardId );
         Animation scaleDown = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.scale_down );

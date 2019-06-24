@@ -1,5 +1,6 @@
 package com.edanyma.manager;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import com.edanyma.AppConstants;
@@ -7,10 +8,13 @@ import com.edanyma.AppPreferences;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.model.PreferenceBasket;
+import com.edanyma.owncomponent.ModalMessage;
 import com.edanyma.utils.ConvertUtils;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import static com.edanyma.manager.GlobalManager.*;
 
@@ -28,7 +32,12 @@ public class BasketOrderManager {
         return BASKET_MANAGER;
     }
 
-    public static void addEntityToBasket( MenuEntityModel menuEntity, String companyName, Integer count ) {
+    public static void addEntityToBasket( Activity activity, MenuEntityModel menuEntity,
+                                                            String companyName, Integer count ) {
+        if( !validateCompanyCount( companyName ) ){
+            ModalMessage.show( activity, "Сообщение.", new String[]{"Превышен лимит Заведений в заказе"} );
+            return;
+        }
         boolean exist = false;
         if ( customerBasket == null ) {
             customerBasket = new LinkedList<>();
@@ -48,6 +57,23 @@ public class BasketOrderManager {
             customerBasket.add( basketEntity );
         }
         sendMessageToActivity();
+    }
+
+    private static boolean validateCompanyCount( String companyName ){
+        boolean isBasketValid = true;
+        if( customerBasket == null || customerBasket.size() == 0 ){
+            return true;
+        }
+        Set companies =  new HashSet();
+        for ( MenuEntityModel entity : customerBasket ){
+            companies.add( entity.getCompanyName() );
+        }
+        companies.add( companyName );
+        if( companies.size() > 2 ){
+            isBasketValid = false;
+        }
+        return isBasketValid;
+
     }
 
     public static void removeEntityFromBasket( String removeEntityId ){
