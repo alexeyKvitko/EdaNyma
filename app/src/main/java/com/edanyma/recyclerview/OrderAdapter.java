@@ -12,6 +12,7 @@ import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
 import com.edanyma.model.ClientOrderModel;
+import com.edanyma.model.PayStatus;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.ConvertUtils;
@@ -56,10 +57,13 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
         holder.orderDate.setText( order.getOrderDate()+", "+order.getOrderTime() );
         holder.orderNo.setText( "№ "+order.getId().toString() );
         holder.orderDate.setTextColor( EdaNymaApp.getAppContext().getResources().getColor( colorId ) );
-        holder.orderDetails.setOnClickListener( (View view ) ->{
-            AppUtils.clickAnimation(  view  );
-            mListener.onOrderDetailsClick( order );
-        } );
+        if( PayStatus.EXPECTED.name().equals( order.getPayStatus() ) ){
+            holder.orderDetails.setVisibility( View.GONE );
+            holder.orderWaitPay.setVisibility( View.VISIBLE );
+        } else {
+            holder.orderDetails.setVisibility( View.VISIBLE );
+            holder.orderWaitPay.setVisibility( View.GONE );
+        }
         holder.orderBody.setOnClickListener( (View view ) ->{
             AppUtils.bounceAnimation(  view  );
             mListener.onOrderDetailsClick( order );
@@ -81,7 +85,9 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
         public TextView orderPrice;
         public TextView orderDate;
         public TextView orderNo;
+        public TextView orderWaitPay;
         public ImageView orderDetails;
+
         public LinearLayout orderBody;
 
         public OrderDataObjectHolder( final View itemView ) {
@@ -96,6 +102,7 @@ public class OrderAdapter extends CommonBaseAdapter< ClientOrderModel > {
             orderNo = itemView.findViewById( R.id.orderNoId );
             orderNo.setTypeface( AppConstants.ROBOTO_CONDENCED, Typeface.BOLD );
             orderDetails = itemView.findViewById( R.id.orderDetailsId );
+            orderWaitPay = itemView.findViewById( R.id.orderWaitPayId );
             orderBody = itemView.findViewById( R.id.orderItemBodyId );
         }
 

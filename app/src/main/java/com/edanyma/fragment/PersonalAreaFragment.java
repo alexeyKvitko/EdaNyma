@@ -20,7 +20,7 @@ import com.edanyma.model.ApiResponse;
 import com.edanyma.model.OurClientModel;
 import com.edanyma.model.PayType;
 import com.edanyma.owncomponent.ModalMessage;
-import com.edanyma.owncomponent.PayTypeSelector;
+import com.edanyma.owncomponent.OwnRadioGroup;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
 import com.edanyma.utils.GlideClient;
@@ -38,7 +38,7 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
 
     private OnPersonalAreaActionListener mListener;
 
-    private PayTypeSelector mPayTypeContainer;
+    private OwnRadioGroup mPayTypeContainer;
 
     private TextView mPayTypeText;
     private TextView mPersonalEdit;
@@ -111,13 +111,11 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
                 , R.id.personalMenuPasswordId, R.id.personalMenuAddressId, R.id.personalMenuPayTypeId
                 , R.id.personalMenuBonusId, R.id.personalMenuOrderId );
 
-        if( getClient().getPayType() != null && PayType.WALLET.name().equals( getClient().getPayType() ) ){
-            mPayTypeContainer.setSelectedPayType( PayType.WALLET );
+        if( getClient().getPayType() != null  ){
+            mPayTypeContainer.setPayType( getClient().getPayType() );
         }
-
-        mPayTypeContainer.setPayTypeSelectListener( ( PayType payType ) -> {
+        mPayTypeContainer.setOnPayTypeSelectListener( ( PayType payType ) -> {
             getClient().setPayType( payType.name() );
-            mPayTypeContainer.enabledPayTypeButton( false );
             new UpdateClientPayType().execute( getClient() );
         } );
     }
@@ -236,7 +234,7 @@ public class PersonalAreaFragment extends BaseFragment implements View.OnClickLi
         @Override
         protected void onPostExecute( String result ) {
             super.onPostExecute( result );
-            mPayTypeContainer.enabledPayTypeButton( true );
+            mPayTypeContainer.enabledPayTypeButton();
             if( result != null ){
                 ModalMessage.show( getActivity(), getString( R.string.title_notifications ),
                         new String[]{ result }, 1000 );

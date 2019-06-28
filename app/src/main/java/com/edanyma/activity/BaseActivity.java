@@ -313,6 +313,8 @@ public abstract class BaseActivity extends AppCompatActivity
             mShowBasket = false;
         } else if ( this instanceof MainActivity ) {
             ( ( MainActivity ) this ).startNavigationActivity();
+        } else if ( this instanceof PersonActivity ) {
+            ( ( PersonActivity ) this ).showOrderDetails();
         }
     }
 

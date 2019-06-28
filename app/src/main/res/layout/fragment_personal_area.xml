@@ -176,10 +176,11 @@
                     android:drawableLeft="@drawable/ic_cash_black_18dp"
                     android:text="@string/pay_type_menu" />
 
-                <com.edanyma.owncomponent.PayTypeSelector
+                <com.edanyma.owncomponent.OwnRadioGroup
                     android:id="@+id/selectPayTypeContainerId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
                     android:visibility="gone" />
 
                 <TextView

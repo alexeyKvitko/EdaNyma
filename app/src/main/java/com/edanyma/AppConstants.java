@@ -120,7 +120,7 @@ public class AppConstants {
 
     public static final String PAY_TYPE_CASH = "CASH";
     public static final String PAY_TYPE_CARD = "CARD";
-    public static final String PAY_TYPE_WALLET = "WALLET";
+    public static final String PAY_TYPE_WALLET = "QIWI";
 
     public static final String PROMOTION_DESKTOP = "0";
     public static final String PROMOTION_FRAGMENT = "1";
@@ -141,7 +141,7 @@ public class AppConstants {
         {
             put( "CASH", "Наличными" );
             put( "CARD", "Банковской Картой" );
-            put( "WALLET", "Электронный кошелек" );
+            put( "QIWI", "Электронный кошелек" );
         }
     };
 

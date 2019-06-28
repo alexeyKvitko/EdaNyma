@@ -18,11 +18,13 @@ import android.widget.TextView;
 
 import com.edanyma.AppConstants;
 import com.edanyma.R;
+import com.edanyma.activity.BasketActivity;
 import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.model.ApiResponse;
 import com.edanyma.model.BasketModel;
 import com.edanyma.model.ClientLocationModel;
 import com.edanyma.model.ClientOrderModel;
+import com.edanyma.model.ClientOrderResponse;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.model.OrderStatus;
 import com.edanyma.model.OurClientModel;
@@ -30,6 +32,7 @@ import com.edanyma.model.PayType;
 import com.edanyma.owncomponent.CheckOutEntity;
 import com.edanyma.owncomponent.CompanyTotalView;
 import com.edanyma.owncomponent.ModalMessage;
+import com.edanyma.owncomponent.OwnRadioGroup;
 import com.edanyma.owncomponent.PayTypeSelector;
 import com.edanyma.rest.RestController;
 import com.edanyma.utils.AppUtils;
@@ -70,7 +73,10 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
     private TextView mFinishOrderTime;
     private TextView mContactInfo;
 
-    private PayTypeSelector mPayTypeSelector;
+    private OwnRadioGroup mPayTypeSelector;
+
+    private TextView mFinishOrderStatus;
+    private Button mFinishOrderButton;
 
     private Button mCheckOutBtn;
 
@@ -138,8 +144,7 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         }
 
         mPayTypeSelector = getView().findViewById( R.id.checkOutPayTypeContainerId );
-        mPayTypeSelector.hideBottomBorder();
-        mPayTypeSelector.setPayTypeSelectListener( ( PayType payType ) -> {
+        mPayTypeSelector.setOnPayTypeSelectListener( ( PayType payType ) -> {
             mSelectedPayType = payType;
         } );
 
@@ -160,9 +165,9 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         initTextView( R.id.foDeliveryDateLabelId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.foDeliveryTimeLabelId, AppConstants.ROBOTO_CONDENCED );
         initTextView( R.id.foDeliveryStatusLabelId, AppConstants.ROBOTO_CONDENCED );
-        initTextView( R.id.foDeliveryStatusValueId, AppConstants.B52 );
-        initButton( R.id.finishOrderContinueBtnId, AppConstants.ROBOTO_CONDENCED )
-                .setOnClickListener( this );
+        mFinishOrderStatus = initTextView( R.id.foDeliveryStatusValueId, AppConstants.B52 );
+        mFinishOrderButton = initButton( R.id.finishOrderContinueBtnId, AppConstants.ROBOTO_CONDENCED );
+        mFinishOrderButton.setOnClickListener( this );
 
         mFinishOrderNumber = initTextView( R.id.finishOrderNumberId, AppConstants.OFFICE );
         mFinishOrderAddress = initTextView( R.id.foDeliveryAddressValueId, AppConstants.B52 );
@@ -178,11 +183,8 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         mContactInfo.setCompoundDrawablesWithIntrinsicBounds( 0, 0, iconId, 0 );
         mCheckOutPerson.setText( client.getNickName() );
         mCheckOutPhone.setText( client.getPhone() );
-        if ( PayType.WALLET.name().equals( client.getPayType() ) ){
-            mPayTypeSelector.setSelectedPayType( PayType.WALLET );
-        } else {
-            mPayTypeSelector.setSelectedPayType( PayType.CASH );
-        }
+        mPayTypeSelector.setPayType( client.getPayType() );
+        mSelectedPayType = ConvertUtils.convertStringToPayType( client.getPayType() );
         setDeliveryAddress( location );
         mIsClientInfoSet = !mIsClientInfoSet;
     }
@@ -354,7 +356,8 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
             mClientOrderModel.setPhone( phone );
             mClientOrderModel.setOrderDate( AppUtils.formatDate( AppConstants.ORDER_DATE_FORMAT, new Date() ) );
             mClientOrderModel.setOrderTime( AppUtils.formatDate( AppConstants.ORDER_TIME_FORMAT, new Date() ) );
-            mClientOrderModel.setOrderPrice( mTotalAmount );
+//            mClientOrderModel.setOrderPrice( mTotalAmount );
+            mClientOrderModel.setOrderPrice( 27 );
             mClientOrderModel.setOrderStatus( OrderStatus.IN_PROGRESS.name() );
             mClientOrderModel.setCity( clientLocationModel.getCity() );
             mClientOrderModel.setStreet( clientLocationModel.getStreet() );
@@ -416,6 +419,11 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
                 confirmCheckOutSend();
                 break;
             case R.id.finishOrderContinueBtnId:
+                String payOnlineUrl = null;
+                if( !PayType.CASH.name().equals( mClientOrderModel.getPayType() ) ){
+                    payOnlineUrl = mClientOrderModel.getPayUrl();
+                }
+                (( BasketActivity ) getActivity() ).setPayOnlineUrl( payOnlineUrl );
                 getActivity().onBackPressed();
                 break;
         }
@@ -496,7 +504,7 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         }
     }
 
-    private class CreateClientOrder extends AsyncTask< ClientOrderModel, Void, String > {
+    private class CreateClientOrder extends AsyncTask< ClientOrderModel, Void, ClientOrderResponse > {
 
         @Override
         protected void onPreExecute() {
@@ -504,34 +512,29 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
         }
 
         @Override
-        protected String doInBackground( ClientOrderModel... clientOrder ) {
-            String result = null;
+        protected ClientOrderResponse doInBackground( ClientOrderModel... clientOrder ) {
+            ClientOrderResponse orderResponse = null;
             try {
-                Call< ApiResponse > createOrderCall = RestController
+                Call< ApiResponse< ClientOrderResponse > > createOrderCall = RestController
                         .getApi().createClientOrder( AppConstants.AUTH_BEARER
                                 + getUserToken(), clientOrder[ 0 ] );
-                Response< ApiResponse > responseCreateOrder = createOrderCall.execute();
+                Response< ApiResponse< ClientOrderResponse > > responseCreateOrder = createOrderCall.execute();
                 if ( responseCreateOrder.body() != null ) {
                     if ( responseCreateOrder.body().getStatus() == 200 ) {
-                        Double orderId = ( Double ) responseCreateOrder.body().getResult();
-                        result = String.valueOf( orderId.intValue() );
-                    } else {
-                        result = responseCreateOrder.body().getMessage();
+                        orderResponse =  responseCreateOrder.body().getResult();
                     }
-                } else {
-                    result = getResources().getString( R.string.internal_error );
                 }
             } catch ( Exception e ) {
-                result = getResources().getString( R.string.internal_error );
                 e.printStackTrace();
             }
-            return result;
+            return orderResponse;
         }
 
         @Override
-        protected void onPostExecute( String result ) {
-            super.onPostExecute( result );
-            if ( getResources().getString( R.string.internal_error ).equals( result ) ) {
+        protected void onPostExecute( ClientOrderResponse orderResponse ) {
+            super.onPostExecute( orderResponse );
+            String result = orderResponse == null ? getActivity().getResources().getString( R.string.internal_error ) : null ;
+            if ( result != null ) {
                 AppUtils.transitionAnimation( getView().findViewById( R.id.confirmCodeContainerId ),
                         getView().findViewById( R.id.checkOutScrollId ) );
                 ModalMessage.show( getActivity(), "Сообщение", new String[]{ result } );
@@ -546,10 +549,17 @@ public class CheckOutFragment extends ConfirmFragment implements View.OnClickLis
                 if ( mClientOrderModel.getBuilding() != null ) {
                     sb.append( ", " ).append( mClientOrderModel.getBuilding() );
                 }
-                mFinishOrderNumber.setText( result );
+                mClientOrderModel.setId( orderResponse.getOrderId() );
+                mClientOrderModel.setPayUrl( orderResponse.getPayUrl() );
+                mFinishOrderNumber.setText( orderResponse.getOrderId().toString() );
                 mFinishOrderAddress.setText( sb.toString() );
                 mFinishOrderDay.setText( mClientOrderModel.getOrderDate() );
                 mFinishOrderTime.setText( mClientOrderModel.getOrderTime() );
+                if ( !PayType.CASH.name().equals( mClientOrderModel.getPayType() ) ){
+                    mFinishOrderButton.setText( getActivity().getResources().getString( R.string.pay_button ) );
+                    mFinishOrderStatus.setText( getActivity().getResources().getString( R.string.status_wait_payment ) );
+                    getView().findViewById( R.id.expectedPayId ).setVisibility( View.VISIBLE );
+                }
                 BasketOrderManager.clearBasket();
                 AppUtils.transitionAnimation( getView().findViewById( R.id.confirmCodeContainerId ),
                         getView().findViewById( R.id.finishOrderContainerId ) );

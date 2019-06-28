@@ -4,7 +4,6 @@ package com.edanyma.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.hardware.camera2.CameraDevice;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +29,7 @@ import com.edanyma.fragment.EditProfileFragment;
 import com.edanyma.fragment.OrderDetailsFragment;
 import com.edanyma.fragment.OrderFragment;
 import com.edanyma.fragment.OwnMapFragment;
+import com.edanyma.fragment.PayWebViewFragment;
 import com.edanyma.fragment.PersonalAreaFragment;
 import com.edanyma.fragment.SignInFragment;
 import com.edanyma.fragment.SignUpFragment;
@@ -273,16 +273,24 @@ public class PersonActivity extends BaseActivity implements SignInFragment.OnSig
     }
 
 
-    @Override
-    public void onPixelShotSuccess( String path ) {
-        getHeader().setVisibility( View.GONE );
-        addReplaceFragment( OrderDetailsFragment.newInstance( mOrder ) );
+    public void showOrderDetails(){
+        if( mOrder != null ){
+            getHeader().setVisibility( View.GONE );
+            addReplaceFragment( OrderDetailsFragment.newInstance( mOrder ) );
+        }
     }
 
     @Override
     public void onLeaveFeedbackAction() {
         setHeaderFooterVisibilty( View.GONE );
         addReplaceFragment( CreateFeedbackFragment.newInstance( getCompanyById( mOrder.getCompanyOneId().toString() ) ) );
+    }
+
+    @Override
+    public void onPayOrderAction( String payUrl ) {
+        setHeaderFooterVisibilty( View.GONE );
+        addReplaceFragment( PayWebViewFragment.newInstance(  payUrl ) );
+
     }
 
     @Override

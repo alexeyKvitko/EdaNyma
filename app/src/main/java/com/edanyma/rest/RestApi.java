@@ -5,6 +5,7 @@ import com.edanyma.model.AuthToken;
 import com.edanyma.model.BootstrapModel;
 import com.edanyma.model.ClientLocationModel;
 import com.edanyma.model.ClientOrderModel;
+import com.edanyma.model.ClientOrderResponse;
 import com.edanyma.model.CompanyInfoModel;
 import com.edanyma.model.Dishes;
 import com.edanyma.model.ExistOrders;
@@ -90,8 +91,8 @@ public interface RestApi {
 
 
     @POST(API_CLIENT_ORDER+"createClientOrder")
-    Call< ApiResponse > createClientOrder( @Header("Authorization") String authorization,
-                                       @Body ClientOrderModel clientOrderModel  );
+    Call< ApiResponse< ClientOrderResponse > > createClientOrder( @Header("Authorization") String authorization,
+                                                                  @Body ClientOrderModel clientOrderModel  );
 
     @POST(API_CLIENT+"updateClientInfo")
     Call< ApiResponse > updateClientInfo( @Header("Authorization") String authorization,

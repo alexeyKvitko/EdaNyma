@@ -39,6 +39,8 @@
     <string name="sign_in">Войти</string>
     <string name="sign_in_google">Войти через Google</string>
     <string name="error_required_field">Поле обязательно для заполнения</string>
+    <string name="order_expected_pay">Заказ поступит в обработку, после оплаты</string>
+    <string name="order_wait_pay">Ожидается Оплата</string>
     <string name="error_wrong_password">Введен неверный пароль</string>
     <string name="error_wrong_email">Введен неверный email</string>
     <string name="error_wrong_phone">Введен неверный номер телеона</string>
@@ -47,6 +49,7 @@
     <string name="sign_up_title">Регистрация</string>
     <string name="support_service">Ваше Сообщение</string>
     <string name="next_button">Продолжить</string>
+    <string name="pay_button">Оплатить</string>
     <string name="remove_account">Удалить Профиль</string>
     <string name="update_profile_button">Обновить Профиль</string>
     <string name="update_password_button">Обновить Пароль</string>
@@ -128,6 +131,7 @@
     <string name="order_time">Время Заказа</string>
     <string name="order_status">Статус Заказа</string>
     <string name="status_processing">Обрабатывается Оператором</string>
+    <string name="status_wait_payment">Ожидается Оплата</string>
     <string name="additional_address">Подъезд, этаж и т.д.</string>
     <string name="city_label">Город</string>
     <string name="street_label">Улица</string>
@@ -164,5 +168,6 @@
     <string name="promotion">Акции</string>
     <string name="post_btn">Опубликовать</string>
     <string name="send_to_support">Отправить</string>
+    <string name="back_btn_label">Назад</string>
 
 </resources>

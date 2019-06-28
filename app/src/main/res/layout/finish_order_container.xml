@@ -89,8 +89,7 @@
             style="@style/grayTextMiddle"
             android:layout_marginTop="8dp"
             android:singleLine="true"
-            android:ellipsize="end"
-            android:text="г. Симферополь, ул. Самокиша, 6а"/>
+            android:ellipsize="end"/>
     </LinearLayout>
 
     <LinearLayout
@@ -148,6 +147,12 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:text="@string/status_processing"/>
+        <TextView
+            android:id="@+id/expectedPayId"
+            style="@style/errorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/order_expected_pay"/>
     </LinearLayout>
 
     <Button

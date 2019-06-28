@@ -81,7 +81,7 @@ public class PayTypeSelector extends FrameLayout implements View.OnClickListener
         if ( mListener != null ) {
             mListener.onPayTypeSelectAction( selectedPayType );
         }
-        if ( PayType.WALLET.equals( selectedPayType ) ) {
+        if ( PayType.QIWI.equals( selectedPayType ) ) {
             animatePayTypeContainer( CASH_MARGIN, WALLET_MARGIN );
         } else if ( PayType.CASH.equals( selectedPayType ) ) {
             animatePayTypeContainer( WALLET_MARGIN, CASH_MARGIN );
@@ -91,7 +91,7 @@ public class PayTypeSelector extends FrameLayout implements View.OnClickListener
 
     public void setSelectedPayType( PayType selectedPayType ) {
         this.mSelectedPayType = selectedPayType;
-        if( PayType.WALLET.equals( mSelectedPayType) ){
+        if( PayType.QIWI.equals( mSelectedPayType) ){
             animatePayTypeContainer( CASH_MARGIN, WALLET_MARGIN );
         } else {
             animatePayTypeContainer(  WALLET_MARGIN, CASH_MARGIN);
@@ -115,7 +115,7 @@ public class PayTypeSelector extends FrameLayout implements View.OnClickListener
                 choosePayType( PayType.CASH );
                 break;
             case R.id.clientPayTypeWalletId:
-                choosePayType( PayType.WALLET );
+                choosePayType( PayType.QIWI );
                 break;
             default:
                 break;

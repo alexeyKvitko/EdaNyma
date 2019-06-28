@@ -11,6 +11,7 @@ import com.edanyma.R;
 import com.edanyma.fragment.BasketFragment;
 import com.edanyma.fragment.CheckOutFragment;
 import com.edanyma.fragment.OwnMapFragment;
+import com.edanyma.fragment.PayWebViewFragment;
 import com.edanyma.manager.BasketOrderManager;
 import com.edanyma.model.ActivityState;
 import com.edanyma.utils.AppUtils;
@@ -20,6 +21,8 @@ public class BasketActivity extends BaseActivity implements BasketFragment.OnBas
 
     private final String TAG = "BasketActivity";
 
+    private String mPayOnlineUrl;
+
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
@@ -28,6 +31,7 @@ public class BasketActivity extends BaseActivity implements BasketFragment.OnBas
     }
 
     private void initialize() {
+        mPayOnlineUrl = null;
         initBaseActivity( new ActivityState( AppConstants.BASKET_BOTTOM_INDEX ) );
         getHeader().setVisibility( View.GONE );
         findViewById( R.id.basketContainerId ).setBackground( Drawable.createFromPath( AppUtils.getSnapshotPath() ) );
@@ -56,15 +60,15 @@ public class BasketActivity extends BaseActivity implements BasketFragment.OnBas
 
     @Override
     public void onBackPressed() {
+        setHeaderFooterVisibilty( View.VISIBLE );
         if( BasketOrderManager.getInstance().getBasket().size() == 0 ){
             clearBackStack();
         }
-//        if ( getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().getFragments().size() == 1 ) {
-//            Fragment fragment = getSupportFragmentManager().getFragments().get( 0 );
-//            if ( fragment instanceof CheckOutFragment ) {
-//                clearBackStack();
-//            }
-//        }
+        if( mPayOnlineUrl != null  ){
+            setHeaderFooterVisibilty( View.GONE );
+            addReplaceFragment( PayWebViewFragment.newInstance( mPayOnlineUrl ), true );
+            return;
+        }
         super.onBackPressed();
     }
 
@@ -90,5 +94,9 @@ public class BasketActivity extends BaseActivity implements BasketFragment.OnBas
     @Override
     public void onShowMapClick() {
         addReplaceFragment( OwnMapFragment.newInstance( false ), true );
+    }
+
+    public void setPayOnlineUrl( String payOnlineUrl ) {
+        this.mPayOnlineUrl = payOnlineUrl;
     }
 }

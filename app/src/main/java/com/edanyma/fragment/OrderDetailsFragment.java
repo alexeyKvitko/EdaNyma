@@ -27,6 +27,7 @@ import com.edanyma.model.BasketModel;
 import com.edanyma.model.ClientOrderModel;
 import com.edanyma.model.MenuEntityModel;
 import com.edanyma.model.OrderStatus;
+import com.edanyma.model.PayStatus;
 import com.edanyma.recyclerview.BasketAdapter;
 import com.edanyma.utils.AppUtils;
 import com.google.gson.Gson;
@@ -70,11 +71,13 @@ public class OrderDetailsFragment extends BaseFragment implements View.OnClickLi
         super.onCreate( savedInstanceState );
         if ( getArguments() != null ) {
             mOrder = ( ClientOrderModel ) getArguments().getSerializable( CLIENT_ORDER );
-            mEntities = new ArrayList<>();
-            for( BasketModel basketModel : mOrder.getOrders() ){
-                for( MenuEntityModel entity: basketModel.getBasket() ){
-                    entity.setCompanyName( basketModel.getCompany().getDisplayName() );
-                    mEntities.add( entity );
+            if ( mOrder != null ) {
+                mEntities = new ArrayList<>();
+                for( BasketModel basketModel : mOrder.getOrders() ){
+                    for( MenuEntityModel entity: basketModel.getBasket() ){
+                        entity.setCompanyName( basketModel.getCompany().getDisplayName() );
+                        mEntities.add( entity );
+                    }
                 }
             }
         }
@@ -96,10 +99,14 @@ public class OrderDetailsFragment extends BaseFragment implements View.OnClickLi
         getView().findViewById( R.id.orderDetailsFragmentId ).setOnClickListener( this );
         TextView title = initTextView( R.id.orderDetailsTitleId, AppConstants.B52 );
         title.setText( getActivity().getResources().getString( R.string.order_number )+" "+ mOrder.getId().toString() );
-        TextView feedBackBtn = initTextView( R.id.feedbackButtonId, AppConstants.ROBOTO_CONDENCED );
-        feedBackBtn.setOnClickListener( this );
-        feedBackBtn.setVisibility( OrderStatus.COMPLETED.name().equals( mOrder.getOrderStatus() ) ?
-                View.VISIBLE : View.GONE );
+        TextView detailsBtn = initTextView( R.id.detailsActionButtonId, AppConstants.ROBOTO_CONDENCED );
+        detailsBtn.setOnClickListener( this );
+        boolean detailsButtonVisible = OrderStatus.COMPLETED.name().equals( mOrder.getOrderStatus() );
+        if( PayStatus.EXPECTED.name().equals( mOrder.getPayStatus() ) ){
+            detailsBtn.setText( getActivity().getResources().getString( R.string.pay_button ) );
+            detailsButtonVisible = true;
+        }
+        detailsBtn.setVisibility(  detailsButtonVisible ? View.VISIBLE : View.GONE );
     }
 
     private void animateOrderDetailsBody( int start, int end ) {
@@ -195,10 +202,14 @@ public class OrderDetailsFragment extends BaseFragment implements View.OnClickLi
             case R.id.orderDetailsFragmentId:
                 closeBasket( true );
                 break;
-            case R.id.feedbackButtonId: {
+            case R.id.detailsActionButtonId: {
                 if ( mListener != null ) {
                     AppUtils.clickAnimation( view );
-                    mListener.onLeaveFeedbackAction();
+                    if ( PayStatus.EXPECTED.name().equals( mOrder.getPayStatus() ) ){
+                       mListener.onPayOrderAction( mOrder.getPayUrl() );
+                    } else {
+                        mListener.onLeaveFeedbackAction();
+                    }
                     closeBasket( false );
                 }
             }
@@ -207,6 +218,7 @@ public class OrderDetailsFragment extends BaseFragment implements View.OnClickLi
 
     public interface OnLeaveFeedbackListener {
         void onLeaveFeedbackAction();
+        void onPayOrderAction( String payUrl );
     }
 
 }

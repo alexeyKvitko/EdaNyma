@@ -1,7 +1,5 @@
 package com.edanyma.utils;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -12,7 +10,6 @@ import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
-import android.view.TextureView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -22,12 +19,10 @@ import android.widget.TextView;
 import com.edanyma.AppConstants;
 import com.edanyma.EdaNymaApp;
 import com.edanyma.R;
-import com.edanyma.model.FavoriteCompanyModel;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 

@@ -34,6 +34,9 @@ public class ClientOrderModel implements Serializable {
     private Integer needChange;
     private String comment;
     private String payType;
+    private String payUrl;
+    private String payStatus;
+    private String payAmount;
     private List<BasketModel> orders;
 
     public String getClientUuid() {
@@ -238,6 +241,30 @@ public class ClientOrderModel implements Serializable {
 
     public void setOrders( List< BasketModel > orders ) {
         this.orders = orders;
+    }
+
+    public String getPayUrl() {
+        return payUrl;
+    }
+
+    public void setPayUrl( String payUrl ) {
+        this.payUrl = payUrl;
+    }
+
+    public String getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus( String payStatus ) {
+        this.payStatus = payStatus;
+    }
+
+    public String getPayAmount() {
+        return payAmount;
+    }
+
+    public void setPayAmount( String payAmount ) {
+        this.payAmount = payAmount;
     }
 
     @Override public boolean equals( Object o) {

@@ -10,6 +10,7 @@ import com.edanyma.manager.GlobalManager;
 import com.edanyma.model.CompanyLight;
 import com.edanyma.model.CompanyModel;
 import com.edanyma.model.MenuEntityModel;
+import com.edanyma.model.PayType;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -78,6 +79,17 @@ public abstract class ConvertUtils {
         ByteBuffer buffer = ByteBuffer.allocate(iBytes);
         bm.copyPixelsToBuffer(buffer);
         return buffer.array();
+    }
+
+
+    public static PayType convertStringToPayType( String source ){
+        PayType payType = PayType.CASH;
+        if( PayType.QIWI.name().equals( source ) ){
+            payType = PayType.QIWI;
+        } else if( PayType.PAYEER.name().equals( source ) ){
+            payType = PayType.PAYEER;
+        }
+        return payType;
     }
 
 

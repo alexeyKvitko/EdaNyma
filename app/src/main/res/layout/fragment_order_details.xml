@@ -45,7 +45,7 @@
                     android:gravity="right"
                     android:layout_weight="1">
                     <TextView
-                        android:id="@+id/feedbackButtonId"
+                        android:id="@+id/detailsActionButtonId"
                         android:layout_width="124dp"
                         android:layout_height="28dp"
                         android:gravity="center"
