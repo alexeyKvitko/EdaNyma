@@ -175,24 +175,11 @@ public class PixelShot {
             this.listener = listener;
         }
 
-//        private void cancelTask() {
-//            cancel(true);
-//            if (listener != null) {
-//                handler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        listener.onPixelShotFailed();
-//                    }
-//                });
-//            }
-//        }
-
         @Override
         protected Boolean doInBackground(Void... voids) {
             boolean result = true;
             File directory = new File(Environment.getExternalStorageDirectory(), path);
             if (!directory.exists() && !directory.mkdirs()) {
-//                cancelTask();
                 return false;
             }
 
@@ -209,7 +196,7 @@ public class PixelShot {
             } catch (Exception e) {
                 e.printStackTrace();
                 result = false;
-//                cancelTask();
+
             }
 
             bitmap.recycle();
@@ -220,7 +207,7 @@ public class PixelShot {
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute( result );
-//            MediaScannerConnection.scanFile(weakContext.get(), new String[]{file.getPath()}, null, this);
+
             weakContext.clear();
             if( result ){
                 listener.onPixelShotSuccess(path);
@@ -229,22 +216,6 @@ public class PixelShot {
             }
         }
 
-//        @Override
-//        public void onScanCompleted(final String path, final Uri uri) {
-//            if (listener != null) {
-//                handler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (uri != null) {
-//                            Log.i(TAG, "Saved image to path: " + path);
-//                            Log.i(TAG, "Saved image to URI: " + uri);
-//                            listener.onPixelShotSuccess(path);
-//                        } else {
-//                            listener.onPixelShotFailed();
-//                        }
-//                    }
-//                });
-//            }
-//        }
+
     }
 }

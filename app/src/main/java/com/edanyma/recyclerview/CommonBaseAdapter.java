@@ -1,16 +1,10 @@
 package com.edanyma.recyclerview;
 
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import androidx.collection.LruCache;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.edanyma.EdaNymaApp;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CommonBaseAdapter<T> extends  RecyclerView.Adapter< BaseDataObjectHolder >{
