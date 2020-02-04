@@ -22,7 +22,7 @@ import java.util.List;
 
 public class StickyRecyclerView extends RecyclerView {
 
-    private final String TAG = "SaturationRecyclerView";
+    private final String TAG = "StickyRecyclerView";
 
     private StickyLayoutManager mLayoutManager;
     private ColorMatrixColorFilter mGrayFilter;
@@ -67,22 +67,19 @@ public class StickyRecyclerView extends RecyclerView {
         if( AppConstants.HEADER_ACTION_REMOVE == mHeaderAction ){
             return;
         }
-        animateLayot( mOpenMarginTop, mCloseMarginTop);
+        animateLayout( mOpenMarginTop, mCloseMarginTop);
         mHeaderAction = AppConstants.HEADER_ACTION_REMOVE;
         mListener.onRemoveHeaderAction();
     }
 
-    private void animateLayot(Float start, Float end ){
+    private void animateLayout( Float start, Float end ){
         final RelativeLayout.LayoutParams layoutParams = ( RelativeLayout.LayoutParams ) this.getLayoutParams();
         final StickyRecyclerView mThis = this;
         ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), start.intValue(), end.intValue() );
-        valAnimator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate( ValueAnimator animator ) {
+        valAnimator.addUpdateListener( ( ValueAnimator animator ) -> {
                 int val = ( Integer ) animator.getAnimatedValue();
                 layoutParams.topMargin = val;
                 mThis.setLayoutParams( layoutParams );
-            }
         } );
         valAnimator.setDuration( 300 );
         valAnimator.start();
@@ -92,7 +89,7 @@ public class StickyRecyclerView extends RecyclerView {
         if( AppConstants.HEADER_ACTION_RESTORE == mHeaderAction ){
             return;
         }
-        animateLayot( mCloseMarginTop, mOpenMarginTop );
+        animateLayout( mCloseMarginTop, mOpenMarginTop );
         mListener.onRestoreHeaderAction();
         mHeaderAction = AppConstants.HEADER_ACTION_RESTORE;
         mLayoutManager.setScroll( 0 );

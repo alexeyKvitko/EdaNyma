@@ -1,10 +1,16 @@
 https://github.com/Ramotion
 https://www.behance.net/gallery/70933623/Delyo-UI-Kit-Food-Delivery-App
+
 https://android-developers.googleblog.com/2017/10/effective-phone-number-verification.html
 https://habr.com/ru/company/mailru/blog/260841/
 https://code.tutsplus.com/ru/tutorials/how-to-get-started-with-push-notifications-on-android--cms-25870 
 https://stfalcon.com/ru/blog/post/android-websocket 
-https://github.com/CameraKit/camerakit-android
+https://github.com/leinardi/FloatingActionButtonSpeedDial
+tv_kvitko@mail.ru
+297561, Респ. Крым, р-н. Симферопольский, с. Дубки, ул. Центральная, д. 10
+https://library.vuforia.com/articles/Solution/Working-with-Vuforia-and-OpenGL-ES#How-To-Render-Static-3D-Models-using-OpenGL-ES
+alexey.kvitko.15@gmail.com
+
 qw
 Alex_16067408
 payeer
@@ -14,11 +20,6 @@ Alex16067408;mops
 lTC3rSBadFTu6xig
 alex09079901dimavova12060919
 
-Логин: P1012822602
-Пароль: 04_Yura_16
-E-mail: yurmel_61@mail.ru
-Секретное слово: Vodka
-792490604
 
 Логин: P1012206100
 Пароль: ViconssAlliance97
@@ -28,7 +29,8 @@ Master key: 275
 
 секретный ключ 97529
 
-http://edanyma.ru/successMerchant/?m_operation_id=795201679&m_operation_ps=87815397&m_operation_date=20.05.2019%2011:58:01&m_operation_pay_date=20.05.2019%2012:00:31&m_shop=792221744&m_orderid=10032&m_amount=10.00&m_curr=RUB&m_desc=0JXQtNCw0J3Rj9C80LAu0YDRhC4g0J7Qv9C70LDRgtCwINC30LDQutCw0LfQsCDihJYgMTAwMzIsINC%2B0YIgMjAtMDUtMjAxOQ%3D%3D&m_status=success&m_sign=F786E5921F2E184AF55CB3A969A5DF7CD6930E2A965794B3A735BA21CF6188D5&lang=ru
+http://xn-----blccdlcdbsfj0ae2beeffnjnifjkdd20a.xn--p1ai/?utm_source=google&utm_medium=cpc&utm_campaign=stroitelstvo-krym
+https://asgard-bc.ru/stroitelstvo-domov
 
 Retrofit:
 https://www.vogella.com/tutorials/Retrofit/article.html
@@ -44,6 +46,8 @@ https://pixplicity.com,
 
 com.googlecode.libphonenumber
 
+ ./opt/tomcat9/bin/startup.sh
+
 
 ldpi    @ 1.00dp    = 0.75px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt
 mdpi    @ 1.00dp    = 1.00px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt
@@ -56,8 +60,6 @@ xxxhdpi @ 1.00dp    = 4.00px    = 1.00sp    = 0.16mm    = 0.01in    = 0.45pt
 https://github.com/Muddz/PixelShot
 https://github.com/mozilla-mobile/android-components/tree/master/samples
 
-https://www.stoloto.ru/6x45/archive?firstDraw=1&lastDraw=6&mode=draw
-
 https://github.com/staliang/qiwi-client
 
 https://console.developers.google.com/google/maps-apis/apis/maps-android-backend.googleapis.com/credentials?project=edanyma&duration=PT1H
@@ -68,8 +70,28 @@ twilio
 alexK_09079901
 
 Киви касса 
+https://github.com/QIWI-API/bill-payments-java-sdk
 https://developer.qiwi.com/ru/bill-payments/?java#steps
 публичный ключ:
 aixoQYoWQNPF2isu7ENmR6kPNgGvn8hYQ71aJfEc3T6wmprcWhNiRqDC9VRpT382yfHARYUKDqEgCEFatYkYU3MWHik7D2GwQSuwA4A81Fy8ofchybnzZjjjxUo5gynK1Li9b77ZrT1r2Xs8fkEq6bxx3afTEKWfHKAYJgjLJqkjFh1a4ng744kxeF
 Секретный ключ
 eyJ2ZXJzaW9uIjoiUDJQIiwiZGF0YSI6eyJwYXlpbl9tZXJjaGFudF9zaXRlX3VpZCI6ImFqaWQtMDAiLCJ1c2VyX2lkIjoiNzk3ODI1NTc5NzgiLCJzZWNyZXQiOiJiMTYyOGFmMjQxMzdhODg3NmRkOTYzZTE1YjYxYjIzZTA1YjZiZDc3Yjg0NGQzMDc3OTZkNTNiZDYyNzg4ZGZlIn19
+
+ПростоТак
+Url оповещения
+http://просто-так.рф/merchant
+Публичный ключ:
+48e7qUxn9T7RyYE1MVZswX1FRSbE6iyCj2gCRwwF3Dnh5XrasNTx3BGPiMsyXQFNKQhvukniQG8RTVhYm3iPvSeooHuwZnBvxFtuPa2t24kNKvYmxHAZbzZECBP8xaSKsmH1JvaE5eJf541PtK37ZDJYSE8eEn4gdHyh5vJzBFJ5AJ8MxfWMFGY6pUvmR
+Секретный ключ:
+eyJ2ZXJzaW9uIjoiUDJQIiwiZGF0YSI6eyJwYXlpbl9tZXJjaGFudF9zaXRlX3VpZCI6InExcG00OS0wMCIsInVzZXJfaWQiOiI3OTc4NzM2OTEzMCIsInNlY3JldCI6IjNjN2RjNjM0Njg3M2JhOTkzMzZjODljM2Q2NDBmMjQwMGQwMGJkYzY0NGNhMDRjZjM5NmQ5ODI0MDFlODgxYzEifX0=
+
+https://stackoverflow.com/questions/45940861/android-8-cleartext-http-traffic-not-permitted
+
+cat /proc/meminfo
+
+
+Гос услугиAlex_09079901
+
+https://stackoverflow.com/questions/6462105/how-do-i-access-androids-default-beep-sound
+
+http://194.58.122.145:8080/manager/

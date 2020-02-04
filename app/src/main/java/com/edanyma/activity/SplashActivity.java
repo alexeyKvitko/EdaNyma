@@ -128,16 +128,7 @@ public class SplashActivity extends Activity {
         if ( !AppUtils.isNetworkAvailable() ) {
             finishActivity( "Отсутствует интернет соединение" );
         }
-        SingleShotLocationProvider.requestSingleUpdate( activity,
-                new SingleShotLocationProvider.LocationCallback() {
-                    @Override
-                    public void onNewLocationAvailable( SingleShotLocationProvider.GPSCoordinates location ) {
-                        mLatitude = String.valueOf( location.latitude );
-                        mLongitude = String.valueOf( location.longitude );
-                        new FetchBootstrapData().execute();
-                        new FetchClientLocation().execute();
-                    }
-                } );
+
     }
 
 

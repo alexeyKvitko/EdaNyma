@@ -5,8 +5,10 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.edanyma.AppConstants;
@@ -44,18 +47,23 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
     private TextView mDishCountText;
     private TextView mDishSumText;
 
+    private View mWspButton;
+
     private Integer mSelPrice;
 
     private int mWspBtnMargin;
+    private int mWspBtnWidth;
+
+
     private Integer mDishCount;
     private boolean mAllWspNull;
 
     private OnAddToBasketListener mListener;
 
-    public DishInfoFragment() {
+    public DishInfoFragment () {
     }
 
-    public static DishInfoFragment newInstance( String companyName, MenuEntityModel dishEntity ) {
+    public static DishInfoFragment newInstance ( String companyName, MenuEntityModel dishEntity ) {
         DishInfoFragment fragment = new DishInfoFragment();
         Bundle args = new Bundle();
         args.putString( COMPANY_NAME_PARAM, companyName );
@@ -65,7 +73,7 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void onCreate( Bundle savedInstanceState ) {
+    public void onCreate ( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         if ( getArguments() != null ) {
             mCompanyName = getArguments().getString( COMPANY_NAME_PARAM );
@@ -74,20 +82,20 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public View onCreateView( LayoutInflater inflater, ViewGroup container,
-                              Bundle savedInstanceState ) {
+    public View onCreateView ( LayoutInflater inflater, ViewGroup container,
+                               Bundle savedInstanceState ) {
         return inflater.inflate( R.layout.fragment_dish_info, container, false );
     }
 
 
-    public void onAddToBasketPressed() {
+    public void onAddToBasketPressed () {
         if ( mListener != null ) {
             mListener.onAddToBasket( mDishEntity );
         }
     }
 
     @Override
-    public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
+    public void onActivityCreated ( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
         mAllWspNull = false;
         mWspBtnMargin = 0;
@@ -143,7 +151,15 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
         getView().findViewById( R.id.removeDishCountId ).setOnClickListener( this );
         getView().findViewById( R.id.addToBasketButtonId ).setOnClickListener( this );
 
+        mWspButton = getView().findViewById( R.id.wspButtonId );
 
+        LinearLayout wspLayout = getView().findViewById( R.id.wspLayoutOneId );
+        mWspButton.post( () -> {
+            mWspBtnWidth = wspLayout.getWidth() + ( int ) ConvertUtils.convertDpToPixel( 8 );
+            FrameLayout.LayoutParams wspParams = ( FrameLayout.LayoutParams ) mWspButton.getLayoutParams();
+            wspParams.width = wspLayout.getWidth();
+            mWspButton.setLayoutParams( wspParams );
+        } );
         mDishCountText = initTextView( R.id.dishCountTextId, AppConstants.OFFICE, Typeface.BOLD, null );
         mDishSumText = initTextView( R.id.dishSumId, AppConstants.ROBOTO_CONDENCED );
         mSelPrice = Integer.valueOf( mDishEntity.getPriceOne() );
@@ -151,7 +167,7 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
         setDishPrice();
     }
 
-    private void setWsp( int layoutId, int sizeId, int weightId, String sizeValue, String weightValue ) {
+    private void setWsp ( int layoutId, int sizeId, int weightId, String sizeValue, String weightValue ) {
         if ( AppUtils.nullOrEmpty( sizeValue ) && AppUtils.nullOrEmpty( weightValue ) ) {
             getView().findViewById( layoutId ).setVisibility( View.INVISIBLE );
             return;
@@ -173,39 +189,35 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
 
     }
 
-    private void setWspTextColor( int sizeId, int weightId, int colorId ) {
-        ( ( TextView ) getView().findViewById( sizeId ) ).setTextColor( EdaNymaApp.getAppContext()
+    private void setWspTextColor ( int sizeId, int weightId, int colorId ) {
+        (( TextView ) getView().findViewById( sizeId )).setTextColor( EdaNymaApp.getAppContext()
                 .getResources().getColor( colorId ) );
-        ( ( TextView ) getView().findViewById( weightId ) ).setTextColor( EdaNymaApp.getAppContext()
+        (( TextView ) getView().findViewById( weightId )).setTextColor( EdaNymaApp.getAppContext()
                 .getResources().getColor( colorId ) );
     }
 
-    private void animateWspButtonContainer( final int start, final int end, final String price,
-                                            final int sizeId, final int weightId ) {
+    private void animateWspButtonContainer ( final int start, final int end, final String price,
+                                             final int sizeId, final int weightId ) {
         if ( start == end ) {
             return;
         }
         mSelPrice = Integer.valueOf( price );
-        final View wspButton = getView().findViewById( R.id.wspButtonId );
-        final FrameLayout.LayoutParams layoutParams = ( FrameLayout.LayoutParams ) wspButton.getLayoutParams();
+        final FrameLayout.LayoutParams layoutParams = ( FrameLayout.LayoutParams ) mWspButton.getLayoutParams();
         ValueAnimator valAnimator = ValueAnimator.ofObject( new IntEvaluator(), start, end );
-        valAnimator.addUpdateListener( new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate( ValueAnimator animator ) {
-                int val = ( Integer ) animator.getAnimatedValue();
-                layoutParams.leftMargin = val;
-                wspButton.setLayoutParams( layoutParams );
-                if ( val == end ) {
-                    mDishPrice.setText( price );
-                    setWspTextColor( R.id.dishSizeOneId, R.id.dishWeightOneId, R.color.tealColor );
-                    setWspTextColor( R.id.dishSizeTwoId, R.id.dishWeightTwoId, R.color.tealColor );
-                    setWspTextColor( R.id.dishSizeThreeId, R.id.dishWeightThreeId, R.color.tealColor );
-                    setWspTextColor( R.id.dishSizeFourId, R.id.dishWeightFourId, R.color.tealColor );
+        valAnimator.addUpdateListener( ( ValueAnimator animator ) -> {
+            int val = ( Integer ) animator.getAnimatedValue();
+            layoutParams.leftMargin = val;
+            mWspButton.setLayoutParams( layoutParams );
+            if ( val == end ) {
+                mDishPrice.setText( price );
+                setWspTextColor( R.id.dishSizeOneId, R.id.dishWeightOneId, R.color.tealColor );
+                setWspTextColor( R.id.dishSizeTwoId, R.id.dishWeightTwoId, R.color.tealColor );
+                setWspTextColor( R.id.dishSizeThreeId, R.id.dishWeightThreeId, R.color.tealColor );
+                setWspTextColor( R.id.dishSizeFourId, R.id.dishWeightFourId, R.color.tealColor );
 
-                    setWspTextColor( sizeId, weightId, R.color.blueNeon );
+                setWspTextColor( sizeId, weightId, R.color.blueNeon );
 
-                    mWspBtnMargin = end;
-                }
+                mWspBtnMargin = end;
             }
         } );
         valAnimator.setDuration( 300 );
@@ -213,7 +225,7 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
         setDishPrice();
     }
 
-    private void checkForNullWsp() {
+    private void checkForNullWsp () {
         mAllWspNull = AppUtils.nullOrEmpty( mDishEntity.getSizeOne() )
                 && AppUtils.nullOrEmpty( mDishEntity.getWeightOne() )
                 && AppUtils.nullOrEmpty( mDishEntity.getSizeTwo() )
@@ -229,7 +241,7 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
 
 
     @Override
-    public void onAttach( Context context ) {
+    public void onAttach ( Context context ) {
         super.onAttach( context );
         if ( context instanceof OnAddToBasketListener ) {
             mListener = ( OnAddToBasketListener ) context;
@@ -240,25 +252,25 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void onDetach() {
+    public void onDetach () {
         super.onDetach();
         mListener = null;
-        ( ( BaseActivity ) getActivity() ).setHeaderFooterVisibilty( View.VISIBLE );
+        (( BaseActivity ) getActivity()).setHeaderFooterVisibilty( View.VISIBLE );
         int containerId = getActivity() instanceof DishActivity ? R.id.eatMenuContainerId :
-                                                                            R.id.dishContainerId;
+                R.id.dishContainerId;
         getActivity().findViewById( containerId )
                 .setBackground( EdaNymaApp.getAppContext().getResources()
                         .getDrawable( R.drawable.main_background_light ) );
     }
 
-    private void setDishPrice(){
-        String dishSum = "x "+mDishCount+" = "+String.valueOf(mDishCount*mSelPrice)+".00 руб.";
+    private void setDishPrice () {
+        String dishSum = "x " + mDishCount + " = " + String.valueOf( mDishCount * mSelPrice ) + ".00 руб.";
         mDishCountText.setText( mDishCount.toString() );
         mDishSumText.setText( dishSum );
     }
 
     @Override
-    public void onClick( View view ) {
+    public void onClick ( View view ) {
         int newWspBtnMargin = 0;
         switch ( view.getId() ) {
             case R.id.wspLayoutOneId:
@@ -268,19 +280,22 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
                         , R.id.dishSizeOneId, R.id.dishWeightOneId );
                 break;
             case R.id.wspLayoutTwoId:
-                newWspBtnMargin = ( int ) ConvertUtils.convertDpToPixel( 81 );
+//                newWspBtnMargin = ( int ) ConvertUtils.convertDpToPixel( 81 );
+                newWspBtnMargin = mWspBtnWidth;
                 mDishEntity.setWspType( AppConstants.SEL_TYPE_TWO );
                 animateWspButtonContainer( mWspBtnMargin, newWspBtnMargin, mDishEntity.getPriceTwo()
                         , R.id.dishSizeTwoId, R.id.dishWeightTwoId );
                 break;
             case R.id.wspLayoutThreeId:
-                newWspBtnMargin = ( int ) ConvertUtils.convertDpToPixel( 162 );
+//                newWspBtnMargin = ( int ) ConvertUtils.convertDpToPixel( 162 );
+                newWspBtnMargin = 2 * mWspBtnWidth;
                 mDishEntity.setWspType( AppConstants.SEL_TYPE_THREE );
                 animateWspButtonContainer( mWspBtnMargin, newWspBtnMargin, mDishEntity.getPriceThree()
                         , R.id.dishSizeThreeId, R.id.dishWeightThreeId );
                 break;
             case R.id.wspLayoutFourId:
-                newWspBtnMargin = ( int ) ConvertUtils.convertDpToPixel( 243 );
+//                newWspBtnMargin = ( int ) ConvertUtils.convertDpToPixel( 243 );
+                newWspBtnMargin = 3 * mWspBtnWidth;
                 mDishEntity.setWspType( AppConstants.SEL_TYPE_FOUR );
                 animateWspButtonContainer( mWspBtnMargin, newWspBtnMargin, mDishEntity.getPriceFour()
                         , R.id.dishSizeFourId, R.id.dishWeightFourId );
@@ -312,33 +327,35 @@ public class DishInfoFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    private void addDishToBasket(){
+    private void addDishToBasket () {
         BasketOrderManager.getInstance().addEntityToBasket( getActivity(), mDishEntity, mCompanyName, mDishCount );
         final CardView dishImage = getView().findViewById( R.id.cardDishInfoImgId );
         final CardView dishInfo = getView().findViewById( R.id.dishInfoCardId );
         Animation scaleDown = AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(), R.anim.scale_down );
         scaleDown.setAnimationListener( new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart( Animation animation ) {}
+            public void onAnimationStart ( Animation animation ) {
+            }
 
             @Override
-            public void onAnimationEnd( Animation animation ) {
+            public void onAnimationEnd ( Animation animation ) {
                 getActivity().onBackPressed();
                 dishImage.setVisibility( View.GONE );
                 dishInfo.setVisibility( View.GONE );
             }
 
             @Override
-            public void onAnimationRepeat( Animation animation ) {}
+            public void onAnimationRepeat ( Animation animation ) {
+            }
         } );
         dishImage.startAnimation( scaleDown );
         dishInfo.startAnimation( AnimationUtils.loadAnimation( EdaNymaApp.getAppContext(),
-                                                                                R.anim.fade_out ) );
+                R.anim.fade_out ) );
 
     }
 
 
     public interface OnAddToBasketListener {
-        void onAddToBasket( MenuEntityModel dishEntity );
+        void onAddToBasket ( MenuEntityModel dishEntity );
     }
 }

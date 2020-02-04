@@ -40,7 +40,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
-//    implementation 'me.aflak.libraries:ezcam:2.3.3'
+
     implementation "androidx.camera:camera-core:${camerax_version}"
     implementation "androidx.camera:camera-camera2:${camerax_version}"
     implementation "org.mindrot:jbcrypt:0.4"

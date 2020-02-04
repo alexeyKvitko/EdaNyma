@@ -182,19 +182,6 @@ public class CameraFragment extends BaseFragment implements PixelShot.PixelShotL
                 super.onError( useCaseError, message, cause );
             }
         } );
-//        mImageCapture.takePicture( file, new ImageCapture.OnImageSavedListener() {
-//            @Override
-//            public void onImageSaved( @NonNull File file ) {
-//                new UpdateClientAvatar().execute( getClient().getUuid() );
-//            }
-//
-//            @Override
-//            public void onError( @NonNull ImageCapture.UseCaseError useCaseError, @NonNull String message, @Nullable Throwable cause ) {
-//                ModalMessage.show( getActivity(), "Ошибка !", new String[]{ "Не сохранено ! Попробуйте еще раз " } );
-//                AppUtils.transitionAnimation( getView().findViewById( R.id.pleaseWaitAvatarId ),
-//                        getView().findViewById( R.id.cameraViewFinderId ) );
-//            }
-//        } );
     }
 
     private void takePhoto( final ImageProxy imageProxy ) {
